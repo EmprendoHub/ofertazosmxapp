@@ -11,7 +11,7 @@ const TerminosPage = () => {
             </h1>
             <p className='text-lg text-gray-600 mt-4'>
               Este sitio web es operado por Shopout MX. En todo el sitio, los
-              términos "nosotros", "nos" y "nuestro" se refieren a Shopout MX.
+              términos (nosotros), (nos) y (nuestro) se refieren a Shopout MX.
               Shopout MX ofrece este sitio web, incluida toda la información,
               herramientas y servicios disponibles en este sitio para usted, el
               usuario, condicionado a la aceptación de todos los términos,
@@ -24,8 +24,8 @@ const TerminosPage = () => {
 
           <p className='mt-2'>
             Al visitar nuestro sitio y/o comprarnos algo, usted participa en
-            nuestro "Servicio" y acepta estar sujeto a los siguientes términos y
-            condiciones ("Términos de servicio", "Términos"), incluidos esos
+            nuestro (Servicio) y acepta estar sujeto a los siguientes términos y
+            condiciones (Términos de servicio, Términos), incluidos esos
             términos y condiciones y políticas adicionales. referenciado en este
             documento y/o disponible mediante hipervínculo. Estos Términos de
             servicio se aplican a todos los usuarios del sitio, incluidos, entre
@@ -173,7 +173,7 @@ const TerminosPage = () => {
             Ciertos productos o servicios pueden estar disponibles
             exclusivamente en línea a través del sitio web. Estos productos o
             servicios pueden tener cantidades limitadas y están sujetos a
-            nuestras{" "}
+            nuestras
             <a href='/devoluciones'>condiciones de devolución o cambio</a>.
           </p>
 
@@ -236,8 +236,8 @@ const TerminosPage = () => {
 
           <p className='mt-2'>
             Usted reconoce y acepta que brindamos acceso a dichas herramientas
-            "tal cual" y "según disponibilidad" sin garantías, representaciones
-            o condiciones de ningún tipo y sin ningún respaldo. No tendremos
+            tal cual y según disponibilidad sin garantías, representaciones o
+            condiciones de ningún tipo y sin ningún respaldo. No tendremos
             ninguna responsabilidad que surja o esté relacionada con el uso de
             herramientas opcionales de terceros.
           </p>
@@ -426,8 +426,8 @@ const TerminosPage = () => {
             Usted acepta expresamente que el uso o la imposibilidad de utilizar
             el servicio es bajo su propio riesgo. El servicio y todos los
             productos y servicios que se le entregan a través del servicio se
-            proporcionan (excepto lo expresamente indicado por nosotros) "tal
-            cual y" según su disponibilidad para su uso, sin ninguna
+            proporcionan (excepto lo expresamente indicado por nosotros) tal
+            cual y según su disponibilidad para su uso, sin ninguna
             representación, garantía o condición de ningún tipo, ya sea expresa
             o implícita. incluidas todas las garantías o condiciones implícitas
             de comerciabilidad, calidad comercial, idoneidad para un propósito
