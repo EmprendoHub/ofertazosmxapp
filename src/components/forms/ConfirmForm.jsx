@@ -13,12 +13,12 @@ export default function Confirm(props) {
       <div className='py-5'>{children}</div>
       <div className='flex justify-end'>
         <div className='p-1'>
-          <Button
+          <ModalButton
             onClick={() => onClose()}
             className='bg-secondary hover:bg-secondary-light'
           >
             No
-          </Button>
+          </ModalButton>
         </div>
         <div className='p-1'>
           <ModalButton
