@@ -14,7 +14,7 @@ const PoliticaPage = () => {
               portafolio del creador, en anuncios o en blogs; cuando sea
               necesario, la información privada no se difuminará. Si
               expresamente NO desea que su orden no sea utilizada o presentada,
-              menciónelo en el área "nota al vendedor" de su compra.
+              menciónelo en el área (nota al vendedor) de su compra.
             </p>
           </div>
         </section>
@@ -32,7 +32,7 @@ const PoliticaPage = () => {
             individuales que ve, qué sitios web o términos de búsqueda lo
             remitieron al Sitio e información sobre cómo interactúa con el
             Sitio. Nos referimos a esta información recopilada automáticamente
-            como "Información del dispositivo".
+            como (Información del dispositivo).
           </p>
 
           <p className='mt-2'>
@@ -42,23 +42,23 @@ const PoliticaPage = () => {
 
           <ul className='list-disc ml-8 mt-2'>
             <li>
-              Las "cookies" son archivos de datos que se colocan en su
-              dispositivo o computadora y, a menudo, incluyen un identificador
-              único anónimo. Para obtener más información sobre las cookies y
-              cómo desactivarlas, visite{" "}
+              Las cookies son archivos de datos que se colocan en su dispositivo
+              o computadora y, a menudo, incluyen un identificador único
+              anónimo. Para obtener más información sobre las cookies y cómo
+              desactivarlas, visite
               <a href='http://www.allaboutcookies.org'>
                 http://www.allaboutcookies.org
               </a>
               .
             </li>
             <li>
-              Los "archivos de registro” rastrean las acciones que ocurren en el
+              Los archivos de registro rastrean las acciones que ocurren en el
               Sitio y recopilan datos que incluyen su dirección IP, tipo de
               navegador, proveedor de servicios de Internet, páginas de
               referencia/salida y marcas de fecha/hora.
             </li>
             <li>
-              Las "balizas web”, las "etiquetas” y los "píxeles” son archivos
+              Las balizas web, las etiquetas y los píxeles son archivos
               electrónicos que se utilizan para registrar información sobre cómo
               navega por el Sitio.
             </li>
@@ -70,11 +70,11 @@ const PoliticaPage = () => {
             nombre, dirección de facturación, dirección de envío, información de
             pago (incluidos números de tarjetas de crédito), dirección de correo
             electrónico y número de teléfono. Nos referimos a esta información
-            como "Información del pedido".
+            como (Información del pedido).
           </p>
 
           <p className='mt-2'>
-            Cuando hablamos de "Información personal” en esta Política de
+            Cuando hablamos de (Información personal) en esta Política de
             privacidad, nos referimos tanto a Información del dispositivo como a
             Información del pedido.
           </p>
@@ -137,8 +137,8 @@ const PoliticaPage = () => {
             para brindarle anuncios específicos o comunicaciones de marketing
             que creemos que pueden ser de su interés. Para obtener más
             información sobre cómo funciona la publicidad dirigida, puede
-            visitar la página educativa de Network Advertising Initiatives
-            ("NAI”) en
+            visitar la página educativa de Network Advertising Initiatives (NAI)
+            en
             http://www.networkadvertising.org/understanding-online-advertising/how-does-it-work.
           </p>
 
@@ -170,11 +170,9 @@ const PoliticaPage = () => {
         <section className='mb-4'>
           <h2 className='text-2xl font-semibold'>COOKIES</h2>
           <p className='mt-2'>
-            Si deja un comentario en nuestro sitio, puede optar por guardar su
-            nombre, dirección de correo electrónico y sitio web en cookies. Esto
-            es para tu comodidad para que no tengas que volver a completar tus
-            datos cuando dejes otro comentario. Estas cookies tendrán una
-            duración de un año.
+            {
+              "Si deja un comentario en nuestro sitio, puede optar por guardar su nombre, dirección de correo electrónico y sitio web en cookies. Esto es para tu comodidad para que no tengas que volver a completar tus datos cuando dejes otro comentario. Estas cookies tendrán una duración de un año."
+            }
           </p>
 
           <p className='mt-2'>
@@ -189,7 +187,7 @@ const PoliticaPage = () => {
             guardar su información de inicio de sesión y sus opciones de
             visualización de pantalla. Las cookies de inicio de sesión duran dos
             días y las cookies de opciones de pantalla duran un año. Si
-            selecciona "Recordarme", su inicio de sesión persistirá durante dos
+            selecciona (Recordarme), su inicio de sesión persistirá durante dos
             semanas. Si cierra sesión en su cuenta, las cookies de inicio de
             sesión se eliminarán
           </p>

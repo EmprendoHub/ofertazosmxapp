@@ -11,7 +11,7 @@ const TerminosPage = () => {
             </h1>
             <p className='text-lg text-gray-600 mt-4'>
               Este sitio web es operado por Shopout MX. En todo el sitio, los
-              términos "nosotros”, "nos” y "nuestro” se refieren a Shopout MX.
+              términos "nosotros", "nos" y "nuestro" se refieren a Shopout MX.
               Shopout MX ofrece este sitio web, incluida toda la información,
               herramientas y servicios disponibles en este sitio para usted, el
               usuario, condicionado a la aceptación de todos los términos,
