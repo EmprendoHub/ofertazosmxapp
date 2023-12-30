@@ -1,0 +1,34 @@
+"use client";
+import React, { useState } from "react";
+import { motion, useScroll, useMotionValueEvent } from "framer-motion";
+import MobileMenuComponent from "./MobileMenuComponent";
+import WhiteLogoComponent from "../logos/WhiteLogoComponent";
+
+const MotionHeaderComponent = () => {
+  const [hidden, setHidden] = useState(true);
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious();
+    if (latest > previous && latest > 300) {
+      setHidden(false);
+    } else {
+      setHidden(true);
+    }
+  });
+
+  return (
+    <motion.div
+      variants={{ hidden: { y: 0 }, visible: { y: "-110%" } }}
+      animate={hidden ? "hidden" : "visible"}
+      transition={{ duration: 0.35, ease: "easeInOut" }}
+      className='flex flex-row justify-between header-class from bg-gradient-to-tr from-gray-100 to-gray-100 text-black text-xl sticky top-0 z-[50]  w-full mx-auto py-3  border-b shadow-lg px-24 maxmd:px-2'
+    >
+      <WhiteLogoComponent className={"ml-5 mt-4 w-[200px] sm:w-[120px]"} />
+
+      <MobileMenuComponent />
+    </motion.div>
+  );
+};
+
+export default MotionHeaderComponent;
