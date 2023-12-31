@@ -76,7 +76,7 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
 
       // Use the `data` as needed
-      console.log(data);
+
       if (data) {
         loadUser();
         setLoading(false);
@@ -175,7 +175,6 @@ export const AuthProvider = ({ children }) => {
           },
         }
       );
-      console.log(response);
       if (response) {
         setLoading(false);
         return NextResponse.json(
@@ -197,7 +196,6 @@ export const AuthProvider = ({ children }) => {
           "X-Mysession-Key": JSON.stringify(user),
         },
       });
-      console.log(data);
       if (data) {
         router.push("/admin/productos");
       }
@@ -258,7 +256,6 @@ export const AuthProvider = ({ children }) => {
           "X-Mysession-Key": JSON.stringify(user),
         },
       });
-      console.log(data);
       if (data) {
         router.push("/admin/productos");
       }

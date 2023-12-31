@@ -36,7 +36,6 @@ const MiniMenuComponent = () => {
 
   useEffect(() => {
     if (session) {
-      console.log(session);
       setUser(session?.user);
     }
   }, [session, setUser]);

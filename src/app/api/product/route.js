@@ -174,8 +174,6 @@ export async function PUT(req, res) {
       _id,
     } = payload;
 
-    console.log(gender);
-
     // Parse images as JSON
     images = JSON.parse(images);
     sizes = JSON.parse(sizes);
@@ -280,7 +278,6 @@ export async function DELETE(req) {
       await dbConnect();
       const urlData = await req.url.split("?");
       const id = urlData[1];
-      console.log("id", id);
       const deleteProduct = await Product.findByIdAndDelete(id);
       return new Response(JSON.stringify(deleteProduct), { status: 201 });
     } catch (error) {

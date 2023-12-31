@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   productsData: [],
@@ -8,14 +8,13 @@ const initialState = {
 };
 
 export const shoppingSlice = createSlice({
-  name: 'compras',
+  name: "compras",
   initialState,
   reducers: {
     addToCart: (state, action) => {
       const existingProduct = state.productsData.find(
         (item) => item._id === action.payload._id
       );
-      console.log(existingProduct);
       if (existingProduct) {
         existingProduct.quantity += action.payload.quantity;
       } else {

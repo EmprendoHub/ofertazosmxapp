@@ -32,7 +32,7 @@ const AboutUsComponent = () => {
           />
         </div>
       </section>
-      <section className=' text-center py-12 my-20 w-[80%] p-5 mx-auto'>
+      <section className=' text-center py-12 my-20 w-[80%] maxsm:w-[95%] mx-auto'>
         <div className='container mx-auto'>
           <h3 className='text-4xl font-semibold font-EB_Garamond text-gray-800'>
             ¿Por qué elegirnos?
@@ -41,7 +41,7 @@ const AboutUsComponent = () => {
             {"En Shopout MX, nos dedicamos a brindar:"}
           </p>
 
-          <div className='grid grid-cols-3 gap-4 mt-5'>
+          <div className='grid grid-cols-3 maxsm:grid-cols-1 gap-4 mt-5'>
             <div className='bg-white rounded-lg p-8 shadow-md'>
               <Image
                 src={`/images/shopout_about_us_cover.jpg`}

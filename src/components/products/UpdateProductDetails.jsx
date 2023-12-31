@@ -262,7 +262,6 @@ const UpdateProductDetails = ({ product }) => {
   };
 
   const handleImageInputChange = (index, fieldName, event) => {
-    console.log(index, fieldName, event);
     const newInputImageFields = [...inputImageFields];
     if (fieldName === "i_file") {
       const reader = new FileReader();

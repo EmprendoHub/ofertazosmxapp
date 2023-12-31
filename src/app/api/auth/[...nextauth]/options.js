@@ -1,9 +1,9 @@
-import GoogleProvider from 'next-auth/providers/google';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import User from '@/backend/models/User';
-import bcrypt from 'bcrypt';
-import { signJwtToken } from '@/lib/jwt';
-import dbConnect from '@/lib/db';
+import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
+import User from "@/backend/models/User";
+import bcrypt from "bcrypt";
+import { signJwtToken } from "@/lib/jwt";
+import dbConnect from "@/lib/db";
 
 export const options = {
   providers: [
@@ -12,17 +12,17 @@ export const options = {
       clientSecret: process.env.GOOGLE_SECRET,
     }),
     CredentialsProvider({
-      type: 'credentials',
+      type: "credentials",
       credentials: {
         email: {
-          label: 'Email',
-          type: 'text',
-          placeholder: 'Enter your user name',
+          label: "Email",
+          type: "text",
+          placeholder: "Enter your user name",
         },
         password: {
-          label: 'Password',
-          type: 'password',
-          placeholder: ' Enter your password',
+          label: "Password",
+          type: "password",
+          placeholder: " Enter your password",
         },
       },
 
@@ -30,19 +30,19 @@ export const options = {
         const { email, password } = credentials;
 
         await dbConnect();
-        const user = await User?.findOne({ email }).select('+password');
+        const user = await User?.findOne({ email }).select("+password");
 
         if (!user) {
-          throw new Error('Invalid email or password');
+          throw new Error("Invalid email or password");
         }
 
         const comparePass = await bcrypt.compare(password, user.password);
 
         if (!comparePass) {
-          throw new Error('Invalid email or password');
+          throw new Error("Invalid email or password");
         } else {
           const { password, ...currentUser } = user._doc;
-          const accessToken = signJwtToken(currentUser, { expiresIn: '6d' });
+          const accessToken = signJwtToken(currentUser, { expiresIn: "6d" });
           return {
             ...currentUser,
             accessToken,
@@ -53,10 +53,10 @@ export const options = {
   ],
   callbacks: {
     async signIn({ user, account }) {
-      if (account?.provider == 'credentials') {
+      if (account?.provider == "credentials") {
         return true;
       }
-      if (account?.provider == 'google') {
+      if (account?.provider == "google") {
         await dbConnect();
         try {
           const existinguser = await User?.findOne({ email: user.email });
@@ -71,13 +71,13 @@ export const options = {
           }
           return true;
         } catch (error) {
-          console.log('error saving google user', error);
+          console.log("error saving google user", error);
           return false;
         }
       }
     },
     async jwt({ token, user, account }) {
-      if (account?.provider == 'google') {
+      if (account?.provider == "google") {
         if (user) {
           const existinguser = await User?.findOne({ email: user.email });
           const currentUser = {
@@ -118,8 +118,8 @@ export const options = {
     },
   },
   pages: {
-    signIn: '/iniciar',
-    error: '/error',
+    signIn: "/iniciar",
+    error: "/error",
   },
 
   secret: process.env.NEXTAUTH_SECRET,
