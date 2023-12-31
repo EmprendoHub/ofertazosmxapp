@@ -1,14 +1,14 @@
-'use client';
-import { motion } from 'framer-motion';
+"use client";
+import { motion } from "framer-motion";
 
-const TextOpacityMotion = ({ title, subtitle, className = '' }) => {
+const TextOpacityMotion = ({ title, subtitle, className = "" }) => {
   return (
     <div className={`${className} `}>
       <motion.h2
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 1.5 }}
-        className=" w-full text-center leading-none font-EB_Garamond text-[24rem] maxmd:text-[12rem]"
+        className=' w-full text-center leading-none font-EB_Garamond text-[24rem] maxmd:text-[12rem] maxsm:text-[8rem]'
       >
         {title}
       </motion.h2>
@@ -16,7 +16,7 @@ const TextOpacityMotion = ({ title, subtitle, className = '' }) => {
         initial={{ y: 50, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.7 }}
-        className="text-gray-800 font-raleway text-xl w-1/3 pl-32 pb-10 maxmd:hidden"
+        className='text-gray-800 font-raleway text-xl w-1/3 pl-32 pb-10 maxmd:hidden'
       >
         {subtitle}
       </motion.p>

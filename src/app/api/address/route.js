@@ -4,7 +4,7 @@ import Address from "@/backend/models/Address";
 export async function POST(req) {
   const sessionData = req.headers.get("x-mysession-key");
   const session = JSON.parse(sessionData);
-
+  console.log(session);
   if (session) {
     try {
       await dbConnect();

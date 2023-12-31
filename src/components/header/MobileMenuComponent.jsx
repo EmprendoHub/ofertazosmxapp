@@ -1,6 +1,11 @@
 "use client";
 import React, { useState } from "react";
-import { AiOutlineMenu, AiOutlineClose, AiOutlineLogout } from "react-icons/ai";
+import {
+  AiOutlineMenu,
+  AiOutlineClose,
+  AiOutlineLogout,
+  AiOutlineLogin,
+} from "react-icons/ai";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import WhiteLogoComponent from "../logos/WhiteLogoComponent";
@@ -119,7 +124,7 @@ const MobileMenuComponent = () => {
               </motion.div>
             </div>
             {/** Logout Button */}
-            {isLoggedIn && (
+            {isLoggedIn ? (
               <div
                 onClick={() => signOut()}
                 className='pt-10 cursor-pointer flex justify-center items-center gap-x-1 '
@@ -128,6 +133,15 @@ const MobileMenuComponent = () => {
                 <AiOutlineLogout className='text-2xl flex' />
                 {/* <p className='text-sm font-semibold'>Logout</p> */}
               </div>
+            ) : (
+              <Link
+                href={"/iniciar"}
+                onClick={() => setOpen((prevOpen) => !prevOpen)}
+                className='pt-10 cursor-pointer flex justify-center items-center gap-x-1'
+              >
+                Iniciar Session
+                <AiOutlineLogin className='text-xl text-white hover:scale-110 ease-in-out duration-300' />
+              </Link>
             )}
             {/* Contact Links */}
             <div className='flex fle-row items-center justify-center gap-x-4 pt-10'>

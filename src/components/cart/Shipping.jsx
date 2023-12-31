@@ -53,7 +53,7 @@ const Shipping = ({ addresses }) => {
                   Información de Envió
                 </h2>
 
-                <div className='grid grid-cols-2 gap-4 mb-6'>
+                <div className='grid grid-cols-2 maxsm:grid-cols-1 gap-4 mb-6'>
                   {addresses.map((address, index) => (
                     <label
                       key={index}

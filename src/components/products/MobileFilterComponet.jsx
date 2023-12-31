@@ -22,7 +22,7 @@ const MobileFilterComponet = ({ allBrands, allCategories, lang }) => {
   }, [pathname]);
 
   return (
-    <div className='px-40 md:px-2 w-[90%] mb-5'>
+    <div className='px-40 maxmd:px-2 w-[90%] maxsm:w-full mb-5'>
       <div
         className={`mt-5 p-3 border border-gray-200 text-center w-full justify-between flex mx-auto `}
       >

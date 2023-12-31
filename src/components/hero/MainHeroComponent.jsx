@@ -8,7 +8,7 @@ import TextOpacityMotion from "../motions/TextOpacityMotion";
 const MainHeroComponent = () => {
   return (
     <div
-      className={`min-w-full min-h-[900px] maxmd:min-h-[700px] relative flex flex-col justify-center items-center `}
+      className={`min-w-full min-h-[900px] maxmd:min-h-[700px] maxsm:min-h-[500px] relative flex flex-col justify-center items-center `}
     >
       <div className='z-10 w-full'>
         <TextOpacityMotion

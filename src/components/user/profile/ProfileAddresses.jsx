@@ -14,7 +14,7 @@ const ProfileAddresses = ({ data }) => {
     <div className='px-5'>
       <hr className='my-4' />
 
-      <Link href='perfil/direcciones/nueva'>
+      <Link href='/perfil/direcciones/nueva'>
         <button className='px-4 py-2 inline-block text-blue-600 border border-gray-300 rounded-md hover:bg-gray-100'>
           <i className='mr-1 fa fa-plus'></i> Agregar Dirección
         </button>
