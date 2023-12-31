@@ -19,9 +19,9 @@ const ContactComponent = () => {
           <div className='min-h-[100%] absolute z-[1] min-w-[100%] top-0 left-0 bg-black bg-opacity-30' />
         </section>
 
-        <section className='bg-white py-12 px-20 sm:px-5'>
+        <section className='bg-white py-12 px-20 maxsm:px-2'>
           <div className='w-full flex flex-row maxmd:flex-col justify-center items-center'>
-            <div className='w-1/3 pl-20 maxmd:pl-0 text-lg text-gray-600 '>
+            <div className='w-1/3 maxmd:w-full pl-20 maxmd:pl-0 text-lg text-gray-600 '>
               <IconListSectionComponent
                 mainTitle={"Información de Contacto"}
                 textTitleOne={"Teléfono"}
@@ -43,7 +43,7 @@ const ContactComponent = () => {
               />
             </div>
 
-            <div className='w-2/3 pb-10 pl-20 sm:pl-10  flex flex-col justify-start items-start'>
+            <div className='w-2/3 pb-10 pl-20 maxsm:pl-1 maxsm:w-full  flex flex-col justify-start items-start'>
               <h3 className='pb-4 font-playfair-display text-xl'>
                 {"Ubicación Oficinas"}
               </h3>

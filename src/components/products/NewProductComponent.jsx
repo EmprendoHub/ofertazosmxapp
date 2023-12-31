@@ -276,8 +276,8 @@ const NewProductComponent = () => {
   };
 
   return (
-    <main className='w-full pl-4'>
-      <section className=' p-6 '>
+    <main className='w-full pl-4 maxsm:pl-0'>
+      <section className='w-full '>
         <h1 className='text-xl maxmd:text-3xl font-semibold text-black mb-8'>
           Crear Nuevo Producto
         </h1>
@@ -286,7 +286,7 @@ const NewProductComponent = () => {
           onSubmit={handleSubmit}
           className='flex flex-row flex-wrap items-start gap-5 justify-start '
         >
-          <div className='gap-y-5 flex-col flex px-2 w-1/2'>
+          <div className='gap-y-5 flex-col flex px-2 w-1/2 maxsm:w-full'>
             <div className='mb-4'>
               <label className='block mb-1'> Titulo del Producto</label>
               <input
@@ -320,7 +320,7 @@ const NewProductComponent = () => {
                 name='brand'
               />
             </div>
-            <div className='flex flex-row items-center gap-5'>
+            <div className='flex flex-row maxsm:flex-col items-center gap-5'>
               <div className='mb-4'>
                 <label className='block mb-1'> Precio de Venta </label>
                 <div className='relative'>
@@ -459,7 +459,7 @@ const NewProductComponent = () => {
             </div>
           </div>
 
-          <div className=' gap-x-2 mt-5 '>
+          <div className=' gap-x-2 mt-5 w-full'>
             <button
               type='button'
               className=' bg-fuchsia-900 text-white rounded-md p-4 mb-5 flex flex-row items-center'
@@ -488,7 +488,7 @@ const NewProductComponent = () => {
                   </p>
                 </div>
                 <div className='flex flex-col items-center'>
-                  <div className='mb-4 px-5'>
+                  <div className='mb-4 px-5 maxsm:px-0'>
                     <div className='items-center justify-center'>
                       <div className='w-40 h-40 relative space-x-3 mt-1 '>
                         <Image

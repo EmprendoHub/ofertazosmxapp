@@ -21,14 +21,14 @@ const AllProductsComponent = ({ products }) => {
       {products?.map((product, index) => (
         <div
           key={index}
-          className='flex flex-row justify-between items-center '
+          className='flex flex-row maxsm:flex-col justify-between items-center '
         >
           <div>
             <Link key={index} href={`/admin/productos/editar/${product._id}`}>
               <div className='mb-5 gap-4'>
-                <figure className='w-full flex align-center bg-gray-100 p-4 rounded-md cursor-pointer'>
-                  <div className='mr-3'>
-                    <span className='flex items-center justify-center text-black w-12 h-12 shadow mt-2'>
+                <figure className='w-full flex align-center bg-gray-100 p-4 rounded-md cursor-pointer maxsm:flex-col'>
+                  <div className='mr-3 w-15 h-15 maxsm:w-full maxsm:h-full'>
+                    <span className='flex items-center justify-center text-black w-12 h-12 maxsm:w-full maxsm:h-full shadow mt-2'>
                       <Image
                         src={product?.images[0].url}
                         alt='Title'

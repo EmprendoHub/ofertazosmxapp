@@ -15,7 +15,7 @@ import { motion } from "framer-motion";
 const FooterMenu = () => {
   return (
     <div className='relative w-full bg-gradient-to-b from-white to-white text-gray-900 px-20 maxmd:px-5 py-24'>
-      <div className='grid xsm:grid-cols-1 maxmd:grid-cols-2 grid-cols-4 gap-10'>
+      <div className='grid maxxsm:grid-cols-1 maxmd:grid-cols-2 grid-cols-4 gap-10'>
         <div className=' gap-y-4'>
           <WhiteLogoComponent className={"ml-5 mt-4 w-[200px] sm:w-[120px]"} />
           <p className='text-sm mt-2'>{"Calle Juan Escutia 25"}</p>

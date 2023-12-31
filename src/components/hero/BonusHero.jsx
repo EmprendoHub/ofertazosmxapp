@@ -33,7 +33,7 @@ const BonusHero = ({ lottery }) => {
           </div>
         </div>
       </div>
-      <div className='flex minmd:flex-row  flex-col items-start justify-start mt-20'>
+      <div className='flex minmd:flex-row  flex-col items-start justify-start mt-20 maxsm:mt-0'>
         <div className='relative flex flex-col items-center justify-center minmd:min-w-[40vw] min-w-[100vw] h-[40vh] maxsm:h-[35vh] '>
           <div className='min-h-[100%] absolute z-10 max-w-full text-white top-0 left-0 flex flex-col justify-center  p-7 drop-shadow-md'>
             <TextRightMotion

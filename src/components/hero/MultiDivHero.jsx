@@ -6,22 +6,22 @@ import { motion } from "framer-motion";
 const MultiDivHero = () => {
   return (
     <div className='flex flex-col items-start justify-start'>
-      <div className='flex minmd:flex-row flex-col items-start justify-start'>
-        <div className='relative minmd:min-w-[60vw] min-w-[100vw] min-h-[60vh] bg-gray-100'>
-          <div className=' absolute z-10 text-black top-0 left-0 p-7 maxxsm:p-2'>
+      <div className='flex minmd:flex-row flex-col items-start justify-start max-w-full'>
+        <div className='relative minmd:min-w-[60vw] min-w-[100vw] maxsm:max-w-full min-h-[60vh] bg-gray-100'>
+          <div className=' absolute z-10 text-black top-0 left-0 maxsm:left-9 w-full '>
             <motion.h2
               initial={{ x: 50, opacity: 0 }}
               whileInView={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.8 }}
-              className='text-5xl font-black uppercase text-white drop-shadow-lg'
+              className='text-5xl maxsm:text-2xl font-black font-EB_Garamond uppercase text-white drop-shadow-lg'
             >
-              Luce Espectacular
+              {"Luce Espectacular"}
             </motion.h2>
             <motion.h3
               initial={{ x: -50, opacity: 0 }}
               whileInView={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.8 }}
-              className=' minlg:text-[8rem] maxmd:text-[5rem] maxlg:text-[5rem] maxxsm:text-[2.5rem] text-[3.5rem]  drop-shadow-lg text-gray-800 uppercase pb-3 leading-none'
+              className=' minlg:text-[8rem] maxmd:text-[5rem] maxlg:text-[5rem] maxxsm:text-[1.5rem] text-[3.5rem]  drop-shadow-lg text-gray-800 uppercase pb-3 leading-none'
             >
               {"Fashion Moda"}
             </motion.h3>
@@ -58,7 +58,7 @@ const MultiDivHero = () => {
             initial={{ opacity: 0.3 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.9 }}
-            className='relative max-h-[60vh]'
+            className='relative max-h-[60vh] maxsm:min-h-[80vh] w-full'
           >
             <Image
               src={
@@ -67,7 +67,7 @@ const MultiDivHero = () => {
               width={1000}
               height={1000}
               alt='main image'
-              className=' grayscale object-cover max-h-[60vh] w-full'
+              className=' grayscale object-cover max-h-[60vh] maxsm:min-h-[80vh] w-full'
             />
           </motion.div>
         </div>
