@@ -20,7 +20,7 @@ const getProducts = async (searchParams) => {
   const searchQuery = new URLSearchParams(filteredUrlParams).toString();
   const URL = `${process.env.NEXTAUTH_URL}/api/products?${searchQuery}`;
   try {
-    const res = await fetch(URL, { cache: 'no-cache' });
+    const res = await fetch(URL);
     const data = await res.json();
     return data;
   } catch (error) {
