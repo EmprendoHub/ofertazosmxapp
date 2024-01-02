@@ -5,7 +5,7 @@ import AuthContext from '@/context/AuthContext';
 
 const Profile = () => {
   const { user } = useContext(AuthContext);
-
+  console.log(user);
   return (
     <>
       <figure className="flex items-start sm:items-center text-black">
