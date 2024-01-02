@@ -1,9 +1,10 @@
-import { NextResponse } from "next/server";
-import dbConnect from "@/lib/db";
-import Product from "@/backend/models/Product";
-import APIFilters from "@/lib/APIFilters";
+import { NextResponse } from 'next/server';
+import dbConnect from '@/lib/db';
+import Product from '@/backend/models/Product';
+import APIFilters from '@/lib/APIFilters';
 
 export const GET = async (req, res) => {
+  console.log(req.nextUrl.searchParams);
   await dbConnect();
 
   // result to display per page
@@ -13,9 +14,9 @@ export const GET = async (req, res) => {
 
   try {
     // Extract all possible categories
-    const allCategories = await Product.distinct("category");
+    const allCategories = await Product.distinct('category');
     // Extract all possible categories
-    const allBrands = await Product.distinct("brand");
+    const allBrands = await Product.distinct('brand');
 
     // Apply search Filters
     const apiFilters = new APIFilters(Product.find(), req.nextUrl.searchParams)
@@ -28,7 +29,7 @@ export const GET = async (req, res) => {
     //apiFilters.pagination(resPerPage);
     //products = await apiFilters.query.clone();
     const response = NextResponse.json({
-      message: "Products fetched successfully",
+      message: 'Products fetched successfully',
       success: true,
       productsCount,
       filteredProductsCount,
@@ -41,7 +42,7 @@ export const GET = async (req, res) => {
   } catch (error) {
     return NextResponse.json(
       {
-        error: "Products loading error",
+        error: 'Products loading error',
       },
       { status: 500 }
     );

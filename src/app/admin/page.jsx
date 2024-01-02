@@ -1,5 +1,5 @@
-import Profile from '@/components/user/profile/Profile';
 import React from 'react';
+import Profile from '@/components/user/profile/Profile';
 import { getServerSession } from 'next-auth/next';
 import { options } from '@/app/api/auth/[...nextauth]/options';
 
