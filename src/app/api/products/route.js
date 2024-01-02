@@ -4,7 +4,6 @@ import Product from '@/backend/models/Product';
 import APIFilters from '@/lib/APIFilters';
 
 export const GET = async (req, res) => {
-  console.log(req.nextUrl.searchParams);
   await dbConnect();
 
   // result to display per page

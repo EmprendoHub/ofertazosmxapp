@@ -1,10 +1,9 @@
-import dbConnect from "@/lib/db";
-import Address from "@/backend/models/Address";
+import dbConnect from '@/lib/db';
+import Address from '@/backend/models/Address';
 
 export async function POST(req) {
-  const sessionData = req.headers.get("x-mysession-key");
+  const sessionData = req.headers.get('x-mysession-key');
   const session = JSON.parse(sessionData);
-  console.log(session);
   if (session) {
     try {
       await dbConnect();
@@ -30,14 +29,14 @@ export async function POST(req) {
     }
   } else {
     // Not Signed in
-    return new Response("You are not authorized, eh eh eh, no no no", {
+    return new Response('You are not authorized, eh eh eh, no no no', {
       status: 400,
     });
   }
 }
 
 export async function PUT(req) {
-  const sessionData = req.headers.get("x-mysession-key");
+  const sessionData = req.headers.get('x-mysession-key');
   const session = JSON.parse(sessionData);
   if (session) {
     try {
@@ -73,19 +72,19 @@ export async function PUT(req) {
     }
   } else {
     // Not Signed in
-    return new Response("You are not authorized, eh eh eh, no no no", {
+    return new Response('You are not authorized, eh eh eh, no no no', {
       status: 400,
     });
   }
 }
 
 export async function DELETE(req) {
-  const sessionData = req.headers.get("x-mysession-key");
+  const sessionData = req.headers.get('x-mysession-key');
   const session = JSON.parse(sessionData);
   if (session) {
     try {
       await dbConnect();
-      const urlData = await req.url.split("?");
+      const urlData = await req.url.split('?');
       const id = urlData[1];
       const deleteAddress = await Address.findByIdAndDelete(id);
       return new Response(JSON.stringify(deleteAddress), { status: 201 });
@@ -94,17 +93,17 @@ export async function DELETE(req) {
     }
   } else {
     // Not Signed in
-    return new Response("You are not authorized, eh eh eh, no no no", {
+    return new Response('You are not authorized, eh eh eh, no no no', {
       status: 400,
     });
   }
 }
 
 export async function GET(req, params) {
-  const sessionData = req.headers.get("x-mysession-key");
+  const sessionData = req.headers.get('x-mysession-key');
   const session = JSON.parse(sessionData);
   if (session) {
-    let address_id = req.url.split("?");
+    let address_id = req.url.split('?');
     address_id = address_id[1];
     try {
       await dbConnect();
@@ -119,7 +118,7 @@ export async function GET(req, params) {
     }
   } else {
     // Not Signed in
-    return new Response("You are not authorized, eh eh eh, no no no", {
+    return new Response('You are not authorized, eh eh eh, no no no', {
       status: 400,
     });
   }

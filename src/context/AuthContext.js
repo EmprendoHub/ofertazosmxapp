@@ -86,6 +86,21 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const deleteProfile = async (id) => {
+    try {
+      const { data } = await axios.delete(`/api/client?${id}`, {
+        headers: {
+          'X-Mysession-Key': JSON.stringify(user),
+        },
+      });
+      if (data) {
+        router.push('/admin/clientes');
+      }
+    } catch (error) {
+      setError(error?.response?.data?.message);
+    }
+  };
+
   const createProduct = async (formData) => {
     // Make the fetch request
     try {
@@ -314,6 +329,7 @@ export const AuthProvider = ({ children }) => {
         updateAddress,
         setUpdated,
         deleteAddress,
+        deleteProfile,
         createProduct,
         updateProduct,
         getAllProducts,
