@@ -1,6 +1,4 @@
 import React from 'react';
-import { getServerSession } from 'next-auth/next';
-import { options } from '@/app/api/auth/[...nextauth]/options';
 import AllProductsComponent from '@/components/products/AllProductsComponent';
 
 const getProducts = async (searchParams) => {

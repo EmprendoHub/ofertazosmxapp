@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import { NextResponse } from "next/server";
-import { createContext, useState } from "react";
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import { NextResponse } from 'next/server';
+import { createContext, useState } from 'react';
 
 const AuthContext = createContext();
 
@@ -24,10 +24,10 @@ export const AuthProvider = ({ children }) => {
       });
 
       if (data?.email) {
-        router.push("/login");
+        router.push('/login');
       }
 
-      if (data === "User already exists") {
+      if (data === 'User already exists') {
         setError(data);
       }
     } catch (error) {
@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
   const loadUser = async () => {
     try {
       setLoading(true);
-      const url = "/api/auth/session?update";
+      const url = '/api/auth/session?update';
       // Make the get request
       const data = await axios.get(url);
       //const data = await response.json();
@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }) => {
         router.refresh();
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error('Error:', error);
     }
   };
 
@@ -61,14 +61,14 @@ export const AuthProvider = ({ children }) => {
     // Make the fetch request
     try {
       setLoading(true);
-      const url = "/api/profile";
+      const url = '/api/profile';
       const headers = {
-        "X-Mysession-Key": JSON.stringify(user),
+        'X-Mysession-Key': JSON.stringify(user),
       };
 
       // Assuming `formData` is an instance of FormData
       const options = {
-        method: "POST",
+        method: 'POST',
         headers,
         body: formData,
       };
@@ -82,7 +82,7 @@ export const AuthProvider = ({ children }) => {
         setLoading(false);
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error('Error:', error);
     }
   };
 
@@ -98,19 +98,19 @@ export const AuthProvider = ({ children }) => {
 
       // Construct the payload in the desired format
       const payload = {
-        title: formDataObject.get("title"),
-        description: formDataObject.get("description"),
-        category: formDataObject.get("category"),
-        cost: formDataObject.get("cost"),
-        price: parseInt(formDataObject.get("price"), 10), // Convert to integer
-        sizes: formDataObject.get("sizes"),
-        images: formDataObject.get("images"),
-        brand: formDataObject.get("brand"),
-        gender: formDataObject.get("gender"),
-        salePrice: formDataObject.get("salePrice"),
-        salePriceEndDate: formDataObject.get("salePriceEndDate"),
-        stock: formDataObject.get("stock"),
-        createdAt: formDataObject.get("createdAt"),
+        title: formDataObject.get('title'),
+        description: formDataObject.get('description'),
+        category: formDataObject.get('category'),
+        cost: formDataObject.get('cost'),
+        price: parseInt(formDataObject.get('price'), 10), // Convert to integer
+        sizes: formDataObject.get('sizes'),
+        images: formDataObject.get('images'),
+        brand: formDataObject.get('brand'),
+        gender: formDataObject.get('gender'),
+        salePrice: formDataObject.get('salePrice'),
+        salePriceEndDate: formDataObject.get('salePriceEndDate'),
+        stock: formDataObject.get('stock'),
+        createdAt: formDataObject.get('createdAt'),
       };
       const response = await axios.post(
         `/api/product`,
@@ -119,7 +119,7 @@ export const AuthProvider = ({ children }) => {
         },
         {
           headers: {
-            "X-Mysession-Key": JSON.stringify(user),
+            'X-Mysession-Key': JSON.stringify(user),
           },
         }
       );
@@ -127,13 +127,13 @@ export const AuthProvider = ({ children }) => {
         setLoading(false);
         return NextResponse.json(
           {
-            message: "Se creo el Producto Exitosamente ",
+            message: 'Se creo el Producto Exitosamente ',
           },
           { status: 200 }
         );
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error('Error:', error);
     }
   };
 
@@ -149,19 +149,19 @@ export const AuthProvider = ({ children }) => {
 
       // Construct the payload in the desired format
       const payload = {
-        title: formDataObject.get("title"),
-        description: formDataObject.get("description"),
-        category: formDataObject.get("category"),
-        cost: formDataObject.get("cost"),
-        price: parseInt(formDataObject.get("price"), 10), // Convert to integer
-        sizes: formDataObject.get("sizes"),
-        images: formDataObject.get("images"),
-        brand: formDataObject.get("brand"),
-        gender: formDataObject.get("gender"),
-        salePrice: formDataObject.get("salePrice"),
-        salePriceEndDate: formDataObject.get("salePriceEndDate"),
-        stock: formDataObject.get("stock"),
-        _id: formDataObject.get("_id"),
+        title: formDataObject.get('title'),
+        description: formDataObject.get('description'),
+        category: formDataObject.get('category'),
+        cost: formDataObject.get('cost'),
+        price: parseInt(formDataObject.get('price'), 10), // Convert to integer
+        sizes: formDataObject.get('sizes'),
+        images: formDataObject.get('images'),
+        brand: formDataObject.get('brand'),
+        gender: formDataObject.get('gender'),
+        salePrice: formDataObject.get('salePrice'),
+        salePriceEndDate: formDataObject.get('salePriceEndDate'),
+        stock: formDataObject.get('stock'),
+        _id: formDataObject.get('_id'),
       };
 
       const response = await axios.put(
@@ -171,7 +171,7 @@ export const AuthProvider = ({ children }) => {
         },
         {
           headers: {
-            "X-Mysession-Key": JSON.stringify(user),
+            'X-Mysession-Key': JSON.stringify(user),
           },
         }
       );
@@ -179,13 +179,13 @@ export const AuthProvider = ({ children }) => {
         setLoading(false);
         return NextResponse.json(
           {
-            message: "Se creo el Producto Exitosamente ",
+            message: 'Se creo el Producto Exitosamente ',
           },
           { status: 200 }
         );
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error('Error:', error);
     }
   };
 
@@ -193,11 +193,11 @@ export const AuthProvider = ({ children }) => {
     try {
       const { data } = await axios.delete(`/api/product?${id}`, {
         headers: {
-          "X-Mysession-Key": JSON.stringify(user),
+          'X-Mysession-Key': JSON.stringify(user),
         },
       });
       if (data) {
-        router.push("/admin/productos");
+        router.push('/admin/productos');
       }
     } catch (error) {
       setError(error?.response?.data?.message);
@@ -213,13 +213,13 @@ export const AuthProvider = ({ children }) => {
         },
         {
           headers: {
-            "X-Mysession-Key": JSON.stringify(user),
+            'X-Mysession-Key': JSON.stringify(user),
           },
         }
       );
 
       if (data) {
-        router.push("/perfil");
+        router.push('/perfil');
       }
     } catch (error) {
       setError(error?.response?.data?.message);
@@ -235,7 +235,7 @@ export const AuthProvider = ({ children }) => {
         },
         {
           headers: {
-            "X-Mysession-Key": JSON.stringify(user),
+            'X-Mysession-Key': JSON.stringify(user),
           },
         }
       );
@@ -253,22 +253,21 @@ export const AuthProvider = ({ children }) => {
     try {
       const { data } = await axios.delete(`/api/address?${id}`, {
         headers: {
-          "X-Mysession-Key": JSON.stringify(user),
+          'X-Mysession-Key': JSON.stringify(user),
         },
       });
       if (data) {
-        router.push("/admin/productos");
+        router.push('/admin/productos');
       }
     } catch (error) {
       setError(error?.response?.data?.message);
     }
   };
 
-  const getAllAddresses = async (session) => {
+  const getAllAddresses = async () => {
     try {
-      const { data } = await axios.get(`/api/addresses`, {
-        session,
-      });
+      const { data } = await axios.get(`/api/addresses`);
+
       return data.addresses;
     } catch (error) {
       setError(error?.response?.data?.message);
@@ -278,8 +277,8 @@ export const AuthProvider = ({ children }) => {
     try {
       const { data } = await fetch(`/api/address`, {
         headers: {
-          "X-Mysession-Key": JSON.stringify(user),
-          "X-address-id": id,
+          'X-Mysession-Key': JSON.stringify(user),
+          'X-address-id': id,
         },
       });
       return data;

@@ -1,15 +1,13 @@
 import dbConnect from '@/lib/db';
 import Address from '@/backend/models/Address';
+import { getToken } from 'next-auth/jwt';
 
-export async function GET(req) {
-  const sessionData = req.headers.get('x-mysession-key');
-  const session = JSON.parse(sessionData);
-
-  console.log(session, 'ssession');
-  if (session) {
+export async function GET(request) {
+  const token = await getToken({ req: request });
+  if (token) {
     try {
       await dbConnect();
-      const addressesData = await Address.find({ user: session.user._id });
+      const addressesData = await Address.find({ user: token?._id });
       const obj1 = Object.assign(addressesData);
       const addresses = {
         addresses: obj1,
