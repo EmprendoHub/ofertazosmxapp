@@ -4,6 +4,8 @@ import Address from '@/backend/models/Address';
 export async function GET(req) {
   const sessionData = req.headers.get('x-mysession-key');
   const session = JSON.parse(sessionData);
+
+  console.log(session, 'ssession');
   if (session) {
     try {
       await dbConnect();

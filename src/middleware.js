@@ -9,11 +9,7 @@ const protectedPaths = [
   '/carrito/envio',
 ];
 
-const protectedAdminPaths = ['/admin/perfil', '/admin/usuarios'];
-
 export async function middleware(request) {
-  // Create a response object to pass down the chain
-  const response = NextResponse.next();
   const token = await getToken({ req: request });
   // console.log(token?.user?.role);
   // @ts-ignore
@@ -24,7 +20,6 @@ export async function middleware(request) {
   if (pathname.includes('admin')) {
     //if admin user is not logged in
     let signInUrl;
-    console.log(token, 'if admin in path name');
     if (!token) {
       signInUrl = new URL('/api/auth/signin', request.url);
       signInUrl.searchParams.set('callbackUrl', pathname);
