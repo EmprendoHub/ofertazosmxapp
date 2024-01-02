@@ -14,16 +14,13 @@ const protectedAdminPaths = ['/admin/perfil', '/admin/usuarios'];
 export async function middleware(request) {
   // Create a response object to pass down the chain
   const response = NextResponse.next();
-  console.log(request);
   const token = await getToken({ req: request });
   // console.log(token?.user?.role);
   // @ts-ignore
   request.nextauth = request.nextauth || {};
   // @ts-ignore
   request.nextauth.token = token;
-  let pathname = request.nextUrl.pathname;
-  pathname = process.env.NEXTAUTH_URL + pathname;
-
+  const pathname = request.nextUrl.pathname;
   if (pathname.includes('admin')) {
     //if admin user is not logged in
     let signInUrl;
