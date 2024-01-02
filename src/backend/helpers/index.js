@@ -1,4 +1,3 @@
-import queryString from 'query-string';
 import axios from 'axios';
 
 export const getProducts = async (searchParams) => {
@@ -11,7 +10,12 @@ export const getProducts = async (searchParams) => {
     'price[gte]': searchParams?.max,
   };
 
-  const searchQuery = queryString.stringify(urlParams);
+  // Filter out undefined values
+  const filteredUrlParams = Object.fromEntries(
+    Object.entries(urlParams).filter(([key, value]) => value !== undefined)
+  );
+
+  const searchQuery = new URLSearchParams(filteredUrlParams).toString();
   const { data } = await axios.get(
     `${process.env.NEXTAUTH_URL}/api/servicios?${searchQuery}`
   );

@@ -1,21 +1,20 @@
-import { NextResponse } from "next/server";
-import dbConnect from "@/lib/db";
-import Product from "@/backend/models/Product";
-import { getToken } from "next-auth/jwt";
-import { parse } from "querystring";
-import { join } from "path";
-import { writeFile } from "fs/promises";
-import { mc } from "@/lib/minio";
+import { NextResponse } from 'next/server';
+import dbConnect from '@/lib/db';
+import Product from '@/backend/models/Product';
+import { getToken } from 'next-auth/jwt';
+import { join } from 'path';
+import { writeFile } from 'fs/promises';
+import { mc } from '@/lib/minio';
 
 // Put a file in bucket my-bucketname.
 const uploadToBucket = async (folder, filename, file) => {
   return new Promise((resolve, reject) => {
     mc.fPutObject(folder, filename, file, function (err, result) {
       if (err) {
-        console.log("Error from minio", err);
+        console.log('Error from minio', err);
         reject(err);
       } else {
-        console.log("Success uploading images to minio");
+        console.log('Success uploading images to minio');
         resolve({
           _id: result._id, // Make sure _id and url are properties of the result object
           url: result.url,
@@ -28,12 +27,12 @@ const uploadToBucket = async (folder, filename, file) => {
 export const GET = async (req) => {
   await dbConnect();
 
-  const _id = await req.url.split("?")[1];
+  const _id = await req.url.split('?')[1];
 
   try {
     const product = await Product?.findOne({ _id });
     const response = NextResponse.json({
-      message: "One Product fetched successfully",
+      message: 'One Product fetched successfully',
       success: true,
       product,
     });
@@ -41,7 +40,7 @@ export const GET = async (req) => {
   } catch (error) {
     return NextResponse.json(
       {
-        error: "Product loading error",
+        error: 'Product loading error',
       },
       { status: 500 }
     );
@@ -94,7 +93,7 @@ export async function POST(req, res) {
       };
       savedProductMinioBucketImages.push(minio_image);
       savedProductImages.push(p_images);
-      let tempColor = { value: image.i_color, hex: "#001001" };
+      let tempColor = { value: image.i_color, hex: '#001001' };
 
       savedProductColors.push(tempColor);
       // upload images to bucket
@@ -127,17 +126,17 @@ export async function POST(req, res) {
     // upload images to bucket
     savedProductMinioBucketImages?.map(async (image) => {
       // Remove the data URI prefix (e.g., "data:image/jpeg;base64,")
-      const base64Image = image.i_filePreview?.split(";base64,").pop();
+      const base64Image = image.i_filePreview?.split(';base64,').pop();
       // Create a buffer from the base64 string
-      const buffer = Buffer.from(base64Image, "base64");
-      const path = join("/", "tmp", image.i_file);
+      const buffer = Buffer.from(base64Image, 'base64');
+      const path = join('/', 'tmp', image.i_file);
       await writeFile(path, buffer);
-      const fileName = "/products/" + String(image.i_file);
+      const fileName = '/products/' + String(image.i_file);
 
-      await uploadToBucket("shopout", fileName, path);
+      await uploadToBucket('shopout', fileName, path);
     });
     const response = NextResponse.json({
-      message: "Producto creado exitosamente",
+      message: 'Producto creado exitosamente',
       success: true,
       product: savedProduct,
     });
@@ -146,7 +145,7 @@ export async function POST(req, res) {
   } catch (error) {
     return NextResponse.json(
       {
-        error: "Error al crear Producto",
+        error: 'Error al crear Producto',
       },
       { status: 500 }
     );
@@ -205,7 +204,7 @@ export async function PUT(req, res) {
         };
         savedProductMinioBucketImages.push(minio_image);
         savedProductImages.push(p_images);
-        tempColor = { value: image.i_color, hex: "#001001" };
+        tempColor = { value: image.i_color, hex: '#001001' };
         savedProductColors.push(tempColor);
       } else {
         p_images = {
@@ -213,7 +212,7 @@ export async function PUT(req, res) {
           color: image.color,
         };
         savedProductImages.push(p_images);
-        tempColor = { value: image.i_color, hex: "#001001" };
+        tempColor = { value: image.i_color, hex: '#001001' };
         savedProductColors.push(tempColor);
       }
     });
@@ -244,17 +243,17 @@ export async function PUT(req, res) {
     // upload images to bucket
     savedProductMinioBucketImages?.map(async (image) => {
       // Remove the data URI prefix (e.g., "data:image/jpeg;base64,")
-      const base64Image = image.i_filePreview?.split(";base64,").pop();
+      const base64Image = image.i_filePreview?.split(';base64,').pop();
       // Create a buffer from the base64 string
-      const buffer = Buffer.from(base64Image, "base64");
-      const path = join("/", "tmp", image.i_file);
+      const buffer = Buffer.from(base64Image, 'base64');
+      const path = join('/', 'tmp', image.i_file);
       await writeFile(path, buffer);
-      const fileName = "/products/" + String(image.i_file);
+      const fileName = '/products/' + String(image.i_file);
 
-      await uploadToBucket("shopout", fileName, path);
+      await uploadToBucket('shopout', fileName, path);
     });
     const response = NextResponse.json({
-      message: "Producto actualizado exitosamente",
+      message: 'Producto actualizado exitosamente',
       success: true,
       product: savedProduct,
     });
@@ -263,7 +262,7 @@ export async function PUT(req, res) {
   } catch (error) {
     return NextResponse.json(
       {
-        error: "Error al crear Producto",
+        error: 'Error al crear Producto',
       },
       { status: 500 }
     );
@@ -271,12 +270,12 @@ export async function PUT(req, res) {
 }
 
 export async function DELETE(req) {
-  const sessionData = req.headers.get("x-mysession-key");
+  const sessionData = req.headers.get('x-mysession-key');
   const session = JSON.parse(sessionData);
   if (session) {
     try {
       await dbConnect();
-      const urlData = await req.url.split("?");
+      const urlData = await req.url.split('?');
       const id = urlData[1];
       const deleteProduct = await Product.findByIdAndDelete(id);
       return new Response(JSON.stringify(deleteProduct), { status: 201 });
@@ -285,7 +284,7 @@ export async function DELETE(req) {
     }
   } else {
     // Not Signed in
-    return new Response("You are not authorized, eh eh eh, no no no", {
+    return new Response('You are not authorized, eh eh eh, no no no', {
       status: 400,
     });
   }

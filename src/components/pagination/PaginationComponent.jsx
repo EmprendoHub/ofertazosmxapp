@@ -1,12 +1,11 @@
-"use client";
-import { useRouter, useSearchParams } from "next/navigation";
-import queryString from "query-string";
+'use client';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   FiChevronLeft,
   FiChevronRight,
   FiChevronsRight,
   FiChevronsLeft,
-} from "react-icons/fi";
+} from 'react-icons/fi';
 
 const PaginationControllerComponent = ({
   totalProductCount,
@@ -21,17 +20,18 @@ const PaginationControllerComponent = ({
     searchParamsCopy[key] = value;
   });
 
-  const removeFields = ["per_page", "page"];
+  const removeFields = ['per_page', 'page'];
   removeFields.forEach((el) => delete searchParamsCopy[el]);
 
-  const prevSearchParams = `/tienda?` + queryString.stringify(searchParamsCopy);
-  const page = searchParams.get("page") ?? "1";
-  const per_page = searchParams.get("per_page") ?? "10";
+  const prevSearchParams =
+    `/tienda?` + new URLSearchParams(searchParamsCopy).toString();
+  const page = searchParams.get('page') ?? '1';
+  const per_page = searchParams.get('per_page') ?? '10';
 
   return (
-    <div className='py-8 paginate-container flex mx-auto item text-center flex-row justify-center gap-x-5 sm:gap-x-2 items-center'>
+    <div className="py-8 paginate-container flex mx-auto item text-center flex-row justify-center gap-x-5 sm:gap-x-2 items-center">
       <button
-        className='bg-black disabled:bg-slate-300 text-white p-2 rounded-full text-xl'
+        className="bg-black disabled:bg-slate-300 text-white p-2 rounded-full text-xl"
         onClick={() => {
           router.push(`${prevSearchParams}&page=1&per_page=${per_page}`);
         }}
@@ -40,7 +40,7 @@ const PaginationControllerComponent = ({
         <FiChevronsLeft />
       </button>
       <button
-        className='bg-black disabled:bg-slate-300 text-white p-2 rounded-full text-xl'
+        className="bg-black disabled:bg-slate-300 text-white p-2 rounded-full text-xl"
         onClick={() => {
           router.push(
             `${prevSearchParams}&page=${Number(page) - 1}&per_page=${per_page}`
@@ -51,12 +51,12 @@ const PaginationControllerComponent = ({
         <FiChevronLeft />
       </button>
 
-      <div className='font-semibold text-lg sm:text-sm'>
+      <div className="font-semibold text-lg sm:text-sm">
         {page} / {Math.ceil(totalProductCount / Number(per_page))}
       </div>
 
       <button
-        className='bg-black text-xl text-white p-2 rounded-full disabled:bg-slate-300'
+        className="bg-black text-xl text-white p-2 rounded-full disabled:bg-slate-300"
         onClick={() => {
           router.push(
             `${prevSearchParams}&page=${Number(page) + 1}&per_page=${per_page}`
@@ -67,7 +67,7 @@ const PaginationControllerComponent = ({
         <FiChevronRight />
       </button>
       <button
-        className='bg-black disabled:bg-slate-300 text-white p-2  rounded-full text-xl'
+        className="bg-black disabled:bg-slate-300 text-white p-2  rounded-full text-xl"
         onClick={() => {
           router.push(
             `${prevSearchParams}&page=${Math.ceil(
