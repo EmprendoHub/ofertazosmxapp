@@ -1,14 +1,8 @@
-'use client';
-import React, { useContext } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { FaUserCircle } from 'react-icons/fa';
-import AuthContext from '@/context/AuthContext';
 
 const AllClientsComponent = ({ clients }) => {
-  const { deleteProfile } = useContext(AuthContext);
-  const deleteHandler = (client_id) => {
-    deleteProfile(client_id);
-  };
   return (
     <>
       <Link href="/admin/clientes/nuevo">
@@ -33,8 +27,9 @@ const AllClientsComponent = ({ clients }) => {
                   </div>
                   <figcaption className="text-gray-600">
                     <p>
-                      {client?.name}
-                      <br /> {client?.email}
+                      {client?._id}
+                      <br />
+                      {client?.email}
                       <br />
                       Tipo: {client?.role}
                     </p>
@@ -45,21 +40,12 @@ const AllClientsComponent = ({ clients }) => {
           </div>
           <div className="flex flex-row justify-between items-center gap-5">
             <span>
-              {' '}
-              <button
-                onClick={() => deleteHandler(client._id)}
-                className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700"
-              >
-                Borrar
-              </button>
-            </span>
-            <span>
               <Link
                 key={index}
-                href={`/admin/clientes/editar/${client._id}`}
+                href={`/admin`}
                 className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
               >
-                Edit
+                Select
               </Link>
             </span>
           </div>

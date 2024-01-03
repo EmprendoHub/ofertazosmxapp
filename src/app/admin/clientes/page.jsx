@@ -6,7 +6,7 @@ const getClients = async () => {
   try {
     const res = await fetch(URL, { cache: 'no-cache' });
     const data = await res.json();
-    return data;
+    return data.clients;
   } catch (error) {
     console.log(error);
   }
@@ -14,7 +14,7 @@ const getClients = async () => {
 
 const ClientsPage = async () => {
   const data = await getClients();
-  return <AllClientsComponent clients={data.clients} />;
+  return <AllClientsComponent clients={data} />;
 };
 
 export default ClientsPage;
