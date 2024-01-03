@@ -42,7 +42,7 @@ const AllProductsComponent = ({ products }) => {
                       <br /> {product?.description}, {product?.cost},{' '}
                       {product?.price}, {product?.sales_price}
                       <br />
-                      Phone no: {product?.title}
+                      Id: {product?._id}
                     </p>
                   </figcaption>
                 </figure>

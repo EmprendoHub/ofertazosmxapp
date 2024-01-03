@@ -3,7 +3,7 @@ import ProductDetailsComponent from '@/components/products/ProductDetailsCompone
 
 const getOneProductDetails = async (id) => {
   const URL = `${process.env.NEXTAUTH_URL}/api/product?${id}`;
-  const res = await fetch(URL, { cache: 'no-cache' });
+  const res = await fetch(URL, { next: { revalidate: 120 } });
   const data = await res.json();
   return data.product;
 };

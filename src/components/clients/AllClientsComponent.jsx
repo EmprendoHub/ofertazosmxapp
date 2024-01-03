@@ -5,11 +5,6 @@ import { FaUserCircle } from 'react-icons/fa';
 const AllClientsComponent = ({ clients }) => {
   return (
     <>
-      <Link href="/admin/clientes/nuevo">
-        <button className="px-4 py-2 inline-block text-blue-600 border border-gray-300 rounded-md hover:bg-gray-100">
-          <i className="mr-1 fa fa-plus"></i> Agregar Nuevo Cliente
-        </button>
-      </Link>
       <hr className="my-4" />
       {clients?.map((client, index) => (
         <div

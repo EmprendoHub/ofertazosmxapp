@@ -20,7 +20,7 @@ const getProducts = async (searchParams) => {
   const searchQuery = new URLSearchParams(filteredUrlParams).toString();
   const URL = `${process.env.NEXTAUTH_URL}/api/products?${searchQuery}`;
   try {
-    const res = await fetch(URL);
+    const res = await fetch(URL, { next: { revalidate: 120 } });
     const data = await res.json();
     return data;
   } catch (error) {
