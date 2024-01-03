@@ -101,6 +101,112 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const createPost = async (formData) => {
+    // Make the fetch request
+    try {
+      // Create a new FormData object
+      const formDataObject = new FormData();
+      // Append each form field to the FormData object
+      for (const [key, value] of formData.entries()) {
+        formDataObject.append(key, value);
+      }
+
+      // Construct the payload in the desired format
+      const payload = {
+        title: formDataObject.get('title'),
+        category: formDataObject.get('category'),
+        images: formDataObject.get('images'),
+        summary: formDataObject.get('summary'),
+        content: formDataObject.get('content'),
+        createdAt: formDataObject.get('createdAt'),
+      };
+      const response = await axios.post(
+        `/api/post`,
+        {
+          payload,
+        },
+        {
+          headers: {
+            'X-Mysession-Key': JSON.stringify(user),
+          },
+        }
+      );
+      if (response) {
+        setLoading(false);
+        return NextResponse.json(
+          {
+            message: 'Se creo La Publicación Exitosamente ',
+          },
+          { status: 200 }
+        );
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const updatePost = async (formData) => {
+    // Make the fetch request
+    try {
+      // Create a new FormData object
+      const formDataObject = new FormData();
+      // Append each form field to the FormData object
+      for (const [key, value] of formData.entries()) {
+        formDataObject.append(key, value);
+      }
+
+      // Construct the payload in the desired format
+
+      const payload = {
+        title: formDataObject.get('title'),
+        category: formDataObject.get('category'),
+        images: formDataObject.get('images'),
+        summary: formDataObject.get('summary'),
+        content: formDataObject.get('content'),
+        updatedAt: formDataObject.get('updatedAt'),
+        _id: formDataObject.get('_id'),
+      };
+
+      const response = await axios.put(
+        `/api/post`,
+        {
+          payload,
+        },
+        {
+          headers: {
+            'X-Mysession-Key': JSON.stringify(user),
+          },
+        }
+      );
+      if (response) {
+        setLoading(false);
+        return NextResponse.json(
+          {
+            message: 'Se creo La Publicación Exitosamente ',
+          },
+          { status: 200 }
+        );
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const deletePost = async (id) => {
+    try {
+      const { data } = await axios.delete(`/api/post?${id}`, {
+        headers: {
+          'X-Mysession-Key': JSON.stringify(user),
+        },
+      });
+      if (data) {
+        router.push('/admin/blog');
+      }
+    } catch (error) {
+      setError(error?.response?.data?.message);
+    }
+  };
+
   const createProduct = async (formData) => {
     // Make the fetch request
     try {
@@ -335,6 +441,9 @@ export const AuthProvider = ({ children }) => {
         getAllProducts,
         getAllAddresses,
         deleteProduct,
+        createPost,
+        updatePost,
+        deletePost,
       }}
     >
       {children}

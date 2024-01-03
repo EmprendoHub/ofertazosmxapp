@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
         <CustomSessionProvider>
           <HeaderComponent />
           {children}
-          <FooterComponent />
+          {/* <FooterComponent /> */}
         </CustomSessionProvider>
         <BackToTopButton />
         <WhatsAppButton />

@@ -4,32 +4,32 @@ import Link from 'next/link';
 import Image from 'next/image';
 import AuthContext from '@/context/AuthContext';
 
-const AllProductsComponent = ({ products }) => {
-  const { deleteProduct } = useContext(AuthContext);
-  const deleteHandler = (product_id) => {
-    deleteProduct(product_id);
+const AllPostsComponent = ({ posts }) => {
+  const { deletePost } = useContext(AuthContext);
+  const deleteHandler = (post_id) => {
+    deletePost(post_id);
   };
   return (
     <>
-      <Link href="/admin/productos/nuevo">
+      <Link href="/admin/blog/nuevo">
         <button className="px-4 py-2 inline-block text-blue-600 border border-gray-300 rounded-md hover:bg-gray-100">
-          <i className="mr-1 fa fa-plus"></i> Agregar Nuevo Producto
+          <i className="mr-1 fa fa-plus"></i> Agregar Nueva Publicación
         </button>
       </Link>
       <hr className="my-4" />
-      {products?.map((product, index) => (
+      {posts?.map((post, index) => (
         <div
           key={index}
           className="flex flex-row maxsm:flex-col justify-between items-center "
         >
           <div>
-            <Link key={index} href={`/admin/productos/editar/${product._id}`}>
+            <Link key={index} href={`/admin/blog/editar/${post._id}`}>
               <div className="mb-5 gap-4">
                 <figure className="w-full flex align-center bg-gray-100 p-4 rounded-md cursor-pointer maxsm:flex-col">
                   <div className="mr-3 w-15 h-15 maxsm:w-full maxsm:h-full">
                     <span className="flex items-center justify-center text-black w-12 h-12 maxsm:w-full maxsm:h-full shadow mt-2">
                       <Image
-                        src={product?.images[0].url}
+                        src={post?.images[0].url}
                         alt="Title"
                         width={100}
                         height={100}
@@ -38,11 +38,10 @@ const AllProductsComponent = ({ products }) => {
                   </div>
                   <figcaption className="text-gray-600">
                     <p>
-                      {product?.title}
-                      <br /> {product?.description}, {product?.cost},{' '}
-                      {product?.price}, {product?.sales_price}
+                      {post?.title}
+                      <br /> {post?.summary}
                       <br />
-                      Phone no: {product?.title}
+                      Categoría: {post?.category}
                     </p>
                   </figcaption>
                 </figure>
@@ -53,7 +52,7 @@ const AllProductsComponent = ({ products }) => {
             <span>
               {' '}
               <button
-                onClick={() => deleteHandler(product._id)}
+                onClick={() => deleteHandler(post._id)}
                 className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700"
               >
                 Borrar
@@ -62,7 +61,7 @@ const AllProductsComponent = ({ products }) => {
             <span>
               <Link
                 key={index}
-                href={`/admin/productos/editar/${product._id}`}
+                href={`/admin/blog/editar/${post._id}`}
                 className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
               >
                 Edit
@@ -77,4 +76,4 @@ const AllProductsComponent = ({ products }) => {
   );
 };
 
-export default AllProductsComponent;
+export default AllPostsComponent;

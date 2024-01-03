@@ -1,21 +1,16 @@
 import React from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import ImageUpMotion from '../motions/ImageUpMotion';
 import ImageOpacityMotion from '../motions/ImageOpacityMotion';
-import TextOpacityMotion from '../motions/TextOpacityMotion';
+import TextUnderConstruction from '../motions/TextUnderConstruction';
 
-const MainHeroComponent = () => {
+const UnderConstruction = () => {
   return (
     <div
       className={`min-w-full min-h-[900px] maxmd:min-h-[700px] maxsm:min-h-[500px] relative flex flex-col justify-center items-center `}
     >
-      <div className="z-10 w-full">
-        <TextOpacityMotion
-          title={'Alta Moda'}
-          subtitle={
-            '¡Bienvenido a Shopout MX, tu destino exclusivo para el lujo y la moda de clase mundial!'
-          }
+      <div className="z-20 w-full">
+        <TextUnderConstruction
+          title={'SHOPOUT MX'}
+          subtitle={'¡Muy Pronto...!'}
         />
       </div>
       <ImageOpacityMotion
@@ -26,8 +21,10 @@ const MainHeroComponent = () => {
       />
 
       <div className="h-full flex flex-wrap bg-gray-300 w-1/2 absolute bottom-0 right-0 z-0" />
+      {/* overlay */}
+      <div className="min-h-[100%] absolute z-[1] min-w-[100%] top-0 left-0 bg-black bg-opacity-30" />
     </div>
   );
 };
 
-export default MainHeroComponent;
+export default UnderConstruction;
