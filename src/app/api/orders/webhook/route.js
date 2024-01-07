@@ -32,10 +32,12 @@ async function getCartItems(line_items) {
 export async function POST(req, res) {
   try {
     await dbConnect();
-    console.log('webhook hit');
+
     // Access the value of stripe-signature from the headers
     const signature = await req.headers.get('stripe-signature');
+
     const rawBody = await req.text();
+    console.log('webhook hit', signature, rawBody);
 
     const event = stripe.webhooks.constructEvent(
       rawBody,
