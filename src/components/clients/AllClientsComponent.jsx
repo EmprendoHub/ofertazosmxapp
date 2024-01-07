@@ -1,8 +1,21 @@
-import React from 'react';
+'use client';
+import React, { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { FaUserCircle } from 'react-icons/fa';
+import AuthContext from '@/context/AuthContext';
 
-const AllClientsComponent = ({ clients }) => {
+const AllClientsComponent = () => {
+  const { getAllClients } = useContext(AuthContext);
+  const [clients, setClients] = useState([]);
+
+  useEffect(() => {
+    async function getClients() {
+      const clientsGet = await getAllClients();
+      setClients(clientsGet);
+    }
+    getClients();
+  }, [getAllClients]);
+
   return (
     <>
       <hr className="my-4" />

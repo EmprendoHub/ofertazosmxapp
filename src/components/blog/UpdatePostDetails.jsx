@@ -16,6 +16,7 @@ import AuthContext from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 
 const UpdatePostDetails = ({ post }) => {
+  console.log(post);
   const imageRef = useRef(null);
   const router = useRouter();
 
@@ -148,7 +149,6 @@ const UpdatePostDetails = ({ post }) => {
     setInputImageFields([
       ...inputImageFields,
       {
-        i_color: '',
         i_file: '',
         i_filePreview: '/images/shopout_clothing_placeholder.webp',
       },

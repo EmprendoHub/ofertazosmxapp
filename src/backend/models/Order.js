@@ -1,27 +1,13 @@
 import mongoose from 'mongoose';
 
 const OrderSchema = new mongoose.Schema({
-  total: {
-    type: Number,
-    require: true,
-  },
-  total_items: {
-    type: Number,
-    require: true,
-  },
-  date: {
-    type: Date,
-  },
   layaway: {
     type: Boolean,
   },
   layaway_amount: {
     type: Number,
   },
-  ship_amount: {
-    type: Number,
-  },
-  tax_amount: {
+  ship_cost: {
     type: Number,
   },
   orderItems: [
@@ -30,10 +16,6 @@ const OrderSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         require: true,
         ref: 'Product',
-      },
-      image: {
-        type: String,
-        require: true,
       },
       name: {
         type: String,
@@ -45,6 +27,10 @@ const OrderSchema = new mongoose.Schema({
       },
       price: {
         type: Number,
+        require: true,
+      },
+      image: {
+        type: String,
         require: true,
       },
     },
@@ -59,23 +45,23 @@ const OrderSchema = new mongoose.Schema({
       require: true,
     },
     taxPaid: {
-      type: String,
+      type: Number,
       require: true,
     },
     amountPaid: {
-      type: String,
+      type: Number,
       require: true,
     },
   },
   orderStatus: {
     type: String,
-    default: 'Processing',
+    default: 'Procesando',
   },
   createdAt: {
     type: Date,
     default: Date.now,
   },
-  address: {
+  shippingInfo: {
     type: mongoose.Schema.Types.ObjectId,
     require: true,
     ref: 'Address',

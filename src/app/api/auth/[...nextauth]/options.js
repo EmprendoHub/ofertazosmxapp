@@ -100,9 +100,9 @@ export const options = {
           token.accessToken = user.accessToken;
           token._id = user._id;
           token.user = user;
+          const updatedUser = await User.findById(token._id);
+          token.user = updatedUser;
         }
-        const updatedUser = await User.findById(token._id);
-        token.user = updatedUser;
       }
 
       return token;

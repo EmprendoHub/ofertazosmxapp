@@ -61,25 +61,34 @@ export const AuthProvider = ({ children }) => {
     // Make the fetch request
     try {
       setLoading(true);
-      const url = '/api/profile';
-      const headers = {
-        'X-Mysession-Key': JSON.stringify(user),
+      // Construct the payload in the desired format
+      console.log(formData);
+      const payload = {
+        title: formData.get('name'),
+        _id: formData.get('_id'),
+        email: formData.get('email'),
+        image: formData.get('image'),
       };
 
-      // Assuming `formData` is an instance of FormData
-      const options = {
-        method: 'POST',
-        headers,
-        body: formData,
-      };
-      const response = await fetch(url, options);
-      const data = await response.json();
-
-      // Use the `data` as needed
-
-      if (data) {
-        loadUser();
+      const response = await axios.put(
+        `/api/profile/update`,
+        {
+          payload,
+        },
+        {
+          headers: {
+            'X-Mysession-Key': JSON.stringify(user),
+          },
+        }
+      );
+      if (response) {
         setLoading(false);
+        return NextResponse.json(
+          {
+            message: 'Se actualizo el usuario Exitosamente ',
+          },
+          { status: 200 }
+        );
       }
     } catch (error) {
       console.error('Error:', error);
@@ -167,22 +176,16 @@ export const AuthProvider = ({ children }) => {
         _id: formDataObject.get('_id'),
       };
 
-      const response = await axios.put(
-        `/api/post`,
-        {
-          payload,
-        },
-        {
-          headers: {
-            'X-Mysession-Key': JSON.stringify(user),
-          },
-        }
-      );
+      console.log(payload, 'payload post');
+
+      const response = await axios.put(`/api/post`, {
+        payload,
+      });
       if (response) {
         setLoading(false);
         return NextResponse.json(
           {
-            message: 'Se creo La Publicación Exitosamente ',
+            message: 'Se actualizo La Publicación Exitosamente ',
           },
           { status: 200 }
         );
@@ -394,15 +397,75 @@ export const AuthProvider = ({ children }) => {
       setError(error?.response?.data?.message);
     }
   };
+
   const getOneAddress = async (id) => {
     try {
-      const { data } = await fetch(`/api/address`, {
-        headers: {
-          'X-Mysession-Key': JSON.stringify(user),
-          'X-address-id': id,
-        },
-      });
+      const URL = `/api/address?${id}`;
+      const { data } = await axios.get(URL);
       return data;
+    } catch (error) {
+      setError(error?.response?.data?.message);
+    }
+  };
+
+  const getAllUserOrders = async () => {
+    try {
+      const { data } = await axios.get(`/api/orders`);
+      return data.orders;
+    } catch (error) {
+      setError(error?.response?.data?.message);
+    }
+  };
+
+  const getAllOrders = async () => {
+    try {
+      const { data } = await axios.get(`/api/orders`);
+      return data.orders;
+    } catch (error) {
+      setError(error?.response?.data?.message);
+    }
+  };
+
+  const getOneOrder = async (id) => {
+    try {
+      const URL = `/api/order?${id}`;
+      const { data } = await axios.get(URL);
+      return data;
+    } catch (error) {
+      setError(error?.response?.data?.message);
+    }
+  };
+
+  const updateOrder = async (formData) => {
+    try {
+      // Create a new FormData object
+      const formDataObject = new FormData();
+      // Append each form field to the FormData object
+      for (const [key, value] of formData.entries()) {
+        formDataObject.append(key, value);
+      }
+
+      const id = formDataObject.get('_id');
+
+      // Construct the payload in the desired format
+      const payload = {
+        orderStatus: formDataObject.get('orderStatus'),
+        _id: id,
+      };
+      const response = await axios.put(`/api/order`, {
+        payload,
+      });
+
+      if (response) {
+        setLoading(false);
+        return NextResponse.json(
+          {
+            message: 'Se creo actualizo el pedido Exitosamente ',
+            payload,
+          },
+          { status: 200 }
+        );
+      }
     } catch (error) {
       setError(error?.response?.data?.message);
     }
@@ -412,6 +475,15 @@ export const AuthProvider = ({ children }) => {
     try {
       const { data } = await axios.get(`/api/products`);
       return data.products;
+    } catch (error) {
+      setError(error?.response?.data?.message);
+    }
+  };
+
+  const getAllClients = async () => {
+    try {
+      const { data } = await axios.get(`/api/clients`);
+      return data.clients;
     } catch (error) {
       setError(error?.response?.data?.message);
     }
@@ -444,6 +516,11 @@ export const AuthProvider = ({ children }) => {
         createPost,
         updatePost,
         deletePost,
+        getAllUserOrders,
+        getOneOrder,
+        getAllOrders,
+        getAllClients,
+        updateOrder,
       }}
     >
       {children}

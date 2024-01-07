@@ -1,96 +1,7 @@
-import axios from 'axios';
-
-export const getProducts = async (searchParams) => {
-  const urlParams = {
-    keyword: searchParams?.keyword,
-    page: searchParams?.page,
-    category: searchParams?.category,
-    'rating[gte]': searchParams?.rating,
-    'price[lte]': searchParams?.min,
-    'price[gte]': searchParams?.max,
-  };
-
-  // Filter out undefined values
-  const filteredUrlParams = Object.fromEntries(
-    Object.entries(urlParams).filter(([key, value]) => value !== undefined)
-  );
-
-  const searchQuery = new URLSearchParams(filteredUrlParams).toString();
-  const { data } = await axios.get(
-    `${process.env.NEXTAUTH_URL}/api/servicios?${searchQuery}`
-  );
-  if (!{ data }) {
-    throw new Error('Failed to fetch products');
-  }
-
-  return data;
-};
-
-export const getOneProduct = async (_id) => {
-  const URL = `${process.env.NEXTAUTH_URL}/api/servicio?${_id}`;
-  try {
-    //const res = await fetch(URL)
-    const res = await fetch(URL);
-
-    const data = await res.json();
-    return data.product;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const getAllLocalProducts = async () => {
-  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/localservicios`);
-  const data = await res.json();
-  if (!{ data }) {
-    throw new Error('Failed to fetch local products');
-  }
-
-  return data;
-};
-
-export const getAllJsonlProducts = async () => {
-  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/localservicios`);
-  const data = await res.json();
-  if (!{ data }) {
-    throw new Error('Failed to fetch local products');
-  }
-
-  return data;
-};
-
-export const getOneLocalProduct = async (_id) => {
-  const URL = `${process.env.NEXTAUTH_URL}/api/localservicio?${_id}`;
-  try {
-    const res = await fetch(URL);
-    const data = await res.json();
-    return data.product;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const getTrendingProducts = async () => {
-  const res = await fetch(
-    'https://fakestoreapiserver.reactbd.com/smarttrending'
-  );
-  if (!res.ok) {
-    throw new Error('Faild to fetch products');
-  }
-  return res.json();
-};
-
 export const calculatePercentage = (oldPrice, price) => {
   return !!parseFloat(price) && !!parseFloat(oldPrice)
     ? (100 - (oldPrice / price) * 100).toFixed(0)
     : 0;
-};
-
-export const getSingleProudct = async (_id) => {
-  const products = await getProducts();
-
-  const item = products.find((product) => product._id === _id);
-  return item;
 };
 
 export const getPriceQueryParams = (queryParams, key, value) => {
@@ -105,3 +16,46 @@ export const getPriceQueryParams = (queryParams, key, value) => {
   }
   return queryParams;
 };
+
+export function formatDate(dateTimeString) {
+  // Create a Date object from the given string
+  const date = new Date(dateTimeString);
+
+  // Adjust to CST (Central Standard Time) - UTC-6
+  const cstDate = new Date(date.getTime() - 6 * 60 * 60 * 1000);
+
+  // Format the date in the desired format
+  const formattedDate = cstDate.toLocaleDateString('es-ES', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+  // Format the time in the desired format
+  const formattedTime = cstDate.toLocaleTimeString('es-ES', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+    timeZone: 'America/Mexico_City', // Specify the time zone (CST)
+  });
+
+  return formattedDate;
+}
+
+export function formatTime(dateTimeString) {
+  // Create a Date object from the given string
+  const date = new Date(dateTimeString);
+
+  // Adjust to CST (Central Standard Time) - UTC-6
+  const cstDate = new Date(date.getTime() - 6 * 60 * 60 * 1000);
+
+  // Format the time in the desired format
+  const formattedTime = cstDate.toLocaleTimeString('es-ES', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+    timeZone: 'America/Mexico_City', // Specify the time zone (CST)
+  });
+
+  return formattedTime;
+}

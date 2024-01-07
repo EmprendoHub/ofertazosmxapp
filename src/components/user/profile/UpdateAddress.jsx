@@ -1,14 +1,28 @@
 'use client';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { countries } from 'countries-list';
 import { AiTwotoneHome } from 'react-icons/ai';
 import AuthContext from '@/context/AuthContext';
 
-const UpdateAddress = ({ data }) => {
-  const address = data;
-  const address_id = address?._id;
-  const { user, updateAddress, clearErrors, deleteAddress } =
+const UpdateAddress = ({ id }) => {
+  const { user, getOneAddress, updateAddress, clearErrors, deleteAddress } =
     useContext(AuthContext);
+  const [address, setAddress] = useState();
+
+  useEffect(() => {
+    async function getAddress() {
+      const addressGet = await getOneAddress(id);
+      setAddress(addressGet);
+      setStreet(addressGet.street);
+      setCity(addressGet.city);
+      setProvince(addressGet.province);
+      setCountry(addressGet.country);
+      setZipcode(addressGet.zip_code);
+      setPhone(addressGet.phone);
+    }
+    getAddress();
+  }, [getOneAddress]);
+
   const countriesList = Object.values(countries);
   const [street, setStreet] = useState(address?.street);
   const [city, setCity] = useState(address?.city);
@@ -16,6 +30,8 @@ const UpdateAddress = ({ data }) => {
   const [country, setCountry] = useState(address?.country);
   const [zipcode, setZipcode] = useState(address?.zip_code);
   const [phone, setPhone] = useState(address?.phone);
+
+  const address_id = address?._id;
 
   const deleteHandler = () => {
     e.preventDefault();

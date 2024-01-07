@@ -1,28 +1,43 @@
 import Order from '@/backend/models/Order';
 import dbConnect from '@/lib/db';
+import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
 
-export const GET = async (req, res) => {
-  await dbConnect();
+export async function GET(request) {
+  const token = await getToken({ req: request });
+  if (token) {
+    try {
+      await dbConnect();
+      if (token?.user?.role === 'manager') {
+        let ordersData = await Order.find({});
 
-  try {
-    const ordersCount = await Order.countDocuments();
-    let orders = await Order.find();
+        const obj1 = Object.assign(ordersData);
+        const orders = {
+          orders: obj1,
+        };
 
-    const response = NextResponse.json({
-      message: 'Orders fetched successfully',
-      success: true,
-      ordersCount,
-      orders,
+        return new Response(JSON.stringify(orders), { status: 201 });
+      } else {
+        let ordersData = await Order.find({ user: token?._id });
+
+        const obj1 = Object.assign(ordersData);
+        const orders = {
+          orders: obj1,
+        };
+        return new Response(JSON.stringify(orders), { status: 201 });
+      }
+    } catch (error) {
+      return NextResponse.json(
+        {
+          error: 'Orders loading error',
+        },
+        { status: 500 }
+      );
+    }
+  } else {
+    // Not Signed in
+    return new Response('You are not authorized, eh eh eh, no no no', {
+      status: 400,
     });
-
-    return response;
-  } catch (error) {
-    return NextResponse.json(
-      {
-        error: 'Orders loading error',
-      },
-      { status: 500 }
-    );
   }
-};
+}

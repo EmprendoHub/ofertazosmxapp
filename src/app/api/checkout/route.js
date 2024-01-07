@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import Order from '@/backend/models/Order';
 
 export const POST = async (request) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -24,11 +23,12 @@ export const POST = async (request) => {
         quantity: item.quantity,
       };
     });
+
     const shippingInfo = JSON.stringify(shipping);
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'payment',
-      success_url: `${process.env.NEXTAUTH_URL}/exito`,
+      success_url: `${process.env.NEXTAUTH_URL}/perfil/pedidos?pedido_exitoso=true`,
       cancel_url: `${process.env.NEXTAUTH_URL}/cancelado`,
       customer_email: email,
       client_reference_id: user?._id,

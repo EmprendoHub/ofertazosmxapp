@@ -16,6 +16,7 @@ import AuthContext from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 
 const UpdateProductDetails = ({ product }) => {
+  console.log(product);
   const imageRef = useRef(null);
   const router = useRouter();
 

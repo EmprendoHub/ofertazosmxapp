@@ -10,11 +10,11 @@ export async function POST(req) {
     if (isExsting) {
       return new Response('User is already registered', { status: 400 });
     }
+    const name = username;
 
     const hashedPassword = await bcrypt.hash(pass, 10);
-    // const newUser = await User.create({username, email, password: hashedPassword})
     const newUser = new User({
-      username,
+      name,
       email,
       password: hashedPassword,
     });

@@ -1,5 +1,6 @@
 import dbConnect from '@/lib/db';
 import Address from '@/backend/models/Address';
+import { getToken } from 'next-auth/jwt';
 
 export async function POST(req) {
   const sessionData = req.headers.get('x-mysession-key');
@@ -99,20 +100,17 @@ export async function DELETE(req) {
   }
 }
 
-export async function GET(req, params) {
-  const sessionData = req.headers.get('x-mysession-key');
-  const session = JSON.parse(sessionData);
-  if (session) {
-    let address_id = req.url.split('?');
-    address_id = address_id[1];
+export async function GET(request, params) {
+  const token = await getToken({ req: request });
+  if (token) {
+    const address_id = request.url.split('?');
+    const _id = address_id[1];
+
     try {
       await dbConnect();
-      const addressesData = await Address.findById(address_id);
-      const obj1 = Object.assign(addressesData);
-      const addresses = {
-        addresses: obj1,
-      };
-      return new Response(JSON.stringify(addresses), { status: 201 });
+      const address = await Address.findOne({ _id });
+
+      return new Response(JSON.stringify(address), { status: 201 });
     } catch (error) {
       return new Response(JSON.stringify(error.message), { status: 500 });
     }

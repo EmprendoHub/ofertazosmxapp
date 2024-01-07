@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import AuthContext from '@/context/AuthContext';
+import { FaTrash, FaPencilAlt } from 'react-icons/fa';
 
 const AllProductsComponent = ({ products }) => {
   const { deleteProduct } = useContext(AuthContext);
@@ -38,11 +39,17 @@ const AllProductsComponent = ({ products }) => {
                   </div>
                   <figcaption className="text-gray-600">
                     <p>
-                      {product?.title}
-                      <br /> {product?.description}, {product?.cost},{' '}
-                      {product?.price}, {product?.sales_price}
+                      <b>{product?.title}</b>
+                      <br /> {product?.description}
                       <br />
-                      Id: {product?._id}
+                      costo: {product?.cost}
+                      <br />
+                      precio: {product?.price} <br />
+                      oferta: {product?.sales_price}
+                      <br />
+                      marca: {product?.brand}
+                      <br />
+                      existencias: {product?.stock}
                     </p>
                   </figcaption>
                 </figure>
@@ -56,7 +63,7 @@ const AllProductsComponent = ({ products }) => {
                 onClick={() => deleteHandler(product._id)}
                 className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700"
               >
-                Borrar
+                <FaTrash className="text-white" />
               </button>
             </span>
             <span>
@@ -65,7 +72,7 @@ const AllProductsComponent = ({ products }) => {
                 href={`/admin/productos/editar/${product._id}`}
                 className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
               >
-                Edit
+                <FaPencilAlt className="text-white" />
               </Link>
             </span>
           </div>

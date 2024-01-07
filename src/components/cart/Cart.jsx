@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 import {
   decreaseQuantity,
@@ -10,14 +10,20 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
 import { AiOutlineClose } from 'react-icons/ai';
 import { toast } from 'react-toastify';
-import { useSession } from 'next-auth/react';
 import CheckOutForm from './CheckOutForm';
+import { useRouter } from 'next/navigation';
 
 const Cart = () => {
   //import CartContext and assign to addItemToCart
   const { productsData } = useSelector((state) => state?.compras);
+  const router = useRouter();
   const dispatch = useDispatch();
-  const { data: session } = useSession();
+
+  useEffect(() => {
+    if (productsData?.length <= 0) {
+      router.replace('/tienda');
+    }
+  }, [productsData]);
 
   const amountWithoutTax = productsData?.reduce(
     (acc, cartItem) => acc + cartItem.quantity * cartItem.price,
