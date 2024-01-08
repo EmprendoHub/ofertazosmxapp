@@ -73,9 +73,9 @@ export async function POST(req, res) {
       console.log('session.metadata.invoice', session.metadata.invoice);
 
       if (session.metadata.layaway) {
-        line_items = await stripe.invoiceItems.retrieve(
-          session.metadata.invoice
-        );
+        line_items = await stripe.invoiceItems.list({
+          invoice: session.metadata.invoice,
+        });
         console.log(line_items, ' Invoice items');
       } else {
         line_items = await stripe.checkout.sessions.listLineItems(
