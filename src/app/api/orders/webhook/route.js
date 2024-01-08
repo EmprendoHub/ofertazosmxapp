@@ -52,7 +52,7 @@ export async function POST(req, res) {
       const session = event.data.object;
       let line_items;
 
-      if (session.metadata.layaway === 'true') {
+      if (session?.metadata?.layaway && session?.metadata?.layaway === 'true') {
         line_items = await stripe.invoiceItems.list({
           invoice: session.metadata.invoice,
         });
@@ -76,7 +76,7 @@ export async function POST(req, res) {
       };
       let orderData;
 
-      if (session.metadata.layaway === 'true') {
+      if (session?.metadata?.layaway && session?.metadata?.layaway === 'true') {
         orderData = {
           user: userId,
           ship_cost,
