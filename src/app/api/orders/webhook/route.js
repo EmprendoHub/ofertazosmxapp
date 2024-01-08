@@ -5,26 +5,45 @@ import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-async function getCartItems(line_items) {
+async function getCartItems(line_items, layaway) {
   return new Promise((resolve, reject) => {
     let cartItems = [];
 
-    line_items?.data?.forEach(async (item) => {
-      const product = await stripe.products.retrieve(item.price.product);
-      const productId = product.metadata.productId;
+    if (layaway) {
+      line_items?.forEach(async (item) => {
+        const product = await stripe.products.retrieve(item.price.product);
+        const productId = product.metadata.productId;
 
-      cartItems.push({
-        product: productId,
-        name: product.name,
-        price: item.price.unit_amount_decimal / 100,
-        quantity: item.quantity,
-        image: product.images[0],
+        cartItems.push({
+          product: productId,
+          name: product.name,
+          price: item.price.unit_amount_decimal / 100,
+          quantity: item.quantity,
+          image: product.images[0],
+        });
+
+        if (cartItems.length === line_items?.data.length) {
+          resolve(cartItems);
+        }
       });
+    } else {
+      line_items?.data?.forEach(async (item) => {
+        const product = await stripe.products.retrieve(item.price.product);
+        const productId = product.metadata.productId;
 
-      if (cartItems.length === line_items?.data.length) {
-        resolve(cartItems);
-      }
-    });
+        cartItems.push({
+          product: productId,
+          name: product.name,
+          price: item.price.unit_amount_decimal / 100,
+          quantity: item.quantity,
+          image: product.images[0],
+        });
+
+        if (cartItems.length === line_items?.data.length) {
+          resolve(cartItems);
+        }
+      });
+    }
   });
 }
 
@@ -51,8 +70,9 @@ export async function POST(req, res) {
       let line_items;
 
       if (session.metadata.layaway) {
-        line_items = await session.metadata.invoice;
-        console.log(line_items);
+        line_items = await stripe.invoiceItems.retrieve(
+          session.metadata.invoice
+        );
       } else {
         line_items = await stripe.checkout.sessions.listLineItems(
           event.data.object.id
@@ -60,9 +80,11 @@ export async function POST(req, res) {
       }
 
       console.log(line_items, ' line items');
-      console.log(products, ' products');
 
-      const orderItems = await getCartItems(line_items);
+      const orderItems = await getCartItems(
+        line_items,
+        session.metadata.layaway
+      );
       const ship_cost = session.shipping_cost.amount_total / 100;
       const date = Date.now();
       const userId = session.client_reference_id;
