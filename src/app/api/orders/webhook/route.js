@@ -10,6 +10,7 @@ async function getCartItems(line_items) {
     let cartItems = [];
 
     line_items?.data?.forEach(async (item) => {
+      console.log(item, 'item');
       const product = await stripe.products.retrieve(item.price.product);
       const productId = product.metadata.productId;
 
@@ -47,6 +48,11 @@ export async function POST(req, res) {
       // get all the details from stripe checkout to create new order
       const session = event.data.object;
       let line_items;
+
+      console.log(
+        'session.metadata.layaway === true',
+        session.metadata.layaway === true
+      );
 
       if (session.metadata.layaway === true) {
         line_items = await stripe.invoiceItems.list({
