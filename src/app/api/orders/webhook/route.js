@@ -46,10 +46,7 @@ export async function POST(req, res) {
 
     console.log('event', event);
 
-    if (
-      event.type === 'checkout.session.completed' ||
-      'checkout.session.async_payment_succeeded'
-    ) {
+    if (event.type === 'checkout.session.completed') {
       // get all the details from stripe checkout to create new order
       const session = event.data.object;
       let line_items;
@@ -75,6 +72,7 @@ export async function POST(req, res) {
         status: session.payment_status,
         amountPaid,
         taxPaid: session.total_details.amount_tax / 100,
+        paymentIntent: session.payment_intent,
       };
       let orderData;
 
@@ -101,7 +99,28 @@ export async function POST(req, res) {
         };
       }
 
-      const order = await Order.create(orderData);
+      await Order.create(orderData);
+      return NextResponse.json(
+        {
+          success: true,
+        },
+        { status: 201 }
+      );
+    }
+
+    if (event.type === 'checkout.session.async_payment_succeeded') {
+      // get all the details from stripe checkout to create new order
+      const session = event.data.object;
+
+      const order = await Order.findOne({
+        paymentInfo: { paymentIntent: session.payment_intent },
+      });
+      const newPaymentAmount = session.amount_total / 100;
+      const payAmount = order.paymentInfo.amountPaid + newPaymentAmount;
+
+      order.paymentInfo.amountPaid = payAmount;
+
+      await Order.save(orderData);
       return NextResponse.json(
         {
           success: true,

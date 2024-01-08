@@ -22,7 +22,7 @@ function getTotal(orderItems) {
   return totalAmount.toFixed(2);
 }
 
-function checkIfPaid(orderItems, orderAmountPaid) {
+function checkIfPaid(orderItems, orderAmountPaid, paymentStatus) {
   // Use reduce to sum up the 'total' field
   const amountWithoutTax = orderItems?.reduce(
     (acc, cartItem) => acc + cartItem.quantity * cartItem.price,
@@ -31,7 +31,10 @@ function checkIfPaid(orderItems, orderAmountPaid) {
   const amountTax = amountWithoutTax * 0.16;
   const totalAmount = amountWithoutTax + amountTax;
 
-  if (Number(totalAmount) === Number(orderAmountPaid)) {
+  if (
+    Number(totalAmount) === Number(orderAmountPaid) &&
+    paymentStatus === 'paid'
+  ) {
     return 'pagado';
   } else return 'pendiente de pago';
 }
@@ -224,13 +227,18 @@ const OneOrder = ({ id }) => {
               className={`text-4xl font-raleway font-bold uppercase  ${
                 checkIfPaid(
                   order?.orderItems,
-                  order?.paymentInfo?.amountPaid
+                  order?.paymentInfo?.amountPaid,
+                  order?.paymentInfo?.status
                 ) === 'pagado'
                   ? 'text-green-700'
                   : 'text-amber-700'
               } `}
             >
-              {checkIfPaid(order?.orderItems, order?.paymentInfo?.amountPaid)}
+              {checkIfPaid(
+                order?.orderItems,
+                order?.paymentInfo?.amountPaid,
+                order?.paymentInfo?.status
+              )}
             </h3>
             <button className="mt-5 bg-green-700 text-white px-6 py-2">
               Pagar
@@ -276,13 +284,18 @@ const OneOrder = ({ id }) => {
               className={`text-7xl font-EB_Garamond uppercase  -rotate-12 ${
                 checkIfPaid(
                   order?.orderItems,
-                  order?.paymentInfo?.amountPaid
+                  order?.paymentInfo?.amountPaid,
+                  order?.paymentInfo?.status
                 ) === 'pagado'
                   ? 'text-green-700'
                   : 'text-amber-700'
               } `}
             >
-              {checkIfPaid(order?.orderItems, order?.paymentInfo?.amountPaid)}
+              {checkIfPaid(
+                order?.orderItems,
+                order?.paymentInfo?.amountPaid,
+                order?.paymentInfo?.status
+              )}
             </h3>
           </div>
         </div>
