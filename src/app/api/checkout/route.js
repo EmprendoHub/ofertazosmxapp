@@ -21,6 +21,8 @@ export const POST = async (request) => {
     const reqBody = await request.json();
     const { items, email, user, shipping } = await reqBody;
 
+    console.log(isLayaway);
+
     const existingCustomers = await stripe.customers.list({
       email: user.email,
     });

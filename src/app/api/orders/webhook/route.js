@@ -51,7 +51,8 @@ export async function POST(req, res) {
 
       console.log(
         'session.metadata.layaway === true',
-        session.metadata.layaway === true
+        session.metadata.layaway === true,
+        session.metadata
       );
 
       if (session.metadata.layaway === true) {
