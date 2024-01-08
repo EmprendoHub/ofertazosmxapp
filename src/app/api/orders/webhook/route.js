@@ -79,15 +79,29 @@ export async function POST(req, res) {
         amountPaid,
         taxPaid: session.total_details.amount_tax / 100,
       };
+      let orderData;
 
-      const orderData = {
-        user: userId,
-        ship_cost,
-        createdAt: date,
-        shippingInfo: JSON.parse(session.metadata.shippingInfo),
-        paymentInfo,
-        orderItems,
-      };
+      if (session.metadata.layaway) {
+        orderData = {
+          user: userId,
+          ship_cost,
+          createdAt: date,
+          shippingInfo: JSON.parse(session.metadata.shippingInfo),
+          paymentInfo,
+          orderItems,
+          orderStatus: 'Apartado',
+          layaway: true,
+        };
+      } else {
+        orderData = {
+          user: userId,
+          ship_cost,
+          createdAt: date,
+          shippingInfo: JSON.parse(session.metadata.shippingInfo),
+          paymentInfo,
+          orderItems,
+        };
+      }
 
       const order = await Order.create(orderData);
       return NextResponse.json(
