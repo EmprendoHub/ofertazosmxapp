@@ -22,7 +22,7 @@ async function getCartItems(line_items, layaway) {
           image: product.images[0],
         });
 
-        if (cartItems.length === line_items?.data.length) {
+        if (cartItems.length === line_items?.length) {
           resolve(cartItems);
         }
       });
