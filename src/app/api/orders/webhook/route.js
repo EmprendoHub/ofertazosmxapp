@@ -43,7 +43,7 @@ export async function POST(req, res) {
       process.env.STRIPE_WEBHOOK_SECRET
     );
 
-    console.log('webhook hit', event, rawBody);
+    console.log('webhook hit', event);
 
     if (event.type === 'checkout.session.completed') {
       // get all the details from stripe checkout to create new order
@@ -52,6 +52,8 @@ export async function POST(req, res) {
       const line_items = await stripe.checkout.sessions.listLineItems(
         event.data.object.id
       );
+      console.log(line_items, ' line items');
+      console.log(line_items, ' line items');
 
       const orderItems = await getCartItems(line_items);
       const ship_cost = session.shipping_cost.amount_total / 100;
