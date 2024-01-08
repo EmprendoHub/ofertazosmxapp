@@ -96,6 +96,8 @@ export async function POST(req, res) {
         };
       }
 
+      console.log(orderData, 'orderData');
+
       const order = await Order.create(orderData);
       return NextResponse.json(
         {
