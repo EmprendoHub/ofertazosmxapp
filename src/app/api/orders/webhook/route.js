@@ -58,6 +58,7 @@ export async function POST(req, res) {
         line_items = await stripe.checkout.sessions.listLineItems(
           event.data.object.id
         );
+        console.log(line_items, 'line_items');
       }
 
       const orderItems = await getCartItems(line_items);
@@ -66,12 +67,16 @@ export async function POST(req, res) {
       const userId = session.client_reference_id;
       const amountPaid = session.amount_total / 100;
 
+      console.log(orderItems, ship_cost, userId, amountPaid, 'orderItems');
+
       const paymentInfo = {
         id: session.payment_intent,
         status: session.payment_status,
         amountPaid,
         taxPaid: session.total_details.amount_tax / 100,
       };
+      console.log(paymentInfo, 'paymentInfo');
+
       let orderData;
 
       if (session.metadata.layaway === true) {
@@ -96,8 +101,6 @@ export async function POST(req, res) {
           layaway: false,
         };
       }
-
-      console.log(orderData, 'orderData');
 
       const order = await Order.create(orderData);
       return NextResponse.json(
