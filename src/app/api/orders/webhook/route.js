@@ -84,6 +84,16 @@ export async function POST(req, res) {
           layaway: true,
         };
       } else {
+        console.log(
+          userId,
+          ship_cost,
+          date,
+          JSON.parse(session.metadata.shippingInfo),
+          paymentInfo,
+          orderItems,
+          false,
+          'Params '
+        );
         orderData = {
           user: userId,
           ship_cost,
