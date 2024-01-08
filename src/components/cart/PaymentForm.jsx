@@ -23,22 +23,22 @@ const PaymentForm = () => {
   );
 
   const taxAmount = (amountWithoutTax * 0.16).toFixed(2);
-  const shipAmount = 200;
-  const layawayAmount = (amountWithoutTax * 0.3).toFixed(2);
+  const shipAmount = 0;
 
   const totalAmountCalc = (
     Number(amountWithoutTax) +
     Number(taxAmount) +
     Number(shipAmount)
   ).toFixed(2);
+  const layawayAmount = (totalAmountCalc * 0.3).toFixed(2);
 
   //=============================== Stripe Payment starts here ============================
 
   const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE__KEY);
-  const handleCheckout = async () => {
+  const handleCheckout = async (payType) => {
     const stripe = await stripePromise;
 
-    const response = await fetch(`/api/checkout`, {
+    const response = await fetch(`/api/checkout?${payType}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -104,13 +104,13 @@ const PaymentForm = () => {
         {isLoggedIn ? (
           <div className="flex flex-col items-center gap-1">
             <button
-              onClick={handleCheckout}
+              onClick={() => handleCheckout('layaway')}
               className=" text-slate-100 bg-violet-950 mt-4 py-3 px-6 hover:bg-slate-200 hover:text-black duration-300 ease-in-out cursor-pointer w-full"
             >
               Apartar Artículos{' '}
             </button>
             <button
-              onClick={handleCheckout}
+              onClick={() => handleCheckout('total')}
               className="bg-black w-full text-slate-100 mt-4 py-3 px-6 hover:bg-slate-200 hover:text-black duration-300 ease-in-out cursor-pointer"
             >
               Pagar Total{' '}

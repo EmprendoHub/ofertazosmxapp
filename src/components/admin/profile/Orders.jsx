@@ -4,6 +4,7 @@ import Link from 'next/link';
 import AuthContext from '@/context/AuthContext';
 import { FaPencilAlt } from 'react-icons/fa';
 import { AiOutlineInteraction } from 'react-icons/ai';
+import { formatDate, formatTime } from '@/backend/helpers';
 
 function getQuantities(orderItems) {
   // Use reduce to sum up the 'quantity' fields
@@ -52,11 +53,14 @@ const Orders = () => {
         <tbody>
           {orders?.map((order, index) => (
             <tr className="bg-white" key={index}>
-              <td className="px-6 py-2">{order._id}</td>
+              <td className="px-6 py-2">{order.user.name}</td>
               <td className="px-6 py-2">${order.paymentInfo.amountPaid}</td>
               <td className="px-6 py-2">{order.orderStatus}</td>
               <td className="px-6 py-2">{getQuantities(order.orderItems)}</td>
-              <td className="px-6 py-2">{order.createdAt}</td>
+              <td className="px-6 py-2">
+                {order?.createdAt &&
+                  `${formatDate(order?.createdAt.substring(0, 24))} `}
+              </td>
               <td className="px-6 py-2">
                 <div>
                   <Link

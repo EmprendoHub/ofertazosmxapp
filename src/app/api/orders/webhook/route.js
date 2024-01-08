@@ -1,7 +1,6 @@
 import Order from '@/backend/models/Order';
 import dbConnect from '@/lib/db';
 import { NextResponse } from 'next/server';
-import getRawBody from 'raw-body';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -37,13 +36,14 @@ export async function POST(req, res) {
     const signature = await req.headers.get('stripe-signature');
 
     const rawBody = await req.text();
-    console.log('webhook hit', signature, rawBody);
 
     const event = stripe.webhooks.constructEvent(
       rawBody,
       signature,
       process.env.STRIPE_WEBHOOK_SECRET
     );
+
+    console.log('webhook hit', event, rawBody);
 
     if (event.type === 'checkout.session.completed') {
       // get all the details from stripe checkout to create new order

@@ -63,7 +63,7 @@ export const options = {
           if (!existinguser) {
             const newUser = new User({
               email: user.email,
-              username: user.name,
+              name: user.name,
             });
 
             await newUser.save();
