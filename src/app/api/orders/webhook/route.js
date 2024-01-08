@@ -44,6 +44,8 @@ export async function POST(req, res) {
       process.env.STRIPE_WEBHOOK_SECRET
     );
 
+    console.log('event', event);
+
     if (
       event.type === 'checkout.session.completed' ||
       'checkout.session.async_payment_succeeded'
