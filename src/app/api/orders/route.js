@@ -27,10 +27,11 @@ export async function GET(request) {
         );
 
         // If you want a new sorted array without modifying the original one, use slice
-        // obj1
+        // const sortedObj1 = obj1
         //   .slice()
         //   .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-        // or for descending order
+
+        // descending order
         const sortedObj1 = obj1
           .slice()
           .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -44,8 +45,13 @@ export async function GET(request) {
         let ordersData = await Order.find({ user: token?._id });
 
         const obj1 = Object.assign(ordersData);
+        // descending order
+        const sortedObj1 = obj1
+          .slice()
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
         const orders = {
-          orders: obj1,
+          orders: sortedObj1,
         };
         return new Response(JSON.stringify(orders), { status: 201 });
       }

@@ -51,17 +51,15 @@ export async function POST(req, res) {
       const session = event.data.object;
       let line_items;
 
-      console.log('session.metadata.invoice', session.metadata.invoice);
-
       if (session.metadata.layaway) {
         line_items = await stripe.invoiceItems.list({
           invoice: session.metadata.invoice,
         });
-        console.log(line_items, ' Invoice items');
       } else {
         line_items = await stripe.checkout.sessions.listLineItems(
           event.data.object.id
         );
+        console.log(line_items, ' line_items');
       }
 
       const orderItems = await getCartItems(
@@ -100,8 +98,11 @@ export async function POST(req, res) {
           shippingInfo: JSON.parse(session.metadata.shippingInfo),
           paymentInfo,
           orderItems,
+          layaway: false,
         };
       }
+
+      console.log(orderData, 'orderData');
 
       const order = await Order.create(orderData);
       return NextResponse.json(

@@ -172,7 +172,6 @@ export const POST = async (request) => {
       success: true,
       id: session.id,
       url: session.url,
-      session: session,
     });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

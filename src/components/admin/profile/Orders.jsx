@@ -12,6 +12,18 @@ function getQuantities(orderItems) {
   return totalQuantity;
 }
 
+function getTotal(orderItems) {
+  // Use reduce to sum up the 'total' field
+  const amountWithoutTax = orderItems?.reduce(
+    (acc, cartItem) => acc + cartItem.quantity * cartItem.price,
+    0
+  );
+  const amountTax = amountWithoutTax * 0.16;
+  const totalAmount = amountWithoutTax + amountTax;
+
+  return totalAmount.toFixed(2);
+}
+
 const Orders = () => {
   const { getAllOrders } = useContext(AuthContext);
   const [orders, setOrders] = useState([]);
@@ -31,16 +43,16 @@ const Orders = () => {
         <thead className="text-l text-gray-700 uppercase">
           <tr>
             <th scope="col" className="px-6 py-3">
-              ID
+              Cliente
             </th>
             <th scope="col" className="px-6 py-3">
-              Cantidad Pagada
+              Total
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Pagado
             </th>
             <th scope="col" className="px-6 py-3">
               Estado
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Artículos
             </th>
             <th scope="col" className="px-6 py-3">
               Fecha
@@ -54,9 +66,23 @@ const Orders = () => {
           {orders?.map((order, index) => (
             <tr className="bg-white" key={index}>
               <td className="px-6 py-2">{order.user.name}</td>
-              <td className="px-6 py-2">${order.paymentInfo.amountPaid}</td>
-              <td className="px-6 py-2">{order.orderStatus}</td>
-              <td className="px-6 py-2">{getQuantities(order.orderItems)}</td>
+              <td className="px-6 py-2">${getTotal(order.orderItems)}</td>
+              <td className="px-6 py-2 ">
+                <b>${order.paymentInfo.amountPaid}</b>
+              </td>
+              <td
+                className={`px-6 py-2 font-bold ${
+                  order.orderStatus === 'Apartado'
+                    ? 'text-amber-700'
+                    : order.orderStatus === 'En Camino'
+                    ? 'text-blue-700'
+                    : order.orderStatus === 'Entregado'
+                    ? 'text-green-700'
+                    : ''
+                }`}
+              >
+                {order.orderStatus}
+              </td>
               <td className="px-6 py-2">
                 {order?.createdAt &&
                   `${formatDate(order?.createdAt.substring(0, 24))} `}

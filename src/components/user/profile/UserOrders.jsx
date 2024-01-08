@@ -6,6 +6,8 @@ import { formatDate, formatTime } from '@/backend/helpers';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { resetCart } from '@/redux/shoppingSlice';
 import { useDispatch } from 'react-redux';
+import { FaPencilAlt, FaEye, FaMoneyCheck } from 'react-icons/fa';
+import { AiOutlineInteraction, AiFillMoneyCollect } from 'react-icons/ai';
 
 function getQuantities(orderItems) {
   // Use reduce to sum up the 'quantity' fields
@@ -68,27 +70,44 @@ const UserOrders = () => {
             <th scope="col" className="px-6 py-3">
               Estado
             </th>
-            <th scope="col" className="px-6 py-3">
-              Artículos
-            </th>
+
             <th scope="col" className="px-6 py-3">
               Fecha
             </th>
             <th scope="col" className="px-6 py-3">
-              Actions
+              Acciones
             </th>
           </tr>
         </thead>
         <tbody>
           {orders?.map((order, index) => (
             <tr className="bg-white" key={index}>
-              <td className="px-6 py-2">{order._id.substring(0, 7)}...</td>
-              <td className="px-6 py-2">${getTotal(order.orderItems)}</td>
               <td className="px-6 py-2">
+                {' '}
+                <Link
+                  href={`/perfil/pedidos/${order._id}`}
+                  className="cursor-pointer "
+                >
+                  {order._id.substring(0, 7)}...
+                </Link>
+              </td>
+              <td className="px-6 py-2">${getTotal(order.orderItems)}</td>
+              <td className="px-6 py-2 ">
                 <b>${order.paymentInfo.amountPaid}</b>
               </td>
-              <td className="px-6 py-2">{order.orderStatus}</td>
-              <td className="px-6 py-2">{getQuantities(order.orderItems)}</td>
+              <td
+                className={`px-6 py-2 font-bold ${
+                  order.orderStatus === 'Apartado'
+                    ? 'text-amber-700'
+                    : order.orderStatus === 'En Camino'
+                    ? 'text-blue-700'
+                    : order.orderStatus === 'Entregado'
+                    ? 'text-green-700'
+                    : ''
+                }`}
+              >
+                {order.orderStatus}
+              </td>
               <td className="px-6 py-2">
                 {' '}
                 <p>
@@ -96,16 +115,17 @@ const UserOrders = () => {
                     `${formatDate(order?.createdAt.substring(0, 24))} `}
                 </p>
               </td>
+
               <td className="px-6 py-2">
                 <div>
                   <Link
                     href={`/perfil/pedidos/${order._id}`}
-                    className="px-2 py-2 inline-block text-yellow-600 bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
+                    className="px-2 py-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
                   >
-                    <i className="fa fa-pencil" aria-hidden="true"></i>
+                    <FaEye className="" />
                   </Link>
-                  <a className="px-2 py-2 inline-block text-red-600 bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer">
-                    <i className="fa fa-trash" aria-hidden="true"></i>
+                  <a className="px-2 py-2 inline-block text-white  hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer">
+                    <FaMoneyCheck className="" />
                   </a>
                 </div>
               </td>
