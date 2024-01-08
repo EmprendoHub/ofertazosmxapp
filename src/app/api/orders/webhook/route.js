@@ -10,41 +10,22 @@ async function getCartItems(line_items, layaway) {
   return new Promise((resolve, reject) => {
     let cartItems = [];
 
-    if (layaway) {
-      line_items?.forEach(async (item) => {
-        const product = await stripe.products.retrieve(item.price.product);
-        const productId = product.metadata.productId;
+    line_items?.data?.forEach(async (item) => {
+      const product = await stripe.products.retrieve(item.price.product);
+      const productId = product.metadata.productId;
 
-        cartItems.push({
-          product: productId,
-          name: product.name,
-          price: item.price.unit_amount_decimal / 100,
-          quantity: item.quantity,
-          image: product.images[0],
-        });
-
-        if (cartItems.length === line_items?.length) {
-          resolve(cartItems);
-        }
+      cartItems.push({
+        product: productId,
+        name: product.name,
+        price: item.price.unit_amount_decimal / 100,
+        quantity: item.quantity,
+        image: product.images[0],
       });
-    } else {
-      line_items?.data?.forEach(async (item) => {
-        const product = await stripe.products.retrieve(item.price.product);
-        const productId = product.metadata.productId;
 
-        cartItems.push({
-          product: productId,
-          name: product.name,
-          price: item.price.unit_amount_decimal / 100,
-          quantity: item.quantity,
-          image: product.images[0],
-        });
-
-        if (cartItems.length === line_items?.data.length) {
-          resolve(cartItems);
-        }
-      });
-    }
+      if (cartItems.length === line_items?.data.length) {
+        resolve(cartItems);
+      }
+    });
   });
 }
 
