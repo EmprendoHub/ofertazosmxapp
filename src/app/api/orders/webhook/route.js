@@ -44,16 +44,13 @@ export async function POST(req, res) {
       process.env.STRIPE_WEBHOOK_SECRET
     );
 
-    if (event.type === 'checkout.session.completed') {
+    if (
+      event.type === 'checkout.session.completed' ||
+      'checkout.session.async_payment_succeeded'
+    ) {
       // get all the details from stripe checkout to create new order
       const session = event.data.object;
       let line_items;
-
-      console.log(
-        'session.metadata.layaway === true',
-        session.metadata.layaway === true,
-        session.metadata
-      );
 
       if (session.metadata.layaway === 'true') {
         line_items = await stripe.invoiceItems.list({
@@ -101,8 +98,6 @@ export async function POST(req, res) {
           layaway: false,
         };
       }
-
-      console.log(orderData, 'orderData');
 
       const order = await Order.create(orderData);
       return NextResponse.json(

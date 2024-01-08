@@ -115,8 +115,13 @@ export const POST = async (request) => {
       await stripe.invoices.sendInvoice(invoice.id);
 
       session = await stripe.checkout.sessions.create({
-        payment_method_types: ['card'],
+        payment_method_types: ['card', 'oxxo'],
         mode: 'payment',
+        payment_method_options: {
+          oxxo: {
+            expires_after_days: 2,
+          },
+        },
         client_reference_id: user?._id,
         success_url: `${process.env.NEXTAUTH_URL}/perfil/pedidos?pedido_exitoso=true`,
         cancel_url: `${process.env.NEXTAUTH_URL}/cancelado`,
@@ -147,9 +152,13 @@ export const POST = async (request) => {
       });
     } else {
       session = await stripe.checkout.sessions.create({
-        payment_method_types: ['card'],
+        payment_method_types: ['card', 'oxxo'],
         mode: 'payment',
-
+        payment_method_options: {
+          oxxo: {
+            expires_after_days: 2,
+          },
+        },
         success_url: `${process.env.NEXTAUTH_URL}/perfil/pedidos?pedido_exitoso=true`,
         cancel_url: `${process.env.NEXTAUTH_URL}/cancelado`,
         customer_email: email,

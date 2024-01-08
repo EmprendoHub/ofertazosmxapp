@@ -22,6 +22,20 @@ function getTotal(orderItems) {
   return totalAmount.toFixed(2);
 }
 
+function checkIfPaid(orderItems, orderAmountPaid) {
+  // Use reduce to sum up the 'total' field
+  const amountWithoutTax = orderItems?.reduce(
+    (acc, cartItem) => acc + cartItem.quantity * cartItem.price,
+    0
+  );
+  const amountTax = amountWithoutTax * 0.16;
+  const totalAmount = amountWithoutTax + amountTax;
+
+  if (Number(totalAmount) === Number(orderAmountPaid)) {
+    return 'pagado';
+  } else return 'pendiente de pago';
+}
+
 function getPaymentTax(orderAmountPaid) {
   const amountTax = orderAmountPaid * 0.16;
   return amountTax.toFixed(2);
@@ -81,7 +95,11 @@ const OneOrder = ({ id }) => {
             className={`text-3xl mb-8 ml-4 font-bold uppercase ${
               order?.orderStatus && order?.orderStatus === 'Apartado'
                 ? 'text-amber-700'
-                : ''
+                : order.orderStatus === 'En Camino'
+                ? 'text-blue-700'
+                : order.orderStatus === 'Entregado'
+                ? 'text-green-700'
+                : 'text-slate-600'
             }`}
           >
             {order?.orderStatus}
@@ -157,11 +175,12 @@ const OneOrder = ({ id }) => {
           </tbody>
         </table>
       </div>
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg p-5">
-        <div className="w-1/3 maxmd:w-full">
-          <div className="container max-w-screen-xl mx-auto bg-white flex flex-col justify-between p-2">
-            <h2 className="text-2xl">Totales</h2>
-            {order?.orderStatus === 'Apartado' ? (
+
+      {order?.orderStatus === 'Apartado' ? (
+        <div className="relative flex fle-row maxmd:flex-col overflow-x-auto shadow-md sm:rounded-lg p-5">
+          <div className="w-1/3 maxmd:w-full">
+            <div className="container max-w-screen-xl mx-auto bg-white flex flex-col justify-between p-2">
+              <h2 className="text-2xl">Totales</h2>
               <ul className="mb-5">
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
                   <span>Total de Artículos:</span>
@@ -198,7 +217,30 @@ const OneOrder = ({ id }) => {
                   </span>
                 </li>
               </ul>
-            ) : (
+            </div>
+          </div>
+          <div className="w-2/3 maxmd:w-full flex flex-col justify-center items-center">
+            <h3
+              className={`text-4xl font-raleway font-bold uppercase  ${
+                checkIfPaid(
+                  order?.orderItems,
+                  order?.paymentInfo?.amountPaid
+                ) === 'pagado'
+                  ? 'text-green-700'
+                  : 'text-amber-700'
+              } `}
+            >
+              {checkIfPaid(order?.orderItems, order?.paymentInfo?.amountPaid)}
+            </h3>
+            <button className="mt-5 bg-green-700 text-white px-6 py-2">
+              Pagar
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="relative flex fle-row maxmd:flex-col overflow-x-auto shadow-md sm:rounded-lg p-5">
+          <div className="w-1/3 maxmd:w-full">
+            <div className="container max-w-screen-xl mx-auto bg-white flex flex-col justify-between p-2">
               <ul className="mb-5">
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
                   <span>Sub-Total:</span>
@@ -218,15 +260,33 @@ const OneOrder = ({ id }) => {
                   <span>Envió:</span>
                   <span>${order?.ship_cost}</span>
                 </li>
-                <li className="text-3xl font-bold border-t flex justify-between gap-x-5 mt-3 pt-3">
+                <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
                   <span>Total:</span>
-                  <span>${order?.paymentInfo?.amountPaid}</span>
+                  <span>${getTotal(order?.orderItems)}</span>
+                </li>
+                <li className="text-xl font-bold text-green-700 border-t flex justify-between gap-x-5  pt-3">
+                  <span>Pagado:</span>
+                  <span>${order?.paymentInfo?.amountPaid.toFixed(2)}</span>
                 </li>
               </ul>
-            )}
+            </div>
+          </div>
+          <div className="w-2/3 maxmd:w-full flex justify-center items-center">
+            <h3
+              className={`text-7xl font-EB_Garamond uppercase  -rotate-12 ${
+                checkIfPaid(
+                  order?.orderItems,
+                  order?.paymentInfo?.amountPaid
+                ) === 'pagado'
+                  ? 'text-green-700'
+                  : 'text-amber-700'
+              } `}
+            >
+              {checkIfPaid(order?.orderItems, order?.paymentInfo?.amountPaid)}
+            </h3>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 };

@@ -78,7 +78,7 @@ const Orders = () => {
                     ? 'text-blue-700'
                     : order.orderStatus === 'Entregado'
                     ? 'text-green-700'
-                    : ''
+                    : 'text-slate-600'
                 }`}
               >
                 {order.orderStatus}
