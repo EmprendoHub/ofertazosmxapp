@@ -10,7 +10,6 @@ async function getCartItems(line_items) {
     let cartItems = [];
 
     line_items?.data?.forEach(async (item) => {
-      console.log(item, 'item');
       const product = await stripe.products.retrieve(item.price.product);
       const productId = product.metadata.productId;
 
@@ -120,7 +119,9 @@ export async function POST(req, res) {
 
       order.paymentInfo.amountPaid = payAmount;
 
-      await Order.save(orderData);
+      console.log('order', order);
+
+      await Order.save(order);
       return NextResponse.json(
         {
           success: true,
