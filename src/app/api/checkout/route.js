@@ -162,6 +162,7 @@ export const POST = async (request) => {
         line_items,
         // Add metadata to store layaway information
         metadata: {
+          shippingInfo,
           layaway: isLayaway,
         },
       });
