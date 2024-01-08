@@ -117,7 +117,7 @@ export async function POST(req, res) {
       // get all the details from stripe checkout to create new order
       console.log(' session.payment_intent:', session.payment_intent);
       const order = await Order?.findOne({
-        paymentInfo: { paymentIntent: session.payment_intent },
+        'paymentInfo.paymentIntent': session.payment_intent,
       });
       console.log('order', order);
       const newPaymentAmount = session.amount_total / 100;
