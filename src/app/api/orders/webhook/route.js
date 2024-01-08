@@ -44,10 +44,11 @@ export async function POST(req, res) {
     );
 
     console.log('event', event);
+    const session = event.data.object;
 
     if (event.type === 'checkout.session.completed') {
       // get all the details from stripe checkout to create new order
-      const session = event.data.object;
+
       let line_items;
 
       if (session?.metadata?.layaway && session?.metadata?.layaway === 'true') {
@@ -64,7 +65,12 @@ export async function POST(req, res) {
       const ship_cost = session.shipping_cost.amount_total / 100;
       const date = Date.now();
       const userId = session.client_reference_id;
-      const amountPaid = session.amount_total / 100;
+      let amountPaid;
+      if (session.payment_status === 'unpaid') {
+        amountPaid = 0;
+      } else {
+        amountPaid = session.amount_total / 100;
+      }
 
       const paymentInfo = {
         id: session.payment_intent,
@@ -109,17 +115,20 @@ export async function POST(req, res) {
 
     if (event.type === 'checkout.session.async_payment_succeeded') {
       // get all the details from stripe checkout to create new order
-      const session = event.data.object;
-
+      console.log(
+        'order',
+        order,
+        ' session.payment_intent:',
+        session.payment_intent
+      );
       const order = await Order.findOne({
         paymentInfo: { paymentIntent: session.payment_intent },
       });
+      console.log('order', order);
       const newPaymentAmount = session.amount_total / 100;
       const payAmount = order.paymentInfo.amountPaid + newPaymentAmount;
 
       order.paymentInfo.amountPaid = payAmount;
-
-      console.log('order', order);
 
       await Order.save(order);
       return NextResponse.json(
