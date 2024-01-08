@@ -6,6 +6,7 @@ import Stripe from 'stripe';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 async function getCartItems(line_items, layaway) {
+  console.log('layaway', layaway);
   return new Promise((resolve, reject) => {
     let cartItems = [];
 
@@ -69,17 +70,18 @@ export async function POST(req, res) {
       const session = event.data.object;
       let line_items;
 
+      console.log('session.metadata.invoice', session.metadata.invoice);
+
       if (session.metadata.layaway) {
         line_items = await stripe.invoiceItems.retrieve(
           session.metadata.invoice
         );
+        console.log(line_items, ' Invoice items');
       } else {
         line_items = await stripe.checkout.sessions.listLineItems(
           event.data.object.id
         );
       }
-
-      console.log(line_items, ' line items');
 
       const orderItems = await getCartItems(
         line_items,
