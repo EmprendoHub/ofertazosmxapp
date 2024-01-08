@@ -51,7 +51,8 @@ export async function POST(req, res) {
       let line_items;
 
       if (session.metadata.layaway) {
-        line_items = await JSON.parse(session.metadata.productsInfo);
+        line_items = await session.metadata.invoice;
+        console.log(line_items);
       } else {
         line_items = await stripe.checkout.sessions.listLineItems(
           event.data.object.id
