@@ -58,7 +58,6 @@ export async function POST(req, res) {
         line_items = await stripe.checkout.sessions.listLineItems(
           event.data.object.id
         );
-        console.log(line_items, ' line_items');
       }
 
       const orderItems = await getCartItems(line_items);
@@ -75,7 +74,7 @@ export async function POST(req, res) {
       };
       let orderData;
 
-      if (session.metadata.layaway) {
+      if (session.metadata.layaway === true) {
         orderData = {
           user: userId,
           ship_cost,
