@@ -140,7 +140,7 @@ export const POST = async (request) => {
               unit_amount: installmentAmount * 100, // Convert to cents
               product_data: {
                 name: 'Pago de Apartado',
-                description: 'Pago inicial para apartado',
+                description: `Pago inicial para apartado de factura #${invoice.id}`,
               },
             },
             quantity: 1,
