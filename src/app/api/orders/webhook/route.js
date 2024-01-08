@@ -115,13 +115,8 @@ export async function POST(req, res) {
 
     if (event.type === 'checkout.session.async_payment_succeeded') {
       // get all the details from stripe checkout to create new order
-      console.log(
-        'order',
-        order,
-        ' session.payment_intent:',
-        session.payment_intent
-      );
-      const order = await Order.findOne({
+      console.log(' session.payment_intent:', session.payment_intent);
+      const order = await Order?.findOne({
         paymentInfo: { paymentIntent: session.payment_intent },
       });
       console.log('order', order);
@@ -130,7 +125,7 @@ export async function POST(req, res) {
 
       order.paymentInfo.amountPaid = payAmount;
 
-      await Order.save(order);
+      await Order.save();
       return NextResponse.json(
         {
           success: true,
