@@ -48,13 +48,16 @@ export async function POST(req, res) {
     if (event.type === 'checkout.session.completed') {
       // get all the details from stripe checkout to create new order
       const session = event.data.object;
+      let line_items;
 
       if (session.metadata.layaway) {
+        line_items = await JSON.parse(session.metadata.productsInfo);
+      } else {
+        line_items = await stripe.checkout.sessions.listLineItems(
+          event.data.object.id
+        );
       }
-      const products = JSON.parse(session.metadata.productsInfo);
-      const line_items = await stripe.checkout.sessions.listLineItems(
-        event.data.object.id
-      );
+
       console.log(line_items, ' line items');
       console.log(products, ' products');
 
