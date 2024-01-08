@@ -49,11 +49,14 @@ export async function POST(req, res) {
       // get all the details from stripe checkout to create new order
       const session = event.data.object;
 
+      if (session.metadata.layaway) {
+      }
+      const products = JSON.parse(session.metadata.productsInfo);
       const line_items = await stripe.checkout.sessions.listLineItems(
         event.data.object.id
       );
       console.log(line_items, ' line items');
-      console.log(line_items, ' line items');
+      console.log(products, ' products');
 
       const orderItems = await getCartItems(line_items);
       const ship_cost = session.shipping_cost.amount_total / 100;

@@ -17,8 +17,11 @@ const CheckOutForm = () => {
   );
 
   const taxAmount = (amountWithoutTax * 0.16).toFixed(2);
-  const shipAmount = (amountWithoutTax * 0.03).toFixed(2);
-  const layawayAmount = (amountWithoutTax * 0.3).toFixed(2);
+  const shipAmount = 0;
+  const layawayAmount = (
+    (Number(amountWithoutTax) + Number(taxAmount)) *
+    0.3
+  ).toFixed(2);
 
   const totalAmountCalc = (
     Number(amountWithoutTax) +

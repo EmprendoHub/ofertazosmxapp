@@ -41,7 +41,7 @@ export const POST = async (request) => {
 
     // Calculate total amount based on items
     let totalAmount = calculateTotalAmount(items);
-    totalAmount = withTaxes(totalAmount);
+    totalAmount = await withTaxes(Number(totalAmount));
 
     // Calculate installment amount
     const installmentAmount = totalAmount * 0.3;
@@ -49,6 +49,7 @@ export const POST = async (request) => {
     let session;
 
     const shippingInfo = JSON.stringify(shipping);
+
     const line_items = await items.map((item) => {
       return {
         price_data: {
@@ -110,6 +111,8 @@ export const POST = async (request) => {
 
       await stripe.invoices.sendInvoice(invoice.id);
 
+      const productsInfo = JSON.stringify(lineItems);
+
       session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
         mode: 'payment',
@@ -123,6 +126,7 @@ export const POST = async (request) => {
           installment_count: 30,
           installment_amount: installmentAmount,
           invoice: invoice.id,
+          productsInfo,
         },
         shipping_options: [
           {
