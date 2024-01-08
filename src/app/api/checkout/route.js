@@ -6,6 +6,12 @@ const calculateTotalAmount = (items) => {
   return items.reduce((total, item) => total + item.price * item.quantity, 0);
 };
 
+const withTaxes = async (amount) => {
+  const taxes = amount * 0.16;
+  const finalAmount = amount + taxes;
+  return finalAmount;
+};
+
 export const POST = async (request) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -34,10 +40,12 @@ export const POST = async (request) => {
     }
 
     // Calculate total amount based on items
-    const totalAmount = calculateTotalAmount(items);
+    let totalAmount = calculateTotalAmount(items);
+    totalAmount = withTaxes(totalAmount);
 
     // Calculate installment amount
     const installmentAmount = totalAmount * 0.3;
+
     let session;
 
     const shippingInfo = JSON.stringify(shipping);
