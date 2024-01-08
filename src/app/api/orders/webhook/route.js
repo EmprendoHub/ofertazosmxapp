@@ -52,6 +52,7 @@ export async function POST(req, res) {
         line_items = await stripe.invoiceItems.list({
           invoice: session.metadata.invoice,
         });
+        console.log(line_items, 'line_items');
       } else {
         line_items = await stripe.checkout.sessions.listLineItems(
           event.data.object.id
