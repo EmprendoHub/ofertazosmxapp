@@ -78,6 +78,7 @@ export const POST = async (request) => {
           name: item.price_data.product_data.name,
           type: 'good',
           images: [item.price_data.product_data.images[0]],
+          metadata: { productId: item._id },
         });
 
         // Create a price for the product

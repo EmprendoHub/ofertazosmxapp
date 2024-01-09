@@ -43,7 +43,6 @@ export async function POST(req, res) {
       process.env.STRIPE_WEBHOOK_SECRET
     );
 
-    console.log('event', event);
     const session = event.data.object;
 
     if (event.type === 'checkout.session.completed') {
@@ -106,7 +105,7 @@ export async function POST(req, res) {
 
       await Order.create(orderData);
 
-      console.log(orderItems);
+      console.log(line_items);
       await stripe.invoices.del(session.metadata.invoice);
       return NextResponse.json(
         {
@@ -118,15 +117,12 @@ export async function POST(req, res) {
 
     if (event.type === 'checkout.session.async_payment_succeeded') {
       // get all the details from stripe checkout to create new order
-      console.log(' session.payment_intent:', session.payment_intent);
       const order = await Order?.findOne({
         'paymentInfo.paymentIntent': session.payment_intent,
       });
-      console.log('order', order);
       const newPaymentAmount = session.amount_total / 100;
 
       const payAmount = order.paymentInfo.amountPaid + newPaymentAmount;
-      console.log('payAmount', newPaymentAmount, payAmount);
 
       order.paymentInfo.amountPaid = payAmount;
       order.paymentInfo.status = 'paid';
