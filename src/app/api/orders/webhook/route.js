@@ -68,6 +68,7 @@ export async function POST(req, res) {
         });
         currentOrder.paymentInfo.amountPaid =
           currentOrder.paymentInfo.amountPaid + session.amount_total / 100;
+        currentOrder.orderStatus = 'Procesando';
         const savedOrder = await currentOrder.save();
         return NextResponse.json(
           {
