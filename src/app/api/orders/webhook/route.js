@@ -108,7 +108,7 @@ export async function POST(req, res) {
       console.log(line_items);
       await stripe.invoices.del(session.metadata.invoice);
       line_items?.data?.forEach(async (item) => {
-        await stripe.products.del(item.id);
+        await stripe.products.update(item.id, { active: false });
       });
       return NextResponse.json(
         {
