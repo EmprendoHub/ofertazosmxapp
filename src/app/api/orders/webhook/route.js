@@ -121,11 +121,13 @@ export async function POST(req, res) {
       });
       console.log('order', order);
       const newPaymentAmount = session.amount_total / 100;
+
       const payAmount = order.paymentInfo.amountPaid + newPaymentAmount;
+      console.log('payAmount', newPaymentAmount, payAmount);
 
       order.paymentInfo.amountPaid = payAmount;
 
-      await Order.save();
+      await order.save();
       return NextResponse.json(
         {
           success: true,
