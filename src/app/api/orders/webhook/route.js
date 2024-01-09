@@ -66,7 +66,8 @@ export async function POST(req, res) {
         const currentOrder = await Order.findOne({
           _id: session?.metadata?.order,
         });
-        currentOrder.paymentInfo.amountPaid = session.amount_total / 100;
+        currentOrder.paymentInfo.amountPaid =
+          currentOrder.paymentInfo.amountPaid + session.amount_total / 100;
         const savedOrder = await currentOrder.save();
         return NextResponse.json(
           {
