@@ -4,75 +4,46 @@ import Link from 'next/link';
 import Image from 'next/image';
 import AuthContext from '@/context/AuthContext';
 import { toast } from 'react-toastify';
+import FormattedPrice from '@/backend/helpers/FormattedPrice';
 
-function getQuantities(orderItems) {
-  // Use reduce to sum up the 'quantity' fields
-  const totalQuantity = orderItems?.reduce((sum, obj) => sum + obj.quantity, 0);
-  return totalQuantity;
-}
-
-function getTotal(orderItems) {
-  // Use reduce to sum up the 'total' field
-  const amountWithoutTax = orderItems?.reduce(
-    (acc, cartItem) => acc + cartItem.quantity * cartItem.price,
-    0
-  );
-  const amountTax = amountWithoutTax * 0.16;
-  const totalAmount = amountWithoutTax + amountTax;
-
-  return totalAmount.toFixed(2);
-}
-
-function getPaymentTax(orderAmountPaid) {
-  const amountTax = orderAmountPaid * 0.16;
-  return amountTax.toFixed(2);
-}
-function getTaxTotal(orderItems) {
-  // Use reduce to sum up the 'total' field
-  const amountWithoutTax = orderItems?.reduce(
-    (acc, cartItem) => acc + cartItem.quantity * cartItem.price,
-    0
-  );
-  const amountTax = amountWithoutTax * 0.16;
-
-  return amountTax.toFixed(2);
-}
-
-function getPendingTotal(orderItems, orderAmountPaid) {
-  // Use reduce to sum up the 'total' field
-  const amountWithoutTax = orderItems?.reduce(
-    (acc, cartItem) => acc + cartItem.quantity * cartItem.price,
-    0
-  );
-  const amountTax = amountWithoutTax * 0.16;
-  const totalAmount = amountWithoutTax + amountTax;
-
-  const pendingAmount = totalAmount - orderAmountPaid;
-
-  return pendingAmount.toFixed(2);
-}
-
-const AdminOneOrder = ({ id }) => {
-  const { getOneOrder, updateOrder } = useContext(AuthContext);
-  const [order, setOrder] = useState([]);
-  const [address, setAddress] = useState();
-  const [orderStatus, setOrderStatus] = useState();
+const AdminOneOrder = ({ id, data }) => {
+  const { updateOrder } = useContext(AuthContext);
+  const order = data.order;
+  const address = data.deliveryAddress;
+  const [orderStatus, setOrderStatus] = useState(order?.orderStatus);
   const [currentOrderStatus, setCurrentOrderStatus] = useState();
 
-  useEffect(() => {
-    async function getOrder() {
-      const orderGet = await getOneOrder(id);
-      setOrder(orderGet?.order);
-      setOrderStatus(orderGet?.order.orderStatus);
-      setAddress(orderGet?.deliveryAddress);
-    }
-    getOrder();
-  }, [getOneOrder]);
+  function getQuantities(orderItems) {
+    // Use reduce to sum up the 'quantity' fields
+    const totalQuantity = orderItems?.reduce(
+      (sum, obj) => sum + obj.quantity,
+      0
+    );
+    return totalQuantity;
+  }
+
+  function getTotal(orderItems) {
+    // Use reduce to sum up the 'total' field
+    const totalAmount = orderItems?.reduce(
+      (acc, cartItem) => acc + cartItem.quantity * cartItem.price,
+      0
+    );
+    return totalAmount;
+  }
+
+  function getPendingTotal(orderItems, orderAmountPaid) {
+    // Use reduce to sum up the 'total' field
+    const totalAmount = orderItems?.reduce(
+      (acc, cartItem) => acc + cartItem.quantity * cartItem.price,
+      0
+    );
+    const pendingAmount = totalAmount - orderAmountPaid;
+    return pendingAmount;
+  }
 
   function subtotal() {
     let sub = order?.paymentInfo?.amountPaid - order?.ship_cost;
-    sub = sub / (1 + 0.16);
-    return sub.toFixed(2);
+    return sub;
   }
 
   const handleSubmit = async (e) => {
@@ -190,7 +161,9 @@ const AdminOneOrder = ({ id }) => {
                 <td className="px-6 py-2">{item.product || item._id}</td>
                 <td className="px-6 py-2">{item.name}</td>
                 <td className="px-6 py-2">{item.quantity}</td>
-                <td className="px-6 py-2">${item.price}</td>
+                <td className="px-6 py-2">
+                  <FormattedPrice amount={item.price} />
+                </td>
                 <td className="px-6 py-2">
                   <Image
                     alt="producto"
@@ -218,30 +191,33 @@ const AdminOneOrder = ({ id }) => {
                 </li>
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
                   <span>Sub-Total:</span>
-                  <span>${subtotal()}</span>
+                  <span>
+                    <FormattedPrice amount={subtotal()} />
+                  </span>
                 </li>
 
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
-                  <span>IVA:</span>
-                  <span>${getTaxTotal(order?.orderItems)}</span>
-                </li>
-                <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
                   <span>Total:</span>
-                  <span>${getTotal(order?.orderItems)}</span>
+                  <span>
+                    <FormattedPrice amount={getTotal(order?.orderItems)} />
+                  </span>
                 </li>
                 <li className="text-xl font-bold border-t flex justify-between gap-x-5  pt-3">
                   <span>Abono:</span>
-                  <span>- ${order?.paymentInfo?.amountPaid.toFixed(2)}</span>
+                  <span>
+                    - <FormattedPrice amount={order?.paymentInfo?.amountPaid} />
+                  </span>
                 </li>
 
                 <li className="text-xl text-amber-700 font-bold border-t flex justify-between gap-x-5  pt-1">
                   <span>Pendiente:</span>
                   <span>
-                    $
-                    {getPendingTotal(
-                      order?.orderItems,
-                      order?.paymentInfo?.amountPaid
-                    )}
+                    <FormattedPrice
+                      amount={getPendingTotal(
+                        order?.orderItems,
+                        order?.paymentInfo?.amountPaid
+                      )}
+                    />
                   </span>
                 </li>
               </ul>
@@ -249,7 +225,9 @@ const AdminOneOrder = ({ id }) => {
               <ul className="mb-5">
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
                   <span>Sub-Total:</span>
-                  <span>${subtotal()}</span>
+                  <span>
+                    <FormattedPrice amount={subtotal()} />
+                  </span>
                 </li>
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
                   <span>Total de Artículos:</span>
@@ -258,16 +236,16 @@ const AdminOneOrder = ({ id }) => {
                   </span>
                 </li>
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
-                  <span>IVA:</span>
-                  <span>${order?.paymentInfo?.taxPaid}</span>
-                </li>
-                <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
                   <span>Envió:</span>
-                  <span>${order?.ship_cost}</span>
+                  <span>
+                    <FormattedPrice amount={order?.ship_cost} />
+                  </span>
                 </li>
                 <li className="text-3xl font-bold border-t flex justify-between gap-x-5 mt-3 pt-3">
                   <span>Total:</span>
-                  <span>${order?.paymentInfo?.amountPaid}</span>
+                  <span>
+                    <FormattedPrice amount={order?.paymentInfo?.amountPaid} />
+                  </span>
                 </li>
               </ul>
             )}

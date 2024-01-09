@@ -25,20 +25,6 @@ const Cart = () => {
     }
   }, [productsData]);
 
-  const amountWithoutTax = productsData?.reduce(
-    (acc, cartItem) => acc + cartItem.quantity * cartItem.price,
-    0
-  );
-
-  const taxAmount = (amountWithoutTax * 0.16).toFixed(2);
-  const shipAmount = (amountWithoutTax * 0.03).toFixed(2);
-
-  const totalAmount = (
-    Number(amountWithoutTax) +
-    Number(taxAmount) +
-    Number(shipAmount)
-  ).toFixed(2);
-
   return (
     <>
       <section className="py-5 sm:py-7 bg-gray-100">

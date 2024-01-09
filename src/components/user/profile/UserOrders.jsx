@@ -2,29 +2,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
 import AuthContext from '@/context/AuthContext';
-import { formatDate, formatTime } from '@/backend/helpers';
+import { formatDate } from '@/backend/helpers';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { resetCart } from '@/redux/shoppingSlice';
 import { useDispatch } from 'react-redux';
-import { FaPencilAlt, FaEye, FaMoneyCheck } from 'react-icons/fa';
-import { AiOutlineInteraction, AiFillMoneyCollect } from 'react-icons/ai';
-
-function getQuantities(orderItems) {
-  // Use reduce to sum up the 'quantity' fields
-  const totalQuantity = orderItems.reduce((sum, obj) => sum + obj.quantity, 0);
-  return totalQuantity;
-}
-function getTotal(orderItems) {
-  // Use reduce to sum up the 'total' field
-  const amountWithoutTax = orderItems?.reduce(
-    (acc, cartItem) => acc + cartItem.quantity * cartItem.price,
-    0
-  );
-  const amountTax = amountWithoutTax * 0.16;
-  const totalAmount = amountWithoutTax + amountTax;
-
-  return totalAmount.toFixed(2);
-}
+import { FaEye, FaMoneyCheck } from 'react-icons/fa';
+import { getTotalFromItems } from '@/backend/helpers';
 
 const UserOrders = () => {
   const dispatch = useDispatch();
@@ -49,8 +32,6 @@ const UserOrders = () => {
     }
     getOrders();
   }, [getAllUserOrders]);
-
-  console.log(orders);
 
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -91,7 +72,9 @@ const UserOrders = () => {
                   {order._id.substring(0, 7)}...
                 </Link>
               </td>
-              <td className="px-6 py-2">${getTotal(order.orderItems)}</td>
+              <td className="px-6 py-2">
+                ${getTotalFromItems(order.orderItems)}
+              </td>
               <td className="px-6 py-2 ">
                 <b>${order.paymentInfo.amountPaid}</b>
               </td>

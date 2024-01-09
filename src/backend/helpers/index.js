@@ -59,3 +59,25 @@ export function formatTime(dateTimeString) {
 
   return formattedTime;
 }
+
+export function getTotalFromItems(orderItems) {
+  // Use reduce to sum up the 'total' field
+  const totalAmount = orderItems?.reduce(
+    (acc, orderItem) => acc + orderItem.quantity * orderItem.price,
+    0
+  );
+
+  return totalAmount;
+}
+
+export function getQuantitiesFromItems(orderItems) {
+  // Use reduce to sum up the 'quantity' fields
+  const totalQuantity = orderItems.reduce((sum, obj) => sum + obj.quantity, 0);
+  return totalQuantity;
+}
+
+export function getOrderItemsQuantities(orderItems) {
+  // Use reduce to sum up the 'quantity' fields
+  const totalQuantity = orderItems?.reduce((sum, obj) => sum + obj.quantity, 0);
+  return totalQuantity;
+}

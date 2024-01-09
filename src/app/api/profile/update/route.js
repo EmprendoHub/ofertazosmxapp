@@ -47,7 +47,6 @@ export async function PUT(req, res) {
 
         return response;
       }
-      console.log(file.file);
       image = `https://minio.salvawebpro.com:9000/shopout/avatars/${file?.file.name}`;
       // Create a new Product in the database
 

@@ -76,7 +76,7 @@ export async function POST(req, res) {
         id: session.payment_intent,
         status: session.payment_status,
         amountPaid,
-        taxPaid: session.total_details.amount_tax / 100,
+        taxPaid: 0,
         paymentIntent: session.payment_intent,
       };
       let orderData;
@@ -105,6 +105,7 @@ export async function POST(req, res) {
       }
 
       await Order.create(orderData);
+      await stripe.invoices.del({ id: session.metadata.invoice });
       return NextResponse.json(
         {
           success: true,
@@ -126,6 +127,7 @@ export async function POST(req, res) {
       console.log('payAmount', newPaymentAmount, payAmount);
 
       order.paymentInfo.amountPaid = payAmount;
+      order.paymentInfo.status = 'paid';
 
       await order.save();
       return NextResponse.json(

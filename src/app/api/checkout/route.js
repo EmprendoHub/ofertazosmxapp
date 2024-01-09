@@ -6,12 +6,6 @@ const calculateTotalAmount = (items) => {
   return items.reduce((total, item) => total + item.price * item.quantity, 0);
 };
 
-const withTaxes = async (amount) => {
-  const taxes = amount * 0.16;
-  const finalAmount = amount + taxes;
-  return finalAmount;
-};
-
 export const POST = async (request) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -20,8 +14,6 @@ export const POST = async (request) => {
     const isLayaway = urlData[1] === 'layaway';
     const reqBody = await request.json();
     const { items, email, user, shipping } = await reqBody;
-
-    console.log(isLayaway);
 
     const existingCustomers = await stripe.customers.list({
       email: user.email,
@@ -44,10 +36,10 @@ export const POST = async (request) => {
     // Calculate total amount based on items
     let totalAmount = await calculateTotalAmount(items);
 
+    console.log(totalAmount);
+
     // Calculate installment amount
-    let taxAmount = totalAmount * 0.16;
-    let installmentAmount = totalAmount + taxAmount;
-    installmentAmount = Math.round(installmentAmount * 0.3);
+    let installmentAmount = Math.round(totalAmount * 0.3);
 
     let session;
 
@@ -65,7 +57,6 @@ export const POST = async (request) => {
             metadata: { productId: item._id },
           },
         },
-        tax_rates: ['txr_1ORJnfF1B19DqtcQKzzP0bOh'],
         quantity: item.quantity,
       };
     });
@@ -108,11 +99,8 @@ export const POST = async (request) => {
           invoice: invoice.id,
           price: price.id,
           quantity: item.quantity,
-          tax_rates: ['txr_1ORJnfF1B19DqtcQKzzP0bOh'],
         });
       }
-
-      await stripe.invoices.sendInvoice(invoice.id);
 
       session = await stripe.checkout.sessions.create({
         payment_method_types: ['card', 'oxxo'],
@@ -122,7 +110,7 @@ export const POST = async (request) => {
             expires_after_days: 2,
           },
         },
-        locale: 'es',
+        locale: 'es-419',
         client_reference_id: user?._id,
         success_url: `${process.env.NEXTAUTH_URL}/perfil/pedidos?pedido_exitoso=true`,
         cancel_url: `${process.env.NEXTAUTH_URL}/cancelado`,
@@ -143,8 +131,8 @@ export const POST = async (request) => {
               currency: 'mxn',
               unit_amount: installmentAmount * 100, // Convert to cents
               product_data: {
-                name: 'Pago de Apartado',
-                description: `Pago inicial para apartado de factura #${invoice.id}`,
+                name: 'Pago Inicial de Apartado',
+                description: `Pago inicial para apartado de pedido`,
               },
             },
             quantity: 1,
@@ -160,7 +148,7 @@ export const POST = async (request) => {
             expires_after_days: 2,
           },
         },
-        locale: 'es',
+        locale: 'es-419',
         success_url: `${process.env.NEXTAUTH_URL}/perfil/pedidos?pedido_exitoso=true`,
         cancel_url: `${process.env.NEXTAUTH_URL}/cancelado`,
         customer_email: email,

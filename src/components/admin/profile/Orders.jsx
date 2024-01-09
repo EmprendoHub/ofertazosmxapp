@@ -6,23 +6,8 @@ import { FaPencilAlt } from 'react-icons/fa';
 import { AiOutlineInteraction } from 'react-icons/ai';
 import { formatDate, formatTime } from '@/backend/helpers';
 
-function getQuantities(orderItems) {
-  // Use reduce to sum up the 'quantity' fields
-  const totalQuantity = orderItems.reduce((sum, obj) => sum + obj.quantity, 0);
-  return totalQuantity;
-}
-
-function getTotal(orderItems) {
-  // Use reduce to sum up the 'total' field
-  const amountWithoutTax = orderItems?.reduce(
-    (acc, cartItem) => acc + cartItem.quantity * cartItem.price,
-    0
-  );
-  const amountTax = amountWithoutTax * 0.16;
-  const totalAmount = amountWithoutTax + amountTax;
-
-  return totalAmount.toFixed(2);
-}
+import { getTotalFromItems } from '@/backend/helpers';
+import FormattedPrice from '@/backend/helpers/FormattedPrice';
 
 const Orders = () => {
   const { getAllOrders } = useContext(AuthContext);
@@ -66,9 +51,13 @@ const Orders = () => {
           {orders?.map((order, index) => (
             <tr className="bg-white" key={index}>
               <td className="px-6 py-2">{order.user.name}</td>
-              <td className="px-6 py-2">${getTotal(order.orderItems)}</td>
+              <td className="px-6 py-2">
+                <FormattedPrice amount={getTotalFromItems(order.orderItems)} />
+              </td>
               <td className="px-6 py-2 ">
-                <b>${order.paymentInfo.amountPaid}</b>
+                <b>
+                  <FormattedPrice amount={order.paymentInfo.amountPaid} />
+                </b>
               </td>
               <td
                 className={`px-6 py-2 font-bold ${

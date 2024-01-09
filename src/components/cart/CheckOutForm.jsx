@@ -5,29 +5,22 @@ import { AiOutlineUser } from 'react-icons/ai';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import FormattedPrice from '@/backend/helpers/FormattedPrice';
 
 const CheckOutForm = () => {
   const { data: session } = useSession();
   const isLoggedIn = Boolean(session?.user);
   const { productsData } = useSelector((state) => state.compras);
 
-  const amountWithoutTax = productsData?.reduce(
+  const amountTotal = productsData?.reduce(
     (acc, cartItem) => acc + cartItem.quantity * cartItem.price,
     0
   );
 
-  const taxAmount = (amountWithoutTax * 0.16).toFixed(2);
   const shipAmount = 0;
-  const layawayAmount = (
-    (Number(amountWithoutTax) + Number(taxAmount)) *
-    0.3
-  ).toFixed(2);
+  const layawayAmount = Number(amountTotal) * 0.3;
 
-  const totalAmountCalc = (
-    Number(amountWithoutTax) +
-    Number(taxAmount) +
-    Number(shipAmount)
-  ).toFixed(2);
+  const totalAmountCalc = Number(amountTotal) + Number(shipAmount);
 
   return (
     <section className="p-2 maxsm:py-7 bg-gray-100">
@@ -36,7 +29,9 @@ const CheckOutForm = () => {
         <ul className="mb-5">
           <li className="flex justify-between text-gray-600  mb-1">
             <span>Sub-Total:</span>
-            <span>${amountWithoutTax}</span>
+            <span>
+              <FormattedPrice amount={amountTotal} />
+            </span>
           </li>
           <li className="flex justify-between text-gray-600  mb-1">
             <span>Total de Artículos:</span>
@@ -49,22 +44,24 @@ const CheckOutForm = () => {
             </span>
           </li>
           <li className="flex justify-between text-gray-600  mb-1">
-            <span>IVA:</span>
-            <span>${taxAmount}</span>
-          </li>
-          <li className="flex justify-between text-gray-600  mb-1">
             <span>Envió:</span>
-            <span>${shipAmount}</span>
+            <span>
+              <FormattedPrice amount={shipAmount} />
+            </span>
           </li>
           <li className="text-lg font-bold border-t flex justify-between mt-3 pt-3">
             <span>Total:</span>
-            <span>${totalAmountCalc}</span>
+            <span>
+              <FormattedPrice amount={totalAmountCalc} />
+            </span>
           </li>
           <li>
             <div className="border-b-[1px] border-b-slate-300 py-2">
               <div className="flex items-center justify-between">
                 <p className="uppercase font-medium">Apártalo por</p>
-                <p>{layawayAmount}</p>
+                <p>
+                  <FormattedPrice amount={layawayAmount} />
+                </p>
               </div>
             </div>
           </li>

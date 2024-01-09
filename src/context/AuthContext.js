@@ -489,8 +489,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const saveOnCheckOut = async ({ amount, tax, totalAmountCalc, items }) => {};
-
   return (
     <AuthContext.Provider
       value={{

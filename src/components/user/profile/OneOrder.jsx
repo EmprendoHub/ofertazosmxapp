@@ -1,91 +1,70 @@
 'use client';
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import AuthContext from '@/context/AuthContext';
+import FormattedPrice from '@/backend/helpers/FormattedPrice';
+import { getOrderItemsQuantities, getTotalFromItems } from '@/backend/helpers';
+import { loadStripe } from '@stripe/stripe-js';
+import { useSelector } from 'react-redux';
 
-function getQuantities(orderItems) {
-  // Use reduce to sum up the 'quantity' fields
-  const totalQuantity = orderItems?.reduce((sum, obj) => sum + obj.quantity, 0);
-  return totalQuantity;
-}
+const OneOrder = ({ id, data }) => {
+  const order = data.order;
+  const address = data.deliveryAddress;
+  const { userInfo } = useSelector((state) => state.compras);
 
-function getTotal(orderItems) {
-  // Use reduce to sum up the 'total' field
-  const amountWithoutTax = orderItems?.reduce(
-    (acc, cartItem) => acc + cartItem.quantity * cartItem.price,
-    0
-  );
-  const amountTax = amountWithoutTax * 0.16;
-  const totalAmount = amountWithoutTax + amountTax;
+  console.log(userInfo?.email, 'userInfo');
 
-  return totalAmount.toFixed(2);
-}
+  const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE__KEY);
+  const handleCheckout = async () => {
+    const stripe = await stripePromise;
 
-function checkIfPaid(orderItems, orderAmountPaid, paymentStatus) {
-  // Use reduce to sum up the 'total' field
-  const amountWithoutTax = orderItems?.reduce(
-    (acc, cartItem) => acc + cartItem.quantity * cartItem.price,
-    0
-  );
-  const amountTax = amountWithoutTax * 0.16;
-  const totalAmount = amountWithoutTax + amountTax;
+    const response = await fetch(`/api/layaway`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        order: order,
+        items: order?.orderItems,
+        email: userInfo?.email,
+        user: userInfo,
+        shipping: address,
+      }),
+    });
 
-  if (
-    Number(totalAmount) === Number(orderAmountPaid) &&
-    paymentStatus === 'paid'
-  ) {
-    return 'pagado';
-  } else return 'pendiente de pago';
-}
-
-function getPaymentTax(orderAmountPaid) {
-  const amountTax = orderAmountPaid * 0.16;
-  return amountTax.toFixed(2);
-}
-function getTaxTotal(orderItems) {
-  // Use reduce to sum up the 'total' field
-  const amountWithoutTax = orderItems?.reduce(
-    (acc, cartItem) => acc + cartItem.quantity * cartItem.price,
-    0
-  );
-  const amountTax = amountWithoutTax * 0.16;
-
-  return amountTax.toFixed(2);
-}
-
-function getPendingTotal(orderItems, orderAmountPaid) {
-  // Use reduce to sum up the 'total' field
-  const amountWithoutTax = orderItems?.reduce(
-    (acc, cartItem) => acc + cartItem.quantity * cartItem.price,
-    0
-  );
-  const amountTax = amountWithoutTax * 0.16;
-  const totalAmount = amountWithoutTax + amountTax;
-
-  const pendingAmount = totalAmount - orderAmountPaid;
-
-  return pendingAmount.toFixed(2);
-}
-
-const OneOrder = ({ id }) => {
-  const { getOneOrder } = useContext(AuthContext);
-  const [order, setOrder] = useState([]);
-  const [address, setAddress] = useState();
-
-  useEffect(() => {
-    async function getOrder() {
-      const orderGet = await getOneOrder(id);
-      setOrder(orderGet?.order);
-      setAddress(orderGet?.deliveryAddress);
+    try {
+      const data = await response.json();
+      console.log(data, '<= data');
+      //dispatch(saveOrder({ order: productsData, id: data.id }));
+      stripe?.redirectToCheckout({ sessionId: data.id });
+    } catch (error) {
+      console.log(error);
     }
-    getOrder();
-  }, [getOneOrder]);
+  };
+
+  function checkIfPaid(orderItems, orderAmountPaid) {
+    // Use reduce to sum up the 'total' field
+    const totalAmount = orderItems?.reduce(
+      (acc, cartItem) => acc + cartItem.quantity * cartItem.price,
+      0
+    );
+
+    if (Number(orderAmountPaid) >= Number(totalAmount)) {
+      return 'pagado';
+    } else return 'pendiente de pago';
+  }
+
+  function getPendingTotal(orderItems, orderAmountPaid) {
+    // Use reduce to sum up the 'total' field
+    const totalAmount = orderItems?.reduce(
+      (acc, cartItem) => acc + cartItem.quantity * cartItem.price,
+      0
+    );
+    const pendingAmount = totalAmount - orderAmountPaid;
+    return pendingAmount;
+  }
 
   function subtotal() {
-    let sub = getTotal(order?.orderItems);
-    sub = sub / (1 + 0.16);
-    return sub.toFixed(2);
+    let sub = getTotalFromItems(order?.orderItems);
+    return sub;
   }
   return (
     <>
@@ -145,6 +124,9 @@ const OneOrder = ({ id }) => {
           <thead className="text-l text-gray-700 uppercase">
             <tr>
               <th scope="col" className="px-6 py-3">
+                ID.
+              </th>
+              <th scope="col" className="px-6 py-3">
                 Cant.
               </th>
               <th scope="col" className="px-6 py-3">
@@ -162,9 +144,12 @@ const OneOrder = ({ id }) => {
           <tbody>
             {order?.orderItems?.map((item, index) => (
               <tr className="bg-white" key={index}>
+                <td className="px-6 py-2">{item.product || item._id}</td>
                 <td className="px-6 py-2">{item.quantity}</td>
                 <td className="px-6 py-2">{item.name}</td>
-                <td className="px-6 py-2">${item.price}</td>
+                <td className="px-6 py-2">
+                  <FormattedPrice amount={item.price} />
+                </td>
                 <td className="px-6 py-2">
                   <Image
                     alt="producto"
@@ -188,35 +173,33 @@ const OneOrder = ({ id }) => {
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
                   <span>Total de Artículos:</span>
                   <span className="text-green-700">
-                    {getQuantities(order?.orderItems)} (Artículos)
+                    {getOrderItemsQuantities(order?.orderItems)} (Artículos)
                   </span>
                 </li>
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
                   <span>Sub-Total:</span>
-                  <span>${subtotal()}</span>
-                </li>
-
-                <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
-                  <span>IVA:</span>
-                  <span>${getTaxTotal(order?.orderItems)}</span>
+                  <FormattedPrice amount={subtotal()} />
                 </li>
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
                   <span>Total:</span>
-                  <span>${getTotal(order?.orderItems)}</span>
+                  <FormattedPrice
+                    amount={getTotalFromItems(order?.orderItems)}
+                  />
                 </li>
                 <li className="text-xl font-bold border-t flex justify-between gap-x-5  pt-3">
                   <span>Abono:</span>
-                  <span>- ${order?.paymentInfo?.amountPaid.toFixed(2)}</span>
+                  -<FormattedPrice amount={order?.paymentInfo?.amountPaid} />
                 </li>
 
                 <li className="text-xl text-amber-700 font-bold border-t flex justify-between gap-x-5  pt-1">
                   <span>Pendiente:</span>
                   <span>
-                    $
-                    {getPendingTotal(
-                      order?.orderItems,
-                      order?.paymentInfo?.amountPaid
-                    )}
+                    <FormattedPrice
+                      amount={getPendingTotal(
+                        order?.orderItems,
+                        order?.paymentInfo?.amountPaid
+                      )}
+                    />
                   </span>
                 </li>
               </ul>
@@ -227,21 +210,20 @@ const OneOrder = ({ id }) => {
               className={`text-4xl font-raleway font-bold uppercase  ${
                 checkIfPaid(
                   order?.orderItems,
-                  order?.paymentInfo?.amountPaid,
-                  order?.paymentInfo?.status
+                  order?.paymentInfo?.amountPaid
                 ) === 'pagado'
                   ? 'text-green-700'
                   : 'text-amber-700'
               } `}
             >
-              {checkIfPaid(
-                order?.orderItems,
-                order?.paymentInfo?.amountPaid,
-                order?.paymentInfo?.status
-              )}
+              {checkIfPaid(order?.orderItems, order?.paymentInfo?.amountPaid)}
             </h3>
-            <button className="mt-5 bg-green-700 text-white px-6 py-2">
-              Pagar
+
+            <button
+              onClick={() => handleCheckout()}
+              className="bg-black w-1/2 text-slate-100 mt-4 py-3 px-6 hover:bg-slate-200 hover:text-black duration-300 ease-in-out cursor-pointer"
+            >
+              Pagar Total{' '}
             </button>
           </div>
         </div>
@@ -252,50 +234,44 @@ const OneOrder = ({ id }) => {
               <ul className="mb-5">
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
                   <span>Sub-Total:</span>
-                  <span>${subtotal()}</span>
+                  <FormattedPrice amount={subtotal()} />
                 </li>
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
                   <span>Total de Artículos:</span>
                   <span className="text-green-700">
-                    {getQuantities(order?.orderItems)} (Artículos)
+                    {getOrderItemsQuantities(order?.orderItems)} (Artículos)
                   </span>
                 </li>
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
-                  <span>IVA:</span>
-                  <span>${order?.paymentInfo?.taxPaid}</span>
-                </li>
-                <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
                   <span>Envió:</span>
-                  <span>${order?.ship_cost}</span>
+                  <FormattedPrice amount={order?.ship_cost} />
+                  (Gratis)
                 </li>
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
                   <span>Total:</span>
-                  <span>${getTotal(order?.orderItems)}</span>
+                  <FormattedPrice
+                    amount={getTotalFromItems(order?.orderItems)}
+                  />
                 </li>
                 <li className="text-xl font-bold text-green-700 border-t flex justify-between gap-x-5  pt-3">
                   <span>Pagado:</span>
-                  <span>${order?.paymentInfo?.amountPaid.toFixed(2)}</span>
+                  <FormattedPrice amount={order?.paymentInfo?.amountPaid} />
                 </li>
               </ul>
             </div>
           </div>
           <div className="w-2/3 maxmd:w-full flex justify-center items-center">
             <h3
-              className={`text-7xl font-EB_Garamond uppercase  -rotate-12 ${
+              className={`text-5xl font-EB_Garamond uppercase  -rotate-12 ${
                 checkIfPaid(
                   order?.orderItems,
-                  order?.paymentInfo?.amountPaid,
-                  order?.paymentInfo?.status
+                  order?.paymentInfo?.amountPaid
                 ) === 'pagado'
                   ? 'text-green-700'
                   : 'text-amber-700'
               } `}
             >
-              {checkIfPaid(
-                order?.orderItems,
-                order?.paymentInfo?.amountPaid,
-                order?.paymentInfo?.status
-              )}
+              {checkIfPaid(order?.orderItems, order?.paymentInfo?.amountPaid)}
             </h3>
           </div>
         </div>
