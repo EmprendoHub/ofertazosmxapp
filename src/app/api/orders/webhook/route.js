@@ -50,10 +50,30 @@ export async function POST(req, res) {
 
       let line_items;
 
-      if (session?.metadata?.layaway && session?.metadata?.layaway === 'true') {
+      if (
+        session?.metadata?.layaway &&
+        session?.metadata?.layaway === 'true' &&
+        !session?.metadata?.order
+      ) {
         line_items = await stripe.invoiceItems.list({
           invoice: session.metadata.invoice,
         });
+      } else if (
+        session?.metadata?.layaway &&
+        session?.metadata?.layaway === 'true' &&
+        session?.metadata?.order
+      ) {
+        const currentOrder = await Order.findOne({
+          _id: session?.metadata?.order,
+        });
+        currentOrder.paymentInfo.amountPaid = session.amount_total / 100;
+        const savedOrder = await currentOrder.save();
+        return NextResponse.json(
+          {
+            success: true,
+          },
+          { status: 201 }
+        );
       } else {
         line_items = await stripe.checkout.sessions.listLineItems(
           event.data.object.id
