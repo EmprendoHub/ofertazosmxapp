@@ -105,6 +105,8 @@ export async function POST(req, res) {
       }
 
       await Order.create(orderData);
+
+      console.log(orderItems);
       await stripe.invoices.del(session.metadata.invoice);
       return NextResponse.json(
         {
