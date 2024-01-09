@@ -4,11 +4,14 @@ import { useSelector } from 'react-redux';
 import { AiOutlineUser } from 'react-icons/ai';
 import { useSession } from 'next-auth/react';
 import { loadStripe } from '@stripe/stripe-js';
+import { resetCart, saveOrder } from '@/redux/shoppingSlice';
+import { useDispatch } from 'react-redux';
 import Image from 'next/image';
 import Link from 'next/link';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 
 const PaymentForm = () => {
+  const dispatch = useDispatch();
   const { data: session } = useSession();
   const isLoggedIn = Boolean(session?.user);
   const { productsData, shippingInfo, userInfo } = useSelector(
@@ -45,8 +48,10 @@ const PaymentForm = () => {
     try {
       const data = await response.json();
       console.log(data, '<= data');
-      //dispatch(saveOrder({ order: productsData, id: data.id }));
+
+      await dispatch(saveOrder({ order: productsData, id: data.id }));
       stripe?.redirectToCheckout({ sessionId: data.id });
+      dispatch(resetCart());
     } catch (error) {
       console.log(error);
     }

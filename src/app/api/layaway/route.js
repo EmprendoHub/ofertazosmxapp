@@ -41,18 +41,24 @@ export const POST = async (request) => {
     const shippingInfo = JSON.stringify(shipping);
 
     session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card', 'oxxo'],
+      payment_method_types: ['card', 'oxxo', 'customer_balance'],
       mode: 'payment',
+      customer: customerId,
       payment_method_options: {
         oxxo: {
           expires_after_days: 2,
+        },
+        customer_balance: {
+          funding_type: 'bank_transfer',
+          bank_transfer: {
+            type: 'mx_bank_transfer',
+          },
         },
       },
       locale: 'es-419',
       client_reference_id: user?._id,
       success_url: `${process.env.NEXTAUTH_URL}/perfil/pedidos?pedido_exitoso=true`,
       cancel_url: `${process.env.NEXTAUTH_URL}/cancelado`,
-      customer_email: email,
       metadata: {
         shippingInfo,
         layaway: true,

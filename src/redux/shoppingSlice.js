@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   productsData: [],
@@ -8,7 +8,7 @@ const initialState = {
 };
 
 export const shoppingSlice = createSlice({
-  name: "compras",
+  name: 'compras',
   initialState,
   reducers: {
     addToCart: (state, action) => {
@@ -57,6 +57,9 @@ export const shoppingSlice = createSlice({
     saveOrder: (state, action) => {
       state.orderData = action.payload;
     },
+    repopulateCart: (state, action) => {
+      state.productsData.push(action.payload);
+    },
     resetOrder: (state) => {
       state.orderData = {};
     },
@@ -73,6 +76,7 @@ export const {
   addUser,
   deleteUser,
   saveOrder,
+  repopulateCart,
   addShippingInfo,
 } = shoppingSlice.actions;
 

@@ -61,7 +61,8 @@ export async function POST(req, res) {
       } else if (
         session?.metadata?.layaway &&
         session?.metadata?.layaway === 'true' &&
-        session?.metadata?.order
+        session?.metadata?.order &&
+        session.payment_status === 'paid'
       ) {
         const currentOrder = await Order.findOne({
           _id: session?.metadata?.order,

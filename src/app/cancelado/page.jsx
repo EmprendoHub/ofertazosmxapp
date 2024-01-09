@@ -1,7 +1,8 @@
 import React from 'react';
+import PedidoCancelado from '@/components/cart/PedidoCancelado';
 
 const PedidoCanceladoPage = () => {
-  return <div>PedidoCanceladoPage</div>;
+  return <PedidoCancelado />;
 };
 
 export default PedidoCanceladoPage;
