@@ -142,15 +142,25 @@ export async function POST(req, res) {
 
     if (event.type === 'checkout.session.async_payment_succeeded') {
       // get all the details from stripe checkout to create new order
-      const order = await Order?.findOne({
-        'paymentInfo.paymentIntent': session.payment_intent,
-      });
+      let order;
+      if (
+        session?.metadata?.layaway &&
+        session?.metadata?.layaway === 'true' &&
+        session?.metadata?.order
+      ) {
+        order = await Order?.findOne({
+          _id: session?.metadata?.order,
+        });
+      } else {
+        order = await Order?.findOne({
+          'paymentInfo.paymentIntent': session.payment_intent,
+        });
+      }
       const newPaymentAmount = session.amount_total / 100;
 
       const payAmount = order.paymentInfo.amountPaid + newPaymentAmount;
 
       order.paymentInfo.amountPaid = payAmount;
-      order.paymentInfo.status = 'paid';
 
       await order.save();
       return NextResponse.json(

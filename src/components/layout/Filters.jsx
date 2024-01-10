@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getPriceQueryParams } from '@/backend/helpers/index';
 import { IoIosStar } from 'react-icons/io';
+import Search from './Search';
 
 const Filters = ({ allCategories }) => {
   const [minAmount, setMinAmount] = useState('');
@@ -90,6 +91,11 @@ const Filters = ({ allCategories }) => {
       >
         Filtrar por
       </a>
+      {/* Search Filter */}
+
+      <div className=" px-6 py-4 border border-gray-200 bg-white rounded shadow-sm">
+        <Search />
+      </div>
       {/* Price Filter */}
 
       <div className=" px-6 py-4 border border-gray-200 bg-white rounded shadow-sm">

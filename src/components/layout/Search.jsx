@@ -9,9 +9,9 @@ const Search = () => {
     e.preventDefault();
 
     if (keyword) {
-      router.push(`/?keyword=${keyword}`);
+      router.push(`/tienda/?keyword=${keyword}`);
     } else {
-      router.push('/');
+      router.push('/tienda');
     }
   };
   return (
@@ -22,17 +22,17 @@ const Search = () => {
       <input
         className="flex-grow appearance-none border border-gray-200 bg-gray-100 rounded-md mr-2 py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400"
         type="text"
-        placeholder="Enter your keyword"
+        placeholder="Palabra clave"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
         required
       />
       <button
         type="button"
-        className="px-4 py-2 inline-block text-white border border-transparent bg-blue-600 rounded-md hover:bg-blue-700"
+        className="px-4 py-2 inline-block text-white border border-transparent  rounded-md bg-black"
         onClick={submitHandler}
       >
-        Search
+        Buscar
       </button>
     </form>
   );

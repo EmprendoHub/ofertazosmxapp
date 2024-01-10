@@ -9,15 +9,9 @@ class APIFilters {
     // Define the conditions to search for the keyword in title, description, and category
     const searchConditions = {
       $or: [
-        { 'title.lang.en': { $regex: keyword, $options: 'i' } },
-        { 'title.lang.es': { $regex: keyword, $options: 'i' } },
-        { 'title.lang.fr': { $regex: keyword, $options: 'i' } },
-        { 'description.lang.en': { $regex: keyword, $options: 'i' } },
-        { 'description.lang.es': { $regex: keyword, $options: 'i' } },
-        { 'description.lang.fr': { $regex: keyword, $options: 'i' } },
-        { 'category.lang.en': { $regex: keyword, $options: 'i' } },
-        { 'category.lang.es': { $regex: keyword, $options: 'i' } },
-        { 'category.lang.fr': { $regex: keyword, $options: 'i' } },
+        { title: { $regex: keyword, $options: 'i' } },
+        { description: { $regex: keyword, $options: 'i' } },
+        { category: { $regex: keyword, $options: 'i' } },
         { brand: { $regex: keyword, $options: 'i' } },
       ],
     };
