@@ -45,7 +45,10 @@ export async function POST(req, res) {
 
     const session = event.data.object;
 
-    if (event.type === 'checkout.session.completed') {
+    if (
+      event.type === 'checkout.session.completed' &&
+      session.payment_status === 'paid'
+    ) {
       // get all the details from stripe checkout to create new order
 
       let line_items;
@@ -61,8 +64,7 @@ export async function POST(req, res) {
       } else if (
         session?.metadata?.layaway &&
         session?.metadata?.layaway === 'true' &&
-        session?.metadata?.order &&
-        session.payment_status === 'paid'
+        session?.metadata?.order
       ) {
         const currentOrder = await Order.findOne({
           _id: session?.metadata?.order,
