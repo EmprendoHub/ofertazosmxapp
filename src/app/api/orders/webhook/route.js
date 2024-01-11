@@ -140,6 +140,79 @@ export async function POST(req, res) {
       );
     }
 
+    if (
+      event.type === 'checkout.session.completed' &&
+      session.payment_status === 'unpaid' &&
+      !session?.metadata?.payoff
+    ) {
+      // get all the details from stripe checkout to create new order
+
+      let line_items;
+
+      if (
+        session?.metadata?.layaway &&
+        session?.metadata?.layaway === 'true' &&
+        !session?.metadata?.order
+      ) {
+        line_items = await stripe.invoiceItems.list({
+          invoice: session.metadata.invoice,
+        });
+      } else {
+        line_items = await stripe.checkout.sessions.listLineItems(
+          event.data.object.id
+        );
+      }
+
+      const orderItems = await getCartItems(line_items);
+      const ship_cost = session.shipping_cost.amount_total / 100;
+      const date = Date.now();
+      const userId = session.client_reference_id;
+      const amountPaid = 0;
+
+      const paymentInfo = {
+        id: session.payment_intent,
+        status: session.payment_status,
+        amountPaid,
+        taxPaid: 0,
+        paymentIntent: session.payment_intent,
+      };
+      let orderData;
+
+      if (session?.metadata?.layaway && session?.metadata?.layaway === 'true') {
+        orderData = {
+          user: userId,
+          ship_cost,
+          createdAt: date,
+          shippingInfo: JSON.parse(session.metadata.shippingInfo),
+          paymentInfo,
+          orderItems,
+          orderStatus: 'Apartado',
+          layaway: true,
+        };
+      } else {
+        orderData = {
+          user: userId,
+          ship_cost,
+          createdAt: date,
+          shippingInfo: JSON.parse(session.metadata.shippingInfo),
+          paymentInfo,
+          orderItems,
+          layaway: false,
+        };
+      }
+
+      await Order.create(orderData);
+
+      await stripe.invoices.del(session.metadata.invoice);
+
+      return NextResponse.json(
+        {
+          success: true,
+        },
+        { status: 201 }
+      );
+    }
+
     if (event.type === 'checkout.session.async_payment_succeeded') {
       // get all the details from stripe checkout to create new order
       let order;
@@ -159,6 +232,16 @@ export async function POST(req, res) {
       const newPaymentAmount = session.amount_total / 100;
 
       const payAmount = order.paymentInfo.amountPaid + newPaymentAmount;
+
+      // Use reduce to sum up the 'total' field
+      const totalOrderAmount = orderItems?.reduce(
+        (acc, orderItem) => acc + orderItem.quantity * orderItem.price,
+        0
+      );
+
+      if (totalOrderAmount >= payAmount) {
+        order.orderStatus = 'Procesando';
+      }
 
       order.paymentInfo.amountPaid = payAmount;
 

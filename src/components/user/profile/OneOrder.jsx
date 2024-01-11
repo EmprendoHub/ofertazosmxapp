@@ -12,8 +12,6 @@ const OneOrder = ({ id, data }) => {
   const address = data.deliveryAddress;
   const { userInfo } = useSelector((state) => state.compras);
 
-  console.log(userInfo?.email, 'userInfo');
-
   const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE__KEY);
   const handleCheckout = async () => {
     const stripe = await stripePromise;

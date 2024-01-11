@@ -62,6 +62,7 @@ export const POST = async (request) => {
       metadata: {
         shippingInfo,
         layaway: true,
+        payoff: true,
         order: order._id,
       },
       shipping_options: [
