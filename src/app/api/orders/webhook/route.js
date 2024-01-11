@@ -214,6 +214,7 @@ export async function POST(req, res) {
           shippingInfo: JSON.parse(session.metadata.shippingInfo),
           paymentInfo,
           orderItems,
+          orderStatus: 'Pendiente',
           layaway: false,
         };
       }
