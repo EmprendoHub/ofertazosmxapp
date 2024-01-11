@@ -52,13 +52,19 @@ const Profile = () => {
     <>
       <figure className="flex items-start sm:items-center text-black">
         <div className="relative">
-          <Image
-            className="w-16 h-16 rounded-full mr-4"
-            src={user?.image ? user?.image : '/next.svg'}
-            alt={user?.name ? user?.name : 'avatar'}
-            width={50}
-            height={50}
-          />
+          {user?.image ? (
+            <Image
+              className="w-16 h-16 rounded-full mr-4"
+              src={user?.image ? user?.image : '/next.svg'}
+              alt={user?.name ? user?.name : 'avatar'}
+              width={50}
+              height={50}
+            />
+          ) : (
+            <div className="w-16 h-16 rounded-full mr-4 bg-black text-white flex items-center justify-center uppercase text-2xl font-EB_Garamond">
+              {user?.email.substring(0, 1)}
+            </div>
+          )}
         </div>
         <figcaption>
           <h5 className="font-semibold text-lg">

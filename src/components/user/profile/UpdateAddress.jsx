@@ -1,7 +1,6 @@
 'use client';
 import React, { useContext, useEffect, useState } from 'react';
 import { countries } from 'countries-list';
-import { AiTwotoneHome } from 'react-icons/ai';
 import AuthContext from '@/context/AuthContext';
 
 const UpdateAddress = ({ id }) => {
@@ -65,7 +64,7 @@ const UpdateAddress = ({ id }) => {
             <input
               className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
               type="text"
-              placeholder="Type your address"
+              placeholder="Ingresa tu domicilio"
               value={street}
               onChange={(e) => setStreet(e.target.value)}
             />
@@ -73,11 +72,11 @@ const UpdateAddress = ({ id }) => {
 
           <div className="grid md:grid-cols-2 gap-x-3">
             <div className="mb-4 md:col-span-1">
-              <label className="block mb-1"> City </label>
+              <label className="block mb-1"> Ciudad </label>
               <input
                 className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
                 type="text"
-                placeholder="Type your city"
+                placeholder="Ingresa tu Ciudad"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
               />
@@ -88,7 +87,7 @@ const UpdateAddress = ({ id }) => {
               <input
                 className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
                 type="text"
-                placeholder="Type state here"
+                placeholder="Ingresa tu Estado"
                 value={province}
                 onChange={(e) => setProvince(e.target.value)}
               />
@@ -101,7 +100,7 @@ const UpdateAddress = ({ id }) => {
               <input
                 className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
                 type="number"
-                placeholder="Type zip code here"
+                placeholder="Ingresa tu código postal"
                 value={zipcode}
                 onChange={(e) => setZipcode(e.target.value)}
               />
@@ -112,7 +111,7 @@ const UpdateAddress = ({ id }) => {
               <input
                 className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
                 type="number"
-                placeholder="Type phone no here"
+                placeholder="Ingresa tu teléfono"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
               />
@@ -120,7 +119,7 @@ const UpdateAddress = ({ id }) => {
           </div>
 
           <div className="mb-4 md:col-span-2">
-            <label className="block mb-1"> Pais </label>
+            <label className="block mb-1"> País </label>
             <select
               className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
               value={country}
