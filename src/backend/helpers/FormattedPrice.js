@@ -1,5 +1,4 @@
 const FormattedPrice = ({ amount }) => {
-  console.log(amount);
   const formattedAmount = amount.toLocaleString('en-US', {
     style: 'currency',
     currency: 'MXN',

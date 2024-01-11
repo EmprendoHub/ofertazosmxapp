@@ -1,39 +1,22 @@
-'use client';
-import React, { useContext, useEffect, useState } from 'react';
-import Link from 'next/link';
-import AuthContext from '@/context/AuthContext';
-import { FaPencilAlt } from 'react-icons/fa';
-import { AiOutlineInteraction } from 'react-icons/ai';
-import { formatDate, formatTime } from '@/backend/helpers';
-
-import { getTotalFromItems } from '@/backend/helpers';
+import { formatDate, getTotalFromItems } from '@/backend/helpers';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
+import Link from 'next/link';
+import React from 'react';
+import { AiOutlineInteraction } from 'react-icons/ai';
+import { FaPencilAlt } from 'react-icons/fa';
 
-const Orders = () => {
-  const { getAllOrders } = useContext(AuthContext);
-  const [orders, setOrders] = useState([]);
-
-  useEffect(() => {
-    async function getOrders() {
-      const ordersGet = await getAllOrders();
-      setOrders(ordersGet);
-    }
-    getOrders();
-  }, [getAllOrders]);
-
+const ViewUserOrders = ({ orders }) => {
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <h1 className="text-3xl my-5 ml-4 font-bold">
-        {`${orders?.length} Pedidos`}
+        {`${orders?.length}
+        Pedidos para ${orders[0]?.user.name}`}
       </h1>
       <table className="w-full text-sm text-left">
         <thead className="text-l text-gray-700 uppercase">
           <tr>
             <th scope="col" className="px-6 py-3">
-              Cliente
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Pedido
+              ID
             </th>
             <th scope="col" className="px-6 py-3">
               Total
@@ -57,15 +40,10 @@ const Orders = () => {
             <tr className="bg-white" key={index}>
               <td className="px-6 py-2">
                 <Link
-                  key={index}
-                  href={`/admin/clientes/perfil/${order.user._id}`}
+                  href={`/admin/pedidos/${order._id}`}
+                  className="px-2 py-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
                 >
-                  {order.user.name.substring(0, 12)}...
-                </Link>
-              </td>
-              <td className="px-6 py-2">
-                <Link key={index} href={`/admin/pedidos/${order._id}`}>
-                  {order._id.substring(0, 7)}...
+                  {order._id.substring(0, 10)}...
                 </Link>
               </td>
               <td className="px-6 py-2">
@@ -114,4 +92,4 @@ const Orders = () => {
   );
 };
 
-export default Orders;
+export default ViewUserOrders;

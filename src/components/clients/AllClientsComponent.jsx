@@ -25,7 +25,7 @@ const AllClientsComponent = () => {
           className="flex flex-row maxsm:flex-col justify-between items-center "
         >
           <div>
-            <Link key={index} href={`/admin/clientes/editar/${client._id}`}>
+            <Link key={index} href={`/admin/clientes/perfil/${client._id}`}>
               <div className="mb-5 gap-4">
                 <figure className="w-full flex align-center bg-gray-100 p-4 rounded-md cursor-pointer maxsm:flex-col">
                   <div className="mr-3 w-15 h-15 maxsm:w-full maxsm:h-full">

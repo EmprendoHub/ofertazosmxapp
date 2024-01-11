@@ -13,7 +13,6 @@ const PedidoCancelado = () => {
 
   useEffect(() => {
     orderData.order.forEach((product) => {
-      console.log(product, 'product');
       dispatch(addToCart(product));
     });
     router.replace('/carrito');

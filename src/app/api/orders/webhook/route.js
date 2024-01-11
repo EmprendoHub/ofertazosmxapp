@@ -262,7 +262,6 @@ export async function POST(req, res) {
         });
       }
 
-      console.log('order', order);
       const newPaymentAmount = session.amount_total / 100;
 
       const payAmount = order.paymentInfo.amountPaid + newPaymentAmount;
@@ -272,8 +271,6 @@ export async function POST(req, res) {
         (acc, orderItem) => acc + orderItem.quantity * orderItem.price,
         0
       );
-
-      console.log('payAmount > totalOrderAmount ', totalOrderAmount, payAmount);
 
       if (payAmount >= totalOrderAmount) {
         order.orderStatus = 'Procesando';
