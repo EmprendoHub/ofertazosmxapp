@@ -206,6 +206,7 @@ export async function POST(req, res) {
           orderStatus: 'Apartado',
           layaway: true,
         };
+        await stripe.invoices.del(session.metadata.invoice);
       } else {
         orderData = {
           user: userId,
@@ -220,8 +221,6 @@ export async function POST(req, res) {
       }
 
       await Order.create(orderData);
-
-      await stripe.invoices.del(session.metadata.invoice);
 
       return NextResponse.json(
         {
