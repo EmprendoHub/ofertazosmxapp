@@ -34,15 +34,12 @@ export async function POST(req, res) {
 
     // Access the value of stripe-signature from the headers
     const signature = await req.headers.get('stripe-signature');
-
     const rawBody = await req.text();
-
     const event = stripe.webhooks.constructEvent(
       rawBody,
       signature,
       process.env.STRIPE_WEBHOOK_SECRET
     );
-
     const session = event.data.object;
 
     if (
@@ -54,6 +51,7 @@ export async function POST(req, res) {
       let line_items;
 
       if (
+        // Layaway
         session?.metadata?.layaway &&
         session?.metadata?.layaway === 'true' &&
         !session?.metadata?.order
@@ -213,6 +211,7 @@ export async function POST(req, res) {
       );
     }
 
+    // Bamd Oxxo Payments
     if (event.type === 'checkout.session.async_payment_succeeded') {
       // get all the details from stripe checkout to create new order
       let order;
@@ -229,6 +228,8 @@ export async function POST(req, res) {
           'paymentInfo.paymentIntent': session.payment_intent,
         });
       }
+
+      console.log('order', order);
       const newPaymentAmount = session.amount_total / 100;
 
       const payAmount = order.paymentInfo.amountPaid + newPaymentAmount;

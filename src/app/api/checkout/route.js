@@ -36,8 +36,6 @@ export const POST = async (request) => {
     // Calculate total amount based on items
     let totalAmount = await calculateTotalAmount(items);
 
-    console.log(totalAmount);
-
     // Calculate installment amount
     let installmentAmount = Math.round(totalAmount * 0.3);
 
