@@ -35,7 +35,7 @@ const AllClientsComponent = () => {
                   </div>
                   <figcaption className="text-gray-600">
                     <p>
-                      {client?._id}
+                      {client?.name}
                       <br />
                       {client?.email}
                       <br />

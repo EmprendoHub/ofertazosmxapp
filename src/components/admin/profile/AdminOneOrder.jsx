@@ -96,10 +96,9 @@ const AdminOneOrder = ({ id, data }) => {
                 order?.paymentInfo?.status === 'paid' ? 'text-green-700' : ''
               }`}
             >
-              {order?.paymentInfo?.status &&
-              order?.paymentInfo?.status === 'paid'
+              {order?.paymentInfo?.amountPaid >= getTotal(order?.orderItems)
                 ? 'PAGADO'
-                : 'NADA'}
+                : 'PENDIENTE'}
             </h2>
           )}
         </div>

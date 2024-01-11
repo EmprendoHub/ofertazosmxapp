@@ -4,6 +4,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import AuthContext from '@/context/AuthContext';
 import { FaTrash, FaPencilAlt } from 'react-icons/fa';
+import ConfirmationModalContextProvider from '../modals/modalConfirmationContext';
+import DeleteButton from '../buttons/DeleteButton';
 
 const AllProductsComponent = ({ products }) => {
   const { deleteProduct } = useContext(AuthContext);
@@ -11,7 +13,7 @@ const AllProductsComponent = ({ products }) => {
     deleteProduct(product_id);
   };
   return (
-    <>
+    <ConfirmationModalContextProvider>
       <Link href="/admin/productos/nuevo">
         <button className="px-4 py-2 inline-block text-blue-600 border border-gray-300 rounded-md hover:bg-gray-100">
           <i className="mr-1 fa fa-plus"></i> Agregar Nuevo Producto
@@ -58,13 +60,13 @@ const AllProductsComponent = ({ products }) => {
           </div>
           <div className="flex flex-row justify-between items-center gap-5">
             <span>
-              {' '}
-              <button
+              <DeleteButton
+                product={product}
                 onClick={() => deleteHandler(product._id)}
                 className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700"
               >
                 <FaTrash className="text-white" />
-              </button>
+              </DeleteButton>
             </span>
             <span>
               <Link
@@ -80,7 +82,7 @@ const AllProductsComponent = ({ products }) => {
       ))}
 
       <hr className="my-4" />
-    </>
+    </ConfirmationModalContextProvider>
   );
 };
 
