@@ -67,10 +67,27 @@ export async function POST(req, res) {
         const currentOrder = await Order.findOne({
           _id: session?.metadata?.order,
         });
-        currentOrder.paymentInfo.amountPaid =
-          currentOrder.paymentInfo.amountPaid + session.amount_total / 100;
-        currentOrder.orderStatus = 'Procesando';
-        const savedOrder = await currentOrder.save();
+
+        const newPaymentAmount = session.amount_total / 100;
+        const payAmount =
+          currentOrder.paymentInfo.amountPaid + newPaymentAmount;
+        // Use reduce to sum up the 'total' field
+        const totalOrderAmount = currentOrder.orderItems.reduce(
+          (acc, orderItem) => acc + orderItem.quantity * orderItem.price,
+          0
+        );
+
+        if (totalOrderAmount >= payAmount) {
+          currentOrder.orderStatus = 'Procesando';
+        }
+
+        if (totalOrderAmount < payAmount) {
+          currentOrder.orderStatus = 'Apartado';
+        }
+
+        currentOrder.paymentInfo.amountPaid = payAmount;
+
+        await currentOrder.save();
         return NextResponse.json(
           {
             success: true,
