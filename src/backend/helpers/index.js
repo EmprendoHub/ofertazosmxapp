@@ -81,3 +81,17 @@ export function getOrderItemsQuantities(orderItems) {
   const totalQuantity = orderItems?.reduce((sum, obj) => sum + obj.quantity, 0);
   return totalQuantity;
 }
+
+export const getCookiesName = () => {
+  let cookieName = '';
+
+  if (process.env.NODE_ENV === 'development') {
+    cookieName = 'next-auth.session-token';
+  }
+
+  if (process.env.NODE_ENV === 'production') {
+    cookieName = '__Secure-next-auth.session-token';
+  }
+
+  return cookieName;
+};
