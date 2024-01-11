@@ -77,11 +77,11 @@ export async function POST(req, res) {
           0
         );
 
-        if (totalOrderAmount >= payAmount) {
+        if (payAmount >= totalOrderAmount) {
           currentOrder.orderStatus = 'Procesando';
         }
 
-        if (totalOrderAmount < payAmount) {
+        if (payAmount < totalOrderAmount) {
           currentOrder.orderStatus = 'Apartado';
         }
 
@@ -257,13 +257,13 @@ export async function POST(req, res) {
         0
       );
 
-      console.log('totalOrderAmount , payAmount', totalOrderAmount, payAmount);
+      console.log('payAmount > totalOrderAmount ', totalOrderAmount, payAmount);
 
-      if (totalOrderAmount >= payAmount) {
+      if (payAmount >= totalOrderAmount) {
         order.orderStatus = 'Procesando';
       }
 
-      if (totalOrderAmount < payAmount) {
+      if (payAmount < totalOrderAmount) {
         order.orderStatus = 'Apartado';
       }
 
