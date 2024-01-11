@@ -42,6 +42,7 @@ export async function POST(req, res) {
     );
     const session = event.data.object;
 
+    // credit card checkout
     if (
       event.type === 'checkout.session.completed' &&
       session.payment_status === 'paid'
@@ -155,6 +156,7 @@ export async function POST(req, res) {
       );
     }
 
+    // Bank & Oxxo Checkout
     if (
       event.type === 'checkout.session.completed' &&
       session.payment_status === 'unpaid' &&
@@ -228,7 +230,21 @@ export async function POST(req, res) {
       );
     }
 
-    // Bamd Oxxo Payments
+    // Bank & Oxxo Final Payment Checkout
+    if (
+      event.type === 'checkout.session.completed' &&
+      session.payment_status === 'unpaid' &&
+      session?.metadata?.payoff
+    ) {
+      return NextResponse.json(
+        {
+          success: true,
+        },
+        { status: 201 }
+      );
+    }
+
+    // Bank & Oxxo Full Order Payments
     if (event.type === 'checkout.session.async_payment_succeeded') {
       // get all the details from stripe checkout to create new order
       let order;
