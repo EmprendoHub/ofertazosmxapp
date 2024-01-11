@@ -246,6 +246,10 @@ export async function POST(req, res) {
         order.orderStatus = 'Procesando';
       }
 
+      if (totalOrderAmount < payAmount) {
+        order.orderStatus = 'Apartado';
+      }
+
       order.paymentInfo.amountPaid = payAmount;
 
       await order.save();
