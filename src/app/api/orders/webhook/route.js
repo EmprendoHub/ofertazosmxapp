@@ -235,10 +235,12 @@ export async function POST(req, res) {
       const payAmount = order.paymentInfo.amountPaid + newPaymentAmount;
 
       // Use reduce to sum up the 'total' field
-      const totalOrderAmount = order.orderItems?.reduce(
+      const totalOrderAmount = order.orderItems.reduce(
         (acc, orderItem) => acc + orderItem.quantity * orderItem.price,
         0
       );
+
+      console.log('totalOrderAmount , payAmount', totalOrderAmount, payAmount);
 
       if (totalOrderAmount >= payAmount) {
         order.orderStatus = 'Procesando';
