@@ -148,11 +148,6 @@ export const POST = async (request) => {
           layaway: isLayaway,
           order: newOrder._id.toString(),
         },
-        shipping_options: [
-          {
-            shipping_rate: 'shr_1OW9lzF1B19DqtcQpzK984xg',
-          },
-        ],
         line_items: [
           {
             price_data: {

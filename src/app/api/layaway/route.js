@@ -76,8 +76,8 @@ export const POST = async (request) => {
             currency: 'mxn',
             unit_amount: pendingAmount * 100, // Convert to cents
             product_data: {
-              name: 'Pago de Apartado',
-              description: `Pago para apartado del pedido #${order._id}`,
+              name: 'Finiquitar Apartado',
+              description: `Pago final del pedido #${order.orderId}`,
             },
           },
           quantity: 1,

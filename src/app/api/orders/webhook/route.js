@@ -23,8 +23,9 @@ export async function POST(req, res) {
 
     // credit card checkout
     if (
-      event.type === 'checkout.session.completed' ||
-      event.type === 'checkout.session.async_payment_succeeded'
+      (event.type === 'checkout.session.completed' ||
+        event.type === 'checkout.session.async_payment_succeeded') &&
+      !session?.metadata?.payoff
     ) {
       // get all the details from stripe checkout to create new order
 
@@ -54,13 +55,13 @@ export async function POST(req, res) {
       currentOrder.paymentInfo.amountPaid = payAmount;
 
       await currentOrder.save();
-      return NextResponse.json(
-        {
-          success: true,
-        },
-        { status: 201 }
-      );
     }
+    return NextResponse.json(
+      {
+        success: true,
+      },
+      { status: 201 }
+    );
   } catch (error) {
     return NextResponse.json(
       {
