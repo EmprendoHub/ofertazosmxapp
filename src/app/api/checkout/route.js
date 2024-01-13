@@ -2,20 +2,20 @@ import Order from '@/backend/models/Order';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-async function getCartItems(line_items) {
+async function getCartItems(items) {
   return new Promise((resolve, reject) => {
     let cartItems = [];
 
-    line_items?.data?.forEach(async (item) => {
+    items?.forEach(async (item) => {
       cartItems.push({
-        product: productId,
-        name: product.name,
-        price: item.price.unit_amount_decimal / 100,
+        product: { _id: item._id },
+        name: item.title,
+        price: item.price,
         quantity: item.quantity,
-        image: product.images[0],
+        image: item.images[0],
       });
 
-      if (cartItems.length === line_items?.data.length) {
+      if (cartItems.length === items?.length) {
         resolve(cartItems);
       }
     });
@@ -35,8 +35,6 @@ export const POST = async (request) => {
     const isLayaway = urlData[1] === 'layaway';
     const reqBody = await request.json();
     const { items, email, user, shipping } = await reqBody;
-
-    console.log(items);
 
     const existingCustomers = await stripe.customers.list({
       email: user.email,
@@ -74,6 +72,7 @@ export const POST = async (request) => {
       taxPaid: 0,
       paymentIntent: 'pending',
     };
+    const order_items = await getCartItems(items);
 
     const line_items = await items.map((item) => {
       return {
@@ -90,6 +89,7 @@ export const POST = async (request) => {
         quantity: item.quantity,
       };
     });
+
     let orderData;
     if (isLayaway) {
       orderData = {
@@ -98,7 +98,7 @@ export const POST = async (request) => {
         createdAt: date,
         shippingInfo: shipping,
         paymentInfo,
-        orderItems: items,
+        orderItems: order_items,
         orderStatus: 'Pendiente',
         layaway: true,
       };
@@ -109,7 +109,7 @@ export const POST = async (request) => {
         createdAt: date,
         shippingInfo: shipping,
         paymentInfo,
-        orderItems: items,
+        orderItems: order_items,
         orderStatus: 'Pendiente',
         layaway: false,
       };
@@ -196,6 +196,8 @@ export const POST = async (request) => {
         line_items,
       });
     }
+
+    console.log(' session ', session);
 
     return NextResponse.json({
       message: 'Connection is active',
