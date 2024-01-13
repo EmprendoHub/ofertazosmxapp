@@ -79,11 +79,6 @@ const OrderSchema = new mongoose.Schema({
   },
 });
 
-OrderSchema.pre('save', function (next) {
-  console.log('Simple pre hook triggered');
-  next();
-});
-
 // Apply the pre-save hook to generate the orderNumber
 OrderSchema.pre('save', async function (next) {
   const doc = this;
@@ -92,11 +87,9 @@ OrderSchema.pre('save', async function (next) {
     console.log('pre hook triggered');
     try {
       // Find the highest order number
-      const highestOrder = await Order.findOne(
-        {},
-        {},
-        { sort: { orderId: -1 } }
-      ).exec();
+      const highestOrder = await this.constructor
+        .findOne({}, {}, { sort: { orderId: -1 } })
+        .exec();
 
       console.log('highestOrder', highestOrder);
 
