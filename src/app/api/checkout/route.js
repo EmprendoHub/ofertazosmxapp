@@ -12,7 +12,7 @@ async function getCartItems(items) {
         name: item.title,
         price: item.price,
         quantity: item.quantity,
-        image: item.images[0],
+        image: item.images[0].url,
       });
 
       if (cartItems.length === items?.length) {
@@ -119,6 +119,8 @@ export const POST = async (request) => {
     const newOrder = await new Order(orderData);
     await newOrder.save();
 
+    console.log(newOrder._id.toString(), 'newOrder._id');
+
     if (isLayaway) {
       session = await stripe.checkout.sessions.create({
         payment_method_types: ['card', 'oxxo', 'customer_balance'],
@@ -138,11 +140,13 @@ export const POST = async (request) => {
         locale: 'es-419',
         client_reference_id: user?._id,
         success_url: `${process.env.NEXTAUTH_URL}/perfil/pedidos?pedido_exitoso=true`,
-        cancel_url: `${process.env.NEXTAUTH_URL}/cancelado?${newOrder._id}`,
+        cancel_url: `${
+          process.env.NEXTAUTH_URL
+        }/cancelado?${newOrder._id.toString()}`,
         metadata: {
           shippingInfo,
           layaway: isLayaway,
-          order: newOrder._id,
+          order: newOrder._id.toString(),
         },
         shipping_options: [
           {
@@ -181,12 +185,14 @@ export const POST = async (request) => {
         },
         locale: 'es-419',
         success_url: `${process.env.NEXTAUTH_URL}/perfil/pedidos?pedido_exitoso=true`,
-        cancel_url: `${process.env.NEXTAUTH_URL}/cancelado?${newOrder._id}`,
+        cancel_url: `${
+          process.env.NEXTAUTH_URL
+        }/cancelado?${newOrder._id.toString()}`,
         client_reference_id: user?._id,
         metadata: {
           shippingInfo,
           layaway: isLayaway,
-          order: newOrder._id,
+          order: newOrder._id.toString(),
         },
         shipping_options: [
           {
