@@ -5,29 +5,6 @@ import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-async function getCartItems(line_items) {
-  return new Promise((resolve, reject) => {
-    let cartItems = [];
-
-    line_items?.data?.forEach(async (item) => {
-      const product = await stripe.products.retrieve(item.price.product);
-      const productId = product.metadata.productId;
-
-      cartItems.push({
-        product: productId,
-        name: product.name,
-        price: item.price.unit_amount_decimal / 100,
-        quantity: item.quantity,
-        image: product.images[0],
-      });
-
-      if (cartItems.length === line_items?.data.length) {
-        resolve(cartItems);
-      }
-    });
-  });
-}
-
 export async function POST(req, res) {
   try {
     await dbConnect();
@@ -42,6 +19,8 @@ export async function POST(req, res) {
     );
     const session = event.data.object;
 
+    console.log('session', session, 'session');
+
     // credit card checkout
     if (
       event.type === 'checkout.session.completed' ||
@@ -52,6 +31,8 @@ export async function POST(req, res) {
       const currentOrder = await Order.findOne({
         _id: session?.metadata?.order,
       });
+
+      console.log('currentOrder', currentOrder);
 
       const newPaymentAmount = session.amount_total / 100;
       const payAmount = currentOrder.paymentInfo.amountPaid + newPaymentAmount;

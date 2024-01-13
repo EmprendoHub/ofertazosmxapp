@@ -1,5 +1,26 @@
+import Order from '@/backend/models/Order';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
+
+async function getCartItems(line_items) {
+  return new Promise((resolve, reject) => {
+    let cartItems = [];
+
+    line_items?.data?.forEach(async (item) => {
+      cartItems.push({
+        product: productId,
+        name: product.name,
+        price: item.price.unit_amount_decimal / 100,
+        quantity: item.quantity,
+        image: product.images[0],
+      });
+
+      if (cartItems.length === line_items?.data.length) {
+        resolve(cartItems);
+      }
+    });
+  });
+}
 
 const calculateTotalAmount = (items) => {
   // Assuming each item has a 'price' and 'quantity' property
@@ -14,6 +35,8 @@ export const POST = async (request) => {
     const isLayaway = urlData[1] === 'layaway';
     const reqBody = await request.json();
     const { items, email, user, shipping } = await reqBody;
+
+    console.log(items);
 
     const existingCustomers = await stripe.customers.list({
       email: user.email,
