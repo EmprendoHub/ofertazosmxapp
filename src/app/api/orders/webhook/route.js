@@ -23,9 +23,8 @@ export async function POST(req, res) {
 
     // credit card checkout
     if (
-      (event.type === 'checkout.session.completed' ||
-        event.type === 'checkout.session.async_payment_succeeded') &&
-      !session?.metadata?.payoff
+      event.type === 'checkout.session.completed' ||
+      event.type === 'checkout.session.async_payment_succeeded'
     ) {
       // get all the details from stripe checkout to create new order
 
