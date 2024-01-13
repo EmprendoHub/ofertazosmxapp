@@ -34,9 +34,14 @@ export async function POST(req, res) {
       });
 
       console.log('currentOrder', currentOrder);
+      let newPaymentAmount;
+      if (session.payment_status === 'unpaid') {
+        newPaymentAmount = 0;
+      } else {
+        newPaymentAmount = session.amount_total / 100;
+      }
 
-      const newPaymentAmount = session.amount_total / 100;
-      const payAmount = currentOrder.paymentInfo.amountPaid + newPaymentAmount;
+      let payAmount = currentOrder.paymentInfo.amountPaid + newPaymentAmount;
       // Use reduce to sum up the 'total' field
       const totalOrderAmount = currentOrder.orderItems.reduce(
         (acc, orderItem) => acc + orderItem.quantity * orderItem.price,
