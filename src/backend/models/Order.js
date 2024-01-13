@@ -84,29 +84,21 @@ OrderSchema.pre('save', async function (next) {
   const doc = this;
 
   if (!doc.orderId) {
-    console.log('pre hook triggered');
     try {
       // Find the highest order number
       const highestOrder = await this.constructor
         .findOne({}, {}, { sort: { orderId: -1 } })
         .exec();
 
-      console.log('highestOrder', highestOrder);
-
       // Calculate the next order number
-      const nextOrderId = (highestOrder?.orderId || 1000) + 1;
-
-      console.log('nextOrderId', nextOrderId);
+      const nextOrderId = (highestOrder?.orderId || 24000) + 1;
 
       // Assign the next order number to the document
       doc.orderId = nextOrderId;
     } catch (error) {
-      console.error('Error in pre hook:', error);
       return next(error);
     }
   }
-
-  console.log('after If');
 
   next();
 });

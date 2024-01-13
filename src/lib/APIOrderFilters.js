@@ -19,6 +19,8 @@ class APIOrderFilters {
           $or: [
             // Include condition to search by orderStatus
             { orderStatus: { $regex: keyword, $options: 'i' } },
+            // Include condition to search by orderId
+            { orderId: { $eq: parseInt(keyword) } },
           ],
         };
 
