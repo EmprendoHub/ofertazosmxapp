@@ -44,249 +44,35 @@ export async function POST(req, res) {
 
     // credit card checkout
     if (
-      event.type === 'checkout.session.completed' &&
-      session.payment_status === 'paid'
+      event.type === 'checkout.session.completed' ||
+      event.type === 'checkout.session.async_payment_succeeded'
     ) {
       // get all the details from stripe checkout to create new order
 
-      let line_items;
-
-      if (
-        // Layaway
-        session?.metadata?.layaway &&
-        session?.metadata?.layaway === 'true' &&
-        !session?.metadata?.order
-      ) {
-        line_items = await stripe.invoiceItems.list({
-          invoice: session.metadata.invoice,
-        });
-      } else if (
-        session?.metadata?.layaway &&
-        session?.metadata?.layaway === 'true' &&
-        session?.metadata?.order
-      ) {
-        const currentOrder = await Order.findOne({
-          _id: session?.metadata?.order,
-        });
-
-        const newPaymentAmount = session.amount_total / 100;
-        const payAmount =
-          currentOrder.paymentInfo.amountPaid + newPaymentAmount;
-        // Use reduce to sum up the 'total' field
-        const totalOrderAmount = currentOrder.orderItems.reduce(
-          (acc, orderItem) => acc + orderItem.quantity * orderItem.price,
-          0
-        );
-
-        if (payAmount >= totalOrderAmount) {
-          currentOrder.orderStatus = 'Procesando';
-        }
-
-        if (payAmount < totalOrderAmount) {
-          currentOrder.orderStatus = 'Apartado';
-        }
-
-        currentOrder.paymentInfo.amountPaid = payAmount;
-
-        await currentOrder.save();
-        return NextResponse.json(
-          {
-            success: true,
-          },
-          { status: 201 }
-        );
-      } else {
-        line_items = await stripe.checkout.sessions.listLineItems(
-          event.data.object.id
-        );
-      }
-
-      const orderItems = await getCartItems(line_items);
-      const ship_cost = session.shipping_cost.amount_total / 100;
-      const date = Date.now();
-      const userId = session.client_reference_id;
-      let amountPaid;
-      if (session.payment_status === 'unpaid') {
-        amountPaid = 0;
-      } else {
-        amountPaid = session.amount_total / 100;
-      }
-
-      const paymentInfo = {
-        id: session.payment_intent,
-        status: session.payment_status,
-        amountPaid,
-        taxPaid: 0,
-        paymentIntent: session.payment_intent,
-      };
-      let orderData;
-
-      if (session?.metadata?.layaway && session?.metadata?.layaway === 'true') {
-        orderData = {
-          user: userId,
-          ship_cost,
-          createdAt: date,
-          shippingInfo: JSON.parse(session.metadata.shippingInfo),
-          paymentInfo,
-          orderItems,
-          orderStatus: 'Apartado',
-          layaway: true,
-        };
-      } else {
-        orderData = {
-          user: userId,
-          ship_cost,
-          createdAt: date,
-          shippingInfo: JSON.parse(session.metadata.shippingInfo),
-          paymentInfo,
-          orderItems,
-          layaway: false,
-        };
-      }
-
-      //await Order.create(orderData);
-      const newOrder = await new Order(orderData);
-      await newOrder.save();
-
-      await stripe.invoices.del(session.metadata.invoice);
-
-      return NextResponse.json(
-        {
-          success: true,
-        },
-        { status: 201 }
-      );
-    }
-
-    // Bank & Oxxo Checkout
-    if (
-      event.type === 'checkout.session.completed' &&
-      session.payment_status === 'unpaid' &&
-      !session?.metadata?.payoff
-    ) {
-      // get all the details from stripe checkout to create new order
-
-      let line_items;
-
-      if (
-        session?.metadata?.layaway &&
-        session?.metadata?.layaway === 'true' &&
-        !session?.metadata?.order
-      ) {
-        line_items = await stripe.invoiceItems.list({
-          invoice: session.metadata.invoice,
-        });
-      } else {
-        line_items = await stripe.checkout.sessions.listLineItems(
-          event.data.object.id
-        );
-      }
-
-      const orderItems = await getCartItems(line_items);
-      const ship_cost = session.shipping_cost.amount_total / 100;
-      const date = Date.now();
-      const userId = session.client_reference_id;
-      const amountPaid = 0;
-
-      const paymentInfo = {
-        id: session.payment_intent,
-        status: session.payment_status,
-        amountPaid,
-        taxPaid: 0,
-        paymentIntent: session.payment_intent,
-      };
-      let orderData;
-
-      if (session?.metadata?.layaway && session?.metadata?.layaway === 'true') {
-        orderData = {
-          user: userId,
-          ship_cost,
-          createdAt: date,
-          shippingInfo: JSON.parse(session.metadata.shippingInfo),
-          paymentInfo,
-          orderItems,
-          orderStatus: 'Apartado',
-          layaway: true,
-        };
-        await stripe.invoices.del(session.metadata.invoice);
-      } else {
-        orderData = {
-          user: userId,
-          ship_cost,
-          createdAt: date,
-          shippingInfo: JSON.parse(session.metadata.shippingInfo),
-          paymentInfo,
-          orderItems,
-          orderStatus: 'Pendiente',
-          layaway: false,
-        };
-      }
-
-      //await Order.create(orderData);
-      const newOrder = await new Order(orderData);
-      await newOrder.save();
-
-      return NextResponse.json(
-        {
-          success: true,
-        },
-        { status: 201 }
-      );
-    }
-
-    // Bank & Oxxo Final Payment Checkout
-    if (
-      event.type === 'checkout.session.completed' &&
-      session.payment_status === 'unpaid' &&
-      session?.metadata?.payoff
-    ) {
-      return NextResponse.json(
-        {
-          success: true,
-        },
-        { status: 201 }
-      );
-    }
-
-    // Bank & Oxxo Full Order Payments
-    if (event.type === 'checkout.session.async_payment_succeeded') {
-      // get all the details from stripe checkout to create new order
-      let order;
-      if (
-        session?.metadata?.layaway &&
-        session?.metadata?.layaway === 'true' &&
-        session?.metadata?.order
-      ) {
-        order = await Order?.findOne({
-          _id: session?.metadata?.order,
-        });
-      } else {
-        order = await Order?.findOne({
-          'paymentInfo.paymentIntent': session.payment_intent,
-        });
-      }
+      const currentOrder = await Order.findOne({
+        _id: session?.metadata?.order,
+      });
 
       const newPaymentAmount = session.amount_total / 100;
-
-      const payAmount = order.paymentInfo.amountPaid + newPaymentAmount;
-
+      const payAmount = currentOrder.paymentInfo.amountPaid + newPaymentAmount;
       // Use reduce to sum up the 'total' field
-      const totalOrderAmount = order.orderItems.reduce(
+      const totalOrderAmount = currentOrder.orderItems.reduce(
         (acc, orderItem) => acc + orderItem.quantity * orderItem.price,
         0
       );
 
       if (payAmount >= totalOrderAmount) {
-        order.orderStatus = 'Procesando';
+        currentOrder.orderStatus = 'Procesando';
+        currentOrder.paymentInfo.status = 'Paid';
       }
 
       if (payAmount < totalOrderAmount) {
-        order.orderStatus = 'Apartado';
+        currentOrder.orderStatus = 'Apartado';
       }
 
-      order.paymentInfo.amountPaid = payAmount;
+      currentOrder.paymentInfo.amountPaid = payAmount;
 
-      await order.save();
+      await currentOrder.save();
       return NextResponse.json(
         {
           success: true,

@@ -42,6 +42,15 @@ export const POST = async (request) => {
     let session;
 
     const shippingInfo = JSON.stringify(shipping);
+    const ship_cost = 0;
+    const date = Date.now();
+    const paymentInfo = {
+      id: 'pending',
+      status: 'pending',
+      amountPaid: 0,
+      taxPaid: 0,
+      paymentIntent: 'pending',
+    };
 
     const line_items = await items.map((item) => {
       return {
@@ -58,49 +67,36 @@ export const POST = async (request) => {
         quantity: item.quantity,
       };
     });
+    let orderData;
+    if (isLayaway) {
+      orderData = {
+        user: user._id,
+        ship_cost,
+        createdAt: date,
+        shippingInfo: shipping,
+        paymentInfo,
+        orderItems: items,
+        orderStatus: 'Pendiente',
+        layaway: true,
+      };
+    } else {
+      orderData = {
+        user: user._id,
+        ship_cost,
+        createdAt: date,
+        shippingInfo: shipping,
+        paymentInfo,
+        orderItems: items,
+        orderStatus: 'Pendiente',
+        layaway: false,
+      };
+    }
+
+    //await Order.create(orderData);
+    const newOrder = await new Order(orderData);
+    await newOrder.save();
 
     if (isLayaway) {
-      const invoice = await stripe.invoices.create({
-        customer: customerId,
-        collection_method: 'send_invoice',
-        auto_advance: false,
-        // Add line items and other details as needed
-        days_until_due: 30,
-      });
-
-      const lineItems = [];
-
-      for (const item of line_items) {
-        // Create a product
-        const product = await stripe.products.create({
-          name: item.price_data.product_data.name,
-          type: 'good',
-          images: [item.price_data.product_data.images[0]],
-          metadata: { productId: item._id },
-        });
-
-        // Create a price for the product
-        const price = await stripe.prices.create({
-          product: product.id,
-          unit_amount: item.price_data.unit_amount,
-          currency: item.price_data.currency,
-        });
-
-        const newItem = {
-          price: price.id,
-          quantity: item.quantity,
-        };
-
-        lineItems.push(newItem);
-
-        await stripe.invoiceItems.create({
-          customer: customerId,
-          invoice: invoice.id,
-          price: price.id,
-          quantity: item.quantity,
-        });
-      }
-
       session = await stripe.checkout.sessions.create({
         payment_method_types: ['card', 'oxxo', 'customer_balance'],
         mode: 'payment',
@@ -119,11 +115,11 @@ export const POST = async (request) => {
         locale: 'es-419',
         client_reference_id: user?._id,
         success_url: `${process.env.NEXTAUTH_URL}/perfil/pedidos?pedido_exitoso=true`,
-        cancel_url: `${process.env.NEXTAUTH_URL}/cancelado`,
+        cancel_url: `${process.env.NEXTAUTH_URL}/cancelado?${newOrder._id}`,
         metadata: {
           shippingInfo,
           layaway: isLayaway,
-          invoice: invoice.id,
+          order: newOrder._id,
         },
         shipping_options: [
           {
@@ -137,7 +133,7 @@ export const POST = async (request) => {
               unit_amount: installmentAmount * 100, // Convert to cents
               product_data: {
                 name: 'Pago Inicial de Apartado',
-                description: `Pago inicial para apartado de pedido`,
+                description: `Pago inicial para apartado de pedido #${newOrder.orderId}`,
               },
             },
             quantity: 1,
@@ -162,21 +158,19 @@ export const POST = async (request) => {
         },
         locale: 'es-419',
         success_url: `${process.env.NEXTAUTH_URL}/perfil/pedidos?pedido_exitoso=true`,
-        cancel_url: `${process.env.NEXTAUTH_URL}/cancelado`,
+        cancel_url: `${process.env.NEXTAUTH_URL}/cancelado?${newOrder._id}`,
         client_reference_id: user?._id,
-        metadata: { shippingInfo },
-
+        metadata: {
+          shippingInfo,
+          layaway: isLayaway,
+          order: newOrder._id,
+        },
         shipping_options: [
           {
             shipping_rate: 'shr_1OW9lzF1B19DqtcQpzK984xg',
           },
         ],
         line_items,
-        // Add metadata to store layaway information
-        metadata: {
-          shippingInfo,
-          layaway: isLayaway,
-        },
       });
     }
 

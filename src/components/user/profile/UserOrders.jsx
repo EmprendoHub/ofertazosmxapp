@@ -35,7 +35,7 @@ const UserOrders = ({ orders }) => {
         <thead className="text-l text-gray-700 uppercase">
           <tr>
             <th scope="col" className="px-6 py-3">
-              ID
+              No.
             </th>
             <th scope="col" className="px-6 py-3">
               Total
@@ -64,7 +64,7 @@ const UserOrders = ({ orders }) => {
                   href={`/perfil/pedidos/${order._id}`}
                   className="cursor-pointer "
                 >
-                  {order._id.substring(0, 7)}...
+                  {order.orderId}
                 </Link>
               </td>
               <td className="px-6 py-2">

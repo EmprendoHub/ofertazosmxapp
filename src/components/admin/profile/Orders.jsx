@@ -1,18 +1,13 @@
-'use client';
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import AuthContext from '@/context/AuthContext';
 import { FaPencilAlt } from 'react-icons/fa';
 import { AiOutlineInteraction } from 'react-icons/ai';
 import { formatDate, formatTime } from '@/backend/helpers';
-
 import { getTotalFromItems } from '@/backend/helpers';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import AdminOrderSearch from '@/components/layout/AdminOrderSearch';
 
 const Orders = ({ orders }) => {
-  //const { getAllOrders } = useContext(AuthContext);
-
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <h1 className="text-3xl my-5 ml-4 font-bold">

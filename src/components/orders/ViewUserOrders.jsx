@@ -17,7 +17,7 @@ const ViewUserOrders = ({ orders }) => {
         <thead className="text-l text-gray-700 uppercase">
           <tr>
             <th scope="col" className="px-6 py-3">
-              ID
+              No.
             </th>
             <th scope="col" className="px-6 py-3">
               Total
@@ -44,7 +44,7 @@ const ViewUserOrders = ({ orders }) => {
                   href={`/admin/pedidos/${order._id}`}
                   className="px-2 py-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
                 >
-                  {order._id.substring(0, 10)}...
+                  {order.orderId}
                 </Link>
               </td>
               <td className="px-6 py-2">
