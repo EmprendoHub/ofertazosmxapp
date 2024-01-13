@@ -21,7 +21,6 @@ export const GET = async (req, res) => {
     const apiFilters = new APIFilters(Product.find(), req.nextUrl.searchParams)
       .searchAllFields()
       .filter();
-
     let products = await apiFilters.query;
     const filteredProductsCount = products.length;
 

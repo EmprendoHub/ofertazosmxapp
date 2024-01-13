@@ -23,7 +23,6 @@ const getUserOrders = async (id) => {
 
 const ProductDetailsPage = async ({ params }) => {
   const orders = await getUserOrders(params.id);
-  console.log(orders);
 
   return <ViewUserOrders orders={orders} />;
 };

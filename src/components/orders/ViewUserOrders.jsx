@@ -12,6 +12,7 @@ const ViewUserOrders = ({ orders }) => {
         {`${orders?.length}
         Pedidos para ${orders[0]?.user.name}`}
       </h1>
+
       <table className="w-full text-sm text-left">
         <thead className="text-l text-gray-700 uppercase">
           <tr>

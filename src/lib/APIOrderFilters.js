@@ -1,4 +1,6 @@
-class APIFilters {
+import mongoose from 'mongoose';
+
+class APIOrderFilters {
   constructor(query, queryStr) {
     this.query = query;
     this.queryStr = queryStr;
@@ -6,23 +8,25 @@ class APIFilters {
 
   searchAllFields() {
     const keyword = this.queryStr.get('keyword');
+
+    // Check if the keyword is a valid ObjectId
+    const isObjectId = mongoose.Types.ObjectId.isValid(keyword);
+
     // Define the conditions to search for the keyword in title, description, and category
-    const searchConditions = {
-      $or: [
-        { title: { $regex: keyword, $options: 'i' } },
-        { description: { $regex: keyword, $options: 'i' } },
-        { category: { $regex: keyword, $options: 'i' } },
-        { brand: { $regex: keyword, $options: 'i' } },
-      ],
-    };
+    const searchConditions = isObjectId
+      ? { _id: keyword } // Directly match _id if it's a valid ObjectId
+      : {
+          $or: [
+            // Include condition to search by orderStatus
+            { orderStatus: { $regex: keyword, $options: 'i' } },
+          ],
+        };
 
     // Use a temporary variable to hold the conditions
     const tempConditions = keyword
       ? { $and: [this.query._conditions || {}, searchConditions] }
       : this.query._conditions; // If no keyword, keep existing conditions
-
     console.log(tempConditions);
-
     // Set the conditions to this.query._conditions
     this.query._conditions = tempConditions;
 
@@ -83,4 +87,4 @@ class APIFilters {
   }
 }
 
-export default APIFilters;
+export default APIOrderFilters;

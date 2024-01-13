@@ -8,24 +8,17 @@ import { formatDate, formatTime } from '@/backend/helpers';
 
 import { getTotalFromItems } from '@/backend/helpers';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
+import AdminOrderSearch from '@/components/layout/AdminOrderSearch';
 
-const Orders = () => {
-  const { getAllOrders } = useContext(AuthContext);
-  const [orders, setOrders] = useState([]);
-
-  useEffect(() => {
-    async function getOrders() {
-      const ordersGet = await getAllOrders();
-      setOrders(ordersGet);
-    }
-    getOrders();
-  }, [getAllOrders]);
+const Orders = ({ orders }) => {
+  //const { getAllOrders } = useContext(AuthContext);
 
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <h1 className="text-3xl my-5 ml-4 font-bold">
         {`${orders?.length} Pedidos`}
       </h1>
+      <AdminOrderSearch />
       <table className="w-full text-sm text-left">
         <thead className="text-l text-gray-700 uppercase">
           <tr>

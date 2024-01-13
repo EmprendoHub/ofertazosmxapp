@@ -1,22 +1,20 @@
 'use client';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
-import AuthContext from '@/context/AuthContext';
 import { formatDate } from '@/backend/helpers';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { resetCart } from '@/redux/shoppingSlice';
 import { useDispatch } from 'react-redux';
 import { FaEye, FaMoneyCheck } from 'react-icons/fa';
 import { getTotalFromItems } from '@/backend/helpers';
+import OrderSearch from '@/components/layout/OrderSearch';
 
-const UserOrders = () => {
+const UserOrders = ({ orders }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const params = useSearchParams();
 
   const orderSuccess = params.get('pedido_exitoso');
-  const { getAllUserOrders } = useContext(AuthContext);
-  const [orders, setOrders] = useState([]);
 
   useEffect(() => {
     if (orderSuccess === 'true') {
@@ -25,17 +23,14 @@ const UserOrders = () => {
     }
   }, [orderSuccess]);
 
-  useEffect(() => {
-    async function getOrders() {
-      const ordersGet = await getAllUserOrders();
-      setOrders(ordersGet);
-    }
-    getOrders();
-  }, [getAllUserOrders]);
-
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-      <h1 className="text-3xl my-5 ml-4 font-bold">{orders?.length} Pedidos</h1>
+      <div className=" flex flex-row justify-between items-center">
+        <h1 className="text-3xl my-5 ml-4 font-bold">
+          {orders?.length} Pedidos
+        </h1>
+        <OrderSearch />
+      </div>
       <table className="w-full text-sm text-left">
         <thead className="text-l text-gray-700 uppercase">
           <tr>

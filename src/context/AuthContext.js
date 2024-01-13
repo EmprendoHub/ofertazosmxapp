@@ -62,7 +62,6 @@ export const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
       // Construct the payload in the desired format
-      console.log(formData);
       const payload = {
         title: formData.get('name'),
         _id: formData.get('_id'),
@@ -175,8 +174,6 @@ export const AuthProvider = ({ children }) => {
         updatedAt: formDataObject.get('updatedAt'),
         _id: formDataObject.get('_id'),
       };
-
-      console.log(payload, 'payload post');
 
       const response = await axios.put(`/api/post`, {
         payload,

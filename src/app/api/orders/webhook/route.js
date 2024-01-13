@@ -144,7 +144,9 @@ export async function POST(req, res) {
         };
       }
 
-      await Order.create(orderData);
+      //await Order.create(orderData);
+      const newOrder = await new Order(orderData);
+      await newOrder.save();
 
       await stripe.invoices.del(session.metadata.invoice);
 
@@ -220,7 +222,9 @@ export async function POST(req, res) {
         };
       }
 
-      await Order.create(orderData);
+      //await Order.create(orderData);
+      const newOrder = await new Order(orderData);
+      await newOrder.save();
 
       return NextResponse.json(
         {
