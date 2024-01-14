@@ -119,16 +119,14 @@ export const AuthProvider = ({ children }) => {
     const filteredUrlParams = Object.fromEntries(
       Object.entries(urlParams).filter(([key, value]) => value !== undefined)
     );
-    const cookieName = getCookiesName();
-    const nextAuthSessionToken = nextCookies.get(cookieName);
     const searchQuery = new URLSearchParams(filteredUrlParams).toString();
-    const URL = `${process.env.NEXTAUTH_URL}/api/posts?${searchQuery}`;
+    const URL = `/api/posts?${searchQuery}`;
     try {
       const { data } = await axios.get(
         URL,
         {
           headers: {
-            Cookie: `${cookieName}=${nextAuthSessionToken?.value}`,
+            Cookie: nextCookies,
           },
         },
         { cache: 'no-cache' }

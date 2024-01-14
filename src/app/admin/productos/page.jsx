@@ -27,7 +27,7 @@ const getProducts = async (searchParams) => {
   }
 };
 
-const ProfilePage = async ({ searchParams }) => {
+const AdminProductsPage = async ({ searchParams }) => {
   const data = await getProducts(searchParams);
   const page = searchParams['page'] ?? '1';
   const per_page = searchParams['per_age'] ?? '10';
@@ -41,4 +41,4 @@ const ProfilePage = async ({ searchParams }) => {
   return <AllProductsComponent products={entries} />;
 };
 
-export default ProfilePage;
+export default AdminProductsPage;

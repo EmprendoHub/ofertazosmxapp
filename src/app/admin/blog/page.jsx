@@ -1,9 +1,9 @@
 import React from 'react';
-import AllPostsComponent from '@/components/blog/AllPostsComponent';
 import AdminPagination from '@/components/pagination/AdminPagination';
 import { getCookiesName } from '@/backend/helpers';
 import { cookies } from 'next/headers';
 import AdminPostsComponent from '@/components/admin/AdminPostsComponent';
+import axios from 'axios';
 
 const getAllPosts = async (searchParams) => {
   const urlParams = {
@@ -20,7 +20,7 @@ const getAllPosts = async (searchParams) => {
   const searchQuery = new URLSearchParams(filteredUrlParams).toString();
   const URL = `${process.env.NEXTAUTH_URL}/api/posts?${searchQuery}`;
   try {
-    const res = await fetch(
+    const { data } = await axios.get(
       URL,
       {
         headers: {
@@ -29,14 +29,13 @@ const getAllPosts = async (searchParams) => {
       },
       { cache: 'no-cache' }
     );
-    const data = await res.json();
     return data;
   } catch (error) {
     console.log(error);
   }
 };
 
-const ProfilePage = async ({ searchParams }) => {
+const AdminPostsPage = async ({ searchParams }) => {
   const data = await getAllPosts(searchParams);
   const postCount = data?.postCount;
   const filteredPostsCount = data?.filteredPostsCount;
@@ -60,4 +59,4 @@ const ProfilePage = async ({ searchParams }) => {
   );
 };
 
-export default ProfilePage;
+export default AdminPostsPage;
