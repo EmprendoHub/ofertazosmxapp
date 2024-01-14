@@ -1,6 +1,7 @@
 import { getCookiesName } from '@/backend/helpers';
 import Orders from '@/components/admin/profile/Orders';
 import AdminPagination from '@/components/pagination/AdminPagination';
+import axios from 'axios';
 import { cookies } from 'next/headers';
 import React from 'react';
 
@@ -20,7 +21,7 @@ const getAllOrders = async (searchParams) => {
   const searchQuery = new URLSearchParams(filteredUrlParams).toString();
   const URL = `${process.env.NEXTAUTH_URL}/api/orders?${searchQuery}`;
   try {
-    const res = await fetch(
+    const { data } = await axios.get(
       URL,
       {
         headers: {
@@ -29,7 +30,6 @@ const getAllOrders = async (searchParams) => {
       },
       { cache: 'no-cache' }
     );
-    const data = await res.json();
     return data;
   } catch (error) {
     console.log(error);

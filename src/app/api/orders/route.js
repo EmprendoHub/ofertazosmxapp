@@ -9,7 +9,7 @@ import { NextResponse } from 'next/server';
 export const GET = async (request, res) => {
   const token = await getToken({ req: request });
   console.log(token, 'token');
-  console.log(request, 'request');
+  console.log(request.headers, 'request');
   if (!token) {
     // Not Signed in
     return new Response('You are not authorized, eh eh eh, no no no', {
