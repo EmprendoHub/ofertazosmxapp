@@ -1,12 +1,28 @@
 'use client';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import AuthContext from '@/context/AuthContext';
-import { FaTrash, FaPencilAlt } from 'react-icons/fa';
+import AdminPagination from '../pagination/AdminPagination';
 
-const AllPostsComponent = ({ data, filteredOrdersCount }) => {
-  const posts = data?.posts.posts;
+const AllPostsComponent = ({ searchParams, currentCookies }) => {
+  const { getAllPosts } = useContext(AuthContext);
+  const [posts, setPosts] = useState([]);
+  const [filteredPostsCount, setFilteredPostsCount] = useState();
+  const page = searchParams['page'] ?? '1';
+  const per_page = 5;
+  const start = (Number(page) - 1) * Number(per_page); // 0, 5, 10 ...
+  const end = start + Number(per_page); // 5, 10, 15 ...
+
+  useEffect(() => {
+    async function getPosts() {
+      const postsData = await getAllPosts(searchParams, currentCookies);
+      setPosts(postsData?.posts.posts);
+      setFilteredPostsCount(postsData?.filteredPostsCount);
+    }
+    getPosts();
+  }, [getAllPosts, searchParams, currentCookies]);
+
   return (
     <>
       <Link href="/admin/blog/nuevo">
@@ -50,6 +66,11 @@ const AllPostsComponent = ({ data, filteredOrdersCount }) => {
       ))}
 
       <hr className="my-4" />
+      <AdminPagination
+        hasNextPage={end < filteredPostsCount}
+        hasPrevPage={start > 0}
+        totalItemCount={filteredPostsCount}
+      />
     </>
   );
 };

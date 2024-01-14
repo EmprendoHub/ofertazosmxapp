@@ -1,5 +1,6 @@
 'use client';
 
+import { getCookiesName } from '@/backend/helpers';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { NextResponse } from 'next/server';
@@ -106,6 +107,35 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       setError(error?.response?.data?.message);
+    }
+  };
+
+  const getAllPosts = async (searchParams, nextCookies) => {
+    const urlParams = {
+      keyword: searchParams.keyword,
+      page: searchParams.page,
+    };
+    // Filter out undefined values
+    const filteredUrlParams = Object.fromEntries(
+      Object.entries(urlParams).filter(([key, value]) => value !== undefined)
+    );
+    const cookieName = getCookiesName();
+    const nextAuthSessionToken = nextCookies.get(cookieName);
+    const searchQuery = new URLSearchParams(filteredUrlParams).toString();
+    const URL = `${process.env.NEXTAUTH_URL}/api/posts?${searchQuery}`;
+    try {
+      const { data } = await axios.get(
+        URL,
+        {
+          headers: {
+            Cookie: `${cookieName}=${nextAuthSessionToken?.value}`,
+          },
+        },
+        { cache: 'no-cache' }
+      );
+      return data;
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -414,11 +444,31 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const getAllOrders = async () => {
+  const getAllOrders = async (searchParams, currentCookies) => {
     try {
-      const { data } = await axios.get(`/api/orders`);
-      return data.orders;
+      const urlParams = {
+        keyword: searchParams.keyword,
+        page: searchParams.page,
+      };
+      // Filter out undefined values
+      const filteredUrlParams = Object.fromEntries(
+        Object.entries(urlParams).filter(([key, value]) => value !== undefined)
+      );
+      const searchQuery = new URLSearchParams(filteredUrlParams).toString();
+      const URL = `/api/orders?${searchQuery}`;
+      const { data } = await axios.get(
+        URL,
+        {
+          headers: {
+            Cookie: currentCookies,
+          },
+        },
+        { cache: 'no-cache' }
+      );
+
+      return data;
     } catch (error) {
+      console.log(error);
       setError(error?.response?.data?.message);
     }
   };
@@ -516,6 +566,7 @@ export const AuthProvider = ({ children }) => {
         getAllOrders,
         getAllClients,
         updateOrder,
+        getAllPosts,
       }}
     >
       {children}

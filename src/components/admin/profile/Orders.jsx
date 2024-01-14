@@ -1,14 +1,33 @@
-import React from 'react';
+'use client';
+import React, { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { FaPencilAlt } from 'react-icons/fa';
 import { formatDate, formatTime } from '@/backend/helpers';
 import { getTotalFromItems } from '@/backend/helpers';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import AdminOrderSearch from '@/components/layout/AdminOrderSearch';
+import AuthContext from '@/context/AuthContext';
+import AdminPagination from '@/components/pagination/AdminPagination';
 
-const Orders = ({ data, filteredOrdersCount }) => {
-  console.log(data, 'data');
-  const orders = data?.orders.orders;
+const Orders = ({ searchParams, currentCookies }) => {
+  //const orders = data?.orders.orders;
+  const { getAllOrders } = useContext(AuthContext);
+  const [orders, setOrders] = useState([]);
+  const [filteredOrdersCount, setFilteredOrdersCount] = useState();
+  const page = searchParams['page'] ?? '1';
+  const per_page = 5;
+  const start = (Number(page) - 1) * Number(per_page); // 0, 5, 10 ...
+  const end = start + Number(per_page); // 5, 10, 15 ...
+
+  useEffect(() => {
+    async function getOrders() {
+      const ordersData = await getAllOrders(searchParams, currentCookies);
+      setOrders(ordersData?.orders.orders);
+      setFilteredOrdersCount(ordersData?.filteredOrdersCount);
+    }
+    getOrders();
+  }, [getAllOrders, searchParams, currentCookies]);
+
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <div className=" flex flex-row maxsm:flex-col maxsm:items-start items-center justify-between">
@@ -88,6 +107,11 @@ const Orders = ({ data, filteredOrdersCount }) => {
           ))}
         </tbody>
       </table>
+      <AdminPagination
+        hasNextPage={end < filteredOrdersCount}
+        hasPrevPage={start > 0}
+        totalItemCount={filteredOrdersCount}
+      />
     </div>
   );
 };

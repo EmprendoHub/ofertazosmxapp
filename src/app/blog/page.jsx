@@ -1,56 +1,20 @@
 import React from 'react';
 import AllPostsComponent from '@/components/blog/AllPostsComponent';
-import AdminPagination from '@/components/pagination/AdminPagination';
 import { getCookiesName } from '@/backend/helpers';
 import { cookies } from 'next/headers';
 
-const getAllPosts = async (searchParams) => {
-  const urlParams = {
-    keyword: searchParams.keyword,
-    page: searchParams.page,
-  };
-  // Filter out undefined values
-  const filteredUrlParams = Object.fromEntries(
-    Object.entries(urlParams).filter(([key, value]) => value !== undefined)
-  );
+const BlogPage = async ({ searchParams }) => {
   const nextCookies = cookies();
   const cookieName = getCookiesName();
-  const nextAuthSessionToken = nextCookies.get(cookieName);
-  const searchQuery = new URLSearchParams(filteredUrlParams).toString();
-  const URL = `${process.env.NEXTAUTH_URL}/api/posts?${searchQuery}`;
-  try {
-    const res = await fetch(
-      URL,
-      {
-        headers: {
-          Cookie: `${cookieName}=${nextAuthSessionToken?.value}`,
-        },
-      },
-      { cache: 'no-cache' }
-    );
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const BlogPage = async ({ searchParams }) => {
-  const data = await getAllPosts(searchParams);
-  const postCount = data?.postCount;
-  const filteredPostsCount = data?.filteredPostsCount;
-  const page = searchParams['page'] ?? '1';
-  const per_page = 5;
-  const start = (Number(page) - 1) * Number(per_page); // 0, 5, 10 ...
-  const end = start + Number(per_page); // 5, 10, 15 ...
+  let nextAuthSessionToken = nextCookies.get(cookieName);
+  nextAuthSessionToken = nextAuthSessionToken?.value;
+  const currentCookies = `${cookieName}=${nextAuthSessionToken}`;
 
   return (
     <>
-      <AllPostsComponent data={data} filteredPostsCount={filteredPostsCount} />
-      <AdminPagination
-        hasNextPage={end < filteredPostsCount}
-        hasPrevPage={start > 0}
-        totalItemCount={filteredPostsCount}
+      <AllPostsComponent
+        searchParams={searchParams}
+        currentCookies={currentCookies}
       />
     </>
   );
