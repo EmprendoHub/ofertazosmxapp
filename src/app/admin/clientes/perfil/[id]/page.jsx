@@ -48,7 +48,7 @@ const ProductDetailsPage = async ({ searchParams, params }) => {
       <AdminPagination
         hasNextPage={end < filteredOrdersCount}
         hasPrevPage={start > 0}
-        totalProductCount={filteredOrdersCount}
+        totalItemCount={filteredOrdersCount}
       />
     </>
   );
