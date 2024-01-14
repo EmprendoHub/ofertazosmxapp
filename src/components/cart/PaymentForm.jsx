@@ -118,6 +118,11 @@ const PaymentForm = () => {
             >
               Pagar Total{' '}
             </button>
+            <p>Si realizaste un pago por Oxxo o Transferencia Bancaria</p>
+            <p>
+              Permite hasta 24 horas después de tu pago para que se refleje en
+              tu cuenta.
+            </p>
             <Link
               href="/carrito"
               className="w-full mt-4 text-center px-5 py-2 inline-block text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:text-blue-600"

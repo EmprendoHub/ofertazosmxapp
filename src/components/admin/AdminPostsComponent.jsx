@@ -5,8 +5,12 @@ import Image from 'next/image';
 import AuthContext from '@/context/AuthContext';
 import { FaTrash, FaPencilAlt } from 'react-icons/fa';
 
-const AllPostsComponent = ({ data, filteredOrdersCount }) => {
+const AdminPostsComponent = ({ data, filteredOrdersCount }) => {
   const posts = data?.posts.posts;
+  const { deletePost } = useContext(AuthContext);
+  const deleteHandler = (post_id) => {
+    deletePost(post_id);
+  };
   return (
     <>
       <Link href="/admin/blog/nuevo">
@@ -46,6 +50,26 @@ const AllPostsComponent = ({ data, filteredOrdersCount }) => {
               </div>
             </Link>
           </div>
+          <div className="flex flex-row justify-between items-center gap-5">
+            <span>
+              {' '}
+              <button
+                onClick={() => deleteHandler(post._id)}
+                className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700"
+              >
+                <FaTrash className="text-white" />
+              </button>
+            </span>
+            <span>
+              <Link
+                key={index}
+                href={`/admin/blog/editar/${post._id}`}
+                className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
+              >
+                <FaPencilAlt className="text-white" />
+              </Link>
+            </span>
+          </div>
         </div>
       ))}
 
@@ -54,4 +78,4 @@ const AllPostsComponent = ({ data, filteredOrdersCount }) => {
   );
 };
 
-export default AllPostsComponent;
+export default AdminPostsComponent;

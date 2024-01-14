@@ -21,8 +21,6 @@ class APIFilters {
       ? { $and: [this.query._conditions || {}, searchConditions] }
       : this.query._conditions; // If no keyword, keep existing conditions
 
-    console.log(tempConditions);
-
     // Set the conditions to this.query._conditions
     this.query._conditions = tempConditions;
 

@@ -19,8 +19,6 @@ export async function POST(req, res) {
     );
     const session = event.data.object;
 
-    console.log('session', session, 'session');
-
     // credit card checkout
     if (
       event.type === 'checkout.session.completed' ||
@@ -32,7 +30,6 @@ export async function POST(req, res) {
         _id: session?.metadata?.order,
       });
 
-      console.log('currentOrder', currentOrder);
       let newPaymentAmount;
       if (session.payment_status === 'unpaid') {
         newPaymentAmount = 0;

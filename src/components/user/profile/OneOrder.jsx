@@ -30,7 +30,7 @@ const OneOrder = ({ id, data }) => {
 
     try {
       const data = await response.json();
-      console.log(data, '<= data');
+      //console.log(data, '<= data');
       //dispatch(saveOrder({ order: productsData, id: data.id }));
       stripe?.redirectToCheckout({ sessionId: data.id });
     } catch (error) {
@@ -69,7 +69,7 @@ const OneOrder = ({ id, data }) => {
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg p-5">
         <div className="flex flex-row items-center justify-start gap-x-5">
           <h2 className="text-3xl mb-8 ml-4 font-bold ">
-            Pedido #{order?._id}
+            Pedido #{order?.orderId}
           </h2>
           <h2
             className={`text-3xl mb-8 ml-4 font-bold uppercase ${
@@ -223,6 +223,13 @@ const OneOrder = ({ id, data }) => {
             >
               Pagar Total{' '}
             </button>
+            <p className="pt-5">
+              Si realizaste un pago por Oxxo o Transferencia Bancaria
+            </p>
+            <p>
+              Permite hasta 24 horas después de tu pago para que se refleje en
+              tu cuenta.
+            </p>
           </div>
         </div>
       ) : (

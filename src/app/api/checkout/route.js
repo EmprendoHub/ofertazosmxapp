@@ -119,8 +119,6 @@ export const POST = async (request) => {
     const newOrder = await new Order(orderData);
     await newOrder.save();
 
-    console.log(newOrder._id.toString(), 'newOrder._id');
-
     if (isLayaway) {
       session = await stripe.checkout.sessions.create({
         payment_method_types: ['card', 'oxxo', 'customer_balance'],
@@ -197,8 +195,6 @@ export const POST = async (request) => {
         line_items,
       });
     }
-
-    console.log(' session ', session);
 
     return NextResponse.json({
       message: 'Connection is active',

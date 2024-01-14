@@ -1,5 +1,6 @@
 import Address from '@/backend/models/Address';
 import Order from '@/backend/models/Order';
+import User from '@/backend/models/User';
 import dbConnect from '@/lib/db';
 import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
@@ -13,12 +14,14 @@ export const GET = async (request, res) => {
       let order = await Order.findOne({ _id });
 
       let deliveryAddress = await Address.findOne(order.shippingInfo);
+      let orderUser = await User.findOne(order.user);
 
       const response = NextResponse.json({
         message: 'Order fetched successfully',
         success: true,
         order,
         deliveryAddress,
+        orderUser,
       });
 
       return response;

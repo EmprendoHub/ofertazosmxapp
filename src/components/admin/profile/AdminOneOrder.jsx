@@ -8,8 +8,9 @@ import FormattedPrice from '@/backend/helpers/FormattedPrice';
 
 const AdminOneOrder = ({ id, data }) => {
   const { updateOrder } = useContext(AuthContext);
-  const order = data.order;
-  const address = data.deliveryAddress;
+  const order = data?.order;
+  const address = data?.deliveryAddress;
+  const user = data?.orderUser;
   const [orderStatus, setOrderStatus] = useState(order?.orderStatus);
   const [currentOrderStatus, setCurrentOrderStatus] = useState();
 
@@ -79,10 +80,17 @@ const AdminOneOrder = ({ id, data }) => {
 
   return (
     <>
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg p-5">
+      <div className="relative overflow-x-auto shadow-md maxsm:rounded-lg p-5 maxsm:p-1">
+        <div className="flex flex-row items-center justify-start gap-x-5">
+          <Link href={`/admin/clientes/perfil/${user?._id}`}>
+            <h2 className="text-3xl mb-1 ml-4 font-bold text-slate-700">
+              {user?.name}
+            </h2>
+          </Link>
+        </div>
         <div className="flex flex-row items-center justify-start gap-x-5">
           <h2 className="text-3xl mb-8 ml-4 font-bold ">
-            Pedido #{order?._id}
+            Pedido #{order?.orderId}
           </h2>
           {order?.orderStatus === 'Apartado' ? (
             <h2
@@ -102,28 +110,29 @@ const AdminOneOrder = ({ id, data }) => {
             </h2>
           )}
         </div>
-        <table className="w-full text-sm text-left">
+
+        <table className="w-full text-sm text-left flex flex-col maxsm:flex-row">
           <thead className="text-l text-gray-700 uppercase">
-            <tr>
-              <th scope="col" className="px-6 py-3">
+            <tr className="flex flex-row maxsm:flex-col">
+              <th scope="col" className="px-6 py-2">
                 Domicilio
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-2">
                 Ciudad
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-2">
                 Entidad
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-2">
                 Código Postal
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-2">
                 Tel
               </th>
             </tr>
           </thead>
           <tbody>
-            <tr className="bg-white">
+            <tr className="bg-white flex flex-row maxsm:flex-col">
               <td className="px-6 py-2">{address?.street}</td>
               <td className="px-6 py-2">{address?.city}</td>
               <td className="px-6 py-2">{address?.province}</td>
@@ -137,19 +146,19 @@ const AdminOneOrder = ({ id, data }) => {
         <table className="w-full text-sm text-left">
           <thead className="text-l text-gray-700 uppercase">
             <tr>
-              <th scope="col" className="px-6 py-3">
-                ID
+              <th scope="col" className="px-2 py-3 maxsm:hidden">
+                SKU
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-2 maxsm:px-0 py-3">
                 Nombre
               </th>
-              <th scope="col" className="px-6 py-3">
-                Artículos
+              <th scope="col" className="px-2 maxsm:px-0 py-3">
+                Cant.
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-2 maxsm:px-0 py-3">
                 Precio
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-2 maxsm:px-0 py-3">
                 Img
               </th>
             </tr>
@@ -157,13 +166,17 @@ const AdminOneOrder = ({ id, data }) => {
           <tbody>
             {order?.orderItems?.map((item, index) => (
               <tr className="bg-white" key={index}>
-                <td className="px-6 py-2">{item.product || item._id}</td>
-                <td className="px-6 py-2">{item.name}</td>
-                <td className="px-6 py-2">{item.quantity}</td>
-                <td className="px-6 py-2">
+                <td className="px-2 py-2 maxsm:hidden">
+                  {item.product.substring(0, 8) || item._id.substring(0, 8)}...
+                </td>
+                <td className="px-2 maxsm:px-0 py-2">
+                  {item.name.substring(0, 13)}...
+                </td>
+                <td className="px-2 maxsm:px-0 py-2">{item.quantity}</td>
+                <td className="px-2 maxsm:px-0 py-2">
                   <FormattedPrice amount={item.price} />
                 </td>
-                <td className="px-6 py-2">
+                <td className="px-2 maxsm:px-0 py-2">
                   <Image
                     alt="producto"
                     src={item.image}

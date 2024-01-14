@@ -1,6 +1,7 @@
 import Address from '@/backend/models/Address';
 import Order from '@/backend/models/Order';
 import User from '@/backend/models/User';
+import APIOrderFilters from '@/lib/APIOrderFilters';
 import dbConnect from '@/lib/db';
 import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
@@ -10,12 +11,30 @@ export async function GET(request) {
   if (token) {
     try {
       await dbConnect();
-      const _id = await request.url.split('?')[1];
-      let ordersData = await Order.find({ user: _id });
-      const obj1 = Object.assign(ordersData);
+      const _id = request.nextUrl.searchParams.get('id');
+      let orderQuery = Order.find({ user: _id });
+
+      const resPerPage = 5;
+      // Extract page and per_page from request URL
+      const page = Number(request.nextUrl.searchParams.get('page')) || 1;
+      const orderCount = await Order.countDocuments({ user: _id });
+
+      // Apply search Filters including order_id and orderStatus
+      const apiOrderFilters = new APIOrderFilters(
+        orderQuery,
+        request.nextUrl.searchParams
+      )
+        .searchAllFields()
+        .filter();
+      let ordersData = await apiOrderFilters.query;
+
+      const filteredOrdersCount = ordersData.length;
+
+      apiOrderFilters.pagination(resPerPage, page);
+      ordersData = await apiOrderFilters.query.clone();
 
       await Promise.all(
-        obj1.map(async (order) => {
+        ordersData.map(async (order) => {
           let shippingInfo = await Address.findOne({
             _id: order.shippingInfo,
           });
@@ -26,15 +45,22 @@ export async function GET(request) {
       );
 
       // descending order
-      const sortedObj1 = obj1
+      const sortedOrders = ordersData
         .slice()
         .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
       const orders = {
-        orders: sortedObj1,
+        orders: sortedOrders,
       };
-      return new Response(JSON.stringify(orders), { status: 201 });
+
+      const dataPacket = {
+        orders,
+        orderCount,
+        filteredOrdersCount,
+      };
+      return new Response(JSON.stringify(dataPacket), { status: 201 });
     } catch (error) {
+      console.log(error);
       return NextResponse.json(
         {
           error: 'Orders loading error',

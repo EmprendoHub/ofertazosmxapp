@@ -13,8 +13,6 @@ export const POST = async (request) => {
     const reqBody = await request.json();
     const { order, items, email, user, shipping } = await reqBody;
 
-    console.log(order, 'order');
-
     const existingCustomers = await stripe.customers.list({
       email: user.email,
     });
@@ -60,7 +58,7 @@ export const POST = async (request) => {
       locale: 'es-419',
       client_reference_id: user?._id,
       success_url: `${process.env.NEXTAUTH_URL}/perfil/pedidos?pedido_exitoso=true`,
-      cancel_url: `${process.env.NEXTAUTH_URL}/cancelado/prueba`,
+      cancel_url: `${process.env.NEXTAUTH_URL}/perfil/pedidos/${order._id}`,
       metadata: {
         shippingInfo,
         layaway: true,
@@ -86,8 +84,6 @@ export const POST = async (request) => {
         },
       ],
     });
-
-    console.log(session);
 
     return NextResponse.json({
       message: 'Connection is active',

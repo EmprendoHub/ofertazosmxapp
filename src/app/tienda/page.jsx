@@ -2,6 +2,12 @@ import StoreHeroComponent from '@/components/hero/StoreHeroComponent';
 import ListProducts from '@/components/products/ListProducts';
 import PaginationControllerComponent from '@/components/pagination/PaginationComponent';
 
+export const metadata = {
+  title: 'Tienda en linea Shopout Mx',
+  description:
+    'Ven y explora nuestra tienda en linea y descubre modelos exclusivos de marcas de alta gama.',
+};
+
 const getProducts = async (searchParams) => {
   const urlParams = {
     keyword: searchParams.keyword,

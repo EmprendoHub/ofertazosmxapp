@@ -24,15 +24,24 @@ export async function GET(request) {
       orderQuery = Order.find({ user: token._id });
     }
 
+    const resPerPage = 5;
+    // Extract page and per_page from request URL
+    const page = Number(request.nextUrl.searchParams.get('page')) || 1;
+    const orderCount = await Order.countDocuments();
+
     // Apply search Filters including order_id and orderStatus
     const apiOrderFilters = new APIOrderFilters(
       orderQuery,
       request.nextUrl.searchParams
-    ).searchAllFields();
-
+    )
+      .searchAllFields()
+      .filter();
     let ordersData = await apiOrderFilters.query;
 
-    const filteredProductsCount = ordersData.length;
+    const filteredOrdersCount = ordersData.length;
+
+    apiOrderFilters.pagination(resPerPage, page);
+    ordersData = await apiOrderFilters.query.clone();
 
     await Promise.all(
       ordersData.map(async (order) => {
@@ -60,9 +69,13 @@ export async function GET(request) {
       orders: sortedOrders,
     };
 
-    return new Response(JSON.stringify(orders), { status: 201 });
+    const dataPacket = {
+      orders,
+      orderCount,
+      filteredOrdersCount,
+    };
+    return new Response(JSON.stringify(dataPacket), { status: 201 });
   } catch (error) {
-    console.log(error);
     return NextResponse.json(
       {
         error: 'Orders loading error',

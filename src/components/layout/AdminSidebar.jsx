@@ -6,10 +6,17 @@ import { FaUsers, FaRegAddressCard, FaUserEdit } from 'react-icons/fa';
 import { RiLockPasswordLine, RiLogoutCircleRFill } from 'react-icons/ri';
 import { FaListCheck, FaTableCells, FaFileCirclePlus } from 'react-icons/fa6';
 import { MdOutlineDashboard, MdEmail } from 'react-icons/md';
+import { useRouter } from 'next/navigation';
 
 const AdminSidebar = () => {
+  const router = useRouter();
+
+  function handleClickLink(Url) {
+    router.push(Url);
+  }
+
   return (
-    <aside className=" w-1/4 maxmd:w-full px-4 maxsm:px-1 py-8 flex flex-col maxmd:flex-row  items-start justify-start">
+    <aside className=" w-1/4 maxmd:w-full px-4 maxsm:px-2 py-8 flex flex-col maxmd:flex-row maxmd:justify-between maxmd:items-center items-start justify-start">
       <ul className="sidebar flex flex-col maxmd:flex-row gap-x-2 ">
         <Link
           href="/admin"
@@ -21,8 +28,8 @@ const AdminSidebar = () => {
             <div className="maxmd:hidden">Panel de Control</div>
           </li>
         </Link>
-        <Link
-          href="/admin/pedidos"
+        <button
+          onClick={() => handleClickLink('/admin/pedidos')}
           className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
         >
           <li className="flex flex-row items-center gap-x-3">
@@ -30,7 +37,7 @@ const AdminSidebar = () => {
 
             <div className="maxmd:hidden">Pedidos</div>
           </li>
-        </Link>
+        </button>
         <Link
           href="/admin/productos"
           className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"

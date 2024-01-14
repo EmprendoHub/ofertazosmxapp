@@ -14,8 +14,6 @@ const UpdateProfileWithFormData = () => {
   const [avatar, setAvatar] = useState('');
   const [avatarPreview, setAvatarPreview] = useState('');
 
-  console.log(avatar);
-
   useEffect(() => {
     if (user) {
       const userAvatar = user?.avatar

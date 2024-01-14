@@ -1,5 +1,5 @@
 'use client';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import {
   FiChevronLeft,
   FiChevronRight,
@@ -7,22 +7,14 @@ import {
   FiChevronsLeft,
 } from 'react-icons/fi';
 
-const PaginationControllerComponent = ({
-  totalProductCount,
-  hasNextPage,
-  hasPrevPage,
-}) => {
+const AdminPagination = ({ totalItemCount, hasNextPage, hasPrevPage }) => {
   const router = useRouter();
+  const path = usePathname();
   const searchParams = useSearchParams();
   const page = searchParams.get('page') ?? '1';
   const per_page = searchParams.get('per_page') ?? '5';
 
-  const urlData = window.location.href;
-  let splitUrl = urlData.toString();
-  splitUrl = splitUrl.split('?');
-
-  //
-  const baseUrl = splitUrl[0];
+  const baseUrl = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}${path}`;
 
   const searchParamsCopy = {};
   searchParams.forEach((value, key) => {
@@ -59,15 +51,16 @@ const PaginationControllerComponent = ({
       </button>
 
       <div className="font-semibold text-lg sm:text-sm">
-        {page} / {Math.ceil(totalProductCount / Number(per_page))}
+        {page} / {Math.ceil(totalItemCount / Number(per_page))}
       </div>
 
       <button
         className="bg-black text-xl text-white p-2 rounded-full disabled:bg-slate-300"
         onClick={() => {
-          router.push(
-            `${prevSearchParams}&page=${Number(page) + 1}&per_page=${per_page}`
-          );
+          const nextPageLink = `${prevSearchParams}&page=${
+            Number(page) + 1
+          }&per_page=${per_page}`;
+          router.push(nextPageLink);
         }}
         disabled={!hasNextPage}
       >
@@ -78,7 +71,7 @@ const PaginationControllerComponent = ({
         onClick={() => {
           router.push(
             `${prevSearchParams}&page=${Math.ceil(
-              totalProductCount / Number(per_page)
+              totalItemCount / Number(per_page)
             )}&per_page=${per_page}`
           );
         }}
@@ -90,4 +83,4 @@ const PaginationControllerComponent = ({
   );
 };
 
-export default PaginationControllerComponent;
+export default AdminPagination;

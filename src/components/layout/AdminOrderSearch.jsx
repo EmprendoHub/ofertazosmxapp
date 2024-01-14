@@ -25,7 +25,6 @@ const AdminOrderSearch = () => {
         placeholder="búsqueda"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
-        required
       />
       <button
         type="button"

@@ -1,5 +1,3 @@
-import mongoose from 'mongoose';
-
 class APIOrderFilters {
   constructor(query, queryStr) {
     this.query = query;
@@ -10,17 +8,16 @@ class APIOrderFilters {
     const keyword = this.queryStr.get('keyword');
 
     // Check if the keyword is a valid ObjectId
-    const isObjectId = mongoose.Types.ObjectId.isValid(keyword);
+    const orderId = !isNaN(keyword);
 
     // Define the conditions to search for the keyword in title, description, and category
-    const searchConditions = isObjectId
-      ? { _id: keyword } // Directly match _id if it's a valid ObjectId
+    const searchConditions = orderId
+      ? { orderId: { $eq: parseInt(keyword) } } // Directly match _id if it's a valid ObjectId
       : {
           $or: [
             // Include condition to search by orderStatus
             { orderStatus: { $regex: keyword, $options: 'i' } },
             // Include condition to search by orderId
-            { orderId: { $eq: parseInt(keyword) } },
           ],
         };
 
@@ -28,7 +25,6 @@ class APIOrderFilters {
     const tempConditions = keyword
       ? { $and: [this.query._conditions || {}, searchConditions] }
       : this.query._conditions; // If no keyword, keep existing conditions
-    console.log(tempConditions);
     // Set the conditions to this.query._conditions
     this.query._conditions = tempConditions;
 
@@ -41,7 +37,7 @@ class APIOrderFilters {
       queryCopy[key] = value;
     });
 
-    const removeFields = ['keyword', 'page', 'per_page'];
+    const removeFields = ['keyword', 'page', 'per_page', 'id'];
     removeFields.forEach((el) => delete queryCopy[el]);
     let prop = '';
     //Price Filter for gt> gte>= lt< lte<= in PRICE
@@ -64,24 +60,7 @@ class APIOrderFilters {
     return this;
   }
 
-  newfilter() {
-    const queryCopy = {};
-    this.queryStr.forEach((value, key) => {
-      const langKeys = ['en', 'es', 'fr'];
-      langKeys.forEach((lang) => {
-        const nestedKey = `${key}.lang.${lang}`;
-        queryCopy[nestedKey] = value;
-      });
-    });
-
-    this.query = this.query.find(queryCopy);
-
-    return this;
-  }
-
-  pagination(resPerPage) {
-    const currentPage = Number(this.queryStr.get('page')) || 1;
-
+  pagination(resPerPage, currentPage) {
     const skip = resPerPage * (currentPage - 1);
 
     this.query = this.query.limit(resPerPage).skip(skip);
