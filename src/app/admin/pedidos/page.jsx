@@ -16,6 +16,7 @@ const getAllOrders = async (searchParams) => {
   const nextCookies = cookies();
   const cookieName = getCookiesName();
   const nextAuthSessionToken = nextCookies.get(cookieName);
+  console.log('cookieName', cookieName, nextAuthSessionToken);
   const searchQuery = new URLSearchParams(filteredUrlParams).toString();
   const URL = `${process.env.NEXTAUTH_URL}/api/orders?${searchQuery}`;
   try {

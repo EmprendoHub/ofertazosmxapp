@@ -7,6 +7,7 @@ import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import AdminOrderSearch from '@/components/layout/AdminOrderSearch';
 
 const Orders = ({ data, filteredOrdersCount }) => {
+  console.log(data, 'data');
   const orders = data?.orders.orders;
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
