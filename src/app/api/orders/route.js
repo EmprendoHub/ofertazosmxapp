@@ -6,9 +6,10 @@ import dbConnect from '@/lib/db';
 import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
 
-export async function GET(request) {
+export const GET = async (request, res) => {
   const token = await getToken({ req: request });
   console.log(token, 'token');
+  console.log(request, 'request');
   if (!token) {
     // Not Signed in
     return new Response('You are not authorized, eh eh eh, no no no', {
@@ -84,4 +85,4 @@ export async function GET(request) {
       { status: 500 }
     );
   }
-}
+};
