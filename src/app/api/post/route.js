@@ -5,7 +5,6 @@ import { getToken } from 'next-auth/jwt';
 import { join } from 'path';
 import { writeFile } from 'fs/promises';
 import { mc } from '@/lib/minio';
-import PostsFilters from '@/lib/PostsFilters';
 
 // Put a file in bucket my-bucketname.
 const uploadToBucket = async (folder, filename, file) => {
