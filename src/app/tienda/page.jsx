@@ -11,12 +11,10 @@ export const metadata = {
 
 const TiendaPage = async ({ searchParams }) => {
   const nextCookies = cookies();
-  console.log(nextCookies);
   const cookieName = getCookiesName();
   let nextAuthSessionToken = nextCookies.get(cookieName);
   nextAuthSessionToken = nextAuthSessionToken?.value;
   const currentCookies = `${cookieName}=${nextAuthSessionToken}`;
-  console.log(currentCookies);
   return (
     <>
       <StoreHeroComponent />

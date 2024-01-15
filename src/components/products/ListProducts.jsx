@@ -13,13 +13,17 @@ const ListProducts = ({ searchParams, currentCookies }) => {
 
   const [filteredProductsCount, setFilteredProductsCount] = useState();
   const page = searchParams['page'] ?? '1';
-  const per_page = 5;
+  const per_page = 10;
   const start = (Number(page) - 1) * Number(per_page); // 0, 5, 10 ...
   const end = start + Number(per_page); // 5, 10, 15 ...
 
   useEffect(() => {
     async function getProducts() {
-      const productsData = await getAllProducts(searchParams, currentCookies);
+      const productsData = await getAllProducts(
+        searchParams,
+        currentCookies,
+        per_page
+      );
       setProducts(productsData?.products.products);
       setAllBrands(productsData?.allBrands);
       setAllCategories(productsData?.allCategories);
@@ -55,6 +59,7 @@ const ListProducts = ({ searchParams, currentCookies }) => {
         hasNextPage={end < filteredProductsCount}
         hasPrevPage={start > 0}
         totalItemCount={filteredProductsCount}
+        perPage={per_page}
       />
     </section>
   );

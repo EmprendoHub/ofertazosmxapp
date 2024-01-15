@@ -516,7 +516,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const getAllProducts = async (searchParams, currentCookies) => {
+  const getAllProducts = async (searchParams, currentCookies, perPage) => {
     try {
       const urlParams = {
         keyword: searchParams.keyword,
@@ -539,6 +539,7 @@ export const AuthProvider = ({ children }) => {
         {
           headers: {
             Cookie: currentCookies,
+            perPage: perPage,
           },
         },
         { cache: 'no-cache' }
