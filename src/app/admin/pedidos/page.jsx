@@ -1,5 +1,5 @@
 import { getSessionCookiesName } from '@/backend/helpers';
-import Orders from '@/components/admin/profile/Orders';
+import AdminOrders from '@/components/admin/profile/AdminOrders';
 import { cookies } from 'next/headers';
 import React from 'react';
 
@@ -11,7 +11,10 @@ const UserOrdersPage = async ({ searchParams }) => {
   const currentCookies = `${cookieName}=${nextAuthSessionToken}`;
   return (
     <>
-      <Orders searchParams={searchParams} currentCookies={currentCookies} />
+      <AdminOrders
+        searchParams={searchParams}
+        currentCookies={currentCookies}
+      />
     </>
   );
 };

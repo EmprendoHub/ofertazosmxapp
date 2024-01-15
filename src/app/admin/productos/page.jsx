@@ -1,7 +1,7 @@
 import React from 'react';
-import AllProductsComponent from '@/components/products/AllProductsComponent';
 import { getCookiesName } from '@/backend/helpers';
 import { cookies } from 'next/headers';
+import AllAdminProductsComponent from '@/components/products/AllAdminProductsComponent';
 
 const AdminProductsPage = async ({ searchParams }) => {
   const nextCookies = cookies();
@@ -10,7 +10,7 @@ const AdminProductsPage = async ({ searchParams }) => {
   nextAuthSessionToken = nextAuthSessionToken?.value;
   const currentCookies = `${cookieName}=${nextAuthSessionToken}`;
   return (
-    <AllProductsComponent
+    <AllAdminProductsComponent
       searchParams={searchParams}
       currentCookies={currentCookies}
     />

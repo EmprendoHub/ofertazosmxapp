@@ -9,7 +9,7 @@ import AdminOrderSearch from '@/components/layout/AdminOrderSearch';
 import AuthContext from '@/context/AuthContext';
 import AdminPagination from '@/components/pagination/AdminPagination';
 
-const Orders = ({ searchParams, currentCookies }) => {
+const AdminOrders = ({ searchParams, currentCookies }) => {
   const { getAllOrders } = useContext(AuthContext);
   const [orders, setOrders] = useState([]);
   const [filteredOrdersCount, setFilteredOrdersCount] = useState();
@@ -116,4 +116,4 @@ const Orders = ({ searchParams, currentCookies }) => {
   );
 };
 
-export default Orders;
+export default AdminOrders;

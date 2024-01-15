@@ -3,14 +3,14 @@ import React, { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import AuthContext from '@/context/AuthContext';
-import { FaTrash, FaPencilAlt } from 'react-icons/fa';
+import { FaTrash, FaPencilAlt, FaStar } from 'react-icons/fa';
 import ConfirmationModalContextProvider from '../modals/modalConfirmationContext';
 import DeleteButton from '../buttons/DeleteButton';
 import AdminPagination from '../pagination/AdminPagination';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import AdminProductSearch from '../layout/AdminProductSearch';
 
-const AllProductsComponent = ({ searchParams, currentCookies }) => {
+const AllAdminProductsComponent = ({ searchParams, currentCookies }) => {
   const { getAllProducts } = useContext(AuthContext);
   const [products, setProducts] = useState([]);
   const [filteredProductsCount, setFilteredProductsCount] = useState();
@@ -87,14 +87,22 @@ const AllProductsComponent = ({ searchParams, currentCookies }) => {
                     {product._id.substring(0, 10)}...
                   </Link>
                 </td>
-                <td className="px-6 maxsm:px-0 py-2 ">
-                  <span className="flex items-center justify-center text-black w-12 h-12 maxsm:w-10 maxsm:h-10 shadow mt-2">
+                <td className="px-6 maxsm:px-0 py-2 relative ">
+                  <span className="relative flex items-center justify-center text-black w-12 h-12 maxsm:w-10 maxsm:h-10 shadow mt-2">
                     <Image
                       src={product?.images[0].url}
                       alt="Title"
                       width={100}
                       height={100}
+                      className="w-10 h-auto maxsm:w-10 "
                     />
+                    {product?.featured === 'Si' ? (
+                      <span className="absolute -top-3 -right-1 z-20">
+                        <FaStar className="text-xl text-amber-600" />
+                      </span>
+                    ) : (
+                      ''
+                    )}
                   </span>
                 </td>
                 <td className="px-6 maxsm:px-0 py-2 ">
@@ -133,4 +141,4 @@ const AllProductsComponent = ({ searchParams, currentCookies }) => {
   );
 };
 
-export default AllProductsComponent;
+export default AllAdminProductsComponent;
