@@ -9,6 +9,7 @@ import DeleteButton from '../buttons/DeleteButton';
 import AdminPagination from '../pagination/AdminPagination';
 import Search from '../layout/Search';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
+import AdminProductSearch from '../layout/AdminProductSearch';
 
 const AllProductsComponent = ({ searchParams, currentCookies }) => {
   const { getAllProducts } = useContext(AuthContext);
@@ -46,7 +47,7 @@ const AllProductsComponent = ({ searchParams, currentCookies }) => {
           <h1 className="text-3xl my-5 ml-4 font-bold">
             {`${filteredProductsCount} Productos `}
           </h1>
-          <Search />
+          <AdminProductSearch />
         </div>
         <table className="w-full text-sm text-left">
           <thead className="text-l text-gray-700 uppercase">

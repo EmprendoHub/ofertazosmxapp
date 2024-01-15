@@ -9,38 +9,14 @@ export const metadata = {
     'Ven y explora nuestra tienda en linea y descubre modelos exclusivos de marcas de alta gama.',
 };
 
-const getProducts = async (searchParams) => {
-  const urlParams = {
-    keyword: searchParams.keyword,
-    page: searchParams.page,
-    category: searchParams.category,
-    brand: searchParams.brand,
-    'rating[gte]': searchParams.rating,
-    'price[lte]': searchParams.max,
-    'price[gte]': searchParams.min,
-  };
-  // Filter out undefined values
-  const filteredUrlParams = Object.fromEntries(
-    Object.entries(urlParams).filter(([key, value]) => value !== undefined)
-  );
-
-  const searchQuery = new URLSearchParams(filteredUrlParams).toString();
-  const URL = `${process.env.NEXTAUTH_URL}/api/products?${searchQuery}`;
-  try {
-    const res = await fetch(URL, { next: { revalidate: 120 } });
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 const TiendaPage = async ({ searchParams }) => {
   const nextCookies = cookies();
+  console.log(nextCookies);
   const cookieName = getCookiesName();
   let nextAuthSessionToken = nextCookies.get(cookieName);
   nextAuthSessionToken = nextAuthSessionToken?.value;
   const currentCookies = `${cookieName}=${nextAuthSessionToken}`;
+  console.log(currentCookies);
   return (
     <>
       <StoreHeroComponent />

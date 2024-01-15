@@ -86,6 +86,20 @@ export const getCookiesName = () => {
   let cookieName = '';
 
   if (process.env.NODE_ENV === 'development') {
+    cookieName = 'next-auth.csrf-token';
+  }
+
+  if (process.env.NODE_ENV === 'production') {
+    cookieName = '__Host-next-auth.csrf-token';
+  }
+
+  return cookieName;
+};
+
+export const getSessionCookiesName = () => {
+  let cookieName = '';
+
+  if (process.env.NODE_ENV === 'development') {
     cookieName = 'next-auth.session-token';
   }
 
