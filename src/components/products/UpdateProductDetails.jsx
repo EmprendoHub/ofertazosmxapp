@@ -100,6 +100,7 @@ const UpdateProductDetails = ({ product }) => {
   const [category, setCategory] = useState(product?.category);
   const [sizes, setSizes] = useState(product?.sizes);
   const [gender, setGender] = useState(product?.gender);
+  const [featured, setFeatured] = useState(product?.featured);
   const [stock, setStock] = useState(product?.stock);
   const [cost, setCost] = useState(product?.cost);
   const [price, setPrice] = useState(product?.price);
@@ -510,6 +511,33 @@ const UpdateProductDetails = ({ product }) => {
                         name="stock"
                       />
                     </div>
+                  </div>
+                </div>
+                <div className="mb-4 w-full">
+                  <label className="block mb-1"> Destacado </label>
+                  <div className="relative">
+                    <select
+                      className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                      name="featured"
+                      onChange={(e) => setFeatured(e.target.value)}
+                      value={featured}
+                    >
+                      {['No', 'Si'].map((opt) => (
+                        <option key={opt} value={opt}>
+                          {opt}
+                        </option>
+                      ))}
+                    </select>
+                    <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
+                      <svg
+                        width="22"
+                        height="22"
+                        className="fill-current"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M7 10l5 5 5-5H7z"></path>
+                      </svg>
+                    </i>
                   </div>
                 </div>
               </div>

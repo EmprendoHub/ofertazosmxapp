@@ -15,7 +15,7 @@ const NewProductComponent = () => {
 
   const [inputImageFields, setInputImageFields] = useState([
     {
-      i_color: '',
+      i_color: 'Negro',
       i_file: '',
       i_filePreview: '/images/shopout_clothing_placeholder.webp',
     },
@@ -75,6 +75,7 @@ const NewProductComponent = () => {
   const [category, setCategory] = useState('Bolsas');
   const [sizes, setSizes] = useState([]);
   const [gender, setGender] = useState('Damas');
+  const [featured, setFeatured] = useState('No');
   const [stock, setStock] = useState(1);
   const [cost, setCost] = useState(0);
   const [price, setPrice] = useState(0);
@@ -82,6 +83,8 @@ const NewProductComponent = () => {
   const [salePrice, setSalePrice] = useState(0);
   const [salePriceEndDate, setSalePriceEndDate] = useState(new Date());
   const [sizeSelection, setSizeSelection] = useState([]);
+
+  console.log(featured);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -181,7 +184,7 @@ const NewProductComponent = () => {
           setSizes(null);
           setInputImageFields([
             {
-              i_color: '',
+              i_color: 'Negro',
               i_file: '',
               i_filePreview: '/images/shopout_clothing_placeholder.webp',
             },
@@ -241,7 +244,7 @@ const NewProductComponent = () => {
     setInputImageFields([
       ...inputImageFields,
       {
-        i_color: '',
+        i_color: 'Negro',
         i_file: '',
         i_filePreview: '/images/shopout_clothing_placeholder.webp',
       },
@@ -364,6 +367,33 @@ const NewProductComponent = () => {
                       name="stock"
                     />
                   </div>
+                </div>
+              </div>
+              <div className="mb-4 w-full">
+                <label className="block mb-1"> Destacado </label>
+                <div className="relative">
+                  <select
+                    className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                    name="featured"
+                    onChange={(e) => setFeatured(e.target.value)}
+                    value={featured}
+                  >
+                    {['No', 'Si'].map((opt) => (
+                      <option key={opt} value={opt}>
+                        {opt}
+                      </option>
+                    ))}
+                  </select>
+                  <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
+                    <svg
+                      width="22"
+                      height="22"
+                      className="fill-current"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M7 10l5 5 5-5H7z"></path>
+                    </svg>
+                  </i>
                 </div>
               </div>
             </div>
