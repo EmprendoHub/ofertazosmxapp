@@ -78,11 +78,6 @@ export async function POST(req, res) {
       const sale_price = Number(salePrice);
       const sale_price_end_date = salePriceEndDate;
       const user = { _id: token?._id };
-      if (featured === 'si') {
-        featured = true;
-      } else {
-        featured = false;
-      }
 
       // set image urls
       const savedProductImages = [];
@@ -176,6 +171,7 @@ export async function PUT(req, res) {
         title,
         description,
         category,
+        featured,
         cost,
         price,
         sizes,
@@ -241,6 +237,7 @@ export async function PUT(req, res) {
       updateProduct.description = description;
       updateProduct.brand = brand;
       updateProduct.gender = gender;
+      updateProduct.featured = featured;
       updateProduct.category = category;
       updateProduct.colors = colors;
       updateProduct.sizes = sizes;

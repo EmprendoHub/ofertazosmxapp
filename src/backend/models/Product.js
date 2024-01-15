@@ -87,8 +87,8 @@ const ProductSchema = new mongoose.Schema({
     default: true,
   },
   featured: {
-    type: Boolean,
-    default: false,
+    type: 'String',
+    default: 'no',
   },
   quantity: {
     type: Number,
