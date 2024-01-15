@@ -25,7 +25,7 @@ const Orders = ({ searchParams, currentCookies }) => {
       setFilteredOrdersCount(ordersData?.filteredOrdersCount);
     }
     getOrders();
-  }, [getAllOrders]);
+  }, [getAllOrders, searchParams, currentCookies]);
 
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
