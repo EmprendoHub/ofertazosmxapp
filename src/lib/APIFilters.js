@@ -56,24 +56,7 @@ class APIFilters {
     return this;
   }
 
-  newfilter() {
-    const queryCopy = {};
-    this.queryStr.forEach((value, key) => {
-      const langKeys = ['en', 'es', 'fr'];
-      langKeys.forEach((lang) => {
-        const nestedKey = `${key}.lang.${lang}`;
-        queryCopy[nestedKey] = value;
-      });
-    });
-
-    this.query = this.query.find(queryCopy);
-
-    return this;
-  }
-
-  pagination(resPerPage) {
-    const currentPage = Number(this.queryStr.get('page')) || 1;
-
+  pagination(resPerPage, currentPage) {
     const skip = resPerPage * (currentPage - 1);
 
     this.query = this.query.limit(resPerPage).skip(skip);

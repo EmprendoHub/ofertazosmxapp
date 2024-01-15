@@ -1,13 +1,33 @@
 'use client';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import AuthContext from '@/context/AuthContext';
 import { FaTrash, FaPencilAlt } from 'react-icons/fa';
 import ConfirmationModalContextProvider from '../modals/modalConfirmationContext';
 import DeleteButton from '../buttons/DeleteButton';
+import AdminPagination from '../pagination/AdminPagination';
+import Search from '../layout/Search';
+import FormattedPrice from '@/backend/helpers/FormattedPrice';
 
-const AllProductsComponent = ({ products }) => {
+const AllProductsComponent = ({ searchParams, currentCookies }) => {
+  const { getAllProducts } = useContext(AuthContext);
+  const [products, setProducts] = useState([]);
+  const [filteredProductsCount, setFilteredProductsCount] = useState();
+  const page = searchParams['page'] ?? '1';
+  const per_page = 5;
+  const start = (Number(page) - 1) * Number(per_page); // 0, 5, 10 ...
+  const end = start + Number(per_page); // 5, 10, 15 ...
+
+  useEffect(() => {
+    async function getProducts() {
+      const productsData = await getAllProducts(searchParams, currentCookies);
+      setProducts(productsData?.products.products);
+      setFilteredProductsCount(productsData?.filteredProductsCount);
+    }
+    getProducts();
+  }, [getAllProducts, searchParams, currentCookies]);
+
   const { deleteProduct } = useContext(AuthContext);
   const deleteHandler = (product_id) => {
     deleteProduct(product_id);
@@ -20,66 +40,87 @@ const AllProductsComponent = ({ products }) => {
         </button>
       </Link>
       <hr className="my-4" />
-      {products?.map((product, index) => (
-        <div
-          key={index}
-          className="flex flex-row maxsm:flex-col justify-between items-center "
-        >
-          <div>
-            <Link key={index} href={`/admin/productos/editar/${product._id}`}>
-              <div className="mb-5 gap-4">
-                <figure className="w-full flex align-center bg-gray-100 p-4 rounded-md cursor-pointer maxsm:flex-col">
-                  <div className="mr-3 w-15 h-15 maxsm:w-full maxsm:h-full">
-                    <span className="flex items-center justify-center text-black w-12 h-12 maxsm:w-full maxsm:h-full shadow mt-2">
-                      <Image
-                        src={product?.images[0].url}
-                        alt="Title"
-                        width={100}
-                        height={100}
-                      />
-                    </span>
-                  </div>
-                  <figcaption className="text-gray-600">
-                    <p>
-                      <b>{product?.title}</b>
-                      <br /> {product?.description}
-                      <br />
-                      costo: {product?.cost}
-                      <br />
-                      precio: {product?.price} <br />
-                      oferta: {product?.sales_price}
-                      <br />
-                      marca: {product?.brand}
-                      <br />
-                      existencias: {product?.stock}
-                    </p>
-                  </figcaption>
-                </figure>
-              </div>
-            </Link>
-          </div>
-          <div className="flex flex-row justify-between items-center gap-5">
-            <span>
-              <DeleteButton
-                product={product}
-                onClick={() => deleteHandler(product._id)}
-                className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700"
-              >
-                <FaTrash className="text-white" />
-              </DeleteButton>
-            </span>
-            <span>
-              <Link
-                key={index}
-                href={`/admin/productos/editar/${product._id}`}
-                className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
-              >
-                <FaPencilAlt className="text-white" />
-              </Link>
-            </span>
-          </div>
+      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <div className=" flex flex-row maxsm:flex-col maxsm:items-start items-center justify-between">
+          {' '}
+          <h1 className="text-3xl my-5 ml-4 font-bold">
+            {`${filteredProductsCount} Productos `}
+          </h1>
+          <Search />
         </div>
-      ))}
+        <table className="w-full text-sm text-left">
+          <thead className="text-l text-gray-700 uppercase">
+            <tr>
+              <th scope="col" className="px-6 maxsm:px-0 py-3">
+                Id
+              </th>
+              <th scope="col" className="px-6 py-3 maxmd:hidden">
+                Img
+              </th>
+              <th scope="col" className="px-6 maxsm:px-0 py-3">
+                Titulo
+              </th>
+              <th scope="col" className="px-6 maxsm:px-0 py-3">
+                Costo
+              </th>
+              <th scope="col" className="px-1 py-3 maxsm:hidden">
+                Exst.
+              </th>
+              <th scope="col" className="w-5 px-1 py-3 text-center">
+                ...
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {products?.map((product, index) => (
+              <tr className="bg-white" key={index}>
+                <td className="px-6 maxsm:px-2 py-2">
+                  <Link
+                    key={index}
+                    href={`/admin/productos/editar/${product._id}`}
+                  >
+                    {product._id.substring(0, 10)}...
+                  </Link>
+                </td>
+                <td className="px-6 py-2 maxmd:hidden">
+                  <span className="flex items-center justify-center text-black w-12 h-12 maxsm:w-full maxsm:h-full shadow mt-2">
+                    <Image
+                      src={product?.images[0].url}
+                      alt="Title"
+                      width={100}
+                      height={100}
+                    />
+                  </span>
+                </td>
+                <td className="px-6 maxsm:px-0 py-2 ">
+                  <b>
+                    <FormattedPrice amount={product.price} />
+                  </b>
+                </td>
+                <td className={`px-6 maxsm:px-0 py-2 font-bold `}>
+                  {product.title.substring(0, 15)}
+                </td>
+                <td className="px-1 py-2">{product.stock}</td>
+                <td className="px-6 py-2 maxsm:hidden">
+                  <div>
+                    <Link
+                      href={`/admin/productos/editar/${product._id}`}
+                      className="px-2 py-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
+                    >
+                      <FaPencilAlt className="" />
+                    </Link>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <AdminPagination
+          hasNextPage={end < filteredProductsCount}
+          hasPrevPage={start > 0}
+          totalItemCount={filteredProductsCount}
+        />
+      </div>
 
       <hr className="my-4" />
     </ConfirmationModalContextProvider>

@@ -516,12 +516,37 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const getAllProducts = async () => {
+  const getAllProducts = async (searchParams, currentCookies) => {
     try {
-      const { data } = await axios.get(`/api/products`);
-      return data.products;
+      const urlParams = {
+        keyword: searchParams.keyword,
+        page: searchParams.page,
+        category: searchParams.category,
+        brand: searchParams.brand,
+        'rating[gte]': searchParams.rating,
+        'price[lte]': searchParams.max,
+        'price[gte]': searchParams.min,
+      };
+      // Filter out undefined values
+      const filteredUrlParams = Object.fromEntries(
+        Object.entries(urlParams).filter(([key, value]) => value !== undefined)
+      );
+
+      const searchQuery = new URLSearchParams(filteredUrlParams).toString();
+      const URL = `/api/products?${searchQuery}`;
+      const { data } = await axios.get(
+        URL,
+        {
+          headers: {
+            Cookie: currentCookies,
+          },
+        },
+        { cache: 'no-cache' }
+      );
+
+      return data;
     } catch (error) {
-      setError(error?.response?.data?.message);
+      console.log(error);
     }
   };
 

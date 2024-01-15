@@ -10,7 +10,6 @@ import AuthContext from '@/context/AuthContext';
 import AdminPagination from '@/components/pagination/AdminPagination';
 
 const Orders = ({ searchParams, currentCookies }) => {
-  //const orders = data?.orders.orders;
   const { getAllOrders } = useContext(AuthContext);
   const [orders, setOrders] = useState([]);
   const [filteredOrdersCount, setFilteredOrdersCount] = useState();

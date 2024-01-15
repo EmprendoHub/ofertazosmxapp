@@ -1,6 +1,7 @@
 import StoreHeroComponent from '@/components/hero/StoreHeroComponent';
 import ListProducts from '@/components/products/ListProducts';
-import PaginationControllerComponent from '@/components/pagination/PaginationComponent';
+import { getCookiesName } from '@/backend/helpers';
+import { cookies } from 'next/headers';
 
 export const metadata = {
   title: 'Tienda en linea Shopout Mx',
@@ -35,29 +36,17 @@ const getProducts = async (searchParams) => {
 };
 
 const TiendaPage = async ({ searchParams }) => {
-  const data = await getProducts(searchParams);
-  const page = searchParams['page'] ?? '1';
-  const per_page = searchParams['per_age'] ?? '10';
-  const start = (Number(page) - 1) * Number(per_page); // 0, 5, 10 ...
-  const end = start + Number(per_page); // 5, 10, 15 ...
-  let entries = data?.products;
-  let allCategories = data?.allCategories;
-  let allBrands = data?.allBrands;
-  const totalProductCount = entries?.length;
-  entries = entries?.slice(start, end);
+  const nextCookies = cookies();
+  const cookieName = getCookiesName();
+  let nextAuthSessionToken = nextCookies.get(cookieName);
+  nextAuthSessionToken = nextAuthSessionToken?.value;
+  const currentCookies = `${cookieName}=${nextAuthSessionToken}`;
   return (
     <>
       <StoreHeroComponent />
       <ListProducts
-        products={entries}
-        productsCount={data?.productsCount}
-        allBrands={allBrands}
-        allCategories={allCategories}
-      />
-      <PaginationControllerComponent
-        hasNextPage={end < totalProductCount}
-        hasPrevPage={start > 0}
-        totalProductCount={totalProductCount}
+        searchParams={searchParams}
+        currentCookies={currentCookies}
       />
     </>
   );
