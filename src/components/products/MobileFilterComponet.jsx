@@ -14,7 +14,7 @@ const MobileFilterComponet = ({ allBrands, allCategories, lang }) => {
   const copyToClipboard = () => {
     const url = location.href;
     navigator.clipboard.writeText(url);
-    toast.success(`Link was successfully copied to your clipboard`);
+    toast.success(`El enlace se copió correctamente en su portapapeles.`);
   };
 
   useEffect(() => {
