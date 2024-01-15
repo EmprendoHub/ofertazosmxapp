@@ -437,6 +437,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const urlParams = {
         keyword: searchParams.keyword,
+        page: searchParams.page,
       };
       // Filter out undefined values
       const filteredUrlParams = Object.fromEntries(

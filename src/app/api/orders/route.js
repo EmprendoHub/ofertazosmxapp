@@ -39,7 +39,7 @@ export const GET = async (request, res) => {
     let ordersData = await apiOrderFilters.query;
 
     const filteredOrdersCount = ordersData.length;
-
+    console.log(resPerPage, page);
     apiOrderFilters.pagination(resPerPage, page);
     ordersData = await apiOrderFilters.query.clone();
 

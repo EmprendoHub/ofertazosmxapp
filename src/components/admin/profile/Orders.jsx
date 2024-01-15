@@ -110,6 +110,7 @@ const Orders = ({ searchParams, currentCookies }) => {
         hasNextPage={end < filteredOrdersCount}
         hasPrevPage={start > 0}
         totalItemCount={filteredOrdersCount}
+        perPage={per_page}
       />
     </div>
   );

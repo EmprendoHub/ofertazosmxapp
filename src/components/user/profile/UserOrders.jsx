@@ -45,7 +45,7 @@ const UserOrders = ({ searchParams, currentCookies }) => {
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <div className=" flex flex-row justify-between items-center">
         <h1 className="text-3xl my-5 ml-4 font-bold">
-          {orders?.length} Pedidos
+          {filteredOrdersCount} Pedidos
         </h1>
         <OrderSearch />
       </div>
