@@ -154,7 +154,7 @@ const NewProductComponent = () => {
       formData.set('stock', stock);
       formData.set('category', category);
       formData.set('price', price);
-
+      formData.set('featured', featured);
       formData.set('brand', brand);
       formData.set('gender', gender);
       // Convert arrays to JSON strings

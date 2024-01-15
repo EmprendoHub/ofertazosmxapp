@@ -254,6 +254,7 @@ export const AuthProvider = ({ children }) => {
         price: parseInt(formDataObject.get('price'), 10), // Convert to integer
         sizes: formDataObject.get('sizes'),
         images: formDataObject.get('images'),
+        featured: formDataObject.get('featured'),
         brand: formDataObject.get('brand'),
         gender: formDataObject.get('gender'),
         salePrice: formDataObject.get('salePrice'),
@@ -305,6 +306,7 @@ export const AuthProvider = ({ children }) => {
         price: parseInt(formDataObject.get('price'), 10), // Convert to integer
         sizes: formDataObject.get('sizes'),
         images: formDataObject.get('images'),
+        featured: formDataObject.get('featured'),
         brand: formDataObject.get('brand'),
         gender: formDataObject.get('gender'),
         salePrice: formDataObject.get('salePrice'),

@@ -524,7 +524,7 @@ const UpdateProductDetails = ({ product }) => {
                     >
                       {['No', 'Si'].map((opt) => (
                         <option key={opt} value={opt}>
-                          {opt}
+                          {featured}
                         </option>
                       ))}
                     </select>
