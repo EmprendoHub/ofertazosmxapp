@@ -2,10 +2,19 @@
 import React from 'react';
 import Link from 'next/link';
 import { signOut } from 'next-auth/react';
-import { FaUsers, FaRegAddressCard, FaUserEdit } from 'react-icons/fa';
 import { RiLockPasswordLine, RiLogoutCircleRFill } from 'react-icons/ri';
-import { FaListCheck, FaTableCells, FaFileCirclePlus } from 'react-icons/fa6';
-import { MdOutlineDashboard, MdEmail } from 'react-icons/md';
+import { PiUserListLight, PiUserCircleGearLight } from 'react-icons/pi';
+import { SiAmazonsimpleemailservice } from 'react-icons/si';
+import {
+  MdOutlineDashboard,
+  MdOutlineAddBusiness,
+  MdOutlinePostAdd,
+} from 'react-icons/md';
+import {
+  TfiLayoutListThumb,
+  TfiList,
+  TfiLayoutListPost,
+} from 'react-icons/tfi';
 import { useRouter } from 'next/navigation';
 
 const AdminSidebar = () => {
@@ -33,7 +42,7 @@ const AdminSidebar = () => {
           className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
         >
           <li className="flex flex-row items-center gap-x-3">
-            <FaListCheck className="text-2xl text-black" />
+            <TfiList className="text-2xl text-black" />
 
             <div className="maxmd:hidden">Pedidos</div>
           </li>
@@ -43,7 +52,7 @@ const AdminSidebar = () => {
           className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
         >
           <li className="flex flex-row items-center gap-x-3">
-            <FaTableCells className="text-2xl text-black" />
+            <TfiLayoutListThumb className="text-2xl text-black" />
 
             <div className="maxmd:hidden">Productos</div>
           </li>
@@ -53,7 +62,7 @@ const AdminSidebar = () => {
           className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
         >
           <li className="flex flex-row items-center gap-x-3">
-            <FaFileCirclePlus className="text-2xl text-black" />
+            <MdOutlineAddBusiness className="text-2xl text-black" />
 
             <div className="maxmd:hidden">Nuevo Producto</div>
           </li>
@@ -63,7 +72,7 @@ const AdminSidebar = () => {
           className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
         >
           <li className="flex flex-row items-center gap-x-3">
-            <FaTableCells className="text-2xl text-black" />
+            <TfiLayoutListPost className="text-2xl text-black" />
 
             <div className="maxmd:hidden">Publicaciones</div>
           </li>
@@ -73,7 +82,7 @@ const AdminSidebar = () => {
           className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
         >
           <li className="flex flex-row items-center gap-x-3">
-            <FaFileCirclePlus className="text-2xl text-black" />
+            <MdOutlinePostAdd className="text-2xl text-black" />
 
             <div className="maxmd:hidden">Nueva Publicación</div>
           </li>
@@ -86,7 +95,7 @@ const AdminSidebar = () => {
           className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
         >
           <li className="flex flex-row items-center gap-x-3">
-            <FaUsers className="text-2xl text-black" />
+            <PiUserListLight className="text-2xl text-black" />
 
             <div className="maxmd:hidden">Clientes</div>
           </li>
@@ -96,7 +105,7 @@ const AdminSidebar = () => {
           className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
         >
           <li className="flex flex-row items-center gap-x-3">
-            <MdEmail className="text-2xl text-black" />
+            <SiAmazonsimpleemailservice className="text-2xl text-black" />
 
             <div className="maxmd:hidden">Correos</div>
           </li>
@@ -106,7 +115,7 @@ const AdminSidebar = () => {
           className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
         >
           <li className="flex flex-row items-center gap-x-3">
-            <RiLockPasswordLine className="text-2xl text-black" />
+            <PiUserCircleGearLight className="text-2xl text-black" />
 
             <div className="maxmd:hidden">Perfil</div>
           </li>

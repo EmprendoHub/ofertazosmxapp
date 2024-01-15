@@ -6,13 +6,25 @@ import AuthContext from '@/context/AuthContext';
 import { toast } from 'react-toastify';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 
-const AdminOneOrder = ({ id, data }) => {
+const AdminOneOrder = ({ id, currentCookies }) => {
+  const { getOneOrder } = useContext(AuthContext);
+  const [order, setOrder] = useState([]);
+  const [address, setAddress] = useState([]);
+  const [user, setUser] = useState([]);
   const { updateOrder } = useContext(AuthContext);
-  const order = data?.order;
-  const address = data?.deliveryAddress;
-  const user = data?.orderUser;
-  const [orderStatus, setOrderStatus] = useState(order?.orderStatus);
+  const [orderStatus, setOrderStatus] = useState('pendiente');
   const [currentOrderStatus, setCurrentOrderStatus] = useState();
+
+  useEffect(() => {
+    async function getOrder() {
+      const orderData = await getOneOrder(id, currentCookies);
+      setOrder(orderData?.order);
+      setAddress(orderData?.deliveryAddress);
+      setUser(orderData?.orderUser);
+      setCurrentOrderStatus(orderData?.order.orderStatus);
+    }
+    getOrder();
+  }, [getOneOrder, currentCookies, id]);
 
   function getQuantities(orderItems) {
     // Use reduce to sum up the 'quantity' fields
@@ -110,34 +122,39 @@ const AdminOneOrder = ({ id, data }) => {
             </h2>
           )}
         </div>
-
         <table className="w-full text-sm text-left flex flex-col maxsm:flex-row">
           <thead className="text-l text-gray-700 uppercase">
             <tr className="flex flex-row maxsm:flex-col">
-              <th scope="col" className="px-6 py-2">
+              <th scope="col" className="w-1/6 px-6 py-2">
                 Domicilio
               </th>
-              <th scope="col" className="px-6 py-2">
+              <th scope="col" className="w-1/6 maxsm:w-full px-6 py-2">
                 Ciudad
               </th>
-              <th scope="col" className="px-6 py-2">
+              <th scope="col" className="w-1/6 maxsm:w-full px-6 py-2">
                 Entidad
               </th>
-              <th scope="col" className="px-6 py-2">
+              <th scope="col" className="w-1/6 maxsm:w-full px-6 py-2">
                 Código Postal
               </th>
-              <th scope="col" className="px-6 py-2">
+              <th scope="col" className="w-1/6 maxsm:w-full px-6 py-2">
                 Tel
               </th>
             </tr>
           </thead>
           <tbody>
             <tr className="bg-white flex flex-row maxsm:flex-col">
-              <td className="px-6 py-2">{address?.street}</td>
-              <td className="px-6 py-2">{address?.city}</td>
-              <td className="px-6 py-2">{address?.province}</td>
-              <td className="px-6 py-2">{address?.zip_code}</td>
-              <td className="px-6 py-2">{address?.phone}</td>
+              <td className="w-1/6 maxsm:w-full px-6 py-2">
+                {address?.street}
+              </td>
+              <td className="w-1/6 maxsm:w-full px-6 py-2">{address?.city}</td>
+              <td className="w-1/6 maxsm:w-full px-6 py-2">
+                {address?.province}
+              </td>
+              <td className="w-1/6 maxsm:w-full px-6 py-2">
+                {address?.zip_code}
+              </td>
+              <td className="w-1/6 maxsm:w-full px-6 py-2">{address?.phone}</td>
             </tr>
           </tbody>
         </table>
@@ -174,7 +191,7 @@ const AdminOneOrder = ({ id, data }) => {
                 </td>
                 <td className="px-2 maxsm:px-0 py-2">{item.quantity}</td>
                 <td className="px-2 maxsm:px-0 py-2">
-                  <FormattedPrice amount={item.price} />
+                  <FormattedPrice amount={item.price || 0} />
                 </td>
                 <td className="px-2 maxsm:px-0 py-2">
                   <Image
@@ -204,14 +221,14 @@ const AdminOneOrder = ({ id, data }) => {
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
                   <span>Sub-Total:</span>
                   <span>
-                    <FormattedPrice amount={subtotal()} />
+                    <FormattedPrice amount={subtotal() || 0} />
                   </span>
                 </li>
 
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
                   <span>Total:</span>
                   <span>
-                    <FormattedPrice amount={getTotal(order?.orderItems)} />
+                    <FormattedPrice amount={getTotal(order?.orderItems) || 0} />
                   </span>
                 </li>
                 <li className="text-xl font-bold border-t flex justify-between gap-x-5  pt-3">
@@ -225,10 +242,12 @@ const AdminOneOrder = ({ id, data }) => {
                   <span>Pendiente:</span>
                   <span>
                     <FormattedPrice
-                      amount={getPendingTotal(
-                        order?.orderItems,
-                        order?.paymentInfo?.amountPaid
-                      )}
+                      amount={
+                        getPendingTotal(
+                          order?.orderItems,
+                          order?.paymentInfo?.amountPaid
+                        ) || 0
+                      }
                     />
                   </span>
                 </li>
@@ -238,7 +257,7 @@ const AdminOneOrder = ({ id, data }) => {
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
                   <span>Sub-Total:</span>
                   <span>
-                    <FormattedPrice amount={subtotal()} />
+                    <FormattedPrice amount={subtotal() || 0} />
                   </span>
                 </li>
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
@@ -250,13 +269,15 @@ const AdminOneOrder = ({ id, data }) => {
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
                   <span>Envió:</span>
                   <span>
-                    <FormattedPrice amount={order?.ship_cost} />
+                    <FormattedPrice amount={order?.ship_cost || 0} />
                   </span>
                 </li>
                 <li className="text-3xl font-bold border-t flex justify-between gap-x-5 mt-3 pt-3">
                   <span>Total:</span>
                   <span>
-                    <FormattedPrice amount={order?.paymentInfo?.amountPaid} />
+                    <FormattedPrice
+                      amount={order?.paymentInfo?.amountPaid || 0}
+                    />
                   </span>
                 </li>
               </ul>

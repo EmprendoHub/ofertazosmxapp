@@ -24,6 +24,9 @@ export const GET = async (request, res) => {
       orderQuery = Order.find({ user: token._id });
     }
 
+    // Apply descending order based on a specific field (e.g., createdAt)
+    orderQuery = orderQuery.sort({ createdAt: -1 });
+
     const resPerPage = 5;
     // Extract page and per_page from request URL
     const page = Number(request.nextUrl.searchParams.get('page')) || 1;
@@ -39,34 +42,31 @@ export const GET = async (request, res) => {
     let ordersData = await apiOrderFilters.query;
 
     const filteredOrdersCount = ordersData.length;
-    console.log(resPerPage, page);
     apiOrderFilters.pagination(resPerPage, page);
     ordersData = await apiOrderFilters.query.clone();
 
-    await Promise.all(
-      ordersData.map(async (order) => {
-        let shippingInfo = await Address.findOne({
-          _id: order.shippingInfo,
-        });
-        let user = await User.findOne({ _id: order.user });
-        order.shippingInfo = shippingInfo;
-        order.user = user;
-      })
-    );
+    // await Promise.all(
+    //   ordersData.map(async (order) => {
+    //     let shippingInfo = await Address.findOne({
+    //       _id: order.shippingInfo,
+    //     });
+    //     let user = await User.findOne({ _id: order.user });
+    //     order.shippingInfo = shippingInfo;
+    //     order.user = user;
+    //   })
+    // );
 
-    // If you want a new sorted array without modifying the original one, use slice
-    // const sortedObj1 = obj1
+    // descending order
+    // const sortedOrders = ordersData
     //   .slice()
-    //   .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-
-    // descending order
-    // descending order
-    const sortedOrders = ordersData
+    //   .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    // If you want a new sorted array without modifying the original one, use slice
+    ordersData = await ordersData
       .slice()
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     const orders = {
-      orders: sortedOrders,
+      orders: ordersData,
     };
 
     const dataPacket = {

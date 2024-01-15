@@ -52,31 +52,31 @@ const UserOrders = ({ searchParams, currentCookies }) => {
       <table className="w-full text-sm text-left">
         <thead className="text-l text-gray-700 uppercase">
           <tr>
-            <th scope="col" className="px-6 py-3">
+            <th scope="col" className="px-6 maxsm:px-1 py-2">
               No.
             </th>
-            <th scope="col" className="px-6 py-3">
+            <th scope="col" className="px-6 maxsm:px-1 maxsm:hidden py-2">
               Total
             </th>
-            <th scope="col" className="px-6 py-3">
+            <th scope="col" className="px-6 maxsm:px-1 py-2">
               Pagado
             </th>
-            <th scope="col" className="px-6 py-3">
+            <th scope="col" className="px-6 maxsm:px-1 py-2">
               Estado
             </th>
 
-            <th scope="col" className="px-6 py-3">
+            <th scope="col" className="px-6 maxsm:px-1 py-2  maxsm:hidden">
               Fecha
             </th>
-            <th scope="col" className="px-6 py-3">
-              Acciones
+            <th scope="col" className="px-6 maxsm:px-1 py-2 text-center">
+              ...
             </th>
           </tr>
         </thead>
         <tbody>
           {orders?.map((order, index) => (
             <tr className="bg-white" key={index}>
-              <td className="px-6 py-2">
+              <td className="px-6 maxsm:px-1 py-2">
                 {' '}
                 <Link
                   href={`/perfil/pedidos/${order._id}`}
@@ -85,14 +85,14 @@ const UserOrders = ({ searchParams, currentCookies }) => {
                   {order.orderId}
                 </Link>
               </td>
-              <td className="px-6 py-2">
+              <td className="px-6 maxsm:px-1 py-2 maxsm:hidden">
                 ${getTotalFromItems(order.orderItems)}
               </td>
-              <td className="px-6 py-2 ">
+              <td className="px-6 maxsm:px-1 py-2 ">
                 <b>${order.paymentInfo.amountPaid}</b>
               </td>
               <td
-                className={`px-6 py-2 font-bold ${
+                className={`px-6 maxsm:px-1 py-2 font-bold ${
                   order.orderStatus === 'Apartado'
                     ? 'text-amber-700'
                     : order.orderStatus === 'En Camino'
@@ -104,7 +104,7 @@ const UserOrders = ({ searchParams, currentCookies }) => {
               >
                 {order.orderStatus}
               </td>
-              <td className="px-6 py-2">
+              <td className="px-6 maxsm:px-1 py-2  maxsm:hidden">
                 {' '}
                 <p>
                   {order?.createdAt &&
@@ -112,7 +112,7 @@ const UserOrders = ({ searchParams, currentCookies }) => {
                 </p>
               </td>
 
-              <td className="px-6 py-2">
+              <td className="px-6 maxsm:px-1 py-2">
                 <div>
                   <Link
                     href={`/perfil/pedidos/${order._id}`}
@@ -120,9 +120,6 @@ const UserOrders = ({ searchParams, currentCookies }) => {
                   >
                     <FaEye className="" />
                   </Link>
-                  <a className="px-2 py-2 inline-block text-white  hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer">
-                    <FaMoneyCheck className="" />
-                  </a>
                 </div>
               </td>
             </tr>
