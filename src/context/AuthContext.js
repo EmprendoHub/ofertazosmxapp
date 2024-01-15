@@ -433,10 +433,29 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const getAllUserOrders = async () => {
+  const getAllUserOrders = async (searchParams, currentCookies) => {
     try {
-      const { data } = await axios.get(`/api/orders`);
-      return data.orders;
+      const urlParams = {
+        keyword: searchParams.keyword,
+      };
+      // Filter out undefined values
+      const filteredUrlParams = Object.fromEntries(
+        Object.entries(urlParams).filter(([key, value]) => value !== undefined)
+      );
+
+      const searchQuery = new URLSearchParams(filteredUrlParams).toString();
+      const URL = `/api/orders?${searchQuery}`;
+      const { data } = await axios.get(
+        URL,
+        {
+          headers: {
+            Cookie: currentCookies,
+          },
+        },
+        { cache: 'no-cache' }
+      );
+
+      return data;
     } catch (error) {
       setError(error?.response?.data?.message);
     }
@@ -471,13 +490,22 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const getOneOrder = async (id) => {
+  const getOneOrder = async (id, currentCookies) => {
     try {
       const URL = `/api/order?${id}`;
-      const { data } = await axios.get(URL);
+
+      const { data } = await axios.get(
+        URL,
+        {
+          headers: {
+            Cookie: currentCookies,
+          },
+        },
+        { cache: 'no-cache' }
+      );
       return data;
     } catch (error) {
-      setError(error?.response?.data?.message);
+      console.log(error);
     }
   };
 

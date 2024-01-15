@@ -1,20 +1,38 @@
 'use client';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { formatDate } from '@/backend/helpers';
-import { useRouter, useSearchParams } from 'next/navigation';
 import { resetCart } from '@/redux/shoppingSlice';
-import { useDispatch } from 'react-redux';
 import { FaEye, FaMoneyCheck } from 'react-icons/fa';
 import { getTotalFromItems } from '@/backend/helpers';
 import OrderSearch from '@/components/layout/OrderSearch';
+import AuthContext from '@/context/AuthContext';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useDispatch } from 'react-redux';
+import AdminPagination from '@/components/pagination/AdminPagination';
 
-const UserOrders = ({ orders }) => {
+const UserOrders = ({ searchParams, currentCookies }) => {
+  const { getAllUserOrders } = useContext(AuthContext);
+  const [orders, setOrders] = useState([]);
+  const [filteredOrdersCount, setFilteredOrdersCount] = useState();
+  const page = searchParams['page'] ?? '1';
+  const per_page = 5;
+  const start = (Number(page) - 1) * Number(per_page); // 0, 5, 10 ...
+  const end = start + Number(per_page); // 5, 10, 15 ...
   const dispatch = useDispatch();
   const router = useRouter();
   const params = useSearchParams();
 
   const orderSuccess = params.get('pedido_exitoso');
+
+  useEffect(() => {
+    async function getOrders() {
+      const ordersData = await getAllUserOrders(searchParams, currentCookies);
+      setOrders(ordersData?.orders.orders);
+      setFilteredOrdersCount(ordersData?.filteredOrdersCount);
+    }
+    getOrders();
+  }, [getAllUserOrders, searchParams, currentCookies]);
 
   useEffect(() => {
     if (orderSuccess === 'true') {
@@ -111,6 +129,12 @@ const UserOrders = ({ orders }) => {
           ))}
         </tbody>
       </table>
+      <AdminPagination
+        hasNextPage={end < filteredOrdersCount}
+        hasPrevPage={start > 0}
+        totalItemCount={filteredOrdersCount}
+        perPage={per_page}
+      />
     </div>
   );
 };

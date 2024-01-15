@@ -1,16 +1,27 @@
 'use client';
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import { getOrderItemsQuantities, getTotalFromItems } from '@/backend/helpers';
 import { loadStripe } from '@stripe/stripe-js';
 import { useSelector } from 'react-redux';
+import AuthContext from '@/context/AuthContext';
 
-const OneOrder = ({ id, data }) => {
-  const order = data.order;
-  const address = data.deliveryAddress;
+const OneOrder = ({ id, currentCookies }) => {
+  const { getOneOrder } = useContext(AuthContext);
+  const [order, setOrder] = useState([]);
+  const [address, setAddress] = useState([]);
   const { userInfo } = useSelector((state) => state.compras);
+
+  useEffect(() => {
+    async function getOrder() {
+      const orderData = await getOneOrder(id, currentCookies);
+      setOrder(orderData?.order);
+      setAddress(orderData?.deliveryAddress);
+    }
+    getOrder();
+  }, [getOneOrder, currentCookies]);
 
   const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE__KEY);
   const handleCheckout = async () => {
@@ -146,7 +157,7 @@ const OneOrder = ({ id, data }) => {
                 <td className="px-6 py-2">{item.quantity}</td>
                 <td className="px-6 py-2">{item.name}</td>
                 <td className="px-6 py-2">
-                  <FormattedPrice amount={item.price} />
+                  <FormattedPrice amount={item?.price || 0} />
                 </td>
                 <td className="px-6 py-2">
                   <Image
@@ -176,12 +187,12 @@ const OneOrder = ({ id, data }) => {
                 </li>
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
                   <span>Sub-Total:</span>
-                  <FormattedPrice amount={subtotal()} />
+                  <FormattedPrice amount={subtotal() || 0} />
                 </li>
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
                   <span>Total:</span>
                   <FormattedPrice
-                    amount={getTotalFromItems(order?.orderItems)}
+                    amount={getTotalFromItems(order?.orderItems) || 0}
                   />
                 </li>
                 <li className="text-xl font-bold border-t flex justify-between gap-x-5  pt-3">
@@ -193,10 +204,12 @@ const OneOrder = ({ id, data }) => {
                   <span>Pendiente:</span>
                   <span>
                     <FormattedPrice
-                      amount={getPendingTotal(
-                        order?.orderItems,
-                        order?.paymentInfo?.amountPaid
-                      )}
+                      amount={
+                        getPendingTotal(
+                          order?.orderItems,
+                          order?.paymentInfo?.amountPaid
+                        ) || 0
+                      }
                     />
                   </span>
                 </li>
@@ -239,7 +252,7 @@ const OneOrder = ({ id, data }) => {
               <ul className="mb-5">
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
                   <span>Sub-Total:</span>
-                  <FormattedPrice amount={subtotal()} />
+                  <FormattedPrice amount={subtotal() || 0} />
                 </li>
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
                   <span>Total de Artículos:</span>
@@ -249,18 +262,20 @@ const OneOrder = ({ id, data }) => {
                 </li>
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
                   <span>Envió:</span>
-                  <FormattedPrice amount={order?.ship_cost} />
+                  <FormattedPrice amount={order?.ship_cost || 0} />
                   (Gratis)
                 </li>
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
                   <span>Total:</span>
                   <FormattedPrice
-                    amount={getTotalFromItems(order?.orderItems)}
+                    amount={getTotalFromItems(order?.orderItems) || 0}
                   />
                 </li>
                 <li className="text-xl font-bold text-green-700 border-t flex justify-between gap-x-5  pt-3">
                   <span>Pagado:</span>
-                  <FormattedPrice amount={order?.paymentInfo?.amountPaid} />
+                  <FormattedPrice
+                    amount={order?.paymentInfo?.amountPaid || 0}
+                  />
                 </li>
               </ul>
             </div>
