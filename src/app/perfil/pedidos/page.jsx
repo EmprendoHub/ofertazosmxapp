@@ -1,4 +1,4 @@
-import { getCookiesName, getSessionCookiesName } from '@/backend/helpers';
+import { getSessionCookiesName } from '@/backend/helpers';
 import UserOrders from '@/components/user/profile/UserOrders';
 import { cookies } from 'next/headers';
 import React from 'react';

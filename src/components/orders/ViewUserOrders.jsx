@@ -1,11 +1,34 @@
+'use client';
 import { formatDate, getTotalFromItems } from '@/backend/helpers';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import Link from 'next/link';
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { AiOutlineInteraction } from 'react-icons/ai';
 import { FaPencilAlt } from 'react-icons/fa';
+import AdminPagination from '../pagination/AdminPagination';
+import AuthContext from '@/context/AuthContext';
 
-const ViewUserOrders = ({ orders }) => {
+const ViewUserOrders = ({ searchParams, currentCookies, params }) => {
+  const { getAdminUserOrders } = useContext(AuthContext);
+  const [orders, setOrders] = useState([]);
+  const [filteredOrdersCount, setFilteredOrdersCount] = useState();
+  const page = searchParams['page'] ?? '1';
+  const per_page = 5;
+  const start = (Number(page) - 1) * Number(per_page); // 0, 5, 10 ...
+  const end = start + Number(per_page); // 5, 10, 15 ...
+
+  useEffect(() => {
+    async function getOrders() {
+      const ordersData = await getAdminUserOrders(
+        searchParams,
+        currentCookies,
+        params
+      );
+      setOrders(ordersData?.orders.orders);
+      setFilteredOrdersCount(ordersData?.filteredOrdersCount);
+    }
+    getOrders();
+  }, [getAdminUserOrders, searchParams, currentCookies, params]);
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <h1 className="text-3xl my-5 ml-4 font-bold">
@@ -89,6 +112,12 @@ const ViewUserOrders = ({ orders }) => {
           ))}
         </tbody>
       </table>
+      <AdminPagination
+        hasNextPage={end < filteredOrdersCount}
+        hasPrevPage={start > 0}
+        totalItemCount={filteredOrdersCount}
+        perPage={per_page}
+      />
     </div>
   );
 };

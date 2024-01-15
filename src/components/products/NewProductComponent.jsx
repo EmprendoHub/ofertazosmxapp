@@ -321,7 +321,7 @@ const NewProductComponent = () => {
               />
             </div>
             <div className="flex flex-row maxsm:flex-col items-center gap-5">
-              <div className="mb-4">
+              <div className="mb-4 w-full">
                 <label className="block mb-1"> Precio de Venta </label>
                 <div className="relative">
                   <div className="col-span-2">
@@ -336,7 +336,7 @@ const NewProductComponent = () => {
                   </div>
                 </div>
               </div>
-              <div className="mb-4">
+              <div className="mb-4 w-full">
                 <label className="block mb-1"> Costo </label>
                 <div className="relative">
                   <div className="col-span-2">
@@ -351,7 +351,7 @@ const NewProductComponent = () => {
                   </div>
                 </div>
               </div>
-              <div className="mb-4">
+              <div className="mb-4 w-full">
                 <label className="block mb-1"> Existencias </label>
                 <div className="relative">
                   <div className="col-span-2">
@@ -370,7 +370,7 @@ const NewProductComponent = () => {
           </div>
 
           <div className="flex-col flex justify-start px-2 gap-y-5">
-            <div className="mb-4">
+            <div className="mb-4 w-full">
               <label className="block mb-1"> Género </label>
               <div className="relative">
                 <select
@@ -396,7 +396,7 @@ const NewProductComponent = () => {
                 </i>
               </div>
             </div>
-            <div className="mb-4">
+            <div className="mb-4 w-full">
               <label className="block mb-1"> Categoría </label>
               <div className="relative">
                 <select
@@ -423,7 +423,7 @@ const NewProductComponent = () => {
               </div>
             </div>
 
-            <div className="mb-4">
+            <div className="mb-4 w-full">
               <label className="block mb-1"> Tallas </label>
               <div className="relative">
                 <MultiselectComponent
@@ -432,7 +432,7 @@ const NewProductComponent = () => {
                 />
               </div>
             </div>
-            <div className="mb-4">
+            <div className="mb-4 w-full">
               <label className="block mb-1"> Precio de Oferta </label>
               <div className="relative">
                 <div className="col-span-2">
@@ -447,7 +447,7 @@ const NewProductComponent = () => {
                 </div>
               </div>
             </div>
-            <div className="mb-4">
+            <div className="mb-4 w-full">
               <label className="block mb-1"> Finalización de Oferta </label>
               <div className="flex flex-row items-center gap-x-3"></div>
               <DateTimePicker

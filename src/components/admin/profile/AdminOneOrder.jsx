@@ -100,7 +100,7 @@ const AdminOneOrder = ({ id, currentCookies }) => {
             </h2>
           </Link>
         </div>
-        <div className="flex flex-row items-center justify-start gap-x-5">
+        <div className="flex flex-row maxsm:flex-col items-start justify-start gap-x-5">
           <h2 className="text-3xl mb-8 ml-4 font-bold ">
             Pedido #{order?.orderId}
           </h2>

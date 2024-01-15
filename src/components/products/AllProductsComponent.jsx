@@ -7,7 +7,6 @@ import { FaTrash, FaPencilAlt } from 'react-icons/fa';
 import ConfirmationModalContextProvider from '../modals/modalConfirmationContext';
 import DeleteButton from '../buttons/DeleteButton';
 import AdminPagination from '../pagination/AdminPagination';
-import Search from '../layout/Search';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import AdminProductSearch from '../layout/AdminProductSearch';
 
@@ -53,22 +52,23 @@ const AllProductsComponent = ({ searchParams, currentCookies }) => {
           </h1>
           <AdminProductSearch />
         </div>
-        <table className="w-full text-sm text-left">
+        <table className="w-full text-sm  text-left">
           <thead className="text-l text-gray-700 uppercase">
             <tr>
-              <th scope="col" className="px-6 maxsm:px-0 py-3">
-                Id
+              <th scope="col" className="px-6 maxsm:px-0 py-3 maxmd:hidden">
+                SKU
               </th>
-              <th scope="col" className="px-6 py-3 maxmd:hidden">
+              <th scope="col" className="px-6 maxsm:px-0 py-3 ">
                 Img
+              </th>
+
+              <th scope="col" className="px-6 maxsm:px-0 py-3 ">
+                Precio
               </th>
               <th scope="col" className="px-6 maxsm:px-0 py-3">
                 Titulo
               </th>
-              <th scope="col" className="px-6 maxsm:px-0 py-3">
-                Costo
-              </th>
-              <th scope="col" className="px-1 py-3 maxsm:hidden">
+              <th scope="col" className="px-1 py-3 ">
                 Exst.
               </th>
               <th scope="col" className="w-5 px-1 py-3 text-center">
@@ -79,7 +79,7 @@ const AllProductsComponent = ({ searchParams, currentCookies }) => {
           <tbody>
             {products?.map((product, index) => (
               <tr className="bg-white" key={index}>
-                <td className="px-6 maxsm:px-2 py-2">
+                <td className="px-6 maxsm:px-2 py-2 maxmd:hidden">
                   <Link
                     key={index}
                     href={`/admin/productos/editar/${product._id}`}
@@ -87,8 +87,8 @@ const AllProductsComponent = ({ searchParams, currentCookies }) => {
                     {product._id.substring(0, 10)}...
                   </Link>
                 </td>
-                <td className="px-6 py-2 maxmd:hidden">
-                  <span className="flex items-center justify-center text-black w-12 h-12 maxsm:w-full maxsm:h-full shadow mt-2">
+                <td className="px-6 maxsm:px-0 py-2 ">
+                  <span className="flex items-center justify-center text-black w-12 h-12 maxsm:w-10 maxsm:h-10 shadow mt-2">
                     <Image
                       src={product?.images[0].url}
                       alt="Title"
@@ -105,8 +105,8 @@ const AllProductsComponent = ({ searchParams, currentCookies }) => {
                 <td className={`px-6 maxsm:px-0 py-2 font-bold `}>
                   {product.title.substring(0, 15)}
                 </td>
-                <td className="px-1 py-2">{product.stock}</td>
-                <td className="px-6 py-2 maxsm:hidden">
+                <td className="px-1 py-2 ">{product.stock}</td>
+                <td className="px-1 py-2 ">
                   <div>
                     <Link
                       href={`/admin/productos/editar/${product._id}`}

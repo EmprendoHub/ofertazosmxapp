@@ -462,6 +462,31 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const getAdminUserOrders = async (searchParams, currentCookies, params) => {
+    const urlParams = {
+      keyword: searchParams.keyword,
+      page: searchParams.page,
+      id: params.id,
+    };
+    // Filter out undefined values
+    const filteredUrlParams = Object.fromEntries(
+      Object.entries(urlParams).filter(([key, value]) => value !== undefined)
+    );
+    const searchQuery = new URLSearchParams(filteredUrlParams).toString();
+    const URL = `/api/orders/user?${searchQuery}`;
+    const { data } = await axios.get(
+      URL,
+      {
+        headers: {
+          Cookie: currentCookies,
+        },
+      },
+      { cache: 'no-cache' }
+    );
+
+    return data;
+  };
+
   const getAllOrders = async (searchParams, currentCookies) => {
     try {
       const urlParams = {
@@ -620,6 +645,7 @@ export const AuthProvider = ({ children }) => {
         getAllClients,
         updateOrder,
         getAllPosts,
+        getAdminUserOrders,
       }}
     >
       {children}

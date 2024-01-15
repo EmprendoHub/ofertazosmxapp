@@ -13,7 +13,7 @@ export default function UserLayout({ children }) {
           <div className="flex flex-row maxmd:flex-col ">
             <AdminSidebar />
             <main className="w-4/5 maxmd:w-full px-4 maxsm:px-0">
-              <article className="border border-gray-200 bg white shadow-md rounded mb-5 p-5 maxmd:p-1">
+              <article className="border border-gray-200 bg white shadow-md rounded mb-5 p-5 maxmd:p-3">
                 {children}
               </article>
             </main>
