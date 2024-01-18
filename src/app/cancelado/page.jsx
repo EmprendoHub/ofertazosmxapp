@@ -1,7 +1,32 @@
 import React from 'react';
 import PedidoCancelado from '@/components/cart/PedidoCancelado';
+import axios from 'axios';
+import { getCookiesName } from '@/backend/helpers';
+import { cookies } from 'next/headers';
 
-const PedidoCanceladoPage = () => {
+const deleteOrder = async (id) => {
+  const nextCookies = cookies();
+  const cookieName = getCookiesName();
+  const nextAuthSessionToken = nextCookies.get(cookieName);
+  const URL = `${process.env.NEXTAUTH_URL}/api/order?${id}`;
+  try {
+    const { data } = await axios.delete(
+      URL,
+      {
+        headers: {
+          Cookie: `${cookieName}=${nextAuthSessionToken?.value}`,
+        },
+      },
+      { cache: 'no-cache' }
+    );
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const PedidoCanceladoPage = async ({ searchParams }) => {
+  await deleteOrder(searchParams.id);
   return <PedidoCancelado />;
 };
 

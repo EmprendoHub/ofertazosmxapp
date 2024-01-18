@@ -1,37 +1,17 @@
-'use client';
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 import ProductCard from './ProductCard';
 import MobileFilterComponet from './MobileFilterComponet';
-import AuthContext from '@/context/AuthContext';
 import AdminPagination from '../pagination/AdminPagination';
 
-const ListProducts = ({ searchParams, currentCookies }) => {
-  const { getAllProducts } = useContext(AuthContext);
-  const [products, setProducts] = useState([]);
-  const [allBrands, setAllBrands] = useState([]);
-  const [allCategories, setAllCategories] = useState([]);
-
-  const [filteredProductsCount, setFilteredProductsCount] = useState();
-  const page = searchParams['page'] ?? '1';
-  const per_page = 10;
-  const start = (Number(page) - 1) * Number(per_page); // 0, 5, 10 ...
-  const end = start + Number(per_page); // 5, 10, 15 ...
-
-  useEffect(() => {
-    async function getProducts() {
-      const productsData = await getAllProducts(
-        searchParams,
-        currentCookies,
-        per_page
-      );
-      setProducts(productsData?.products.products);
-      setAllBrands(productsData?.allBrands);
-      setAllCategories(productsData?.allCategories);
-      setFilteredProductsCount(productsData?.filteredProductsCount);
-    }
-    getProducts();
-  }, [getAllProducts, searchParams, currentCookies]);
-
+const ListProducts = ({
+  products,
+  allBrands,
+  allCategories,
+  filteredProductsCount,
+  per_page,
+  start,
+  end,
+}) => {
   return (
     <section className="py-12 mx-auto px-20 maxmd:px-2 mb-40 flex flex-col justify-center items-center">
       <MobileFilterComponet

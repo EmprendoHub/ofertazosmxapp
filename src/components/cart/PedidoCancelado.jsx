@@ -9,8 +9,6 @@ const PedidoCancelado = () => {
   const dispatch = useDispatch();
 
   const { orderData } = useSelector((state) => state?.compras);
-  const [products, setProducts] = useState(orderData.order);
-
   useEffect(() => {
     orderData.order.forEach((product) => {
       dispatch(addToCart(product));

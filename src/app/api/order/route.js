@@ -77,3 +77,25 @@ export async function PUT(req, res) {
     });
   }
 }
+
+export async function DELETE(request) {
+  const token = await request.headers.get('cookie');
+
+  if (!token) {
+    // Not Signed in
+    const notAuthorized = 'You are not authorized no no no';
+    return new Response(JSON.stringify(notAuthorized), {
+      status: 400,
+    });
+  }
+
+  try {
+    await dbConnect();
+    const urlData = await request.url.split('?');
+    const id = urlData[1];
+    const deleteOrder = await Order.findByIdAndDelete(id);
+    return new Response(JSON.stringify(deleteOrder), { status: 201 });
+  } catch (error) {
+    return new Response(JSON.stringify(error.message), { status: 500 });
+  }
+}

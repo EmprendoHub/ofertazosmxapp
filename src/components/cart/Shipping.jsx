@@ -1,8 +1,7 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import BreadCrumbs from '../layout/BreadCrumbs';
-import Image from 'next/image';
 import PaymentForm from './PaymentForm';
 import { addUser, addShippingInfo } from '@/redux/shoppingSlice';
 import { useDispatch } from 'react-redux';

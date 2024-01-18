@@ -1,6 +1,4 @@
-import Address from '@/backend/models/Address';
 import Order from '@/backend/models/Order';
-import User from '@/backend/models/User';
 import APIOrderFilters from '@/lib/APIOrderFilters';
 import dbConnect from '@/lib/db';
 import { getToken } from 'next-auth/jwt';
@@ -19,9 +17,12 @@ export const GET = async (request, res) => {
     await dbConnect();
     let orderQuery;
     if (token?.user?.role === 'manager') {
-      orderQuery = Order.find();
+      orderQuery = Order.find({ orderStatus: { $ne: 'Cancelada' } });
     } else {
-      orderQuery = Order.find({ user: token._id });
+      orderQuery = Order.find({
+        user: token._id,
+        orderStatus: { $ne: 'Cancelada' },
+      });
     }
 
     // Apply descending order based on a specific field (e.g., createdAt)

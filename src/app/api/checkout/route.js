@@ -56,9 +56,24 @@ export const POST = async (request) => {
 
     // Calculate total amount based on items
     let totalAmount = await calculateTotalAmount(items);
+    let pay_method_options = [];
 
     // Calculate installment amount
     let installmentAmount = Math.round(totalAmount * 0.3);
+
+    if (isLayaway) {
+      if (installmentAmount < 10000) {
+        pay_method_options = ['card', 'oxxo', 'customer_balance'];
+      } else {
+        pay_method_options = ['card', 'customer_balance'];
+      }
+    } else {
+      if (totalAmount < 10000) {
+        pay_method_options = ['card', 'oxxo', 'customer_balance'];
+      } else {
+        pay_method_options = ['card', 'customer_balance'];
+      }
+    }
 
     let session;
 
@@ -121,7 +136,7 @@ export const POST = async (request) => {
 
     if (isLayaway) {
       session = await stripe.checkout.sessions.create({
-        payment_method_types: ['card', 'oxxo', 'customer_balance'],
+        payment_method_types: pay_method_options,
         mode: 'payment',
         customer: customerId,
         payment_method_options: {
@@ -140,7 +155,7 @@ export const POST = async (request) => {
         success_url: `${process.env.NEXTAUTH_URL}/perfil/pedidos?pedido_exitoso=true`,
         cancel_url: `${
           process.env.NEXTAUTH_URL
-        }/cancelado?${newOrder._id.toString()}`,
+        }/cancelado?id=${newOrder._id.toString()}`,
         metadata: {
           shippingInfo,
           layaway: isLayaway,
@@ -162,7 +177,7 @@ export const POST = async (request) => {
       });
     } else {
       session = await stripe.checkout.sessions.create({
-        payment_method_types: ['card', 'oxxo', 'customer_balance'],
+        payment_method_types: pay_method_options,
         mode: 'payment',
         customer: customerId,
         payment_method_options: {
@@ -180,7 +195,7 @@ export const POST = async (request) => {
         success_url: `${process.env.NEXTAUTH_URL}/perfil/pedidos?pedido_exitoso=true`,
         cancel_url: `${
           process.env.NEXTAUTH_URL
-        }/cancelado?${newOrder._id.toString()}`,
+        }/cancelado?id=${newOrder._id.toString()}`,
         client_reference_id: user?._id,
         metadata: {
           shippingInfo,

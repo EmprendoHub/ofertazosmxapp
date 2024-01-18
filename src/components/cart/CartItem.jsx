@@ -74,20 +74,14 @@ const CartItem = () => {
               <p className="">Cant</p>
               <div className="flex items-center text-lg text-black  w-20 justify-between">
                 <span
-                  onClick={() =>
-                    dispatch(decreaseQuantity(item)) &&
-                    toast.success(`${item.title} disminuyo en cantidad`)
-                  }
+                  onClick={() => dispatch(decreaseQuantity(item))}
                   className="cursor-pointer"
                 >
                   <FiChevronLeft />
                 </span>
                 <span>{item?.quantity}</span>
                 <span
-                  onClick={() =>
-                    dispatch(increaseQuantity(item)) &&
-                    toast.success(`${item.title} incremento en cantidad`)
-                  }
+                  onClick={() => dispatch(increaseQuantity(item))}
                   className="cursor-pointer"
                 >
                   <FiChevronRight />

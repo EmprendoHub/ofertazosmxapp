@@ -18,12 +18,9 @@ const Cart = () => {
   const { productsData } = useSelector((state) => state?.compras);
   const router = useRouter();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (productsData?.length <= 0) {
-      router.replace('/tienda');
-    }
-  }, [productsData]);
+  if (productsData?.length <= 0) {
+    router.replace('/tienda');
+  }
 
   return (
     <>
@@ -76,10 +73,7 @@ const Cart = () => {
                           <div className="flex items-center text-lg text-black  w-20 justify-between">
                             <span
                               onClick={() =>
-                                dispatch(decreaseQuantity(cartItem)) &&
-                                toast.success(
-                                  `${cartItem.title} disminuyo en cantidad`
-                                )
+                                dispatch(decreaseQuantity(cartItem))
                               }
                               className="cursor-pointer"
                             >
@@ -88,10 +82,7 @@ const Cart = () => {
                             <span>{cartItem?.quantity}</span>
                             <span
                               onClick={() =>
-                                dispatch(increaseQuantity(cartItem)) &&
-                                toast.success(
-                                  `${cartItem.title} incremento en cantidad`
-                                )
+                                dispatch(increaseQuantity(cartItem))
                               }
                               className="cursor-pointer"
                             >

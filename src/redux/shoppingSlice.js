@@ -25,7 +25,12 @@ export const shoppingSlice = createSlice({
       const existingProduct = state.productsData.find(
         (item) => item._id === action.payload._id
       );
-      existingProduct && existingProduct.quantity++;
+
+      console.log(existingProduct.stock > existingProduct.quantity);
+      // existingProduct && existingProduct.quantity++;
+      if (existingProduct && existingProduct.stock > existingProduct.quantity) {
+        existingProduct.quantity++;
+      }
     },
     decreaseQuantity: (state, action) => {
       const existingProduct = state.productsData.find(
