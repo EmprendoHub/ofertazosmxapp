@@ -4,7 +4,6 @@ import { NextResponse } from 'next/server';
 
 export async function GET(request) {
   const authHeader = request.headers.get('authorization');
-  console.log('authHeader', authHeader, request.headers);
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return new Response('Unauthorized', {
       status: 401,
@@ -13,10 +12,6 @@ export async function GET(request) {
   try {
     const twoDaysAgo = new Date();
     twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
-
-    if (new Date() > twoDaysAgo) {
-      console.log('more than 2 days ago');
-    }
 
     await dbConnect();
     await Order.updateMany(
