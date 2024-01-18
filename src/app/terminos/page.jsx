@@ -1,15 +1,20 @@
-import React from "react";
+import React from 'react';
+
+export const metadata = {
+  title: 'Términos de servicio de Shopout MX',
+  description: 'Explora los Términos de servicio de Shopout MX',
+};
 
 const TerminosPage = () => {
   return (
     <div>
-      <div className='bg-white p-6 px-20 md:px-10'>
-        <section className='hero bg-gray-100 text-center py-20'>
-          <div className='container mx-auto'>
-            <h1 className='text-4xl font-extrabold font-playfair-display text-black'>
+      <div className="bg-white p-6 px-20 md:px-10">
+        <section className="hero bg-gray-100 text-center py-20">
+          <div className="container mx-auto">
+            <h1 className="text-4xl font-extrabold font-playfair-display text-black">
               Términos de servicio
             </h1>
-            <p className='text-lg text-gray-600 mt-4'>
+            <p className="text-lg text-gray-600 mt-4">
               Este sitio web es operado por Shopout MX. En todo el sitio, los
               términos (nosotros), (nos) y (nuestro) se refieren a Shopout MX.
               Shopout MX ofrece este sitio web, incluida toda la información,
@@ -19,10 +24,10 @@ const TerminosPage = () => {
             </p>
           </div>
         </section>
-        <section className='mb-4'>
-          <h2 className='text-2xl font-semibold'>DESCRIPCIÓN GENERAL</h2>
+        <section className="mb-4">
+          <h2 className="text-2xl font-semibold">DESCRIPCIÓN GENERAL</h2>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             Al visitar nuestro sitio y/o comprarnos algo, usted participa en
             nuestro (Servicio) y acepta estar sujeto a los siguientes términos y
             condiciones (Términos de servicio, Términos), incluidos esos
@@ -33,7 +38,7 @@ const TerminosPage = () => {
             comerciantes y/o contribuyentes de contenido.
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             Lea atentamente estos Términos de servicio antes de acceder o
             utilizar nuestro sitio web. Al acceder o utilizar cualquier parte
             del sitio, usted acepta estar sujeto a estos Términos de servicio.
@@ -43,7 +48,7 @@ const TerminosPage = () => {
             aceptación se limita expresamente a estos Términos de servicio.
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             Cualquier característica o herramienta nueva que se agregue a la
             tienda actual también estará sujeta a los Términos de servicio.
             Puede revisar la versión más actualizada de los Términos de servicio
@@ -57,11 +62,11 @@ const TerminosPage = () => {
           </p>
         </section>
 
-        <section className='mb-4'>
-          <h2 className='text-2xl font-semibold'>
+        <section className="mb-4">
+          <h2 className="text-2xl font-semibold">
             SECCIÓN 1 - TÉRMINOS DE LA TIENDA ONLINE
           </h2>
-          <p className='mt-2'>
+          <p className="mt-2">
             Al aceptar estos Términos de servicio, usted declara que tiene al
             menos la mayoría de edad en su estado o provincia de residencia, o
             que tiene la mayoría de edad en su estado o provincia de residencia
@@ -69,34 +74,34 @@ const TerminosPage = () => {
             sus dependientes menores utilice este sitio.
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             No puede utilizar nuestros productos para ningún propósito ilegal o
             no autorizado ni puede, al utilizar el Servicio, violar ninguna ley
             en su jurisdicción (incluidas, entre otras, las leyes de derechos de
             autor).
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             No debe transmitir ningún gusano, virus ni ningún código de
             naturaleza destructiva.
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             Un incumplimiento o violación de cualquiera de los Términos
             resultará en la terminación inmediata de sus Servicios.
           </p>
         </section>
 
-        <section className='mb-4'>
-          <h2 className='text-2xl font-semibold'>
+        <section className="mb-4">
+          <h2 className="text-2xl font-semibold">
             SECCIÓN 2 - CONDICIONES GENERALES
           </h2>
-          <p className='mt-2'>
+          <p className="mt-2">
             Nos reservamos el derecho de negar el servicio a cualquier persona
             por cualquier motivo y en cualquier momento.
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             Usted comprende que su contenido (sin incluir la información de la
             tarjeta de crédito) puede transferirse sin cifrar e implicar (a)
             transmisiones a través de varias redes; y (b) cambios para ajustarse
@@ -105,24 +110,24 @@ const TerminosPage = () => {
             cifrada durante la transferencia a través de redes.
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             Usted acepta no reproducir, duplicar, copiar, vender, revender o
             explotar ninguna parte del Servicio, el uso del Servicio o el acceso
             al Servicio o cualquier contacto en el sitio web a través del cual
             se brinda el servicio, sin nuestro permiso expreso por escrito. .
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             Los encabezados utilizados en este acuerdo se incluyen únicamente
             por conveniencia y no limitarán ni afectarán estos Términos.
           </p>
         </section>
 
-        <section className='mb-4'>
-          <h2 className='text-2xl font-semibold'>
+        <section className="mb-4">
+          <h2 className="text-2xl font-semibold">
             SECCIÓN 3 - EXACTITUD, INTEGRIDAD Y ACTUALIDAD DE LA INFORMACIÓN
           </h2>
-          <p className='mt-2'>
+          <p className="mt-2">
             No somos responsables si la información disponible en este sitio no
             es precisa, completa o actual. El material de este sitio se
             proporciona únicamente para información general y no se debe confiar
@@ -132,7 +137,7 @@ const TerminosPage = () => {
             este sitio es bajo su propio riesgo.
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             Este sitio puede contener cierta información histórica. La
             información histórica, necesariamente, no es actual y se proporciona
             únicamente para su referencia. Nos reservamos el derecho de
@@ -143,48 +148,48 @@ const TerminosPage = () => {
           </p>
         </section>
 
-        <section className='mb-4'>
-          <h2 className='text-2xl font-semibold'>
+        <section className="mb-4">
+          <h2 className="text-2xl font-semibold">
             SECCIÓN 4 - MODIFICACIONES AL SERVICIO Y PRECIOS
           </h2>
-          <p className='mt-2'>
+          <p className="mt-2">
             Los precios de nuestros productos están sujetos a cambios sin previo
             aviso.
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             Nos reservamos el derecho en cualquier momento de modificar o
             discontinuar el Servicio (o cualquier parte o contenido del mismo)
             sin previo aviso en cualquier momento.
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             No seremos responsables ante usted ni ante ningún tercero por
             cualquier modificación, cambio de precio, suspensión o interrupción
             del Servicio.
           </p>
         </section>
 
-        <section className='mb-4'>
-          <h2 className='text-2xl font-semibold'>
+        <section className="mb-4">
+          <h2 className="text-2xl font-semibold">
             SECCIÓN 5 - PRODUCTOS O SERVICIOS (si corresponde)
           </h2>
-          <p className='mt-2'>
+          <p className="mt-2">
             Ciertos productos o servicios pueden estar disponibles
             exclusivamente en línea a través del sitio web. Estos productos o
             servicios pueden tener cantidades limitadas y están sujetos a
             nuestras
-            <a href='/devoluciones'>condiciones de devolución o cambio</a>.
+            <a href="/devoluciones">condiciones de devolución o cambio</a>.
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             Hemos hecho todo lo posible para mostrar con la mayor precisión
             posible los colores e imágenes de nuestros productos que aparecen en
             la tienda. No podemos garantizar que la visualización de cualquier
             color en el monitor de su computadora sea precisa.
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             Nos reservamos el derecho, pero no estamos obligados, a limitar las
             ventas de nuestros productos o Servicios a cualquier persona, región
             geográfica o jurisdicción. Podemos ejercer este derecho caso por
@@ -197,19 +202,19 @@ const TerminosPage = () => {
             realizada en este sitio es nula donde esté prohibida.
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             No garantizamos que la calidad de cualquier producto, servicio,
             información u otro material comprado u obtenido por usted cumpla con
             sus expectativas, ni que se corrija cualquier error en el Servicio.
           </p>
         </section>
 
-        <section className='mb-4'>
-          <h2 className='text-2xl font-semibold'>
+        <section className="mb-4">
+          <h2 className="text-2xl font-semibold">
             SECCIÓN 6 - EXACTITUD DE LA FACTURACIÓN Y LA INFORMACIÓN DE LA
             CUENTA
           </h2>
-          <p className='mt-2'>
+          <p className="mt-2">
             Nos reservamos el derecho de rechazar cualquier pedido que realice
             con nosotros. Podemos, a nuestro exclusivo criterio, limitar o
             cancelar las cantidades compradas por persona, por hogar o por
@@ -225,16 +230,16 @@ const TerminosPage = () => {
           </p>
         </section>
 
-        <section className='mb-4'>
-          <h2 className='text-2xl font-semibold'>
+        <section className="mb-4">
+          <h2 className="text-2xl font-semibold">
             SECCIÓN 7 - HERRAMIENTAS OPCIONALES
           </h2>
-          <p className='mt-2'>
+          <p className="mt-2">
             We may provide you with access to third-party tools over which we
             neither monitor nor have any control nor input.
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             Usted reconoce y acepta que brindamos acceso a dichas herramientas
             tal cual y según disponibilidad sin garantías, representaciones o
             condiciones de ningún tipo y sin ningún respaldo. No tendremos
@@ -242,7 +247,7 @@ const TerminosPage = () => {
             herramientas opcionales de terceros.
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             Cualquier uso que usted haga de las herramientas opcionales
             ofrecidas a través del sitio es bajo su propio riesgo y discreción y
             debe asegurarse de estar familiarizado y aprobar los términos bajo
@@ -250,7 +255,7 @@ const TerminosPage = () => {
             externos correspondientes.
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             También podremos, en el futuro, ofrecer nuevos servicios y/o
             funciones a través del sitio web (incluido el lanzamiento de nuevas
             herramientas y recursos). Tales nuevas características y / o
@@ -258,16 +263,16 @@ const TerminosPage = () => {
           </p>
         </section>
 
-        <section className='mb-4'>
-          <h2 className='text-2xl font-semibold'>
+        <section className="mb-4">
+          <h2 className="text-2xl font-semibold">
             SECCIÓN 8 - ENLACES DE TERCEROS
           </h2>
-          <p className='mt-2'>
+          <p className="mt-2">
             Ciertos contenidos, productos y servicios disponibles a través de
             nuestro Servicio pueden incluir materiales de terceros.
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             Los enlaces de terceros en este sitio pueden dirigirlo a sitios web
             de terceros que no están afiliados a nosotros. No somos responsables
             de examinar o evaluar el contenido o la precisión y no garantizamos
@@ -276,7 +281,7 @@ const TerminosPage = () => {
             terceros.
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             No somos responsables de ningún daño o daño relacionado con la
             compra o el uso de bienes, servicios, recursos, contenido o
             cualquier otra transacción realizada en relación con sitios web de
@@ -287,12 +292,12 @@ const TerminosPage = () => {
           </p>
         </section>
 
-        <section className='mb-4'>
-          <h2 className='text-2xl font-semibold'>
+        <section className="mb-4">
+          <h2 className="text-2xl font-semibold">
             SECCIÓN 9 - COMENTARIOS DE USUARIOS, RETROALIMENTACIÓN Y OTROS
             ENVÍOS
           </h2>
-          <p className='mt-2'>
+          <p className="mt-2">
             Si, a petición nuestra, envía ciertas presentaciones específicas
             (por ejemplo, participaciones en concursos) o, sin una solicitud
             nuestra, envía ideas creativas, sugerencias, propuestas, planes u
@@ -306,7 +311,7 @@ const TerminosPage = () => {
             cualquier comentario.
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             Podemos, pero no tenemos obligación de hacerlo, monitorear, editar o
             eliminar contenido que determinemos, a nuestro exclusivo criterio,
             que es ilegal, ofensivo, amenazante, calumnioso, difamatorio,
@@ -315,7 +320,7 @@ const TerminosPage = () => {
             servicio. .
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             Usted acepta que sus comentarios no violarán ningún derecho de
             ningún tercero, incluidos los derechos de autor, marcas comerciales,
             privacidad, personalidad u otros derechos personales o de propiedad.
@@ -332,22 +337,22 @@ const TerminosPage = () => {
           </p>
         </section>
 
-        <section className='mb-4'>
-          <h2 className='text-2xl font-semibold'>
+        <section className="mb-4">
+          <h2 className="text-2xl font-semibold">
             SECCIÓN 10 - INFORMACIÓN PERSONAL
           </h2>
-          <p className='mt-2'>
+          <p className="mt-2">
             Nuestro envío de información personal a través de la tienda se rige
             por nuestra Política de Privacidad. Para ver nuestra Política de
             Privacidad.
           </p>
         </section>
 
-        <section className='mb-4'>
-          <h2 className='text-2xl font-semibold'>
+        <section className="mb-4">
+          <h2 className="text-2xl font-semibold">
             SECCIÓN 11 - ERRORES, IMPRECISIONES Y OMISIONES
           </h2>
-          <p className='mt-2'>
+          <p className="mt-2">
             Ocasionalmente puede haber información en nuestro sitio o en el
             Servicio que contenga errores tipográficos, inexactitudes u
             omisiones que puedan estar relacionadas con descripciones de
@@ -360,7 +365,7 @@ const TerminosPage = () => {
             haber enviado su pedido). .
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             No asumimos ninguna obligación de actualizar, modificar o aclarar
             información en el Servicio o en cualquier sitio web relacionado,
             incluida, entre otras, la información de precios, excepto según lo
@@ -372,11 +377,11 @@ const TerminosPage = () => {
           </p>
         </section>
 
-        <section className='mb-4'>
-          <h2 className='text-2xl font-semibold'>
+        <section className="mb-4">
+          <h2 className="text-2xl font-semibold">
             SECCIÓN 12 - USOS PROHIBIDOS
           </h2>
-          <p className='mt-2'>
+          <p className="mt-2">
             Además de otras prohibiciones establecidas en los Términos de
             servicio, tiene prohibido utilizar el sitio o su contenido: (a) para
             cualquier propósito ilegal; (b) solicitar a otros que realicen o
@@ -402,27 +407,27 @@ const TerminosPage = () => {
           </p>
         </section>
 
-        <section className='mb-4'>
-          <h2 className='text-2xl font-semibold'>
+        <section className="mb-4">
+          <h2 className="text-2xl font-semibold">
             SECCIÓN 13 - RENUNCIA DE GARANTÍAS; LIMITACIÓN DE RESPONSABILIDAD
           </h2>
-          <p className='mt-2'>
+          <p className="mt-2">
             No garantizamos, representamos ni garantizamos que su uso de nuestro
             servicio será ininterrumpido, oportuno, seguro o libre de errores.
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             No garantizamos que los resultados que puedan obtenerse del uso del
             servicio sean precisos o confiables.
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             Usted acepta que de vez en cuando podemos eliminar el servicio por
             períodos de tiempo indefinidos o cancelar el servicio en cualquier
             momento, sin previo aviso.
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             Usted acepta expresamente que el uso o la imposibilidad de utilizar
             el servicio es bajo su propio riesgo. El servicio y todos los
             productos y servicios que se le entregan a través del servicio se
@@ -434,7 +439,7 @@ const TerminosPage = () => {
             particular, durabilidad, título y no infracción.
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             En ningún caso Shopout MX, nuestros directores, funcionarios,
             empleados, afiliados, agentes, contratistas, pasantes, proveedores,
             prestadores de servicios o licenciantes serán responsables de
@@ -459,9 +464,9 @@ const TerminosPage = () => {
           </p>
         </section>
 
-        <section className='mb-4'>
-          <h2 className='text-2xl font-semibold'>SECCIÓN 14 - INDEMNIZACIÓN</h2>
-          <p className='mt-2'>
+        <section className="mb-4">
+          <h2 className="text-2xl font-semibold">SECCIÓN 14 - INDEMNIZACIÓN</h2>
+          <p className="mt-2">
             Usted acepta indemnizar, defender y eximir de responsabilidad a
             Shopout MX y a nuestra matriz, subsidiarias, afiliados, socios,
             funcionarios, directores, agentes, contratistas, licenciantes,
@@ -474,9 +479,9 @@ const TerminosPage = () => {
           </p>
         </section>
 
-        <section className='mb-4'>
-          <h2 className='text-2xl font-semibold'>SECCIÓN 15 - DIVISIBILIDAD</h2>
-          <p className='mt-2'>
+        <section className="mb-4">
+          <h2 className="text-2xl font-semibold">SECCIÓN 15 - DIVISIBILIDAD</h2>
+          <p className="mt-2">
             En el caso de que se determine que cualquier disposición de estos
             Términos de servicio es ilegal, nula o inaplicable, dicha
             disposición será, no obstante, ejecutable en la mayor medida
@@ -487,22 +492,22 @@ const TerminosPage = () => {
           </p>
         </section>
 
-        <section className='mb-4'>
-          <h2 className='text-2xl font-semibold'>SECCIÓN 16 - TERMINACIÓN</h2>
-          <p className='mt-2'>
+        <section className="mb-4">
+          <h2 className="text-2xl font-semibold">SECCIÓN 16 - TERMINACIÓN</h2>
+          <p className="mt-2">
             Las obligaciones y responsabilidades de las partes incurridas antes
             de la fecha de terminación sobrevivirán a la terminación de este
             acuerdo para todos los efectos.
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             Estos Términos de servicio son efectivos a menos y hasta que usted o
             nosotros los rescindamos. Puede rescindir estos Términos de servicio
             en cualquier momento notificándonos que ya no desea utilizar
             nuestros Servicios o cuando deje de utilizar nuestro sitio.
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             Si a nuestro exclusivo criterio usted no cumple, o sospechamos que
             no ha cumplido, con cualquier término o disposición de estos
             Términos de servicio, también podemos rescindir este acuerdo en
@@ -513,17 +518,17 @@ const TerminosPage = () => {
           </p>
         </section>
 
-        <section className='mb-4'>
-          <h2 className='text-2xl font-semibold'>
+        <section className="mb-4">
+          <h2 className="text-2xl font-semibold">
             SECCIÓN 17 - ACUERDO COMPLETO
           </h2>
-          <p className='mt-2'>
+          <p className="mt-2">
             El hecho de que no ejerzamos o hagamos cumplir cualquier derecho o
             disposición de estos Términos de servicio no constituirá una
             renuncia a dicho derecho o disposición.
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             Estos Términos de servicio y cualquier política o regla operativa
             publicada por nosotros en este sitio o con respecto al Servicio
             constituyen el acuerdo completo y el entendimiento entre usted y
@@ -533,15 +538,15 @@ const TerminosPage = () => {
             cualquier versión anterior de los Términos de servicio).
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             Cualquier ambigüedad en la interpretación de estos Términos de
             Servicio no se interpretará en contra de la parte redactora.
           </p>
         </section>
 
-        <section className='mb-4'>
-          <h2 className='text-2xl font-semibold'>SECCIÓN 18 - LEY APLICABLE</h2>
-          <p className='mt-2'>
+        <section className="mb-4">
+          <h2 className="text-2xl font-semibold">SECCIÓN 18 - LEY APLICABLE</h2>
+          <p className="mt-2">
             Estos Términos de Servicio y cualquier acuerdo separado mediante el
             cual le proporcionemos Servicios se regirán e interpretarán de
             acuerdo con las leyes de Sahuayo de Morelos, Michoacán, México.
@@ -550,16 +555,16 @@ const TerminosPage = () => {
 
         {/* Include other sections in a similar manner */}
 
-        <section className='mb-4'>
-          <h2 className='text-2xl font-semibold'>
+        <section className="mb-4">
+          <h2 className="text-2xl font-semibold">
             SECCIÓN 19 - CAMBIOS A LOS TÉRMINOS DE SERVICIO
           </h2>
-          <p className='mt-2'>
+          <p className="mt-2">
             Puede revisar la versión más actualizada de los Términos de servicio
             en cualquier momento en esta página.
           </p>
 
-          <p className='mt-2'>
+          <p className="mt-2">
             Nos reservamos el derecho, a nuestro exclusivo criterio, de
             actualizar, cambiar o reemplazar cualquier parte de estos Términos
             de servicio mediante la publicación de actualizaciones y cambios en
@@ -571,11 +576,11 @@ const TerminosPage = () => {
           </p>
         </section>
 
-        <section className='mb-4'>
-          <h2 className='text-2xl font-semibold'>
+        <section className="mb-4">
+          <h2 className="text-2xl font-semibold">
             SECCIÓN 20 - INFORMACIÓN DE CONTACTO
           </h2>
-          <p className='mt-2'>
+          <p className="mt-2">
             Preguntas sobre los Términos de Servicio deben enviarnos a
             contacto@shopout.com.mx
           </p>

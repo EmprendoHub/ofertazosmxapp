@@ -4,7 +4,7 @@ import { getCookiesName } from '@/backend/helpers';
 import { cookies } from 'next/headers';
 
 export const metadata = {
-  title: 'Tienda en linea Shopout Mx',
+  title: 'Tienda Shopout Mx',
   description:
     'Ven y explora nuestra tienda en linea y descubre modelos exclusivos de marcas de alta gama.',
 };
