@@ -53,7 +53,9 @@ export async function POST(req, res) {
           const affiliateLink = await ReferralLink.findOne({
             _id: session?.metadata?.referralID,
           });
+          console.log(affiliateLink);
           const affiliate = await Affiliate.findOne(affiliateLink.affiliateId);
+          console.log(affiliate);
           const userAgent = request.headers.get('user-agent') || ''; // User agent string
           const timestamp = new Date(); // Current timestamp
           // Create a ReferralEvent object
