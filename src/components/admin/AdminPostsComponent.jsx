@@ -4,12 +4,32 @@ import Link from 'next/link';
 import Image from 'next/image';
 import AuthContext from '@/context/AuthContext';
 import { FaTrash, FaPencilAlt } from 'react-icons/fa';
+import Swal from 'sweetalert2';
 
 const AdminPostsComponent = ({ data, filteredOrdersCount }) => {
   const posts = data?.posts.posts;
   const { deletePost } = useContext(AuthContext);
+
   const deleteHandler = (post_id) => {
-    deletePost(post_id);
+    Swal.fire({
+      title: 'Estas seguro(a)?',
+      text: '¡No podrás revertir esta acción!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#000',
+      confirmButtonText: '¡Sí, eliminar!',
+      cancelButtonText: 'No, cancelar!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Eliminado!',
+          text: 'Tu publicación ha sido eliminado.',
+          icon: 'success',
+        });
+        deletePost(post_id);
+      }
+    });
   };
   return (
     <>

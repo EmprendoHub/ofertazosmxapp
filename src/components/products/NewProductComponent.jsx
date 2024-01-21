@@ -7,7 +7,7 @@ import DateTimePicker from 'react-datetime-picker';
 import 'react-datetime-picker/dist/DateTimePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';
-import { FaImage } from 'react-icons/fa';
+import { FaExchangeAlt, FaImage } from 'react-icons/fa';
 import MultiselectComponent from '../forms/MultiselectComponent';
 
 const NewProductComponent = () => {
@@ -82,7 +82,7 @@ const NewProductComponent = () => {
   const [createdAt, setCreatedAt] = useState(new Date());
   const [salePrice, setSalePrice] = useState(0);
   const [salePriceEndDate, setSalePriceEndDate] = useState(new Date());
-  const [sizeSelection, setSizeSelection] = useState([]);
+  const [sizeSelection, setSizeSelection] = useState(available_sizes_prendas);
 
   console.log(featured);
 
@@ -399,7 +399,7 @@ const NewProductComponent = () => {
             </div>
           </div>
 
-          <div className="flex-col flex justify-start px-2 gap-y-5">
+          <div className="w-1/3 maxsm:w-full flex-col flex justify-start px-2 gap-y-5">
             <div className="mb-4 w-full">
               <label className="block mb-1"> Género </label>
               <div className="relative">
@@ -488,15 +488,15 @@ const NewProductComponent = () => {
               />
             </div>
           </div>
+          <button
+            type="button"
+            className=" bg-fuchsia-900 text-white rounded-md p-4 mb-5 flex flex-row items-center w-[250px]"
+            onClick={handleAddImageField}
+          >
+            Agregar Imagen <FaImage className="text-white ml-1" />
+          </button>
 
-          <div className=" gap-x-2 mt-5 w-full">
-            <button
-              type="button"
-              className=" bg-fuchsia-900 text-white rounded-md p-4 mb-5 flex flex-row items-center"
-              onClick={handleAddImageField}
-            >
-              Agregar Imagen <FaImage className="text-white ml-1" />
-            </button>
+          <div className=" gap-x-2 mt-5 w-full flex flex-row items-center">
             {inputImageFields.map((inputImageField, index) => (
               <div
                 key={index}
@@ -521,23 +521,26 @@ const NewProductComponent = () => {
                   <div className="mb-4 px-5 maxsm:px-0">
                     <div className="items-center justify-center">
                       <div className="w-40 h-40 relative space-x-3 mt-1 ">
+                        <FaExchangeAlt className="absolute z-20 text-3xl top-[50%] left-[50%] text-slate-200" />
                         <Image
                           className="rounded-md object-cover"
                           src={inputImageField.i_filePreview}
                           fill={true}
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          alt="imagen de bono"
+                          alt="imagen de producto"
+                        />
+                        {/* overlay */}
+                        <div className="min-h-[100%] absolute z-[1] min-w-[100%] top-0 left-0 bg-black bg-opacity-30" />
+                        <input
+                          className="form-control block w-40 overflow-hidden  text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none  cursor-pointer z-20 min-h-full top-0 absolute opacity-0"
+                          type="file"
+                          id="i_file"
+                          name="i_file"
+                          onChange={(e) =>
+                            handleImageInputChange(index, 'i_file', e)
+                          }
                         />
                       </div>
-                      <input
-                        className="form-control block w-40 overflow-hidden px-2 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none mt-6 cursor-pointer"
-                        type="file"
-                        id="i_file"
-                        name="i_file"
-                        onChange={(e) =>
-                          handleImageInputChange(index, 'i_file', e)
-                        }
-                      />
                     </div>
                     <label className="block mb-1"> Color </label>
                     <div className="relative">

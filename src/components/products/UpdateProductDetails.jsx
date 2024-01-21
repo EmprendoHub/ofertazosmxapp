@@ -433,7 +433,7 @@ const UpdateProductDetails = ({ product }) => {
             onSubmit={handleSubmit}
             className="flex flex-row flex-wrap items-start gap-5 justify-start "
           >
-            <div className="gap-y-5 flex-col flex px-2 w-1/2">
+            <div className="gap-y-5 flex-col flex px-2 w-1/2 maxsm:w-full">
               <div className="mb-4">
                 <label className="block mb-1"> Titulo del Producto</label>
                 <input
@@ -543,7 +543,7 @@ const UpdateProductDetails = ({ product }) => {
               </div>
             </div>
 
-            <div className="flex-col flex justify-start px-2 gap-y-5">
+            <div className="flex-col flex justify-start px-2 gap-y-5 w-1/3 maxsm:w-full">
               <div className="mb-4">
                 <label className="block mb-1"> Género </label>
                 <div className="relative">
@@ -637,92 +637,93 @@ const UpdateProductDetails = ({ product }) => {
                 </div>
               </div>
             </div>
-
-            <div className=" gap-x-2 mt-5 ">
+            <div>
               <button
                 type="button"
-                className=" bg-fuchsia-900 text-white rounded-md p-4 mb-5 flex flex-row items-center"
+                className=" bg-fuchsia-900 text-white rounded-md p-4 mb-5 flex flex-row items-center w-[250px]"
                 onClick={handleAddImageField}
               >
                 Agregar Imagen <FaImage className="text-white ml-1" />
               </button>
-              {inputImageFields.map((inputImageField, index) => (
-                <div
-                  key={index}
-                  className="mb-4 p-4 border-gray-200 border shadow-md"
-                >
-                  <div className="flex flex-row items-center gap-4 mb-4">
-                    {index > 0 && (
-                      <button
-                        type="button"
-                        onClick={() => handleImageDeleteField(index)}
-                        className="text-red-500"
-                      >
-                        X
-                      </button>
-                    )}
-
-                    <p className="font-bold flex flex-row items-center gap-1">
-                      Imagen <FaImage /> #{index + 1}
-                    </p>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <div className="mb-4 px-5">
-                      <div className="items-center justify-center">
-                        <div className="w-40 h-40 relative space-x-3 my-2 ">
-                          <FaExchangeAlt className="absolute z-20 text-3xl top-[50%] left-[50%] text-slate-200" />
-                          <Image
-                            className="rounded-md object-cover"
-                            src={inputImageField?.url}
-                            fill={true}
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            alt="imagen de bono"
-                          />
-                          {/* overlay */}
-                          <div className="min-h-[100%] absolute z-[1] min-w-[100%] top-0 left-0 bg-black bg-opacity-30" />
-
-                          <input
-                            className="form-control block w-40 overflow-hidden  text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none  cursor-pointer z-20 min-h-full top-0 absolute opacity-0"
-                            type="file"
-                            id="i_file"
-                            name="i_file"
-                            onChange={(e) =>
-                              handleImageInputChange(index, 'i_file', e)
-                            }
-                          />
-                        </div>
-                        <span>Color Actual: {inputImageField?.color}</span>
-                      </div>
-                      <label className="block mb-1"> Color </label>
-                      <div className="relative">
-                        <select
-                          className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full cursor-pointer"
-                          name="i_color-${index + 1}"
-                          onChange={(e) =>
-                            handleImageInputChange(index, 'i_color', e)
-                          }
+              <div className="flex flex-row items-center gap-x-2 mt-5 ">
+                {inputImageFields.map((inputImageField, index) => (
+                  <div
+                    key={index}
+                    className="mb-4 p-4 border-gray-200 border shadow-md"
+                  >
+                    <div className="flex flex-row items-center gap-4 mb-4">
+                      {index > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => handleImageDeleteField(index)}
+                          className="text-red-500"
                         >
-                          {available_colores.map((color, index) => (
-                            <option key={index} value={color}>
-                              {color}
-                            </option>
-                          ))}
-                        </select>
-                        <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
-                          <svg
-                            width="22"
-                            height="22"
-                            className="fill-current"
-                            viewBox="0 0 20 20"
+                          X
+                        </button>
+                      )}
+
+                      <p className="font-bold flex flex-row items-center gap-1">
+                        Imagen <FaImage /> #{index + 1}
+                      </p>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <div className="mb-4 px-5">
+                        <div className="items-center justify-center">
+                          <div className="w-40 h-40 relative space-x-3 my-2 ">
+                            <FaExchangeAlt className="absolute z-20 text-3xl top-[50%] left-[50%] text-slate-200" />
+                            <Image
+                              className="rounded-md object-cover"
+                              src={inputImageField?.url}
+                              fill={true}
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                              alt="imagen de producto"
+                            />
+                            {/* overlay */}
+                            <div className="min-h-[100%] absolute z-[1] min-w-[100%] top-0 left-0 bg-black bg-opacity-30" />
+
+                            <input
+                              className="form-control block w-40 overflow-hidden  text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none  cursor-pointer z-20 min-h-full top-0 absolute opacity-0"
+                              type="file"
+                              id="i_file"
+                              name="i_file"
+                              onChange={(e) =>
+                                handleImageInputChange(index, 'i_file', e)
+                              }
+                            />
+                          </div>
+                          <span>Color Actual: {inputImageField?.color}</span>
+                        </div>
+                        <label className="block mb-1"> Color </label>
+                        <div className="relative">
+                          <select
+                            className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full cursor-pointer"
+                            name="i_color-${index + 1}"
+                            onChange={(e) =>
+                              handleImageInputChange(index, 'i_color', e)
+                            }
                           >
-                            <path d="M7 10l5 5 5-5H7z"></path>
-                          </svg>
-                        </i>
+                            {available_colores.map((color, index) => (
+                              <option key={index} value={color}>
+                                {color}
+                              </option>
+                            ))}
+                          </select>
+                          <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
+                            <svg
+                              width="22"
+                              height="22"
+                              className="fill-current"
+                              viewBox="0 0 20 20"
+                            >
+                              <path d="M7 10l5 5 5-5H7z"></path>
+                            </svg>
+                          </i>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
 
             <button

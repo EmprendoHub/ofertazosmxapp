@@ -1,7 +1,7 @@
 import React from 'react';
 import { getCookiesName } from '@/backend/helpers';
 import { cookies } from 'next/headers';
-import AllAdminProductsComponent from '@/components/products/AllAdminProductsComponent';
+import AllAdminProductsComponent from '@/components/admin/AllAdminProductsComponent';
 
 const AdminProductsPage = async ({ searchParams }) => {
   const nextCookies = cookies();

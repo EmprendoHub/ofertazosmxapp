@@ -247,7 +247,7 @@ const NewPostComponent = () => {
                     Imagen <FaImage /> #{index + 1}
                   </p>
                 </div>
-                <div className="flex flex-col items-center">
+                <div className="">
                   <div className="mb-4 px-5 maxsm:px-0">
                     <div className="items-center justify-center">
                       <div className="w-40 h-40 relative space-x-3 mt-1 ">

@@ -3,10 +3,14 @@ import React, { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { AiTwotoneHome } from 'react-icons/ai';
 import AuthContext from '@/context/AuthContext';
+import Swal from 'sweetalert2';
+import { FaPencilAlt, FaTrash } from 'react-icons/fa';
+import { useRouter } from 'next/navigation';
 
 const ProfileAddressesRender = () => {
   const { deleteAddress, getAllAddresses } = useContext(AuthContext);
   const [addresses, setAddresses] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     async function getAddresses() {
@@ -17,14 +21,32 @@ const ProfileAddressesRender = () => {
   }, [getAllAddresses]);
 
   const deleteHandler = (address_id) => {
-    deleteAddress(address_id);
+    Swal.fire({
+      title: 'Estas seguro(a)?',
+      text: '¡No podrás revertir esta acción!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#000',
+      confirmButtonText: '¡Sí, eliminar!',
+      cancelButtonText: 'No, cancelar!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Eliminado!',
+          text: 'El Domicilio ha sido eliminado.',
+          icon: 'success',
+        });
+        deleteAddress(address_id);
+      }
+    });
   };
   return (
     <div className="px-5">
       <hr className="my-4" />
 
       <Link href="/perfil/direcciones/nueva">
-        <button className="px-4 py-2 inline-block text-blue-600 border border-gray-300 rounded-md hover:bg-gray-100">
+        <button className="px-4 py-2 inline-block text-gray-600 border border-gray-300 rounded-md hover:bg-gray-100">
           <i className="mr-1 fa fa-plus"></i> Agregar Dirección
         </button>
       </Link>
@@ -48,7 +70,7 @@ const ProfileAddressesRender = () => {
                     <p>
                       {address?.street}
                       <br /> {address?.city}, {address?.province},{' '}
-                      {address?.zipcode}, {address?.country}
+                      {address?.zip_code}, {address?.country}
                       <br />
                       Tel: {address?.phone}
                     </p>
@@ -57,24 +79,23 @@ const ProfileAddressesRender = () => {
               </div>
             </Link>
           </div>
-          <div className="flex flex-row justify-between items-center gap-5">
-            <span>
-              {' '}
-              <button
-                onClick={() => deleteHandler(address._id)}
-                className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700"
-              >
-                Borrar
-              </button>
-            </span>
+          <div className="flex flex-col justify-between items-center gap-1">
             <span>
               <Link
                 key={index}
                 href={`/perfil/direccion/${address._id}`}
-                className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
+                className="px-2 py-2 inline-block text-white hover:text-blue-600 bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer"
               >
-                Edit
+                <FaPencilAlt className="" />
               </Link>
+            </span>
+            <span>
+              <button
+                onClick={() => deleteHandler(address._id)}
+                className="px-2 py-2 inline-block text-white hover:text-red-600 bg-red-600 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
+              >
+                <FaTrash className="" />
+              </button>
             </span>
           </div>
         </div>

@@ -14,7 +14,7 @@ const PaymentForm = () => {
   const dispatch = useDispatch();
   const { data: session } = useSession();
   const isLoggedIn = Boolean(session?.user);
-  const { productsData, shippingInfo, userInfo } = useSelector(
+  const { productsData, shippingInfo, userInfo, affiliateInfo } = useSelector(
     (state) => state.compras
   );
 
@@ -42,6 +42,7 @@ const PaymentForm = () => {
         email: session?.user?.email,
         user: userInfo,
         shipping: shippingInfo,
+        affiliateInfo: affiliateInfo,
       }),
     });
 

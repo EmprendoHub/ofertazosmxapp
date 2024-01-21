@@ -4,6 +4,9 @@ const OrderSchema = new mongoose.Schema({
   orderId: {
     type: Number, // This will store the unique incremental order number
   },
+  affiliateId: {
+    type: String,
+  },
   layaway: {
     type: Boolean,
   },

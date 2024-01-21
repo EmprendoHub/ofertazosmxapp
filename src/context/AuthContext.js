@@ -1,10 +1,22 @@
 'use client';
-
-import { getCookiesName } from '@/backend/helpers';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { NextResponse } from 'next/server';
 import { createContext, useState } from 'react';
+
+function isDuplicateRecordError(response) {
+  return (
+    response.status === 500 &&
+    response.data.includes('E11000 duplicate key error')
+  );
+}
+
+function extractDuplicateKey(response) {
+  const match = response.data.match(
+    /index: (\w+)_\d+ dup key: { (\w+): "(.*?)" }/
+  );
+  return match ? { index: match[1], key: match[2], value: match[3] } : null;
+}
 
 const AuthContext = createContext();
 
@@ -348,7 +360,7 @@ export const AuthProvider = ({ children }) => {
         },
       });
       if (data) {
-        router.push('/admin/productos');
+        router.refresh('/admin/productos');
       }
     } catch (error) {
       setError(error?.response?.data?.message);
@@ -370,8 +382,72 @@ export const AuthProvider = ({ children }) => {
       );
 
       if (data) {
-        router.push('/perfil');
+        router.push('/perfil/direcciones');
       }
+    } catch (error) {
+      // Check if it's a duplicate record error
+      if (isDuplicateRecordError(error?.response)) {
+        const duplicateKeyInfo = extractDuplicateKey(error?.response);
+        if (duplicateKeyInfo) {
+          const { index, key, value } = duplicateKeyInfo;
+          setError(
+            `Ya existe un registro con ${
+              key && key === 'phone' ? 'telefono' : 'domicilio'
+            }: "${value}". Por favor, ingrese un valor único.`
+          );
+        }
+      }
+    }
+  };
+
+  const addNewReferralLink = async (newLink) => {
+    try {
+      const { data } = await axios.post(
+        `/api/affiliate/createlink`,
+        {
+          newLink,
+          user,
+        },
+        {
+          headers: {
+            'X-Mysession-Key': JSON.stringify(user),
+          },
+        }
+      );
+
+      if (data) {
+        router.push('/perfil/enlaces');
+      }
+    } catch (error) {
+      // Check if it's a duplicate record error
+      if (isDuplicateRecordError(error?.response)) {
+        const duplicateKeyInfo = extractDuplicateKey(error?.response);
+        if (duplicateKeyInfo) {
+          const { index, key, value } = duplicateKeyInfo;
+          setError(
+            `Ya existe un registro con ${
+              key && key === 'phone' ? 'telefono' : 'domicilio'
+            }: "${value}". Por favor, ingrese un valor único.`
+          );
+        }
+      }
+    }
+  };
+
+  const getAllAffiliateLinks = async (currentCookies) => {
+    try {
+      const URL = `/api/affiliate/referrallinks`;
+      const { data } = await axios.get(
+        URL,
+        {
+          headers: {
+            Cookie: currentCookies,
+          },
+        },
+        { cache: 'no-cache' }
+      );
+
+      return data;
     } catch (error) {
       setError(error?.response?.data?.message);
     }
@@ -408,7 +484,7 @@ export const AuthProvider = ({ children }) => {
         },
       });
       if (data) {
-        router.push('/admin/productos');
+        router.push('/perfil/direcciones');
       }
     } catch (error) {
       setError(error?.response?.data?.message);
@@ -648,6 +724,8 @@ export const AuthProvider = ({ children }) => {
         updateOrder,
         getAllPosts,
         getAdminUserOrders,
+        addNewReferralLink,
+        getAllAffiliateLinks,
       }}
     >
       {children}

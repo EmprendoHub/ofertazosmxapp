@@ -17,11 +17,11 @@ export const GET = async (request, res) => {
     await dbConnect();
     let orderQuery;
     if (token?.user?.role === 'manager') {
-      orderQuery = Order.find({ orderStatus: { $ne: 'Cancelada' } });
+      orderQuery = Order.find({ orderStatus: { $ne: 'Cancelado' } });
     } else {
       orderQuery = Order.find({
         user: token._id,
-        orderStatus: { $ne: 'Cancelada' },
+        orderStatus: { $ne: 'Cancelado' },
       });
     }
 

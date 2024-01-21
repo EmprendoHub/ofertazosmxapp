@@ -5,6 +5,7 @@ const initialState = {
   userInfo: null,
   shippingInfo: null,
   orderData: [],
+  affiliateInfo: null,
 };
 
 export const shoppingSlice = createSlice({
@@ -53,6 +54,9 @@ export const shoppingSlice = createSlice({
     addUser: (state, action) => {
       state.userInfo = action.payload;
     },
+    addAffiliate: (state, action) => {
+      state.affiliateInfo = action.payload;
+    },
     addShippingInfo: (state, action) => {
       state.shippingInfo = action.payload;
     },
@@ -79,6 +83,7 @@ export const {
   deleteProduct,
   resetCart,
   addUser,
+  addAffiliate,
   deleteUser,
   saveOrder,
   repopulateCart,

@@ -1,5 +1,6 @@
 import Address from '@/backend/models/Address';
 import Order from '@/backend/models/Order';
+import Product from '@/backend/models/Product';
 import User from '@/backend/models/User';
 import dbConnect from '@/lib/db';
 import { getToken } from 'next-auth/jwt';
@@ -93,7 +94,28 @@ export async function DELETE(request) {
     await dbConnect();
     const urlData = await request.url.split('?');
     const id = urlData[1];
+    const soonToDeleteOrder = await Order.findById(id);
+
+    if (!soonToDeleteOrder) {
+      const notFoundResponse = 'Order not found';
+      return new Response(JSON.stringify(notFoundResponse), { status: 404 });
+    }
+
+    // Iterate through order items and update Product quantities
+    for (const orderItem of soonToDeleteOrder.orderItems) {
+      const productId = orderItem.product.toString();
+      const product = await Product.findById(productId);
+
+      if (product) {
+        // Increment the product quantity by the quantity of items in the deleted order
+        await Product.updateOne(
+          { _id: productId },
+          { $inc: { stock: orderItem.quantity } }
+        );
+      }
+    }
     const deleteOrder = await Order.findByIdAndDelete(id);
+
     return new Response(JSON.stringify(deleteOrder), { status: 201 });
   } catch (error) {
     return new Response(JSON.stringify(error.message), { status: 500 });

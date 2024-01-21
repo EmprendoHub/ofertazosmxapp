@@ -47,6 +47,25 @@ export async function POST(req, res) {
       if (payAmount >= totalOrderAmount) {
         currentOrder.orderStatus = 'Procesando';
         currentOrder.paymentInfo.status = 'Paid';
+        if (session?.metadata?.referralID) {
+          const affiliateLink = await ReferralLink.findOne({
+            _id: session?.metadata?.referralID,
+          });
+          const affiliate = await Affiliate.findOne(affiliateLink.affiliateId);
+          const userAgent = request.headers.get('user-agent') || ''; // User agent string
+          const timestamp = new Date(); // Current timestamp
+          // Create a ReferralEvent object
+          const referralEvent = {
+            referralLinkId: { _id: session?.metadata?.referralID },
+            eventType: 'purchase',
+            affiliateId: affiliate._id,
+            ipAddress: '234.234.235.77',
+            userAgent: userAgent,
+            timestamp: timestamp,
+          };
+          console.log(referralEvent);
+          await referralEvent.save();
+        }
       }
 
       if (payAmount < totalOrderAmount) {

@@ -44,7 +44,8 @@
     "sass": "^1.69.5",
     "slick-carousel": "^1.8.1",
     "stripe": "^14.9.0",
-    "styled-components": "^6.1.6"
+    "styled-components": "^6.1.6",
+    "sweetalert2": "^11.10.3"
   },
   "devDependencies": {
     "autoprefixer": "^10.0.1",

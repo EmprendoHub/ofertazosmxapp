@@ -1,27 +1,12 @@
 'use client';
-
 import Image from 'next/image';
-import { IoIosStar, IoMdCart } from 'react-icons/io';
-import { Bounce, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { calculatePercentage } from '@/backend/helpers';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import { motion } from 'framer-motion';
-import { useDispatch } from 'react-redux';
-import { addToCart } from '@/redux/shoppingSlice';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 const ProductCard = ({ item }) => {
-  const router = useRouter();
-  const dispatch = useDispatch();
-
-  const startArray = Array.from({ length: item?.rating }, (_, index) => (
-    <span key={index} className="text-yellow-500">
-      <IoIosStar />
-    </span>
-  ));
-
   return (
     <motion.div
       initial={{ y: 30, opacity: 0 }}
@@ -103,7 +88,7 @@ const ProductCard = ({ item }) => {
         </div>
         <div className="flex items-center justify-between my-5">
           {/* add to cart button */}
-          <motion.button
+          {/* <motion.button
             whileHover={{ scale: 1.07 }}
             whileTap={{ scale: 0.9 }}
             className="bg-black px-4 py-2 text-sm flex flex-row justify-between gap-x-2 items-center tracking-wide rounded-sm text-slate-100 hover:bg-black hover:text-white duration-500"
@@ -123,7 +108,7 @@ const ProductCard = ({ item }) => {
           >
             Agregar a carrito
             <IoMdCart className="" />
-          </motion.button>
+          </motion.button> */}
         </div>
       </div>
     </motion.div>

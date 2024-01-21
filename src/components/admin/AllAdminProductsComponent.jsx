@@ -9,6 +9,7 @@ import DeleteButton from '../buttons/DeleteButton';
 import AdminPagination from '../pagination/AdminPagination';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import AdminProductSearch from '../layout/AdminProductSearch';
+import Swal from 'sweetalert2';
 
 const AllAdminProductsComponent = ({ searchParams, currentCookies }) => {
   const { getAllProducts } = useContext(AuthContext);
@@ -34,7 +35,25 @@ const AllAdminProductsComponent = ({ searchParams, currentCookies }) => {
 
   const { deleteProduct } = useContext(AuthContext);
   const deleteHandler = (product_id) => {
-    deleteProduct(product_id);
+    Swal.fire({
+      title: 'Estas seguro(a)?',
+      text: '¡No podrás revertir esta acción!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#000',
+      confirmButtonText: '¡Sí, eliminar!',
+      cancelButtonText: 'No, cancelar!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Eliminado!',
+          text: 'Tu producto ha sido eliminado.',
+          icon: 'success',
+        });
+        deleteProduct(product_id);
+      }
+    });
   };
   return (
     <ConfirmationModalContextProvider>
@@ -122,6 +141,14 @@ const AllAdminProductsComponent = ({ searchParams, currentCookies }) => {
                     >
                       <FaPencilAlt className="" />
                     </Link>
+                  </div>
+                  <div>
+                    <button
+                      onClick={() => deleteHandler(product._id)}
+                      className="px-2 py-2 inline-block text-white hover:text-black bg-red-600 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
+                    >
+                      <FaTrash className="" />
+                    </button>
                   </div>
                 </td>
               </tr>

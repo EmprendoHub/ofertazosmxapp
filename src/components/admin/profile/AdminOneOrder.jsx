@@ -322,11 +322,13 @@ const AdminOneOrder = ({ id, currentCookies }) => {
                     value={orderStatus}
                     onChange={(e) => setOrderStatus(e.target.value)}
                   >
-                    {['Procesando', 'En Camino', 'Entregado'].map((status) => (
-                      <option key={status} value={status}>
-                        {status}
-                      </option>
-                    ))}
+                    {['Procesando', 'En Camino', 'Entregado', 'Cancelado'].map(
+                      (status) => (
+                        <option key={status} value={status}>
+                          {status}
+                        </option>
+                      )
+                    )}
                   </select>
                   <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
                     <svg

@@ -1,12 +1,58 @@
+import Affiliate from '@/backend/models/Affiliate';
 import Order from '@/backend/models/Order';
+import Product from '@/backend/models/Product';
+import ReferralLink from '@/backend/models/ReferralLink';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
+
+// Helper function to extract device information from user agent string
+async function parseUserAgent(userAgent) {
+  const deviceInfo = {};
+
+  // Detect device type
+  if (/mobile/i.test(userAgent)) {
+    deviceInfo.deviceType = 'Mobile';
+  } else if (/tablet/i.test(userAgent)) {
+    deviceInfo.deviceType = 'Tablet';
+  } else {
+    deviceInfo.deviceType = 'Desktop';
+  }
+
+  // Extract browser information (a simplified example)
+  if (/chrome/i.test(userAgent)) {
+    deviceInfo.browser = 'Chrome';
+  } else if (/firefox/i.test(userAgent)) {
+    deviceInfo.browser = 'Firefox';
+  } else if (/safari/i.test(userAgent)) {
+    deviceInfo.browser = 'Safari';
+  } else if (/msie|trident/i.test(userAgent)) {
+    deviceInfo.browser = 'Internet Explorer';
+  } else {
+    deviceInfo.browser = 'Unknown';
+  }
+
+  return deviceInfo;
+}
 
 async function getCartItems(items) {
   return new Promise((resolve, reject) => {
     let cartItems = [];
 
     items?.forEach(async (item) => {
+      const productId = item._id;
+      const product = await Product.findById(productId);
+      // Check if there is enough stock
+      if (product.stock < item.quantity) {
+        console.log('Insufficient stock');
+        return;
+      }
+
+      // Update product quantity and create order item
+      await Product.updateOne(
+        { _id: productId },
+        { $inc: { stock: -item.quantity } }
+      );
+
       cartItems.push({
         product: { _id: item._id },
         name: item.title,
@@ -34,7 +80,12 @@ export const POST = async (request) => {
     const urlData = await request.url.split('?');
     const isLayaway = urlData[1] === 'layaway';
     const reqBody = await request.json();
-    const { items, email, user, shipping } = await reqBody;
+    const { items, email, user, shipping, affiliateInfo } = await reqBody;
+    let affiliate;
+    if (affiliateInfo) {
+      const affiliateLink = await ReferralLink.findOne({ _id: affiliateInfo });
+      affiliate = await Affiliate.findOne(affiliateLink.affiliateId);
+    }
 
     const existingCustomers = await stripe.customers.list({
       email: user.email,
@@ -116,6 +167,7 @@ export const POST = async (request) => {
         orderItems: order_items,
         orderStatus: 'Pendiente',
         layaway: true,
+        affiliateId: affiliate?._id.toString() || '',
       };
     } else {
       orderData = {
@@ -127,6 +179,7 @@ export const POST = async (request) => {
         orderItems: order_items,
         orderStatus: 'Pendiente',
         layaway: false,
+        affiliateId: affiliate?._id.toString() || '',
       };
     }
 
@@ -160,6 +213,7 @@ export const POST = async (request) => {
           shippingInfo,
           layaway: isLayaway,
           order: newOrder._id.toString(),
+          referralID: affiliateInfo,
         },
         line_items: [
           {
@@ -201,6 +255,7 @@ export const POST = async (request) => {
           shippingInfo,
           layaway: isLayaway,
           order: newOrder._id.toString(),
+          referralID: affiliateInfo,
         },
         shipping_options: [
           {

@@ -72,7 +72,7 @@ const AdminOrders = ({ searchParams, currentCookies }) => {
               </td>
               <td className="px-6 maxsm:px-0 py-2 ">
                 <b>
-                  <FormattedPrice amount={order.paymentInfo.amountPaid} />
+                  <FormattedPrice amount={order?.paymentInfo?.amountPaid} />
                 </b>
               </td>
               <td
