@@ -1,5 +1,6 @@
 import Affiliate from '@/backend/models/Affiliate';
 import Order from '@/backend/models/Order';
+import ReferralEvent from '@/backend/models/ReferralEvent';
 import ReferralLink from '@/backend/models/ReferralLink';
 import dbConnect from '@/lib/db';
 import { NextResponse } from 'next/server';
@@ -54,23 +55,18 @@ export async function POST(req, res) {
             _id: session?.metadata?.referralID,
           });
           const affiliate = await Affiliate.findOne(affiliateLink.affiliateId);
+          const affiliateId = await affiliate?._id.toString();
           const timestamp = new Date(); // Current timestamp
           // Create a ReferralEvent object
-          console.log(
-            '_id:',
-            affiliate?._id.toString(),
-            session?.metadata?.referralID
-          );
-          const referralEvent = await create({
+          const newReferralEvent = await ReferralEvent.create({
             referralLinkId: { _id: session?.metadata?.referralID },
-            eventType: 'purchase',
-            affiliateId: { _id: affiliate?._id.toString() },
+            eventType: 'AffiliatePurchase',
+            affiliateId: { _id: affiliateId },
             ipAddress: '234.234.235.77',
             userAgent: 'user-agent',
             timestamp: timestamp,
           });
-          console.log(referralEvent);
-          await referralEvent.save();
+          await newReferralEvent.save();
         }
       }
 
@@ -81,17 +77,18 @@ export async function POST(req, res) {
             _id: session?.metadata?.referralID,
           });
           const affiliate = await Affiliate.findOne(affiliateLink.affiliateId);
+          const affiliateId = await affiliate?._id.toString();
           const timestamp = new Date(); // Current timestamp
           // Create a ReferralEvent object
-          const referralEvent = await create({
+          const newReferralEvent = await ReferralEvent.create({
             referralLinkId: { _id: session?.metadata?.referralID },
             eventType: 'layaway',
-            affiliateId: affiliate._id,
+            affiliateId: { _id: affiliateId },
             ipAddress: '234.234.235.77',
             userAgent: 'user-agent',
             timestamp: timestamp,
           });
-          await referralEvent.save();
+          await newReferralEvent.save();
         }
       }
 
