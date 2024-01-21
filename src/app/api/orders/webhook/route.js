@@ -1,4 +1,6 @@
+import Affiliate from '@/backend/models/Affiliate';
 import Order from '@/backend/models/Order';
+import ReferralLink from '@/backend/models/ReferralLink';
 import dbConnect from '@/lib/db';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
