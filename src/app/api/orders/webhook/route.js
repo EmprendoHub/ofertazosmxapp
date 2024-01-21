@@ -56,7 +56,7 @@ export async function POST(req, res) {
           const affiliate = await Affiliate.findOne(affiliateLink.affiliateId);
           const timestamp = new Date(); // Current timestamp
           // Create a ReferralEvent object
-          const referralEvent = create({
+          const referralEvent = await create({
             referralLinkId: { _id: session?.metadata?.referralID },
             eventType: 'purchase',
             affiliateId: affiliate._id,
@@ -64,13 +64,29 @@ export async function POST(req, res) {
             userAgent: 'user-agent',
             timestamp: timestamp,
           });
-          console.log(referralEvent);
           await referralEvent.save();
         }
       }
 
       if (payAmount < totalOrderAmount) {
         currentOrder.orderStatus = 'Apartado';
+        if (session?.metadata?.referralID) {
+          const affiliateLink = await ReferralLink.findOne({
+            _id: session?.metadata?.referralID,
+          });
+          const affiliate = await Affiliate.findOne(affiliateLink.affiliateId);
+          const timestamp = new Date(); // Current timestamp
+          // Create a ReferralEvent object
+          const referralEvent = await create({
+            referralLinkId: { _id: session?.metadata?.referralID },
+            eventType: 'layaway',
+            affiliateId: affiliate._id,
+            ipAddress: '234.234.235.77',
+            userAgent: 'user-agent',
+            timestamp: timestamp,
+          });
+          await referralEvent.save();
+        }
       }
 
       currentOrder.paymentInfo.amountPaid = payAmount;
