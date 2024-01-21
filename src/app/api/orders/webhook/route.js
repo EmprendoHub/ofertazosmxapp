@@ -56,14 +56,20 @@ export async function POST(req, res) {
           const affiliate = await Affiliate.findOne(affiliateLink.affiliateId);
           const timestamp = new Date(); // Current timestamp
           // Create a ReferralEvent object
+          console.log(
+            '_id:',
+            affiliate?._id.toString(),
+            session?.metadata?.referralID
+          );
           const referralEvent = await create({
             referralLinkId: { _id: session?.metadata?.referralID },
             eventType: 'purchase',
-            affiliateId: affiliate._id,
+            affiliateId: { _id: affiliate?._id.toString() },
             ipAddress: '234.234.235.77',
             userAgent: 'user-agent',
             timestamp: timestamp,
           });
+          console.log(referralEvent);
           await referralEvent.save();
         }
       }
