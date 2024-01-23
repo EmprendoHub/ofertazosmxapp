@@ -1,13 +1,11 @@
 import Order from '@/backend/models/Order';
 import APIOrderFilters from '@/lib/APIOrderFilters';
 import dbConnect from '@/lib/db';
-import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
 
 export const GET = async (request, res) => {
   const sessionRaw = await request.headers.get('session');
   const session = JSON.parse(sessionRaw);
-  console.log(session, 'session');
   if (!session) {
     // Not Signed in
     return new Response('You are not authorized, eh eh eh, no no no', {

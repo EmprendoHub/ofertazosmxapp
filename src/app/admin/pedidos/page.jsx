@@ -1,13 +1,11 @@
 import { options } from '@/app/api/auth/[...nextauth]/options';
-import { getSessionCookiesName } from '@/backend/helpers';
 import AdminOrders from '@/components/admin/profile/AdminOrders';
 import AdminPagination from '@/components/pagination/AdminPagination';
 import axios from 'axios';
 import { getServerSession } from 'next-auth';
-import { cookies } from 'next/headers';
 import React from 'react';
 
-async function getAllOrders(searchParams, currentCookies, session) {
+async function getAllOrders(searchParams, session) {
   try {
     const urlParams = {
       keyword: searchParams.keyword,
@@ -24,14 +22,12 @@ async function getAllOrders(searchParams, currentCookies, session) {
       URL,
       {
         headers: {
-          Cookie: currentCookies,
           Session: stringSession,
           'Content-Type': 'application/json; charset=utf-8',
         },
       },
       { cache: 'no-cache' }
     );
-    console.log(data);
     return data;
   } catch (error) {
     console.log(error.message);
@@ -40,13 +36,7 @@ async function getAllOrders(searchParams, currentCookies, session) {
 
 const UserOrdersPage = async ({ searchParams }) => {
   const session = await getServerSession(options);
-  const nextCookies = cookies();
-  const cookieName = getSessionCookiesName();
-  let nextAuthSessionToken = nextCookies.get(cookieName);
-  nextAuthSessionToken = nextAuthSessionToken?.value;
-  const currentCookies = `${cookieName}=${nextAuthSessionToken}`;
-  //
-  const ordersData = await getAllOrders(searchParams, currentCookies, session);
+  const ordersData = await getAllOrders(searchParams, session);
   const filteredOrdersCount = ordersData?.filteredOrdersCount;
   const orders = ordersData?.orders.orders;
   const page = searchParams['page'] ?? '1';
