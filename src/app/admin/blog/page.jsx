@@ -1,41 +1,8 @@
 import React from 'react';
-import AdminPagination from '@/components/pagination/AdminPagination';
-import { getCookiesName } from '@/backend/helpers';
-import { cookies } from 'next/headers';
-import AdminPostsComponent from '@/components/admin/AdminPostsComponent';
-import axios from 'axios';
 import { connectToDatabase } from '@/lib/connectMongo';
 import Link from 'next/link';
-
-// const getAllPosts = async (searchParams) => {
-//   const urlParams = {
-//     keyword: searchParams.keyword,
-//     page: searchParams.page,
-//   };
-//   // Filter out undefined values
-//   const filteredUrlParams = Object.fromEntries(
-//     Object.entries(urlParams).filter(([key, value]) => value !== undefined)
-//   );
-//   const nextCookies = cookies();
-//   const cookieName = getCookiesName();
-//   const nextAuthSessionToken = nextCookies.get(cookieName);
-//   const searchQuery = new URLSearchParams(filteredUrlParams).toString();
-//   const URL = `${process.env.NEXTAUTH_URL}/api/posts?${searchQuery}`;
-//   try {
-//     const { data } = await axios.get(
-//       URL,
-//       {
-//         headers: {
-//           Cookie: `${cookieName}=${nextAuthSessionToken?.value}`,
-//         },
-//       },
-//       { cache: 'no-cache' }
-//     );
-//     return data;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
+import AdminPostsComponent from '@/components/admin/AdminPostsComponent';
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 async function getData(perPage, page) {
   try {
@@ -43,7 +10,6 @@ async function getData(perPage, page) {
     const client = await connectToDatabase();
 
     const db = client.db('shopoutdb');
-    console.log(db);
 
     // DB Query
     const items = await db
@@ -54,7 +20,6 @@ async function getData(perPage, page) {
       .toArray();
 
     const itemCount = await db.collection('posts').countDocuments({});
-
     const response = { items, itemCount };
     return response;
   } catch (error) {
@@ -83,19 +48,12 @@ const AdminPostsPage = async ({ searchParams }) => {
     }
   }
 
+  const posts = data.items.map((item) => JSON.parse(JSON.stringify(item)));
+
   return (
     <>
       <div className="container mx-auto mt-8">
-        <ul className="grid grid-cols-4 gap-4 text-center">
-          {data.items.map((item) => (
-            <li
-              key={item._id}
-              className="bg-green-500 rounded-md p-4 text-black"
-            >
-              {item.title}
-            </li>
-          ))}
-        </ul>
+        <AdminPostsComponent data={posts} />
 
         {isPageOutOfRange ? (
           <div>No more pages...</div>
@@ -103,12 +61,19 @@ const AdminPostsPage = async ({ searchParams }) => {
           <div className="flex justify-center items-center mt-16">
             <div className="flex border-[1px] gap-4 rounded-[10px] border-light-green p-4">
               {page === 1 ? (
-                <div className="opacity-60" aria-disabled="true">
-                  Previous
+                <div
+                  aria-disabled="true"
+                  className="opacity-60 bg-black disabled:bg-slate-300 text-white p-2  rounded-full text-xl"
+                >
+                  <FiChevronLeft />
                 </div>
               ) : (
-                <Link href={`?page=${prevPage}`} aria-label="Previous Page">
-                  Previous
+                <Link
+                  href={`?page=${prevPage}`}
+                  aria-label="Previous Page"
+                  className="bg-black w-10 h-10 flex justify-center items-center disabled:bg-slate-300 text-white p-2  rounded-full text-xl"
+                >
+                  <FiChevronLeft />
                 </Link>
               )}
 
@@ -117,8 +82,8 @@ const AdminPostsPage = async ({ searchParams }) => {
                   key={index}
                   className={
                     page === pageNumber
-                      ? 'bg-green-500 fw-bold px-2 rounded-md text-black'
-                      : 'hover:bg-green-500 px-1 rounded-md'
+                      ? 'bg-black fw-bold px-2 w-10 h-10 flex justify-center items-center text-white rounded-full'
+                      : 'hover:bg-black px-1 rounded-full w-10 h-10 flex justify-center items-center hover:text-white'
                   }
                   href={`?page=${pageNumber}`}
                 >
@@ -127,12 +92,19 @@ const AdminPostsPage = async ({ searchParams }) => {
               ))}
 
               {page === totalPages ? (
-                <div className="opacity-60" aria-disabled="true">
-                  Next
+                <div
+                  className="opacity-60 bg-black w-10 h-10 flex justify-center items-center disabled:bg-slate-300 text-white p-2  rounded-full text-xl"
+                  aria-disabled="true"
+                >
+                  <FiChevronRight />
                 </div>
               ) : (
-                <Link href={`?page=${nextPage}`} aria-label="Next Page">
-                  Next
+                <Link
+                  href={`?page=${nextPage}`}
+                  aria-label="Next Page"
+                  className="bg-black w-10 h-10 flex justify-center items-center disabled:bg-slate-300 text-white p-2  rounded-full text-xl"
+                >
+                  <FiChevronRight />
                 </Link>
               )}
             </div>
