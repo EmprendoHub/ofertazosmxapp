@@ -9,23 +9,18 @@ import AdminOrderSearch from '@/components/layout/AdminOrderSearch';
 import AuthContext from '@/context/AuthContext';
 import AdminPagination from '@/components/pagination/AdminPagination';
 
-const AdminOrders = ({ searchParams, currentCookies }) => {
-  const { getAllOrders } = useContext(AuthContext);
-  const [orders, setOrders] = useState([]);
-  const [filteredOrdersCount, setFilteredOrdersCount] = useState();
-  const page = searchParams['page'] ?? '1';
-  const per_page = 5;
-  const start = (Number(page) - 1) * Number(per_page); // 0, 5, 10 ...
-  const end = start + Number(per_page); // 5, 10, 15 ...
+const AdminOrders = ({ orders, filteredOrdersCount }) => {
+  // const { getAllOrders } = useContext(AuthContext);
+  // const [orders, setOrders] = useState([]);
 
-  useEffect(() => {
-    async function getOrders() {
-      const ordersData = await getAllOrders(searchParams, currentCookies);
-      setOrders(ordersData?.orders.orders);
-      setFilteredOrdersCount(ordersData?.filteredOrdersCount);
-    }
-    getOrders();
-  }, [getAllOrders, searchParams, currentCookies]);
+  // useEffect(() => {
+  //   async function getOrders() {
+  //     const ordersData = await getAllOrders(searchParams, currentCookies);
+  //     setOrders(ordersData?.orders.orders);
+  //     setFilteredOrdersCount(ordersData?.filteredOrdersCount);
+  //   }
+  //   getOrders();
+  // }, [getAllOrders, searchParams, currentCookies]);
 
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -106,12 +101,6 @@ const AdminOrders = ({ searchParams, currentCookies }) => {
           ))}
         </tbody>
       </table>
-      <AdminPagination
-        hasNextPage={end < filteredOrdersCount}
-        hasPrevPage={start > 0}
-        totalItemCount={filteredOrdersCount}
-        perPage={per_page}
-      />
     </div>
   );
 };
