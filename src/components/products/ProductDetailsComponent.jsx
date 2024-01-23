@@ -13,34 +13,8 @@ import { calculatePercentage } from '@/backend/helpers';
 
 const ProductDetailsComponent = ({ product }) => {
   const router = useRouter();
-
   const imageRef = useRef(null);
-
   const dispatch = useDispatch();
-
-  const starRating = (props) => {
-    if (props) {
-      let stars = props;
-      if (stars == 0 || stars == 1 || stars == 1.5) {
-        stars = 1;
-      } else if (stars == 2 || stars == 2.5) {
-        stars = 2;
-      } else if (stars == 3 || stars == 3.5) {
-        stars = 3;
-      } else if (stars == 4 || stars == 4.5) {
-        stars = 4;
-      } else if (stars == 5) {
-        stars = 5;
-      }
-    }
-
-    const starArray = Array.from({ length: props }, (_, index) => (
-      <span key={index} className="text-yellow-500">
-        <IoIosStar />
-      </span>
-    ));
-    return <>{starArray}</>;
-  };
 
   return (
     <div className="container-class maxsm:py-8">
@@ -181,32 +155,38 @@ const ProductDetailsComponent = ({ product }) => {
                   className="flex items-center cursor-pointer group"
                 >
                   {/* add to cart button */}
-                  <motion.button
-                    whileHover={{ scale: 1.07 }}
-                    whileTap={{ scale: 0.9 }}
-                    className="bg-gold-gradient border border-black drop-shadow-md flex flex-row items-center justify-between px-4 py-2 text-sm gap-x-4 tracking-wide rounded-full text-black hover:bg-darkText ease-in-out  duration-500"
-                    onClick={() =>
-                      dispatch(addToCart(product)) &&
-                      toast.success(
-                        `${product?.title.substring(
-                          0,
-                          15
-                        )}... se agrego al carrito`,
-                        {
-                          position: toast.POSITION.TOP_CENTER,
-                          className: 'foo-bar',
-                          theme: 'dark',
-                          transition: Bounce,
-                        }
-                      ) &&
-                      router.push('/carrito')
-                    }
-                  >
-                    Agregar a carrito
-                    <span className="text-xl text-slate-400 w-12 flex items-center justify-center group-hover:bg-black hover:text-white duration-200  rounded-full py-2">
-                      <IoMdCart />
+                  {product?.stock <= 0 ? (
+                    <span className="  border-[1px] border-black font-medium text-xl py-1 px-3 rounded-sm bg-black text-slate-100 ">
+                      SOLD OUT
                     </span>
-                  </motion.button>
+                  ) : (
+                    <motion.button
+                      whileHover={{ scale: 1.07 }}
+                      whileTap={{ scale: 0.9 }}
+                      className="bg-gold-gradient border border-black drop-shadow-md flex flex-row items-center justify-between px-4 py-2 text-sm gap-x-4 tracking-wide rounded-full text-black hover:bg-darkText ease-in-out  duration-500"
+                      onClick={() =>
+                        dispatch(addToCart(product)) &&
+                        toast.success(
+                          `${product?.title.substring(
+                            0,
+                            15
+                          )}... se agrego al carrito`,
+                          {
+                            position: toast.POSITION.TOP_CENTER,
+                            className: 'foo-bar',
+                            theme: 'dark',
+                            transition: Bounce,
+                          }
+                        ) &&
+                        router.push('/carrito')
+                      }
+                    >
+                      Agregar a carrito
+                      <span className="text-xl text-slate-400 w-12 flex items-center justify-center group-hover:bg-black hover:text-white duration-200  rounded-full py-2">
+                        <IoMdCart />
+                      </span>
+                    </motion.button>
+                  )}
                 </motion.div>
               </div>
             </div>

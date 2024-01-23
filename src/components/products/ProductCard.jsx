@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 
 const ProductCard = ({ item }) => {
+  console.log(item.stock);
   return (
     <motion.div
       initial={{ y: 30, opacity: 0 }}
@@ -27,6 +28,11 @@ const ProductCard = ({ item }) => {
           {item?.sale_price && (
             <span className="absolute top-2 right-2  border-[1px] border-black font-medium text-xs py-1 px-3 rounded-sm bg-black text-slate-100 group-hover:bg-slate-100 group-hover:text-black duration-200">
               Oferta
+            </span>
+          )}
+          {item?.stock <= 0 && (
+            <span className="absolute rotate-12 top-1/2 right-1/4  border-[1px] border-black font-medium text-xl py-1 px-3 rounded-sm bg-black text-slate-100 group-hover:bg-slate-100 group-hover:text-black duration-200">
+              SOLD OUT
             </span>
           )}
           {item?.sale_price ? (

@@ -9,28 +9,7 @@ import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import AdminProductSearch from '../layout/AdminProductSearch';
 import Swal from 'sweetalert2';
 
-const AllAdminProductsComponent = ({ searchParams, currentCookies }) => {
-  const { getAllProducts } = useContext(AuthContext);
-  const [products, setProducts] = useState([]);
-  const [filteredProductsCount, setFilteredProductsCount] = useState();
-  const page = searchParams['page'] ?? '1';
-  const per_page = '5';
-  const start = (Number(page) - 1) * Number(per_page); // 0, 5, 10 ...
-  const end = start + Number(per_page); // 5, 10, 15 ...
-
-  useEffect(() => {
-    async function getProducts() {
-      const productsData = await getAllProducts(
-        searchParams,
-        currentCookies,
-        per_page
-      );
-      setProducts(productsData?.products.products);
-      setFilteredProductsCount(productsData?.filteredProductsCount);
-    }
-    getProducts();
-  }, [getAllProducts, searchParams, currentCookies]);
-
+const AllAdminProductsComponent = ({ products, filteredProductsCount }) => {
   const { deleteProduct } = useContext(AuthContext);
   const deleteHandler = (product_id) => {
     Swal.fire({
@@ -153,12 +132,6 @@ const AllAdminProductsComponent = ({ searchParams, currentCookies }) => {
             ))}
           </tbody>
         </table>
-        <AdminPagination
-          hasNextPage={end < filteredProductsCount}
-          hasPrevPage={start > 0}
-          totalItemCount={filteredProductsCount}
-          perPage={per_page}
-        />
       </div>
 
       <hr className="my-4" />
