@@ -7,7 +7,7 @@ import { FaTrash, FaPencilAlt } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 
 const AdminPostsComponent = ({ data, filteredOrdersCount }) => {
-  const posts = data?.posts.posts;
+  const posts = data;
   const { deletePost } = useContext(AuthContext);
 
   const deleteHandler = (post_id) => {

@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import Product from '@/backend/models/Product';
 import APIFilters from '@/lib/APIFilters';
-import { getToken } from 'next-auth/jwt';
 
 export const GET = async (request, res) => {
   const token = await request.headers.get('cookie');
