@@ -1,14 +1,15 @@
 import { getCookiesName } from '@/backend/helpers';
+import AffiliateProfile from '@/components/afiliados/AffiliateProfile';
 import ViewUserOrders from '@/components/orders/ViewUserOrders';
 import axios from 'axios';
 import { cookies } from 'next/headers';
 import React from 'react';
 
-const getUserOrders = async (id) => {
+const getAffiliateProfile = async (id) => {
   const nextCookies = cookies();
   const cookieName = getCookiesName();
   const nextAuthSessionToken = nextCookies.get(cookieName);
-  const URL = `${process.env.NEXTAUTH_URL}/api/orders/user?${id}`;
+  const URL = `${process.env.NEXTAUTH_URL}/api/affiliate?${id}`;
   const { data } = await axios.get(
     URL,
     {
@@ -18,13 +19,14 @@ const getUserOrders = async (id) => {
     },
     { cache: 'no-cache' }
   );
-  return data.orders;
+  console.log(data);
+  return data;
 };
 
-const UserOrdersPage = async ({ params }) => {
-  const orders = await getUserOrders(params.id);
+const AffiliateProfilePage = async ({ params }) => {
+  const affiliate = await getAffiliateProfile(params.id);
 
-  return <ViewUserOrders orders={orders} />;
+  return <AffiliateProfile affiliate={affiliate} />;
 };
 
-export default UserOrdersPage;
+export default AffiliateProfilePage;

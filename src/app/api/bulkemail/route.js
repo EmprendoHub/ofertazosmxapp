@@ -10,17 +10,15 @@ export async function POST(request) {
       greeting,
       bestRegards,
       recipient_email,
-      emailService,
       sender_email,
-      password,
       name,
     } = await request.json();
 
     var transporter = nodemailer.createTransport({
-      service: emailService,
+      service: 'gmail',
       auth: {
-        user: sender_email,
-        pass: password,
+        user: process.env.GOOGLE_MAIL,
+        pass: process.env.GOOGLE_MAIL_PASS,
       },
     });
 

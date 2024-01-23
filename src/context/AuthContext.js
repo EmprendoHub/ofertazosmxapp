@@ -700,8 +700,29 @@ export const AuthProvider = ({ children }) => {
 
   const getAllClients = async (searchParams, currentCookies, perPage) => {
     try {
-      const { data } = await axios.get(`/api/clients`);
-      return data.clients;
+      const urlParams = {
+        keyword: searchParams.keyword,
+        page: searchParams.page,
+        name: searchParams.name,
+        email: searchParams.email,
+      };
+      // Filter out undefined values
+      const filteredUrlParams = Object.fromEntries(
+        Object.entries(urlParams).filter(([key, value]) => value !== undefined)
+      );
+      const searchQuery = new URLSearchParams(filteredUrlParams).toString();
+      const URL = `/api/clients?${searchQuery}`;
+      const { data } = await axios.get(
+        URL,
+        {
+          headers: {
+            Cookie: currentCookies,
+            perPage: perPage,
+          },
+        },
+        { cache: 'no-cache' }
+      );
+      return data;
     } catch (error) {
       setError(error?.response?.data?.message);
     }
@@ -712,8 +733,8 @@ export const AuthProvider = ({ children }) => {
       const urlParams = {
         keyword: searchParams.keyword,
         page: searchParams.page,
-        username: searchParams.category,
-        phone: searchParams.brand,
+        username: searchParams.username,
+        phone: searchParams.phone,
       };
       // Filter out undefined values
       const filteredUrlParams = Object.fromEntries(

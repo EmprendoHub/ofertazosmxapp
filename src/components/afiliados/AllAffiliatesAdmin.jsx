@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { FaPencilAlt, FaTrash, FaUserCircle } from 'react-icons/fa';
 import AuthContext from '@/context/AuthContext';
 import AdminPagination from '../pagination/AdminPagination';
-import AdminProductSearch from '../layout/AdminProductSearch';
 import Swal from 'sweetalert2';
 import AdminAffiliateSearch from '../layout/AdminAffiliateSearch';
 
@@ -25,10 +24,10 @@ const AllAffiliatesAdmin = ({ searchParams, currentCookies }) => {
         per_page
       );
       setAffiliates(affiliatesGet?.affiliates.affiliates);
-      setAffiliatesCount(affiliatesGet?.affiliatesCount);
+      setAffiliatesCount(affiliatesGet?.filteredAffiliatesCount);
     }
     getAffiliates();
-  }, [getAllAffiliates]);
+  }, [getAllAffiliates, searchParams, currentCookies]);
 
   const deleteHandler = (product_id) => {
     Swal.fire({
@@ -67,20 +66,20 @@ const AllAffiliatesAdmin = ({ searchParams, currentCookies }) => {
           <thead className="text-l text-gray-700 uppercase">
             <tr>
               <th scope="col" className="px-6 maxsm:px-0 py-3 maxmd:hidden">
-                SKU
+                Id
               </th>
               <th scope="col" className="px-6 maxsm:px-0 py-3 ">
-                Img
+                Stripe
               </th>
 
               <th scope="col" className="px-6 maxsm:px-0 py-3 ">
-                Precio
+                Teléfono
               </th>
               <th scope="col" className="px-6 maxsm:px-0 py-3">
-                Titulo
+                Nombre
               </th>
               <th scope="col" className="px-1 py-3 ">
-                Exst.
+                Email
               </th>
               <th scope="col" className="w-5 px-1 py-3 text-center">
                 ...
@@ -93,15 +92,13 @@ const AllAffiliatesAdmin = ({ searchParams, currentCookies }) => {
                 <td className="px-6 maxsm:px-2 py-2 maxmd:hidden">
                   <Link
                     key={index}
-                    href={`/admin/affiliates/editar/${affiliate._id}`}
+                    href={`/admin/asociados/cuenta/${affiliate._id}`}
                   >
                     {affiliate._id.substring(0, 10)}...
                   </Link>
                 </td>
                 <td className="px-6 maxsm:px-0 py-2 relative ">
-                  <span className="relative flex items-center justify-center text-black w-12 h-12 maxsm:w-10 maxsm:h-10 shadow mt-2">
-                    {affiliate.stripe_id}
-                  </span>
+                  {affiliate.stripe_id}
                 </td>
                 <td className="px-6 maxsm:px-0 py-2 ">
                   <b>{affiliate.contact.phone}</b>
@@ -113,7 +110,7 @@ const AllAffiliatesAdmin = ({ searchParams, currentCookies }) => {
                 <td className="px-1 py-2 ">
                   <div>
                     <Link
-                      href={`/admin/affiliates/editar/${affiliate._id}`}
+                      href={`/admin/asociados/cuenta/${affiliate._id}`}
                       className="px-2 py-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
                     >
                       <FaPencilAlt className="" />

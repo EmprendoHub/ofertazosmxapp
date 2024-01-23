@@ -1,10 +1,4 @@
 'use client';
-import AttachEmailIcon from '@mui/icons-material/AttachEmail';
-import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
-import KeyIcon from '@mui/icons-material/Key';
-
-import VerifiedIcon from '@mui/icons-material/Verified';
-
 import { useState } from 'react';
 import { Alert, Badge, Checkbox } from '@mui/material';
 import UploadOne from './upload/uploadOne';
@@ -14,9 +8,6 @@ import Result from './result';
 export default function TabOne() {
   // Form States
   const [senderName, setSenderName] = useState('');
-  const [emailService, setEmailService] = useState('gmail');
-  const [emailAddress, setEmailAddress] = useState('');
-  const [passwordService, setPasswordService] = useState('');
   const [greeting, setGreeting] = useState('');
   const [subject, setSubject] = useState('');
   const [title, setTitle] = useState('');
@@ -32,47 +23,6 @@ export default function TabOne() {
 
   return (
     <span className="space-y-5 w-full">
-      {/* Email Service */}
-      <span className="w-full">
-        <span className="ml-3">
-          Servicio de Correo Electrónico
-          <AttachEmailIcon className="text-green-600 ml-3" />
-        </span>
-        <select
-          className="py-2 px-3 border rounded-lg"
-          onChange={(event) => setEmailService(event.target.value)}
-        >
-          <option defaultValue value="gmail">
-            Gmail
-          </option>
-          {/* <option value="mail.ru">Mail.ru</option>
-          <option value="yahoo">Yahoo</option> */}
-        </select>
-      </span>
-
-      {/* Email Address to be used */}
-      <span className="flex">
-        <input
-          type="text"
-          placeholder="Correo Electrónico e.g ejemplo@gmail.com"
-          className="login_input w-full"
-          onChange={(event) => setEmailAddress(event.target.value)}
-        />
-
-        <AlternateEmailIcon className="my-auto ml-3 text-blue-400" />
-      </span>
-
-      {/* Email Password */}
-      <span className="flex">
-        <input
-          type="text"
-          placeholder="Contraseña de Email App "
-          className="login_input w-full"
-          onChange={(event) => setPasswordService(event.target.value)}
-        />
-        <KeyIcon className="my-auto ml-3 text-red-400" />
-      </span>
-
       {/* Sender Name */}
       <div>
         <Badge

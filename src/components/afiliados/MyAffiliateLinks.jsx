@@ -67,7 +67,8 @@ const MyAffiliateLinks = ({ currentCookies }) => {
                 <figcaption className="text-gray-600">
                   <p>
                     <br />
-                    Enlace de Afiliado: {link?.link?.targetUrl}
+                    Enlace de Afiliado:{' '}
+                    {`${link?.link?.targetUrl}?alink=${link?.link?._id}`}
                     <br />
                     Codigo Unico: {link?.link?._id}
                     <br />

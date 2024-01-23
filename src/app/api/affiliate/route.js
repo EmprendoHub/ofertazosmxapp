@@ -4,10 +4,18 @@ import { getToken } from 'next-auth/jwt';
 
 export async function GET(request) {
   const token = await getToken({ req: request });
-  if (token) {
+  const cookie = await request.headers.get('cookie');
+  if (token || cookie) {
+    let id;
+    if (token) {
+      id = token.user._id;
+    } else {
+      const urlData = await request.url.split('?');
+      id = urlData[1];
+    }
     try {
       await dbConnect();
-      const affiliateData = await Affiliate.findOne({ user: token?._id });
+      const affiliateData = await Affiliate.findOne({ _id: id });
 
       return new Response(JSON.stringify(affiliateData), { status: 201 });
     } catch (error) {
@@ -15,6 +23,7 @@ export async function GET(request) {
     }
   } else {
     // Not Signed in
+
     return new Response('You are not authorized, eh eh eh, no no no', {
       status: 400,
     });
