@@ -72,13 +72,13 @@ const AffiliateSidebar = () => {
       <hr className="my-4 maxsm:px-1" />
       <ul className="sidebar flex flex-col maxmd:flex-row gap-x-2">
         <Link
-          href="/afiliado/perfil/actualizar"
+          href="/afiliado/actualizar"
           className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
         >
           <li className="flex flex-row items-center gap-x-3">
             <PiUserCircleGearLight className="text-2xl text-black" />
 
-            <div className="maxmd:hidden">Perfil</div>
+            <div className="maxmd:hidden">Actualizar Perfil</div>
           </li>
         </Link>
 

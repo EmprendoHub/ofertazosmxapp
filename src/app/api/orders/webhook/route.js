@@ -51,10 +51,11 @@ export async function POST(req, res) {
         currentOrder.orderStatus = 'Procesando';
         currentOrder.paymentInfo.status = 'Paid';
         if (session?.metadata?.referralID) {
-          const affiliateLink = await ReferralLink.findOne({
+          const referralLink = await ReferralLink.findOne({
             _id: session?.metadata?.referralID,
           });
-          const affiliate = await Affiliate.findOne(affiliateLink.affiliateId);
+
+          const affiliate = await Affiliate.findOne(referralLink.affiliateId);
           const affiliateId = await affiliate?._id.toString();
           const timestamp = new Date(); // Current timestamp
           // Create a ReferralEvent object
@@ -67,28 +68,32 @@ export async function POST(req, res) {
             timestamp: timestamp,
           });
           await newReferralEvent.save();
+          referralLink.clickCount = referralLink.clickCount + 1;
+          await referralLink.save();
         }
       }
 
       if (payAmount < totalOrderAmount) {
         currentOrder.orderStatus = 'Apartado';
         if (session?.metadata?.referralID) {
-          const affiliateLink = await ReferralLink.findOne({
+          const referralLink = await ReferralLink.findOne({
             _id: session?.metadata?.referralID,
           });
-          const affiliate = await Affiliate.findOne(affiliateLink.affiliateId);
+          const affiliate = await Affiliate.findOne(referralLink.affiliateId);
           const affiliateId = await affiliate?._id.toString();
           const timestamp = new Date(); // Current timestamp
           // Create a ReferralEvent object
           const newReferralEvent = await ReferralEvent.create({
             referralLinkId: { _id: session?.metadata?.referralID },
-            eventType: 'layaway',
+            eventType: 'AffiliateLayaway',
             affiliateId: { _id: affiliateId },
             ipAddress: '234.234.235.77',
             userAgent: 'user-agent',
             timestamp: timestamp,
           });
           await newReferralEvent.save();
+          referralLink.clickCount = referralLink.clickCount + 1;
+          await referralLink.save();
         }
       }
 

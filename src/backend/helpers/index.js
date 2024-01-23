@@ -109,3 +109,59 @@ export const getSessionCookiesName = () => {
 
   return cookieName;
 };
+
+function getRandomChar(charset) {
+  const randomIndex = Math.floor(Math.random() * charset.length);
+  return charset.charAt(randomIndex);
+}
+
+export function generateRandomPassword(length) {
+  const lowercaseChars = 'abcdefghijklmnopqrstuvwxyz';
+  const uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const numberChars = '0123456789';
+  const specialChars = '!@#$%&*-_=+';
+
+  let password = '';
+
+  // Ensure at least one character from each category
+  password += getRandomChar(lowercaseChars);
+  password += getRandomChar(uppercaseChars);
+  password += getRandomChar(numberChars);
+  password += getRandomChar(specialChars);
+
+  // Fill the remaining length with random characters
+  for (let i = 4; i < length; i++) {
+    const randomIndex = Math.floor(
+      Math.random() *
+        (lowercaseChars.length +
+          uppercaseChars.length +
+          numberChars.length +
+          specialChars.length)
+    );
+    const randomChar =
+      randomIndex < lowercaseChars.length
+        ? lowercaseChars.charAt(randomIndex)
+        : randomIndex < lowercaseChars.length + uppercaseChars.length
+        ? uppercaseChars.charAt(randomIndex - lowercaseChars.length)
+        : randomIndex <
+          lowercaseChars.length + uppercaseChars.length + numberChars.length
+        ? numberChars.charAt(
+            randomIndex - lowercaseChars.length - uppercaseChars.length
+          )
+        : specialChars.charAt(
+            randomIndex -
+              lowercaseChars.length -
+              uppercaseChars.length -
+              numberChars.length
+          );
+    password += randomChar;
+  }
+
+  // Shuffle the password to make the order random
+  password = password
+    .split('')
+    .sort(() => Math.random() - 0.5)
+    .join('');
+
+  return password;
+}

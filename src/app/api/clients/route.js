@@ -4,11 +4,11 @@ import User from '@/backend/models/User';
 import { getToken } from 'next-auth/jwt';
 
 export const GET = async (request, res) => {
-  await dbConnect();
   const token = await getToken({ req: request });
   if (token) {
     try {
-      let clients = await User.find({});
+      await dbConnect();
+      let clients = await User.find({ role: 'cliente' });
       const clientsCount = clients.length;
       const response = NextResponse.json({
         message: 'Clients fetched successfully',

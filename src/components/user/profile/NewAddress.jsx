@@ -49,8 +49,6 @@ const NewAddress = () => {
   const [zipcode, setZipcode] = useState('');
   const [phone, setPhone] = useState('');
 
-  console.log(error, 'error');
-
   const submitHandler = (e) => {
     const phoneRegex = /^(\+\d{2}\s?)?(\d{3}[-\s]?\d{3}[-\s]?\d{4})$/;
     e.preventDefault();

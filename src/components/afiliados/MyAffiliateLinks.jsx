@@ -13,7 +13,7 @@ const MyAffiliateLinks = ({ currentCookies }) => {
   useEffect(() => {
     async function getLinks() {
       const data = await getAllAffiliateLinks(currentCookies);
-      console.log(data[0].events.length);
+      console.log(data[0]?.events.length);
       setLinks(data);
     }
     getLinks();
@@ -57,28 +57,27 @@ const MyAffiliateLinks = ({ currentCookies }) => {
           className="flex flex-row justify-between items-center "
         >
           <div>
-            <Link href={`/afiliado/`}>
-              <div className="mb-5 gap-4">
-                <figure className="w-full flex align-center bg-gray-100 p-4 rounded-md cursor-pointer">
-                  <div className="mr-3">
-                    <span className="flex items-center justify-center text-black w-12 h-12 bg-white rounded-full shadow mt-2">
-                      <AiTwotoneHome className=" text-black" />
-                    </span>
-                  </div>
-                  <figcaption className="text-gray-600">
-                    <p>
-                      Enlace de Afiliado: {link?.link?.targetUrl}
-                      <br />
-                      Codigo Unico: {link?.link?.uniqueCode}
-                      <br />
-                      Metadata: {link?.link?.metadata}
-                      <br />
-                      Clicks: {link?.events.length}
-                    </p>
-                  </figcaption>
-                </figure>
-              </div>
-            </Link>
+            <div className="mb-5 gap-4">
+              <figure className="w-full flex align-center bg-gray-100 p-4 rounded-md ">
+                <div className="mr-3">
+                  <span className="flex items-center justify-center text-black w-12 h-12 bg-white rounded-full shadow mt-2">
+                    <AiTwotoneHome className=" text-black" />
+                  </span>
+                </div>
+                <figcaption className="text-gray-600">
+                  <p>
+                    <br />
+                    Enlace de Afiliado: {link?.link?.targetUrl}
+                    <br />
+                    Codigo Unico: {link?.link?._id}
+                    <br />
+                    Metadata: {link?.link?.metadata}
+                    <br />
+                    Clicks: {link?.events.length}
+                  </p>
+                </figcaption>
+              </figure>
+            </div>
           </div>
           <div className="flex flex-col justify-between items-center gap-1">
             <span>

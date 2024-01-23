@@ -59,7 +59,10 @@ export const options = {
       if (account?.provider == 'google') {
         await dbConnect();
         try {
-          const existinguser = await User?.findOne({ email: user.email });
+          const existinguser = await User?.findOne({
+            email: user.email,
+          }).select('+password');
+
           if (!existinguser) {
             const newUser = new User({
               email: user.email,
@@ -79,7 +82,10 @@ export const options = {
     async jwt({ token, user, account }) {
       if (account?.provider == 'google') {
         if (user) {
-          const existinguser = await User?.findOne({ email: user.email });
+          const existinguser = await User?.findOne({
+            email: user.email,
+          }).select('+password');
+
           const currentUser = {
             avatar: { url: user.image },
             _id: existinguser._id,
@@ -89,6 +95,7 @@ export const options = {
             createdAt: existinguser.createdAt,
             updatedAt: existinguser.updatedAt,
             accessToken: account.access_token,
+            stripeId: existinguser.stripe_id,
           };
 
           token.accessToken = account.access_token;
@@ -100,7 +107,9 @@ export const options = {
           token.accessToken = user.accessToken;
           token._id = user._id;
           token.user = user;
-          const updatedUser = await User.findById(token._id);
+          const updatedUser = await User.findById(token._id).select(
+            '+password'
+          );
           token.user = updatedUser;
         }
       }
@@ -113,6 +122,7 @@ export const options = {
         session.user.accessToken = token.accessToken;
         session.user.createdAt = token.user.createdAt;
         session.user.role = token.user.role;
+        session.user.stripeId = token.user.stripe_id || token.user.stripeId;
       }
       return session;
     },

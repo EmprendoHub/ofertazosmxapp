@@ -2,17 +2,30 @@ import dbConnect from '@/lib/db';
 import bcrypt from 'bcrypt';
 import User from '@/backend/models/User';
 import Affiliate from '@/backend/models/Affiliate';
+import Stripe from 'stripe';
+import { NextResponse } from 'next/server';
 
 export async function POST(req) {
   try {
     await dbConnect();
-    const { username, email, password: pass } = await req.json();
-    const isExsting = await User?.findOne({ email });
-    if (isExsting) {
-      return new Response('User is already registered', { status: 400 });
+    const inUser = await req.json();
+    const { name, email, password: pass, phone } = await inUser.newAffiliate;
+    const isExistingUser = await User?.findOne({ email });
+    if (isExistingUser) {
+      return new Response('Este correo ya esta registrado', { status: 400 });
     }
-    const name = username;
 
+    const telephone = phone.replace(/\s/g, ''); // Replace all whitespace characters with an empty string
+    const isExistingAffiliatePhone = await Affiliate?.findOne({
+      'contact.phone': telephone,
+    });
+    console.log(isExistingAffiliatePhone, telephone);
+    if (isExistingAffiliatePhone) {
+      console.log('Teléfono ya esta en uso por otro asociado.');
+      return new Response('Teléfono ya esta en uso por otro asociado.', {
+        status: 400,
+      });
+    }
     const hashedPassword = await bcrypt.hash(pass, 10);
     const newUser = new User({
       name,
@@ -34,16 +47,34 @@ export async function POST(req) {
         country: 'Mexico',
       },
       contact: {
-        phone: '5456784545',
+        phone: telephone,
       },
       joinedAt: new Date(),
       isActive: true,
     });
 
-    await newUser.save();
-    await newAffiliate.save();
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+    const account = await stripe.accounts.create({
+      type: 'express',
+      email: email,
+      metadata: {
+        affiliateId: newAffiliate._id,
+      },
+    });
+    newAffiliate.stripe_id = account.id;
+    newUser.stripe_id = account.id;
+    try {
+      await newUser.save();
+      await newAffiliate.save();
+    } catch (error) {
+      console.log(error);
+    }
 
-    return new Response('Nuevo Afiliado Registrado', { status: 200 });
+    return NextResponse.json({
+      message: 'Nuevo Afiliado Registrado',
+      success: true,
+    });
+    //return new Response('Nuevo Afiliado Registrado', { status: 200 });
   } catch (error) {
     return new Response(JSON.stringify(error.message), { status: 500 });
   }

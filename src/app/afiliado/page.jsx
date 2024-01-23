@@ -17,7 +17,6 @@ const ProfilePage = async () => {
   nextAuthSessionToken = nextAuthSessionToken?.value;
   const currentCookies = `${cookieName}=${nextAuthSessionToken}`;
   const affiliateData = await getAffiliateDashboard(currentCookies, email);
-  console.log(affiliateData, 'affiliateData');
 
   const referralLinks = affiliateData?.referralLinks;
   const clickTrackerData = affiliateData?.clickTrackerData;

@@ -11,7 +11,6 @@ export async function GET(request) {
       await dbConnect();
       const affiliateEmail = await request.headers.get('userEmail');
       const affiliate = await Affiliate.findOne({ email: affiliateEmail });
-      console.log(affiliate);
       const commissionsCollection = await Commission.find({
         affiliateId: affiliate?._id,
       });

@@ -10,7 +10,6 @@ export async function POST(req) {
     const data = await req.json();
     const referralLink = await ReferralLink.findOne({ _id: data.affParam });
     const affiliateId = referralLink?.affiliateId.toString();
-
     const timestamp = new Date(); // Current timestamp
 
     // Create a ReferralEvent object
@@ -24,6 +23,8 @@ export async function POST(req) {
     });
 
     await newReferralEvent.save();
+    referralLink.clickCount = referralLink.clickCount + 1;
+    await referralLink.save();
     return new Response(JSON.stringify(newReferralEvent), { status: 201 });
   } catch (error) {
     return new Response(JSON.stringify(error.message), { status: 500 });

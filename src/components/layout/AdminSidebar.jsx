@@ -101,6 +101,16 @@ const AdminSidebar = () => {
           </li>
         </Link>
         <Link
+          href="/admin/asociados"
+          className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
+        >
+          <li className="flex flex-row items-center gap-x-3">
+            <PiUserListLight className="text-2xl text-black" />
+
+            <div className="maxmd:hidden">Afiliados</div>
+          </li>
+        </Link>
+        <Link
           href="/admin/correos"
           className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
         >
@@ -111,7 +121,7 @@ const AdminSidebar = () => {
           </li>
         </Link>
         <Link
-          href="/admin/perfil/actualizar"
+          href="/admin/actualizar"
           className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
         >
           <li className="flex flex-row items-center gap-x-3">

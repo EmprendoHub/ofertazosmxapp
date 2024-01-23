@@ -5,12 +5,12 @@ import { persistor, tienda } from '@/redux/store';
 import { SessionProvider } from 'next-auth/react';
 import { AuthProvider } from '@/context/AuthContext';
 
-const CustomSessionProvider = ({ children, session }) => {
+const CustomSessionProvider = ({ children }) => {
   return (
     <Provider store={tienda}>
       <AuthProvider>
         <PersistGate persistor={persistor}>
-          <SessionProvider session={session}>{children}</SessionProvider>
+          <SessionProvider>{children}</SessionProvider>
         </PersistGate>
       </AuthProvider>
     </Provider>

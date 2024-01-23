@@ -48,6 +48,21 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const registerAffiliateUser = async (newAffiliate) => {
+    try {
+      const { data } = await axios.post(`/api/affiliate/register`, {
+        newAffiliate,
+      });
+
+      if (data) {
+        router.push('/registro/affiliate/stripe');
+      }
+    } catch (error) {
+      console.log(error?.response?.data);
+      setError(error?.response?.data);
+    }
+  };
+
   const loadUser = async () => {
     try {
       setLoading(true);
@@ -683,10 +698,57 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const getAllClients = async () => {
+  const getAllClients = async (searchParams, currentCookies, perPage) => {
     try {
       const { data } = await axios.get(`/api/clients`);
       return data.clients;
+    } catch (error) {
+      setError(error?.response?.data?.message);
+    }
+  };
+
+  const getAllAffiliates = async (searchParams, currentCookies, perPage) => {
+    try {
+      const urlParams = {
+        keyword: searchParams.keyword,
+        page: searchParams.page,
+        username: searchParams.category,
+        phone: searchParams.brand,
+      };
+      // Filter out undefined values
+      const filteredUrlParams = Object.fromEntries(
+        Object.entries(urlParams).filter(([key, value]) => value !== undefined)
+      );
+
+      const searchQuery = new URLSearchParams(filteredUrlParams).toString();
+      const URL = `/api/affiliates?${searchQuery}`;
+      const { data } = await axios.get(
+        URL,
+        {
+          headers: {
+            Cookie: currentCookies,
+            perPage: perPage,
+          },
+        },
+        { cache: 'no-cache' }
+      );
+
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteAffiliate = async (id) => {
+    try {
+      const { data } = await axios.delete(`/api/affiliate?${id}`, {
+        headers: {
+          'X-Mysession-Key': JSON.stringify(user),
+        },
+      });
+      if (data) {
+        router.refresh('/admin/asociados');
+      }
     } catch (error) {
       setError(error?.response?.data?.message);
     }
@@ -726,6 +788,9 @@ export const AuthProvider = ({ children }) => {
         getAdminUserOrders,
         addNewReferralLink,
         getAllAffiliateLinks,
+        registerAffiliateUser,
+        getAllAffiliates,
+        deleteAffiliate,
       }}
     >
       {children}

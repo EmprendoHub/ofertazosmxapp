@@ -1,37 +1,35 @@
 'use client';
 import React, { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import { FaPencilAlt, FaTrash, FaUserCircle } from 'react-icons/fa';
 import AuthContext from '@/context/AuthContext';
-import { FaTrash, FaPencilAlt, FaStar } from 'react-icons/fa';
 import AdminPagination from '../pagination/AdminPagination';
-import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import AdminProductSearch from '../layout/AdminProductSearch';
 import Swal from 'sweetalert2';
+import AdminAffiliateSearch from '../layout/AdminAffiliateSearch';
 
-const AllAdminProductsComponent = ({ searchParams, currentCookies }) => {
-  const { getAllProducts } = useContext(AuthContext);
-  const [products, setProducts] = useState([]);
-  const [filteredProductsCount, setFilteredProductsCount] = useState();
+const AllAffiliatesAdmin = ({ searchParams, currentCookies }) => {
+  const { getAllAffiliates, deleteAffiliate } = useContext(AuthContext);
+  const [affiliates, setAffiliates] = useState([]);
+  const [affiliatesCount, setAffiliatesCount] = useState(0);
   const page = searchParams['page'] ?? '1';
   const per_page = '5';
   const start = (Number(page) - 1) * Number(per_page); // 0, 5, 10 ...
   const end = start + Number(per_page); // 5, 10, 15 ...
 
   useEffect(() => {
-    async function getProducts() {
-      const productsData = await getAllProducts(
+    async function getAffiliates() {
+      const affiliatesGet = await getAllAffiliates(
         searchParams,
         currentCookies,
         per_page
       );
-      setProducts(productsData?.products.products);
-      setFilteredProductsCount(productsData?.filteredProductsCount);
+      setAffiliates(affiliatesGet?.affiliates.affiliates);
+      setAffiliatesCount(affiliatesGet?.affiliatesCount);
     }
-    getProducts();
-  }, [getAllProducts, searchParams, currentCookies]);
+    getAffiliates();
+  }, [getAllAffiliates]);
 
-  const { deleteProduct } = useContext(AuthContext);
   const deleteHandler = (product_id) => {
     Swal.fire({
       title: 'Estas seguro(a)?',
@@ -49,25 +47,21 @@ const AllAdminProductsComponent = ({ searchParams, currentCookies }) => {
           text: 'Tu producto ha sido eliminado.',
           icon: 'success',
         });
-        deleteProduct(product_id);
+        deleteAffiliate(product_id);
       }
     });
   };
+
   return (
     <>
-      <Link href="/admin/productos/nuevo">
-        <button className="px-4 py-2 inline-block text-blue-600 border border-gray-300 rounded-md hover:bg-gray-100">
-          <i className="mr-1 fa fa-plus"></i> Agregar Nuevo Producto
-        </button>
-      </Link>
       <hr className="my-4" />
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <div className=" flex flex-row maxsm:flex-col maxsm:items-start items-center justify-between">
           {' '}
           <h1 className="text-3xl my-5 ml-4 font-bold">
-            {`${filteredProductsCount} Productos `}
+            {`${affiliatesCount} Afiliados `}
           </h1>
-          <AdminProductSearch />
+          <AdminAffiliateSearch />
         </div>
         <table className="w-full text-sm  text-left">
           <thead className="text-l text-gray-700 uppercase">
@@ -94,47 +88,32 @@ const AllAdminProductsComponent = ({ searchParams, currentCookies }) => {
             </tr>
           </thead>
           <tbody>
-            {products?.map((product, index) => (
+            {affiliates?.map((affiliate, index) => (
               <tr className="bg-white" key={index}>
                 <td className="px-6 maxsm:px-2 py-2 maxmd:hidden">
                   <Link
                     key={index}
-                    href={`/admin/productos/editar/${product._id}`}
+                    href={`/admin/affiliates/editar/${affiliate._id}`}
                   >
-                    {product._id.substring(0, 10)}...
+                    {affiliate._id.substring(0, 10)}...
                   </Link>
                 </td>
                 <td className="px-6 maxsm:px-0 py-2 relative ">
                   <span className="relative flex items-center justify-center text-black w-12 h-12 maxsm:w-10 maxsm:h-10 shadow mt-2">
-                    <Image
-                      src={product?.images[0].url}
-                      alt="Title"
-                      width={100}
-                      height={100}
-                      className="w-10 h-auto maxsm:w-10 "
-                    />
-                    {product?.featured === 'Si' ? (
-                      <span className="absolute -top-3 -right-1 z-20">
-                        <FaStar className="text-xl text-amber-600" />
-                      </span>
-                    ) : (
-                      ''
-                    )}
+                    {affiliate.stripe_id}
                   </span>
                 </td>
                 <td className="px-6 maxsm:px-0 py-2 ">
-                  <b>
-                    <FormattedPrice amount={product.price} />
-                  </b>
+                  <b>{affiliate.contact.phone}</b>
                 </td>
                 <td className={`px-6 maxsm:px-0 py-2 font-bold `}>
-                  {product.title.substring(0, 15)}
+                  {affiliate.fullName}
                 </td>
-                <td className="px-1 py-2 ">{product.stock}</td>
+                <td className="px-1 py-2 ">{affiliate.email}</td>
                 <td className="px-1 py-2 ">
                   <div>
                     <Link
-                      href={`/admin/productos/editar/${product._id}`}
+                      href={`/admin/affiliates/editar/${affiliate._id}`}
                       className="px-2 py-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
                     >
                       <FaPencilAlt className="" />
@@ -142,7 +121,7 @@ const AllAdminProductsComponent = ({ searchParams, currentCookies }) => {
                   </div>
                   <div>
                     <button
-                      onClick={() => deleteHandler(product._id)}
+                      onClick={() => deleteHandler(affiliate._id)}
                       className="px-2 py-2 inline-block text-white hover:text-black bg-red-600 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
                     >
                       <FaTrash className="" />
@@ -154,9 +133,9 @@ const AllAdminProductsComponent = ({ searchParams, currentCookies }) => {
           </tbody>
         </table>
         <AdminPagination
-          hasNextPage={end < filteredProductsCount}
+          hasNextPage={end < affiliatesCount}
           hasPrevPage={start > 0}
-          totalItemCount={filteredProductsCount}
+          totalItemCount={affiliatesCount}
           perPage={per_page}
         />
       </div>
@@ -166,4 +145,4 @@ const AllAdminProductsComponent = ({ searchParams, currentCookies }) => {
   );
 };
 
-export default AllAdminProductsComponent;
+export default AllAffiliatesAdmin;
