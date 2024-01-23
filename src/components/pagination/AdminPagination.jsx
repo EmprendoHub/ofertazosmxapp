@@ -37,7 +37,11 @@ const AdminPagination = ({
       <button
         className="bg-black disabled:bg-slate-300 text-white p-2 rounded-full text-xl"
         onClick={() => {
-          router.push(`${prevSearchParams}&page=1&per_page=${per_page}`);
+          router.push(
+            `${prevSearchParams}&page=1&per_page=${per_page}`,
+            undefined,
+            { shallow: true }
+          );
         }}
         disabled={!hasPrevPage}
       >
@@ -47,7 +51,9 @@ const AdminPagination = ({
         className="bg-black disabled:bg-slate-300 text-white p-2 rounded-full text-xl"
         onClick={() => {
           router.push(
-            `${prevSearchParams}&page=${Number(page) - 1}&per_page=${per_page}`
+            `${prevSearchParams}&page=${Number(page) - 1}&per_page=${per_page}`,
+            undefined,
+            { shallow: true }
           );
         }}
         disabled={!hasPrevPage}
@@ -65,7 +71,7 @@ const AdminPagination = ({
           const nextPageLink = `${prevSearchParams}&page=${
             Number(page) + 1
           }&per_page=${per_page}`;
-          router.push(nextPageLink);
+          router.push(nextPageLink, undefined, { shallow: true });
         }}
         disabled={!hasNextPage}
       >
@@ -77,7 +83,9 @@ const AdminPagination = ({
           router.push(
             `${prevSearchParams}&page=${Math.ceil(
               totalItemCount / Number(per_page)
-            )}&per_page=${per_page}`
+            )}&per_page=${per_page}`,
+            undefined,
+            { shallow: true }
           );
         }}
         disabled={!hasNextPage}
