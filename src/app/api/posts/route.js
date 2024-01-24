@@ -4,9 +4,7 @@ import APIPostsFilters from '@/lib/APIPostsFilters';
 import dbConnect from '@/lib/db';
 
 export async function GET(request) {
-  console.log(request.headers, 'request.headers');
   const cookie = await request.headers.get('cookie');
-  console.log('API cookie', cookie);
   if (!cookie) {
     // Not Signed in
     const notAuthorized = 'You are not authorized no no no';

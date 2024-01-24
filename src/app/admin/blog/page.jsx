@@ -16,8 +16,6 @@ const getAllPosts = async (searchParams, cookie) => {
   );
   const searchQuery = new URLSearchParams(filteredUrlParams).toString();
   const URL = `${process.env.NEXTAUTH_URL}/api/posts?${searchQuery}`;
-
-  console.log('fetch cookie', cookie);
   try {
     const res = await fetch(URL, {
       credentials: 'include',
@@ -25,7 +23,6 @@ const getAllPosts = async (searchParams, cookie) => {
         'Content-Type': 'application/json',
         Cookie: cookie,
       },
-      cache: 'no-store',
     });
     const data = await res.json();
     return data;
@@ -35,20 +32,18 @@ const getAllPosts = async (searchParams, cookie) => {
 };
 
 const AdminPostsPage = async ({ searchParams }) => {
+  //set cookies
   const nextCookies = cookies();
   const cookieName = getCookiesName();
-
   const nextAuthSessionToken = nextCookies.get(cookieName);
-
   const cookie = `${cookieName}=${nextAuthSessionToken?.value}`;
-  const testData = await getAllPosts(searchParams, cookie);
+  const data = await getAllPosts(searchParams, cookie);
   //
-  const testPotst = testData?.posts?.posts;
+  const posts = data?.posts?.posts;
   let page = parseInt(searchParams.page, 10);
   page = !page || page < 1 ? 1 : page;
   const perPage = 4;
-  //const data = await getData(perPage, page);
-  const totalPages = Math.ceil(testData.itemCount / perPage);
+  const totalPages = Math.ceil(data.itemCount / perPage);
   const prevPage = page - 1 > 0 ? page - 1 : 1;
   const nextPage = page + 1;
   const isPageOutOfRange = page > totalPages;
@@ -60,12 +55,10 @@ const AdminPostsPage = async ({ searchParams }) => {
     }
   }
 
-  //const posts = data.items.map((item) => JSON.parse(JSON.stringify(item)));
-
   return (
     <>
       <div className="container mx-auto mt-8">
-        <AdminPostsComponent data={testPotst} />
+        <AdminPostsComponent data={posts} />
 
         {isPageOutOfRange ? (
           <div>No mas paginas...</div>
