@@ -25,7 +25,6 @@ const getAllPosts = async (searchParams) => {
       URL,
       {
         headers: {
-          'Content-Type': 'application/json',
           Cookie: `${cookieName}=${nextAuthSessionToken?.value}`,
         },
       },
