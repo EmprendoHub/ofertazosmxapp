@@ -13,7 +13,10 @@ export async function connectToDatabase() {
 
   try {
     client = await MongoClient.connect(MONGODB_URI);
-    console.log('Connected to MongoDb successfully.');
+    console.log(
+      'Connected to MongoDb successfully.',
+      new Date().toLocaleString()
+    );
     return client;
   } catch (error) {
     console.error('Error connecting to the database:', error);

@@ -8,8 +8,13 @@ import AdminPagination from '../pagination/AdminPagination';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import AdminProductSearch from '../layout/AdminProductSearch';
 import Swal from 'sweetalert2';
+import SearchProducts from '@/app/admin/productos/search';
 
-const AllAdminProductsComponent = ({ products, filteredProductsCount }) => {
+const AllAdminProductsComponent = ({
+  products,
+  filteredProductsCount,
+  search,
+}) => {
   const { deleteProduct } = useContext(AuthContext);
   const deleteHandler = (product_id) => {
     Swal.fire({
@@ -46,7 +51,7 @@ const AllAdminProductsComponent = ({ products, filteredProductsCount }) => {
           <h1 className="text-3xl my-5 ml-4 font-bold">
             {`${filteredProductsCount} Productos `}
           </h1>
-          <AdminProductSearch />
+          <SearchProducts search={search} />
         </div>
         <table className="w-full text-sm  text-left">
           <thead className="text-l text-gray-700 uppercase">

@@ -27,7 +27,7 @@ export async function GET(request) {
     // Extract page and per_page from request URL
     const page = Number(request.nextUrl.searchParams.get('page')) || 1;
     // total number of documents in database
-    const postsCount = await Post.countDocuments();
+    const itemCount = await Post.countDocuments();
     // Extract all possible categories
     const allCategories = await Post.distinct('category');
 
@@ -40,12 +40,12 @@ export async function GET(request) {
       .filter();
 
     let postsData = await apiPostFilters.query;
+
     const filteredPostsCount = postsData.length;
 
     // Pagination filter
     apiPostFilters.pagination(resPerPage, page);
     postsData = await apiPostFilters.query.clone();
-
     // If you want a new sorted array without modifying the original one, use slice
     // const sortedObj1 = obj1
     //   .slice()
@@ -63,7 +63,7 @@ export async function GET(request) {
 
     const dataPacket = {
       posts,
-      postsCount,
+      itemCount,
       filteredPostsCount,
     };
     return new Response(JSON.stringify(dataPacket), { status: 201 });

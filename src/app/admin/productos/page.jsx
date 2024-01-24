@@ -1,80 +1,68 @@
 import React from 'react';
-import { getCookiesName } from '@/backend/helpers';
-import { cookies } from 'next/headers';
 import AllAdminProductsComponent from '@/components/admin/AllAdminProductsComponent';
-import AdminPagination from '@/components/pagination/AdminPagination';
-import axios from 'axios';
-import { getServerSession } from 'next-auth';
-import { options } from '@/app/api/auth/[...nextauth]/options';
+import Product from '@/backend/models/Product';
+import dbConnect from '@/lib/db';
+import ServerPagination from '@/components/pagination/ServerPagination';
 
-const getAllProducts = async (searchParams, currentCookies, perPage) => {
+async function getData(perPage, page, searchParams) {
+  'use server';
   try {
-    const urlParams = {
-      keyword: searchParams.keyword,
-      page: searchParams.page,
-      category: searchParams.category,
-      brand: searchParams.brand,
-      'rating[gte]': searchParams.rating,
-      'price[lte]': searchParams.max,
-      'price[gte]': searchParams.min,
-    };
-    // Filter out undefined values
-    const filteredUrlParams = Object.fromEntries(
-      Object.entries(urlParams).filter(([key, value]) => value !== undefined)
-    );
+    await dbConnect();
+    let items;
+    items = await Product.find()
+      .skip(perPage * (page - 1))
+      .limit(perPage);
 
-    const searchQuery = new URLSearchParams(filteredUrlParams).toString();
-    const URL = `${process.env.NEXTAUTH_URL}/api/products?${searchQuery}`;
-    const { data } = await axios.get(
-      URL,
-      {
-        headers: {
-          Cookie: currentCookies,
-          perPage: perPage,
-          'Content-Type': 'application/json; charset=utf-8',
-        },
-      },
-      { cache: 'no-cache' }
-    );
+    const itemCount = await Product.countDocuments({});
+    // console.log(productQuery);
+    // // Apply search Filters
+    // const apiProductFilters = new APIFilters(productQuery, searchParams)
+    //   .searchAllFields()
+    //   .filter();
 
-    return data;
+    // let items = await apiProductFilters.query;
+
+    // const filteredProductsCount = items.length;
+
+    const response = { items, itemCount };
+    return response;
   } catch (error) {
     console.log(error);
+    throw new Error('Failed to fetch data. Please try again later.');
   }
-};
+}
 
 const AdminProductsPage = async ({ searchParams }) => {
-  const session = await getServerSession(options);
-  const nextCookies = cookies();
-  const cookieName = getCookiesName();
-  let nextAuthSessionToken = nextCookies.get(cookieName);
-  nextAuthSessionToken = nextAuthSessionToken?.value;
-  const currentCookies = `${cookieName}=${nextAuthSessionToken}`;
+  let page = parseInt(searchParams.page, 10);
+  page = !page || page < 1 ? 1 : page;
+  const perPage = 4;
+  const data = await getData(perPage, page, searchParams);
+  const totalPages = Math.ceil(data.itemCount / perPage);
+  const prevPage = page - 1 > 0 ? page - 1 : 1;
+  const nextPage = page + 1;
+  const isPageOutOfRange = page > totalPages;
+  const pageNumbers = [];
+  const offsetNumber = 3;
+  const search =
+    typeof searchParams.search === 'string' ? searchParams.search : undefined;
+  for (let i = page - offsetNumber; i <= page + offsetNumber; i++) {
+    if (i >= 1 && i <= totalPages) {
+      pageNumbers.push(i);
+    }
+  }
 
-  const page = searchParams['page'] ?? '1';
-  const per_page = '5';
-  const start = (Number(page) - 1) * Number(per_page); // 0, 5, 10 ...
-  const end = start + Number(per_page); // 5, 10, 15 ...
+  const products = data.items.map((item) => JSON.parse(JSON.stringify(item)));
 
-  const productData = await getAllProducts(
-    searchParams,
-    currentCookies,
-    per_page,
-    session
-  );
-  const filteredProductsCount = productData?.filteredProductsCount;
-  const products = productData?.products.products;
   return (
     <>
-      <AllAdminProductsComponent
-        products={products}
-        filteredProductsCount={filteredProductsCount}
-      />
-      <AdminPagination
-        hasNextPage={end < filteredProductsCount}
-        hasPrevPage={start > 0}
-        totalItemCount={filteredProductsCount}
-        perPage={per_page}
+      <AllAdminProductsComponent products={products} search={search} />
+      <ServerPagination
+        isPageOutOfRange={isPageOutOfRange}
+        page={page}
+        pageNumbers={pageNumbers}
+        prevPage={prevPage}
+        nextPage={nextPage}
+        totalPages={totalPages}
       />
     </>
   );

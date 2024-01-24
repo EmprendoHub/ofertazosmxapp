@@ -21,7 +21,7 @@ const NewPostComponent = () => {
   const [summary, setSummary] = useState('');
   const [content, setContent] = useState('');
   const [category, setCategory] = useState('Moda');
-  const [createdAt, setCreatedAt] = useState(new Date());
+  const [createdAt, setCreatedAt] = useState(new Date().toLocaleString());
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -90,7 +90,7 @@ const NewPostComponent = () => {
               i_filePreview: '/images/shopout_clothing_placeholder.webp',
             },
           ]);
-          setCreatedAt(new Date());
+          setCreatedAt(new Date().toLocaleString());
 
           return;
         }

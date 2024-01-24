@@ -1,45 +1,50 @@
 import React from 'react';
-import { connectToDatabase } from '@/lib/connectMongo';
 import Link from 'next/link';
 import AdminPostsComponent from '@/components/admin/AdminPostsComponent';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { cookies } from 'next/headers';
+import { getCookiesName } from '@/backend/helpers';
 
-async function getData(perPage, page) {
+const getAllPosts = async (searchParams) => {
+  const urlParams = {
+    keyword: searchParams.keyword,
+    page: searchParams.page,
+  };
+  // Filter out undefined values
+  const filteredUrlParams = Object.fromEntries(
+    Object.entries(urlParams).filter(([key, value]) => value !== undefined)
+  );
+  const nextCookies = cookies();
+  const cookieName = getCookiesName();
+  const nextAuthSessionToken = nextCookies.get(cookieName);
+  const searchQuery = new URLSearchParams(filteredUrlParams).toString();
+  const URL = `${process.env.NEXTAUTH_URL}/api/posts?${searchQuery}`;
   try {
-    // DB Connect
-    const client = await connectToDatabase();
-
-    const db = client.db('shopoutdb');
-
-    // DB Query
-    const items = await db
-      .collection('posts')
-      .find({})
-      .skip(perPage * (page - 1))
-      .limit(perPage)
-      .toArray();
-
-    const itemCount = await db.collection('posts').countDocuments({});
-    const response = { items, itemCount };
-    return response;
+    const res = await fetch(URL, {
+      headers: {
+        'Content-Type': 'application/json',
+        Cookie: `${cookieName}=${nextAuthSessionToken?.value}`,
+      },
+    });
+    const data = await res.json();
+    return data;
   } catch (error) {
     console.log(error);
-    throw new Error('Failed to fetch data. Please try again later.');
   }
-}
+};
 
 const AdminPostsPage = async ({ searchParams }) => {
+  const testData = await getAllPosts(searchParams);
+  console.log(testData, 'test data');
+  const testPotst = testData?.posts.posts;
   let page = parseInt(searchParams.page, 10);
   page = !page || page < 1 ? 1 : page;
   const perPage = 4;
-  const data = await getData(perPage, page);
-
-  const totalPages = Math.ceil(data.itemCount / perPage);
-
+  //const data = await getData(perPage, page);
+  const totalPages = Math.ceil(testData.itemCount / perPage);
   const prevPage = page - 1 > 0 ? page - 1 : 1;
   const nextPage = page + 1;
   const isPageOutOfRange = page > totalPages;
-
   const pageNumbers = [];
   const offsetNumber = 3;
   for (let i = page - offsetNumber; i <= page + offsetNumber; i++) {
@@ -48,22 +53,22 @@ const AdminPostsPage = async ({ searchParams }) => {
     }
   }
 
-  const posts = data.items.map((item) => JSON.parse(JSON.stringify(item)));
+  //const posts = data.items.map((item) => JSON.parse(JSON.stringify(item)));
 
   return (
     <>
       <div className="container mx-auto mt-8">
-        <AdminPostsComponent data={posts} />
+        <AdminPostsComponent data={testPotst} />
 
         {isPageOutOfRange ? (
-          <div>No more pages...</div>
+          <div>No mas paginas...</div>
         ) : (
           <div className="flex justify-center items-center mt-16">
             <div className="flex border-[1px] gap-4 rounded-[10px] border-light-green p-4">
               {page === 1 ? (
                 <div
                   aria-disabled="true"
-                  className="opacity-60 bg-black disabled:bg-slate-300 text-white p-2  rounded-full text-xl"
+                  className="opacity-60 bg-black w-10 h-10 flex justify-center items-center disabled:bg-slate-300 text-white p-2  rounded-full text-xl"
                 >
                   <FiChevronLeft />
                 </div>

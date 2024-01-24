@@ -46,7 +46,8 @@
     "slick-carousel": "^1.8.1",
     "stripe": "^14.9.0",
     "styled-components": "^6.1.6",
-    "sweetalert2": "^11.10.3"
+    "sweetalert2": "^11.10.3",
+    "use-debounce": "^10.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.0.1",

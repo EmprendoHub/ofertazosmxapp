@@ -64,6 +64,8 @@ const AdminPostsComponent = ({ data, filteredOrdersCount }) => {
                       <br /> {post?.summary}
                       <br />
                       Categoría: {post?.category}
+                      <br />
+                      Fecha de Creación: {post?.createdAt}
                     </p>
                   </figcaption>
                 </figure>
