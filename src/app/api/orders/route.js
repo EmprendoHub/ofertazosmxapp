@@ -31,7 +31,7 @@ export const GET = async (request, res) => {
     const resPerPage = 5;
     // Extract page and per_page from request URL
     const page = Number(request.nextUrl.searchParams.get('page')) || 1;
-    const orderCount = await Order.countDocuments();
+    const totalOrderCount = await Order.countDocuments();
 
     // Apply search Filters including order_id and orderStatus
     const apiOrderFilters = new APIOrderFilters(
@@ -42,7 +42,7 @@ export const GET = async (request, res) => {
       .filter();
     let ordersData = await apiOrderFilters.query;
 
-    const filteredOrdersCount = ordersData.length;
+    const itemCount = ordersData.length;
     apiOrderFilters.pagination(resPerPage, page);
     ordersData = await apiOrderFilters.query.clone();
 
@@ -72,8 +72,9 @@ export const GET = async (request, res) => {
 
     const dataPacket = {
       orders,
-      orderCount,
-      filteredOrdersCount,
+      totalOrderCount,
+      itemCount,
+      resPerPage,
     };
     return new Response(JSON.stringify(dataPacket), { status: 201 });
   } catch (error) {
