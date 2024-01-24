@@ -5,9 +5,9 @@ import dbConnect from '@/lib/db';
 
 export async function GET(request) {
   console.log(request.headers, 'request.headers');
-  const token = await request.headers.get('cookie');
-  console.log(token, 'token');
-  if (!token) {
+  const cookie = await request.headers.get('cookie');
+  console.log('API cookie', cookie);
+  if (!cookie) {
     // Not Signed in
     const notAuthorized = 'You are not authorized no no no';
     return new Response(JSON.stringify(notAuthorized), {
@@ -18,7 +18,7 @@ export async function GET(request) {
   try {
     await dbConnect();
     let postQuery;
-    if (token?.user?.role === 'manager') {
+    if (cookie?.user?.role === 'manager') {
       postQuery = Post.find();
     } else {
       postQuery = Post.find({ published: true });

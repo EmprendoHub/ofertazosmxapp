@@ -19,14 +19,16 @@ const getAllPosts = async (searchParams) => {
   const nextAuthSessionToken = nextCookies.get(cookieName);
   const searchQuery = new URLSearchParams(filteredUrlParams).toString();
   const URL = `${process.env.NEXTAUTH_URL}/api/posts?${searchQuery}`;
+  const cookie = `${cookieName}=${nextAuthSessionToken?.value}`;
+  console.log('fetch cookie', cookie);
   try {
     const res = await fetch(URL, {
-      headers: {
-        Cookie: `${cookieName}=${nextAuthSessionToken?.value}`,
-      },
-      method: 'GET',
       credentials: 'include',
-      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json',
+        Cookie: cookie,
+      },
+      cache: 'no-store',
     });
     const data = await res.json();
     return data;
