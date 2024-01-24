@@ -6,6 +6,7 @@ import { cookies } from 'next/headers';
 import { getCookiesName } from '@/backend/helpers';
 
 const getAllPosts = async (searchParams) => {
+  'use server';
   const urlParams = {
     keyword: searchParams.keyword,
     page: searchParams.page,
@@ -19,7 +20,6 @@ const getAllPosts = async (searchParams) => {
   const nextAuthSessionToken = nextCookies.get(cookieName);
   const searchQuery = new URLSearchParams(filteredUrlParams).toString();
   const URL = `${process.env.NEXTAUTH_URL}/api/posts?${searchQuery}`;
-  console.log(`${cookieName}=${nextAuthSessionToken?.value}`, 'cookie');
   try {
     const res = await fetch(URL, {
       headers: {
@@ -36,8 +36,7 @@ const getAllPosts = async (searchParams) => {
 
 const AdminPostsPage = async ({ searchParams }) => {
   const testData = await getAllPosts(searchParams);
-  console.log(testData, 'test data');
-  const testPotst = testData?.posts.posts;
+  const testPotst = testData?.posts?.posts;
   let page = parseInt(searchParams.page, 10);
   page = !page || page < 1 ? 1 : page;
   const perPage = 4;

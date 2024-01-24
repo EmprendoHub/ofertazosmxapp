@@ -2,9 +2,9 @@ import Post from '@/backend/models/Post';
 import { NextResponse } from 'next/server';
 import APIPostsFilters from '@/lib/APIPostsFilters';
 import dbConnect from '@/lib/db';
-import { getToken } from 'next-auth/jwt';
 
 export async function GET(request) {
+  console.log(request.headers, 'request.headers');
   const token = await request.headers.get('cookie');
   console.log(token, 'token');
   if (!token) {
