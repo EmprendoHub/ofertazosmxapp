@@ -6,7 +6,6 @@ import { cookies } from 'next/headers';
 import { getCookiesName } from '@/backend/helpers';
 
 const getAllPosts = async (searchParams) => {
-  'use server';
   const urlParams = {
     keyword: searchParams.keyword,
     page: searchParams.page,
