@@ -6,6 +6,7 @@ import { getToken } from 'next-auth/jwt';
 
 export async function GET(request) {
   const token = await request.headers.get('cookie');
+  console.log(token, 'token');
   if (!token) {
     // Not Signed in
     const notAuthorized = 'You are not authorized no no no';

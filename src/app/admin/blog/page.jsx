@@ -19,6 +19,7 @@ const getAllPosts = async (searchParams) => {
   const nextAuthSessionToken = nextCookies.get(cookieName);
   const searchQuery = new URLSearchParams(filteredUrlParams).toString();
   const URL = `${process.env.NEXTAUTH_URL}/api/posts?${searchQuery}`;
+  console.log(`${cookieName}=${nextAuthSessionToken?.value}`, 'cookie');
   try {
     const res = await fetch(URL, {
       headers: {
