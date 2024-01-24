@@ -21,12 +21,16 @@ const getAllPosts = async (searchParams) => {
   const searchQuery = new URLSearchParams(filteredUrlParams).toString();
   const URL = `${process.env.NEXTAUTH_URL}/api/posts?${searchQuery}`;
   try {
-    const res = await fetch(URL, {
-      headers: {
-        'Content-Type': 'application/json',
-        Cookie: `${cookieName}=${nextAuthSessionToken?.value}`,
+    const res = await fetch(
+      URL,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Cookie: `${cookieName}=${nextAuthSessionToken?.value}`,
+        },
       },
-    });
+      { cache: 'no-cache' }
+    );
     const data = await res.json();
     return data;
   } catch (error) {
