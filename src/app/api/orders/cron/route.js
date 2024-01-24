@@ -24,7 +24,6 @@ export async function GET(request) {
     const updateProductPromises = canceledOrders.map(async (order) => {
       const products = order.orderItems; // Assuming there is a 'products' field in your Order model
       const productUpdatePromises = products.map(async (product) => {
-        console.log(product.product.toString(), '.product', product.quantity);
         const productId = product.product.toString();
         const updatedProduct = await Product.updateOne(
           { _id: productId },

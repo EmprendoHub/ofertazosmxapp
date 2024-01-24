@@ -10,16 +10,11 @@ const getAffiliateProfile = async (id) => {
   const cookieName = getCookiesName();
   const nextAuthSessionToken = nextCookies.get(cookieName);
   const URL = `${process.env.NEXTAUTH_URL}/api/affiliate?${id}`;
-  const { data } = await axios.get(
-    URL,
-    {
-      headers: {
-        Cookie: `${cookieName}=${nextAuthSessionToken?.value}`,
-      },
+  const { data } = await axios.get(URL, {
+    headers: {
+      Cookie: `${cookieName}=${nextAuthSessionToken?.value}`,
     },
-    { cache: 'no-cache' }
-  );
-  console.log(data);
+  });
   return data;
 };
 

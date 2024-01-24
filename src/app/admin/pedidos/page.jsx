@@ -1,7 +1,5 @@
 import { options } from '@/app/api/auth/[...nextauth]/options';
 import AdminOrders from '@/components/admin/profile/AdminOrders';
-import AdminPagination from '@/components/pagination/AdminPagination';
-import axios from 'axios';
 import { getServerSession } from 'next-auth';
 import Link from 'next/link';
 import React from 'react';
@@ -33,7 +31,7 @@ async function getAllOrders(searchParams, session) {
   }
 }
 
-const UserOrdersPage = async ({ searchParams }) => {
+const AdminOrdersPage = async ({ searchParams }) => {
   const session = await getServerSession(options);
   const data = await getAllOrders(searchParams, session);
   const filteredOrdersCount = data?.itemCount;
@@ -57,7 +55,9 @@ const UserOrdersPage = async ({ searchParams }) => {
     <>
       <AdminOrders orders={orders} filteredOrdersCount={filteredOrdersCount} />
       {isPageOutOfRange ? (
-        <div>No mas paginas...</div>
+        <div className="flex justify-center items-center h-[300px]">
+          No hay Resultados...
+        </div>
       ) : (
         <div className="flex justify-center items-center mt-16">
           <div className="flex border-[1px] gap-4 rounded-[10px] border-light-green p-4">
@@ -115,4 +115,4 @@ const UserOrdersPage = async ({ searchParams }) => {
   );
 };
 
-export default UserOrdersPage;
+export default AdminOrdersPage;

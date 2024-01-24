@@ -20,7 +20,7 @@ const SearchProducts = ({ search }) => {
     if (!query) {
       router.push(`/admin/productos`);
     } else {
-      router.push(`/admin/productos?search=${query}`);
+      router.push(`/admin/productos?keyword=${query}`);
     }
   }, [query]);
 

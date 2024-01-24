@@ -14,7 +14,6 @@ const uploadToBucket = async (folder, filename, file) => {
         console.log('Error from minio', err);
         reject(err);
       } else {
-        console.log('Success uploading images to minio');
         resolve({
           _id: result._id, // Make sure _id and url are properties of the result object
           url: result.url,

@@ -19,9 +19,7 @@ export async function POST(req) {
     const isExistingAffiliatePhone = await Affiliate?.findOne({
       'contact.phone': telephone,
     });
-    console.log(isExistingAffiliatePhone, telephone);
     if (isExistingAffiliatePhone) {
-      console.log('Teléfono ya esta en uso por otro asociado.');
       return new Response('Teléfono ya esta en uso por otro asociado.', {
         status: 400,
       });

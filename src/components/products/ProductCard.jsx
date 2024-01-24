@@ -7,7 +7,6 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 
 const ProductCard = ({ item }) => {
-  console.log(item.stock);
   return (
     <motion.div
       initial={{ y: 30, opacity: 0 }}

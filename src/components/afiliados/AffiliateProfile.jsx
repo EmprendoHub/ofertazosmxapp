@@ -47,7 +47,6 @@ function formatTime(dateTimeString) {
 }
 
 const AffiliateProfile = ({ affiliate }) => {
-  console.log(affiliate);
   return (
     <>
       <figure className="flex items-start sm:items-center text-black">

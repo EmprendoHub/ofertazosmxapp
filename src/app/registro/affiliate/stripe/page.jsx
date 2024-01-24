@@ -18,7 +18,6 @@ const CompleteStripeAffiliateAccountPage = async (req, res) => {
       return_url: `${process.env.NEXTAUTH_URL}/registro/affiliate/stripe`,
       type: 'account_onboarding',
     });
-    console.log(accountLink);
   }
 
   return (

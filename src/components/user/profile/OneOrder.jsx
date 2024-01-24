@@ -41,8 +41,6 @@ const OneOrder = ({ id, currentCookies }) => {
 
     try {
       const data = await response.json();
-      //console.log(data, '<= data');
-      //dispatch(saveOrder({ order: productsData, id: data.id }));
       stripe?.redirectToCheckout({ sessionId: data.id });
     } catch (error) {
       console.log(error);

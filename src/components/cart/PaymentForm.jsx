@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import Image from 'next/image';
 import Link from 'next/link';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
+import { revalidatePath } from 'next/cache';
 
 const PaymentForm = () => {
   const dispatch = useDispatch();
@@ -53,6 +54,7 @@ const PaymentForm = () => {
       await dispatch(saveOrder({ order: productsData, id: data.id }));
       stripe?.redirectToCheckout({ sessionId: data.id });
       dispatch(resetCart());
+      revalidatePath('/admin/pedidos');
     } catch (error) {
       console.log(error);
     }

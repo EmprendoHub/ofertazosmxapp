@@ -23,7 +23,6 @@ const AllClientsComponent = ({ searchParams, currentCookies }) => {
         currentCookies,
         per_page
       );
-      console.log(clientsGet);
       setClientsCount(clientsGet?.filteredClientsCount);
       setClients(clientsGet?.clients?.clients);
     }

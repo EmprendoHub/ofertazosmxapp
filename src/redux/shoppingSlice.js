@@ -27,8 +27,6 @@ export const shoppingSlice = createSlice({
         (item) => item._id === action.payload._id
       );
 
-      console.log(existingProduct.stock > existingProduct.quantity);
-      // existingProduct && existingProduct.quantity++;
       if (existingProduct && existingProduct.stock > existingProduct.quantity) {
         existingProduct.quantity++;
       }

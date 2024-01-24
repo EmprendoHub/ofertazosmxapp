@@ -9,6 +9,7 @@ import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';
 import { FaExchangeAlt, FaImage } from 'react-icons/fa';
 import MultiselectComponent from '../forms/MultiselectComponent';
+import { revalidatePath } from 'next/cache';
 
 const NewProductComponent = () => {
   const { createProduct } = useContext(AuthContext);
@@ -83,8 +84,6 @@ const NewProductComponent = () => {
   const [salePrice, setSalePrice] = useState(0);
   const [salePriceEndDate, setSalePriceEndDate] = useState(new Date());
   const [sizeSelection, setSizeSelection] = useState(available_sizes_prendas);
-
-  console.log(featured);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -191,6 +190,8 @@ const NewProductComponent = () => {
           ]);
           setSalePriceEndDate(new Date());
           setCreatedAt(new Date());
+          revalidatePath('/admin/products');
+          revalidatePath('/tienda');
 
           return;
         }

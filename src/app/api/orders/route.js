@@ -20,7 +20,7 @@ export const GET = async (request, res) => {
       orderQuery = Order.find({ orderStatus: { $ne: 'Cancelado' } });
     } else {
       orderQuery = Order.find({
-        user: session._id,
+        user: session?.user?._id,
         orderStatus: { $ne: 'Cancelado' },
       });
     }
