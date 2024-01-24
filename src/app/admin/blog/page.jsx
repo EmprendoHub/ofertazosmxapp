@@ -5,7 +5,7 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { cookies } from 'next/headers';
 import { getCookiesName } from '@/backend/helpers';
 
-const getAllPosts = async (searchParams) => {
+const getAllPosts = async (searchParams, cookie) => {
   const urlParams = {
     keyword: searchParams.keyword,
     page: searchParams.page,
@@ -14,12 +14,9 @@ const getAllPosts = async (searchParams) => {
   const filteredUrlParams = Object.fromEntries(
     Object.entries(urlParams).filter(([key, value]) => value !== undefined)
   );
-  const nextCookies = cookies();
-  const cookieName = getCookiesName();
-  const nextAuthSessionToken = nextCookies.get(cookieName);
   const searchQuery = new URLSearchParams(filteredUrlParams).toString();
   const URL = `${process.env.NEXTAUTH_URL}/api/posts?${searchQuery}`;
-  const cookie = `${cookieName}=${nextAuthSessionToken?.value}`;
+
   console.log('fetch cookie', cookie);
   try {
     const res = await fetch(URL, {
@@ -38,7 +35,14 @@ const getAllPosts = async (searchParams) => {
 };
 
 const AdminPostsPage = async ({ searchParams }) => {
-  const testData = await getAllPosts(searchParams);
+  const nextCookies = cookies();
+  const cookieName = getCookiesName();
+
+  const nextAuthSessionToken = nextCookies.get(cookieName);
+
+  const cookie = `${cookieName}=${nextAuthSessionToken?.value}`;
+  const testData = await getAllPosts(searchParams, cookie);
+  //
   const testPotst = testData?.posts?.posts;
   let page = parseInt(searchParams.page, 10);
   page = !page || page < 1 ? 1 : page;
