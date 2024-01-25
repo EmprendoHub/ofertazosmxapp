@@ -1,3 +1,4 @@
+import { cstDateTime } from '@/backend/helpers';
 import Affiliate from '@/backend/models/Affiliate';
 import Order from '@/backend/models/Order';
 import Product from '@/backend/models/Product';
@@ -130,7 +131,7 @@ export const POST = async (request) => {
 
     const shippingInfo = JSON.stringify(shipping);
     const ship_cost = 0;
-    const date = Date.now();
+    const date = cstDateTime();
     const paymentInfo = {
       id: 'pending',
       status: 'pending',
