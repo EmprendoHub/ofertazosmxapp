@@ -20,9 +20,10 @@ export const getPriceQueryParams = (queryParams, key, value) => {
 export function cstDateTime() {
   // Create a Date object from the given string
   const date = new Date();
-
   // Adjust to CST (Central Standard Time) - UTC-6
-  const cstDate = new Date(date.getTime() - 6 * 60 * 60 * 1000);
+  const cstDate = new Date(date.getTime() + 6 * 60 * 60 * 1000);
+  // Log the dates in a specific format
+
   return cstDate;
 }
 
@@ -65,7 +66,7 @@ export function formatTime(dateTimeString) {
   const cstDate = new Date(date.getTime() - 6 * 60 * 60 * 1000);
 
   // Format the time in the desired format
-  const formattedTime = cstDate.toLocaleTimeString('es-ES', {
+  const formattedTime = cstDate.toLocaleTimeString('en-US', {
     hour: '2-digit',
     minute: '2-digit',
     hour12: true,

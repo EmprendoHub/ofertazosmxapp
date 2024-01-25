@@ -1,34 +1,12 @@
 'use client';
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { FaPencilAlt, FaTrash, FaUserCircle } from 'react-icons/fa';
-import AuthContext from '@/context/AuthContext';
 import Swal from 'sweetalert2';
 import AdminPagination from '../pagination/AdminPagination';
 import AdminClientSearch from '../layout/AdminClientSearch';
 
-const AllClientsComponent = ({ searchParams, currentCookies }) => {
-  const { getAllClients } = useContext(AuthContext);
-  const [clients, setClients] = useState([]);
-  const [clientsCount, setClientsCount] = useState(0);
-  const page = searchParams['page'] ?? '1';
-  const per_page = '5';
-  const start = (Number(page) - 1) * Number(per_page); // 0, 5, 10 ...
-  const end = start + Number(per_page); // 5, 10, 15 ...
-
-  useEffect(() => {
-    async function getClients() {
-      const clientsGet = await getAllClients(
-        searchParams,
-        currentCookies,
-        per_page
-      );
-      setClientsCount(clientsGet?.filteredClientsCount);
-      setClients(clientsGet?.clients?.clients);
-    }
-    getClients();
-  }, [getAllClients, searchParams, currentCookies]);
-
+const AllClientsComponent = ({ clients, filteredClientsCount }) => {
   const deleteHandler = (product_id) => {
     Swal.fire({
       title: 'Estas seguro(a)?',
@@ -58,7 +36,7 @@ const AllClientsComponent = ({ searchParams, currentCookies }) => {
         <div className=" flex flex-row maxsm:flex-col maxsm:items-start items-center justify-between">
           {' '}
           <h1 className="text-3xl my-5 ml-4 font-bold">
-            {`${clients.length} Clientes `}
+            {`${filteredClientsCount} Clientes `}
           </h1>
           <AdminClientSearch />
         </div>
@@ -68,10 +46,6 @@ const AllClientsComponent = ({ searchParams, currentCookies }) => {
               <th scope="col" className="px-6 maxsm:px-0 py-3 maxmd:hidden">
                 Id
               </th>
-              <th scope="col" className="px-6 maxsm:px-0 py-3 ">
-                Stripe
-              </th>
-
               <th scope="col" className="px-6 maxsm:px-0 py-3 ">
                 Teléfono
               </th>
@@ -96,9 +70,6 @@ const AllClientsComponent = ({ searchParams, currentCookies }) => {
                   >
                     {client._id.substring(0, 10)}...
                   </Link>
-                </td>
-                <td className="px-6 maxsm:px-0 py-2 relative ">
-                  {client.stripe_id}
                 </td>
                 <td className="px-6 maxsm:px-0 py-2 ">
                   <b>{client.role}</b>
@@ -129,12 +100,6 @@ const AllClientsComponent = ({ searchParams, currentCookies }) => {
             ))}
           </tbody>
         </table>
-        <AdminPagination
-          hasNextPage={end < clientsCount}
-          hasPrevPage={start > 0}
-          totalItemCount={clientsCount}
-          perPage={per_page}
-        />
       </div>
 
       <hr className="my-4" />

@@ -6,25 +6,12 @@ import AuthContext from '@/context/AuthContext';
 import { toast } from 'react-toastify';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 
-const AdminOneOrder = ({ id, currentCookies }) => {
-  const { getOneOrder } = useContext(AuthContext);
-  const [order, setOrder] = useState([]);
-  const [address, setAddress] = useState([]);
-  const [user, setUser] = useState([]);
+const AdminOneOrder = ({ order, id }) => {
   const { updateOrder } = useContext(AuthContext);
   const [orderStatus, setOrderStatus] = useState('pendiente');
-  const [currentOrderStatus, setCurrentOrderStatus] = useState();
-
-  useEffect(() => {
-    async function getOrder() {
-      const orderData = await getOneOrder(id, currentCookies);
-      setOrder(orderData?.order);
-      setAddress(orderData?.deliveryAddress);
-      setUser(orderData?.orderUser);
-      setCurrentOrderStatus(orderData?.order.orderStatus);
-    }
-    getOrder();
-  }, [getOneOrder, currentCookies, id]);
+  const [currentOrderStatus, setCurrentOrderStatus] = useState(
+    order?.orderStatus
+  );
 
   function getQuantities(orderItems) {
     // Use reduce to sum up the 'quantity' fields
@@ -94,9 +81,9 @@ const AdminOneOrder = ({ id, currentCookies }) => {
     <>
       <div className="relative overflow-x-auto shadow-md maxsm:rounded-lg p-5 maxsm:p-1">
         <div className="flex flex-row items-center justify-start gap-x-5">
-          <Link href={`/admin/clientes/perfil/${user?._id}`}>
+          <Link href={`/admin/clientes/perfil/${order?.orderUser?._id}`}>
             <h2 className="text-3xl mb-1 ml-4 font-bold text-slate-700">
-              {user?.name}
+              {order?.orderUser?.name}
             </h2>
           </Link>
         </div>
@@ -145,16 +132,20 @@ const AdminOneOrder = ({ id, currentCookies }) => {
           <tbody>
             <tr className="bg-white flex flex-row maxsm:flex-col">
               <td className="w-1/6 maxsm:w-full px-6 py-2">
-                {address?.street}
-              </td>
-              <td className="w-1/6 maxsm:w-full px-6 py-2">{address?.city}</td>
-              <td className="w-1/6 maxsm:w-full px-6 py-2">
-                {address?.province}
+                {order?.deliveryAddress?.street}
               </td>
               <td className="w-1/6 maxsm:w-full px-6 py-2">
-                {address?.zip_code}
+                {order?.deliveryAddress?.city}
               </td>
-              <td className="w-1/6 maxsm:w-full px-6 py-2">{address?.phone}</td>
+              <td className="w-1/6 maxsm:w-full px-6 py-2">
+                {order?.deliveryAddress?.province}
+              </td>
+              <td className="w-1/6 maxsm:w-full px-6 py-2">
+                {order?.deliveryAddress?.zip_code}
+              </td>
+              <td className="w-1/6 maxsm:w-full px-6 py-2">
+                {order?.deliveryAddress?.phone}
+              </td>
             </tr>
           </tbody>
         </table>

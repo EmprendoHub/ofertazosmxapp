@@ -2,6 +2,7 @@ import { options } from '@/app/api/auth/[...nextauth]/options';
 import ServerPagination from '@/components/pagination/ServerPagination';
 import UserOrders from '@/components/user/profile/UserOrders';
 import { getServerSession } from 'next-auth';
+import { revalidatePath } from 'next/cache';
 import React from 'react';
 
 async function getAllOrders(searchParams, session) {
@@ -49,6 +50,8 @@ const UserOrdersPage = async ({ searchParams }) => {
       pageNumbers.push(i);
     }
   }
+
+  revalidatePath('/perfil/pedidos');
   return (
     <>
       <UserOrders orders={orders} filteredOrdersCount={filteredOrdersCount} />

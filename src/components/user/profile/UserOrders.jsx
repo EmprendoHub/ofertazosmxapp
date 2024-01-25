@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect } from 'react';
 import Link from 'next/link';
-import { formatDate } from '@/backend/helpers';
+import { formatDate, formatTime } from '@/backend/helpers';
 import { resetCart } from '@/redux/shoppingSlice';
 import { FaEye } from 'react-icons/fa';
 import { getTotalFromItems } from '@/backend/helpers';
@@ -90,7 +90,9 @@ const UserOrders = ({ orders, filteredOrdersCount }) => {
                 {' '}
                 <p>
                   {order?.createdAt &&
-                    `${formatDate(order?.createdAt.substring(0, 24))} `}
+                    `${formatDate(
+                      order?.createdAt.substring(0, 24)
+                    )} a las ${formatTime(order?.createdAt)}`}
                 </p>
               </td>
 

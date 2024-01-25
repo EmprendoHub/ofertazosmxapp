@@ -1,32 +1,11 @@
 'use client';
-import React, { useContext, useEffect, useState } from 'react';
-import Link from 'next/link';
-import { FaPencilAlt } from 'react-icons/fa';
+import React from 'react';
 import { formatDate, formatTime } from '@/backend/helpers';
 import { getTotalFromItems } from '@/backend/helpers';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import AdminOrderSearch from '@/components/layout/AdminOrderSearch';
-import AuthContext from '@/context/AuthContext';
-import AdminPagination from '@/components/pagination/AdminPagination';
 
-const AfiliadoOrders = ({ searchParams, currentCookies }) => {
-  const { getAllOrders } = useContext(AuthContext);
-  const [orders, setOrders] = useState([]);
-  const [filteredOrdersCount, setFilteredOrdersCount] = useState();
-  const page = searchParams['page'] ?? '1';
-  const per_page = 5;
-  const start = (Number(page) - 1) * Number(per_page); // 0, 5, 10 ...
-  const end = start + Number(per_page); // 5, 10, 15 ...
-
-  useEffect(() => {
-    async function getOrders() {
-      const ordersData = await getAllOrders(searchParams, currentCookies);
-      setOrders(ordersData?.orders.orders);
-      setFilteredOrdersCount(ordersData?.filteredOrdersCount);
-    }
-    getOrders();
-  }, [getAllOrders, searchParams, currentCookies]);
-
+const AfiliadoOrders = ({ orders, filteredOrdersCount }) => {
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <div className=" flex flex-row maxsm:flex-col maxsm:items-start items-center justify-between">
@@ -49,30 +28,31 @@ const AfiliadoOrders = ({ searchParams, currentCookies }) => {
               Pagado
             </th>
             <th scope="col" className="px-6 maxsm:px-0 py-3">
+              Commission 10%
+            </th>
+            <th scope="col" className="px-6 maxsm:px-0 py-3">
               Estado
             </th>
             <th scope="col" className="px-6 py-3 maxsm:hidden">
               Fecha
-            </th>
-            <th scope="col" className="w-5 px-1 py-3 text-center">
-              ...
             </th>
           </tr>
         </thead>
         <tbody>
           {orders?.map((order, index) => (
             <tr className="bg-white" key={index}>
-              <td className="px-6 maxsm:px-2 py-2">
-                <Link key={index} href={`/admin/pedidos/${order._id}`}>
-                  {order.orderId}
-                </Link>
-              </td>
+              <td className="px-6 maxsm:px-2 py-2">{order.orderId}</td>
               <td className="px-6 py-2 maxmd:hidden">
                 <FormattedPrice amount={getTotalFromItems(order.orderItems)} />
               </td>
               <td className="px-6 maxsm:px-0 py-2 ">
+                <b>{order?.paymentInfo?.status}</b>
+              </td>
+              <td className="px-6 maxsm:px-0 py-2 ">
                 <b>
-                  <FormattedPrice amount={order?.paymentInfo?.amountPaid} />
+                  <FormattedPrice
+                    amount={order?.paymentInfo?.amountPaid * 0.1}
+                  />
                 </b>
               </td>
               <td
@@ -90,28 +70,14 @@ const AfiliadoOrders = ({ searchParams, currentCookies }) => {
               </td>
               <td className="px-6 py-2 maxsm:hidden">
                 {order?.createdAt &&
-                  `${formatDate(order?.createdAt.substring(0, 24))} `}
-              </td>
-              <td className="px-1 py-2">
-                <div>
-                  <Link
-                    href={`/admin/pedidos/${order._id}`}
-                    className="px-2 py-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
-                  >
-                    <FaPencilAlt className="" />
-                  </Link>
-                </div>
+                  `${formatDate(
+                    order?.createdAt.substring(0, 24)
+                  )} a las ${formatTime(order?.createdAt)}`}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <AdminPagination
-        hasNextPage={end < filteredOrdersCount}
-        hasPrevPage={start > 0}
-        totalItemCount={filteredOrdersCount}
-        perPage={per_page}
-      />
     </div>
   );
 };

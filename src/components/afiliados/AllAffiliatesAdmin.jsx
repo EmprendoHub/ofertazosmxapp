@@ -1,33 +1,13 @@
 'use client';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import Link from 'next/link';
-import { FaPencilAlt, FaTrash, FaUserCircle } from 'react-icons/fa';
+import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 import AuthContext from '@/context/AuthContext';
-import AdminPagination from '../pagination/AdminPagination';
 import Swal from 'sweetalert2';
 import AdminAffiliateSearch from '../layout/AdminAffiliateSearch';
 
-const AllAffiliatesAdmin = ({ searchParams, currentCookies }) => {
-  const { getAllAffiliates, deleteAffiliate } = useContext(AuthContext);
-  const [affiliates, setAffiliates] = useState([]);
-  const [affiliatesCount, setAffiliatesCount] = useState(0);
-  const page = searchParams['page'] ?? '1';
-  const per_page = '5';
-  const start = (Number(page) - 1) * Number(per_page); // 0, 5, 10 ...
-  const end = start + Number(per_page); // 5, 10, 15 ...
-
-  useEffect(() => {
-    async function getAffiliates() {
-      const affiliatesGet = await getAllAffiliates(
-        searchParams,
-        currentCookies,
-        per_page
-      );
-      setAffiliates(affiliatesGet?.affiliates.affiliates);
-      setAffiliatesCount(affiliatesGet?.filteredAffiliatesCount);
-    }
-    getAffiliates();
-  }, [getAllAffiliates, searchParams, currentCookies]);
+const AllAffiliatesAdmin = ({ affiliates, filteredAffiliatesCount }) => {
+  const { deleteAffiliate } = useContext(AuthContext);
 
   const deleteHandler = (product_id) => {
     Swal.fire({
@@ -58,7 +38,7 @@ const AllAffiliatesAdmin = ({ searchParams, currentCookies }) => {
         <div className=" flex flex-row maxsm:flex-col maxsm:items-start items-center justify-between">
           {' '}
           <h1 className="text-3xl my-5 ml-4 font-bold">
-            {`${affiliatesCount} Afiliados `}
+            {`${filteredAffiliatesCount} Afiliados `}
           </h1>
           <AdminAffiliateSearch />
         </div>
@@ -129,12 +109,6 @@ const AllAffiliatesAdmin = ({ searchParams, currentCookies }) => {
             ))}
           </tbody>
         </table>
-        <AdminPagination
-          hasNextPage={end < affiliatesCount}
-          hasPrevPage={start > 0}
-          totalItemCount={affiliatesCount}
-          perPage={per_page}
-        />
       </div>
 
       <hr className="my-4" />

@@ -85,7 +85,9 @@ const AdminOrders = ({ orders, filteredOrdersCount }) => {
               </td>
               <td className="px-6 py-2 maxsm:hidden">
                 {order?.createdAt &&
-                  `${formatDate(order?.createdAt.substring(0, 24))} `}
+                  `${formatDate(
+                    order?.createdAt.substring(0, 24)
+                  )} a las ${formatTime(order?.createdAt)}`}
               </td>
               <td className="px-1 py-2">
                 <div>

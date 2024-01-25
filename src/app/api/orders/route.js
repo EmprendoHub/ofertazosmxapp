@@ -1,3 +1,4 @@
+import Affiliate from '@/backend/models/Affiliate';
 import Order from '@/backend/models/Order';
 import APIOrderFilters from '@/lib/APIOrderFilters';
 import dbConnect from '@/lib/db';
@@ -18,6 +19,12 @@ export const GET = async (request, res) => {
     let orderQuery;
     if (session?.user?.role === 'manager') {
       orderQuery = Order.find({ orderStatus: { $ne: 'Cancelado' } });
+    } else if (session?.user?.role === 'afiliado') {
+      const affiliate = await Affiliate.findOne({ user: session?.user?._id });
+      orderQuery = Order.find({
+        affiliateId: affiliate?._id.toString(),
+        orderStatus: { $ne: 'Cancelado' },
+      });
     } else {
       orderQuery = Order.find({
         user: session?.user?._id,
@@ -65,7 +72,6 @@ export const GET = async (request, res) => {
     ordersData = await ordersData
       .slice()
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
     const orders = {
       orders: ordersData,
     };

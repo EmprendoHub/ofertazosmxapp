@@ -1,5 +1,5 @@
 'use client';
-import { formatDate, getTotalFromItems } from '@/backend/helpers';
+import { formatDate, formatTime, getTotalFromItems } from '@/backend/helpers';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import Link from 'next/link';
 import React, { useContext, useEffect, useState } from 'react';
@@ -93,7 +93,9 @@ const ViewUserOrders = ({ searchParams, currentCookies, params }) => {
               </td>
               <td className="px-6 maxsm:px-1  maxsm:hidden py-2">
                 {order?.createdAt &&
-                  `${formatDate(order?.createdAt.substring(0, 24))} `}
+                  `${formatDate(
+                    order?.createdAt.substring(0, 24)
+                  )} a las ${formatTime(order?.createdAt)}`}
               </td>
               <td className="px-2 maxsm:px-1 py-2">
                 <div>

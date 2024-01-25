@@ -5,12 +5,11 @@ import { NextResponse } from 'next/server';
 import APIAffiliateFilters from '@/lib/APIAffiliateFilters';
 
 export async function GET(request) {
-  const token = await getToken({ req: request });
-
-  if (!token) {
+  const sessionRaw = await request.headers.get('session');
+  const session = JSON.parse(sessionRaw);
+  if (!session) {
     // Not Signed in
-    const notAuthorized = 'You are not authorized no no no';
-    return new Response(JSON.stringify(notAuthorized), {
+    return new Response('You are not authorized, eh eh eh, no no no', {
       status: 400,
     });
   }
@@ -60,6 +59,7 @@ export async function GET(request) {
       affiliates,
       affiliatesCount,
       filteredAffiliatesCount,
+      resPerPage,
     };
     return new Response(JSON.stringify(dataPacket), { status: 201 });
   } catch (error) {
