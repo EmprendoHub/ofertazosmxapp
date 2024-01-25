@@ -67,7 +67,7 @@ export async function POST(req, res) {
           const timestamp = cstDateTime(); // Current timestamp
           //transfer amount to affiliate
           const transfer = await stripe.transfers.create({
-            amount: totalOrderAmount * 0.1,
+            amount: totalOrderAmount * 0.1 * 100,
             currency: 'mxn',
             destination: affiliate?.stripe_id,
             source_transaction: paymentIntent?.latest_charge,
