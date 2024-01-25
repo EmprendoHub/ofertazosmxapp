@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import { useState, useEffect } from 'react';
 import AuthContext from '@/context/AuthContext';
+import Image from 'next/image';
 
 const CustomLink = ({ href, title, className = '' }) => {
   const router = useRouter();
@@ -70,19 +71,47 @@ const MiniMenuComponent = () => {
         )}
         {/* Admin */}
         {isLoggedIn && session?.user.role === 'manager' ? (
-          <Link href={'/admin'}>
-            <div className="bg-gray-100 hover:bg-slate-100 rounded-full text-slate-800 hover:text-black flex items-center justify-center gap-x-1 px-1 py-1.5 border-[1px]  border-gray-100 hover:border-black ease-in-out duration-300 cursor-pointer">
-              <MdOutlineAdminPanelSettings className="text-2xl" />
-              <p className="text-sm maxsm:hidden">Admin</p>
-            </div>
-          </Link>
+          <>
+            <Link href={'/admin'}>
+              {session?.user?.image ? (
+                <Image
+                  className="w-8 h-8 rounded-full "
+                  src={
+                    session?.user?.image ? session?.user?.image : '/next.svg'
+                  }
+                  alt={session?.user?.name ? session?.user?.name : 'avatar'}
+                  width={50}
+                  height={50}
+                />
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center uppercase text-xl font-EB_Garamond">
+                  {session?.user?.email.substring(0, 1)}
+                </div>
+              )}
+            </Link>
+          </>
         ) : (
-          <Link href={'/perfil'}>
-            <div className="bg-gray-100 hover:bg-slate-100 rounded-full text-slate-800 hover:text-black flex items-center justify-center gap-x-1 px-1 py-1.5 border-[1px]  border-gray-100 hover:border-black ease-in-out duration-300 cursor-pointer">
-              <TfiLayoutAccordionList className="text-2xl" />
-            </div>
-          </Link>
+          <>
+            <Link href={'/perfil'}>
+              {session?.user?.image ? (
+                <Image
+                  className="w-8 h-8 rounded-full "
+                  src={
+                    session?.user?.image ? session?.user?.image : '/next.svg'
+                  }
+                  alt={session?.user?.name ? session?.user?.name : 'avatar'}
+                  width={50}
+                  height={50}
+                />
+              ) : (
+                <div className="w-8 h-8 rounded-full  bg-black text-white flex items-center justify-center uppercase text-xl font-EB_Garamond">
+                  {session?.user?.email.substring(0, 1)}
+                </div>
+              )}
+            </Link>
+          </>
         )}
+
         {/* Cart Button */}
         {isLoggedIn && session?.user.role != 'manager' ? (
           <Link href={'/carrito'}>

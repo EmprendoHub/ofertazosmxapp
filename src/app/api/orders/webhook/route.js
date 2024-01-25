@@ -1,3 +1,4 @@
+import { cstDateTime } from '@/backend/helpers';
 import Affiliate from '@/backend/models/Affiliate';
 import Order from '@/backend/models/Order';
 import ReferralEvent from '@/backend/models/ReferralEvent';
@@ -51,13 +52,18 @@ export async function POST(req, res) {
         currentOrder.orderStatus = 'Procesando';
         currentOrder.paymentInfo.status = 'Paid';
         if (session?.metadata?.referralID) {
+          const transfer = await stripe.transfers.create({
+            amount: totalOrderAmount * 0.1,
+            currency: 'mxn',
+            destination: session?.metadata?.referralID,
+          });
           const referralLink = await ReferralLink.findOne({
             _id: session?.metadata?.referralID,
           });
 
           const affiliate = await Affiliate.findOne(referralLink.affiliateId);
           const affiliateId = await affiliate?._id.toString();
-          const timestamp = new Date(); // Current timestamp
+          const timestamp = cstDateTime(); // Current timestamp
           // Create a ReferralEvent object
           const newReferralEvent = await ReferralEvent.create({
             referralLinkId: { _id: session?.metadata?.referralID },
@@ -81,7 +87,7 @@ export async function POST(req, res) {
           });
           const affiliate = await Affiliate.findOne(referralLink.affiliateId);
           const affiliateId = await affiliate?._id.toString();
-          const timestamp = new Date(); // Current timestamp
+          const timestamp = cstDateTime(); // Current timestamp
           // Create a ReferralEvent object
           const newReferralEvent = await ReferralEvent.create({
             referralLinkId: { _id: session?.metadata?.referralID },

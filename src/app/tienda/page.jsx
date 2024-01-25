@@ -3,6 +3,7 @@ import ListProducts from '@/components/products/ListProducts';
 import { getCookiesName } from '@/backend/helpers';
 import { cookies } from 'next/headers';
 import axios from 'axios';
+import ServerPagination from '@/components/pagination/ServerPagination';
 
 export const metadata = {
   title: 'Tienda Shopout Mx',
@@ -28,17 +29,15 @@ const getAllProducts = async (searchParams, currentCookies, perPage) => {
 
     const searchQuery = new URLSearchParams(filteredUrlParams).toString();
     const URL = `${process.env.NEXTAUTH_URL}/api/products?${searchQuery}`;
-    const { data } = await axios.get(
-      URL,
-      {
-        headers: {
-          Cookie: currentCookies,
-          perPage: perPage,
-        },
+    const res = await fetch(URL, {
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        Cookie: currentCookies,
+        perPage: perPage,
       },
-      { cache: 'no-cache' }
-    );
-
+    });
+    const data = await res.json();
     return data;
   } catch (error) {
     console.log(error);
@@ -51,19 +50,33 @@ const TiendaPage = async ({ searchParams }) => {
   let nextAuthSessionToken = nextCookies.get(cookieName);
   nextAuthSessionToken = nextAuthSessionToken?.value;
   const currentCookies = `${cookieName}=${nextAuthSessionToken}`;
-  const page = searchParams['page'] ?? '1';
+
   const per_page = 10;
-  const start = (Number(page) - 1) * Number(per_page); // 0, 5, 10 ...
-  const end = start + Number(per_page); // 5, 10, 15 ...
-  const productsData = await getAllProducts(
-    searchParams,
-    currentCookies,
-    per_page
-  );
-  const products = productsData?.products.products;
-  const allBrands = productsData?.allBrands;
-  const allCategories = productsData?.allCategories;
-  const filteredProductsCount = productsData?.filteredProductsCount;
+  const data = await getAllProducts(searchParams, currentCookies, per_page);
+
+  //pagination
+  let page = parseInt(searchParams.page, 10);
+  page = !page || page < 1 ? 1 : page;
+  const perPage = 10;
+  const itemCount = data?.productsCount;
+  const totalPages = Math.ceil(data.filteredProductsCount / perPage);
+  const prevPage = page - 1 > 0 ? page - 1 : 1;
+  const nextPage = page + 1;
+  const isPageOutOfRange = page > totalPages;
+  const pageNumbers = [];
+  const offsetNumber = 3;
+  const products = data?.products.products;
+  const allBrands = data?.allBrands;
+  const allCategories = data?.allCategories;
+  const filteredProductsCount = data?.filteredProductsCount;
+  const search =
+    typeof searchParams.search === 'string' ? searchParams.search : undefined;
+  for (let i = page - offsetNumber; i <= page + offsetNumber; i++) {
+    if (i >= 1 && i <= totalPages) {
+      pageNumbers.push(i);
+    }
+  }
+
   return (
     <>
       <StoreHeroComponent />
@@ -72,9 +85,14 @@ const TiendaPage = async ({ searchParams }) => {
         allBrands={allBrands}
         allCategories={allCategories}
         filteredProductsCount={filteredProductsCount}
-        per_page={per_page}
-        start={start}
-        end={end}
+      />
+      <ServerPagination
+        isPageOutOfRange={isPageOutOfRange}
+        page={page}
+        pageNumbers={pageNumbers}
+        prevPage={prevPage}
+        nextPage={nextPage}
+        totalPages={totalPages}
       />
     </>
   );

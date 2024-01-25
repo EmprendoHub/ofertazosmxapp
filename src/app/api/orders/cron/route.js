@@ -1,3 +1,4 @@
+import { cstDateTime } from '@/backend/helpers';
 import Order from '@/backend/models/Order';
 import Product from '@/backend/models/Product';
 import dbConnect from '@/lib/db';
@@ -11,7 +12,7 @@ export async function GET(request) {
   //   });
   // }
   try {
-    const twoDaysAgo = new Date();
+    const twoDaysAgo = cstDateTime();
     twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
 
     await dbConnect();

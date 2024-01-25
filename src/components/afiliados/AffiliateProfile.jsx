@@ -1,50 +1,7 @@
 'use client';
-import React, { useContext } from 'react';
+import React from 'react';
 import Image from 'next/image';
-import AuthContext from '@/context/AuthContext';
-
-function formatDate(dateTimeString) {
-  // Create a Date object from the given string
-  const date = new Date(dateTimeString);
-
-  // Adjust to CST (Central Standard Time) - UTC-6
-  const cstDate = new Date(date.getTime() - 6 * 60 * 60 * 1000);
-
-  // Format the date in the desired format
-  const formattedDate = cstDate.toLocaleDateString('es-ES', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-
-  // Format the time in the desired format
-  const formattedTime = cstDate.toLocaleTimeString('es-ES', {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true,
-    timeZone: 'America/Mexico_City', // Specify the time zone (CST)
-  });
-
-  return formattedDate;
-}
-
-function formatTime(dateTimeString) {
-  // Create a Date object from the given string
-  const date = new Date(dateTimeString);
-
-  // Adjust to CST (Central Standard Time) - UTC-6
-  const cstDate = new Date(date.getTime() - 6 * 60 * 60 * 1000);
-
-  // Format the time in the desired format
-  const formattedTime = cstDate.toLocaleTimeString('es-ES', {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true,
-    timeZone: 'America/Mexico_City', // Specify the time zone (CST)
-  });
-
-  return formattedTime;
-}
+import { formatDate, formatTime } from '@/backend/helpers';
 
 const AffiliateProfile = ({ affiliate }) => {
   return (

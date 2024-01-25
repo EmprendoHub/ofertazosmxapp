@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { IoIosStar } from 'react-icons/io';
 import Image from 'next/image';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
-import { calculatePercentage } from '@/backend/helpers';
+import { calculatePercentage, cstDateTimeClient } from '@/backend/helpers';
 import DateTimePicker from 'react-datetime-picker';
 import 'react-datetime-picker/dist/DateTimePicker.css';
 import 'react-calendar/dist/Calendar.css';
@@ -632,7 +632,7 @@ const UpdateProductDetails = ({ product }) => {
                     onChange={onChangeDate}
                     value={salePriceEndDate}
                     locale={'es-MX'}
-                    minDate={new Date()}
+                    minDate={cstDateTimeClient()}
                   />
                 </div>
               </div>

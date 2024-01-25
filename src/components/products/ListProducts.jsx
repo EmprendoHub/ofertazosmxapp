@@ -46,12 +46,6 @@ const ListProducts = ({
           </div>
         </div>
       </div>
-      <AdminPagination
-        hasNextPage={end < filteredProductsCount}
-        hasPrevPage={start > 0}
-        totalItemCount={filteredProductsCount}
-        perPage={per_page}
-      />
     </section>
   );
 };

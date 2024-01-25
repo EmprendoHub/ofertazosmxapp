@@ -5,6 +5,7 @@ import Image from 'next/image';
 import AuthContext from '@/context/AuthContext';
 import { FaTrash, FaPencilAlt } from 'react-icons/fa';
 import Swal from 'sweetalert2';
+import { formatDate } from '@/backend/helpers';
 
 const AdminPostsComponent = ({ data, filteredOrdersCount }) => {
   const posts = data;
@@ -39,61 +40,75 @@ const AdminPostsComponent = ({ data, filteredOrdersCount }) => {
         </button>
       </Link>
       <hr className="my-4" />
-      {posts?.map((post, index) => (
-        <div
-          key={index}
-          className="flex flex-row maxsm:flex-col justify-between items-center "
-        >
-          <div>
-            <Link key={index} href={`/admin/blog/editar/${post._id}`}>
-              <div className="mb-5 gap-4">
-                <figure className="w-full flex align-center bg-gray-100 p-4 rounded-md cursor-pointer maxsm:flex-col">
-                  <div className="mr-3 w-15 h-15 maxsm:w-full maxsm:h-full">
-                    <span className="flex items-center justify-center text-black w-12 h-12 maxsm:w-full maxsm:h-full shadow mt-2">
-                      <Image
-                        src={post?.images[0].url}
-                        alt="Title"
-                        width={100}
-                        height={100}
-                      />
-                    </span>
+
+      <div className="flex flex-row maxsm:flex-col justify-between items-center ">
+        <table className="w-full text-sm text-left">
+          <thead className="text-l text-gray-700 uppercase">
+            <tr>
+              <th scope="col" className="px-6 maxsm:px-0 py-3">
+                Id
+              </th>
+              <th scope="col" className="px-6 py-3 maxmd:hidden">
+                Img
+              </th>
+              <th scope="col" className="px-6 maxsm:px-0 py-3">
+                Catg.
+              </th>
+              <th scope="col" className="px-6 maxsm:px-0 py-3">
+                Titulo
+              </th>
+              <th scope="col" className="px-6 py-3 maxsm:hidden">
+                Fecha
+              </th>
+              <th scope="col" className="w-5 px-1 py-3 text-center">
+                ...
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {posts?.map((post, index) => (
+              <tr className="bg-white" key={index}>
+                <td className="px-6 maxsm:px-2 py-2">
+                  <Link key={index} href={`/admin/blog/editar/${post._id}`}>
+                    {post._id}
+                  </Link>
+                </td>
+                <td className="px-6 maxsm:px-0 py-2 relative ">
+                  <span className="relative flex items-center justify-center text-black w-12 h-12 maxsm:w-10 maxsm:h-10 shadow mt-2">
+                    <Image
+                      src={post?.images[0].url}
+                      alt="Title"
+                      width={100}
+                      height={100}
+                      className="w-10 h-auto maxsm:w-10 "
+                    />
+                  </span>
+                </td>
+                <td className="px-6 maxsm:px-0 py-2 ">
+                  <b>{post?.category}</b>
+                </td>
+                <td className={`px-6 maxsm:px-0 py-2 font-bold `}>
+                  {post?.title}
+                </td>
+                <td className="px-6 py-2 maxsm:hidden">
+                  {post?.createdAt &&
+                    `${formatDate(post?.createdAt.substring(0, 24))} `}
+                </td>
+                <td className="px-1 py-2">
+                  <div>
+                    <Link
+                      href={`/admin/blog/editar/${post._id}`}
+                      className="px-2 py-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
+                    >
+                      <FaPencilAlt className="" />
+                    </Link>
                   </div>
-                  <figcaption className="text-gray-600">
-                    <p>
-                      {post?.title}
-                      <br /> {post?.summary}
-                      <br />
-                      Categoría: {post?.category}
-                      <br />
-                      Fecha de Creación: {post?.createdAt}
-                    </p>
-                  </figcaption>
-                </figure>
-              </div>
-            </Link>
-          </div>
-          <div className="flex flex-row justify-between items-center gap-5">
-            <span>
-              {' '}
-              <button
-                onClick={() => deleteHandler(post._id)}
-                className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700"
-              >
-                <FaTrash className="text-white" />
-              </button>
-            </span>
-            <span>
-              <Link
-                key={index}
-                href={`/admin/blog/editar/${post._id}`}
-                className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
-              >
-                <FaPencilAlt className="text-white" />
-              </Link>
-            </span>
-          </div>
-        </div>
-      ))}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       <hr className="my-4" />
     </>

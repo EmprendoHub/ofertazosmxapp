@@ -1,3 +1,4 @@
+import { cstDateTime } from '@/backend/helpers';
 import Affiliate from '@/backend/models/Affiliate';
 import ReferralLink from '@/backend/models/ReferralLink';
 import dbConnect from '@/lib/db';
@@ -30,7 +31,7 @@ export async function POST(req) {
         clickCount: 0,
         targetUrl: newLink.targetUrl,
         metadata: newLink.metadata,
-        createdAt: new Date(),
+        createdAt: cstDateTime(),
       });
 
       await newReferralLink.save();

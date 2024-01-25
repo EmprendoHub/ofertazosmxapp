@@ -4,6 +4,7 @@ import Image from 'next/image';
 import AuthContext from '@/context/AuthContext';
 import { toast } from 'react-toastify';
 import { FaImage } from 'react-icons/fa';
+import { cstDateTimeClient } from '@/backend/helpers';
 
 const NewPostComponent = () => {
   const { createPost } = useContext(AuthContext);
@@ -21,8 +22,9 @@ const NewPostComponent = () => {
   const [summary, setSummary] = useState('');
   const [content, setContent] = useState('');
   const [category, setCategory] = useState('Moda');
-  const [createdAt, setCreatedAt] = useState(new Date().toLocaleString());
-
+  const [createdAt, setCreatedAt] = useState(
+    cstDateTimeClient().toLocaleString()
+  );
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -90,7 +92,7 @@ const NewPostComponent = () => {
               i_filePreview: '/images/shopout_clothing_placeholder.webp',
             },
           ]);
-          setCreatedAt(new Date().toLocaleString());
+          setCreatedAt(cstDateTimeClient().toLocaleString());
 
           return;
         }

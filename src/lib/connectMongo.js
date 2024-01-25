@@ -1,3 +1,4 @@
+import { cstDateTime } from '@/backend/helpers';
 import { MongoClient } from 'mongodb';
 const MONGODB_URI = process.env.MONGO_URL;
 let client = null;
@@ -15,7 +16,7 @@ export async function connectToDatabase() {
     client = await MongoClient.connect(MONGODB_URI);
     console.log(
       'Connected to MongoDb successfully.',
-      new Date().toLocaleString()
+      cstDateTime().toLocaleString()
     );
     return client;
   } catch (error) {

@@ -10,6 +10,7 @@ import 'react-clock/dist/Clock.css';
 import { FaExchangeAlt, FaImage } from 'react-icons/fa';
 import MultiselectComponent from '../forms/MultiselectComponent';
 import { revalidatePath } from 'next/cache';
+import { cstDateTimeClient } from '@/backend/helpers';
 
 const NewProductComponent = () => {
   const { createProduct } = useContext(AuthContext);
@@ -80,9 +81,9 @@ const NewProductComponent = () => {
   const [stock, setStock] = useState(1);
   const [cost, setCost] = useState(0);
   const [price, setPrice] = useState(0);
-  const [createdAt, setCreatedAt] = useState(new Date());
+  const [createdAt, setCreatedAt] = useState(cstDateTimeClient());
   const [salePrice, setSalePrice] = useState(0);
-  const [salePriceEndDate, setSalePriceEndDate] = useState(new Date());
+  const [salePriceEndDate, setSalePriceEndDate] = useState(cstDateTimeClient());
   const [sizeSelection, setSizeSelection] = useState(available_sizes_prendas);
 
   const handleSubmit = async (e) => {
@@ -188,8 +189,8 @@ const NewProductComponent = () => {
               i_filePreview: '/images/shopout_clothing_placeholder.webp',
             },
           ]);
-          setSalePriceEndDate(new Date());
-          setCreatedAt(new Date());
+          setSalePriceEndDate(cstDateTimeClient());
+          setCreatedAt(cstDateTimeClient());
           revalidatePath('/admin/products');
           revalidatePath('/tienda');
 
@@ -485,7 +486,7 @@ const NewProductComponent = () => {
                 onChange={onChangeDate}
                 value={salePriceEndDate}
                 locale={'es-MX'}
-                minDate={new Date()}
+                minDate={cstDateTimeClient()}
               />
             </div>
           </div>

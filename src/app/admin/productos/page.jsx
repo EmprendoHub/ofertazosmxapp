@@ -1,7 +1,5 @@
 import React from 'react';
 import AllAdminProductsComponent from '@/components/admin/AllAdminProductsComponent';
-import Product from '@/backend/models/Product';
-import dbConnect from '@/lib/db';
 import ServerPagination from '@/components/pagination/ServerPagination';
 import { cookies } from 'next/headers';
 import { getCookiesName } from '@/backend/helpers';
@@ -44,10 +42,10 @@ const AdminProductsPage = async ({ searchParams }) => {
   nextAuthSessionToken = nextAuthSessionToken?.value;
   const cookie = `${cookieName}=${nextAuthSessionToken}`;
   const data = await getAllProducts(searchParams, cookie);
+  // pagination const
   let page = parseInt(searchParams.page, 10);
   page = !page || page < 1 ? 1 : page;
   const perPage = 5;
-  //const data = await getData(perPage, page, searchParams);
   const itemCount = data?.productsCount;
   const totalPages = Math.ceil(data.filteredProductsCount / perPage);
   const prevPage = page - 1 > 0 ? page - 1 : 1;

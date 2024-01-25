@@ -4,6 +4,7 @@ import User from '@/backend/models/User';
 import Affiliate from '@/backend/models/Affiliate';
 import Stripe from 'stripe';
 import { NextResponse } from 'next/server';
+import { cstDateTime } from '@/backend/helpers';
 
 export async function POST(req) {
   try {
@@ -36,7 +37,7 @@ export async function POST(req) {
       user: { _id: newUser._id },
       fullName: newUser.name,
       email: newUser.email,
-      dateOfBirth: new Date(),
+      dateOfBirth: cstDateTime(),
       address: {
         street: 'Calle 132',
         city: 'Mi Ciudad',
@@ -47,7 +48,7 @@ export async function POST(req) {
       contact: {
         phone: telephone,
       },
-      joinedAt: new Date(),
+      joinedAt: cstDateTime(),
       isActive: true,
     });
 

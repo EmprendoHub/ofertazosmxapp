@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { IoIosStar } from 'react-icons/io';
 import Image from 'next/image';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
-import { calculatePercentage } from '@/backend/helpers';
+import { calculatePercentage, cstDateTimeClient } from '@/backend/helpers';
 import DateTimePicker from 'react-datetime-picker';
 import 'react-datetime-picker/dist/DateTimePicker.css';
 import 'react-calendar/dist/Calendar.css';
@@ -28,7 +28,7 @@ const UpdatePostDetails = ({ post }) => {
   const [summary, setSummary] = useState(post?.summary);
   const [content, setContent] = useState(post?.content);
   const [category, setCategory] = useState(post?.category);
-  const [updatedAt, setUpdatedAt] = useState(new Date());
+  const [updatedAt, setUpdatedAt] = useState(cstDateTimeClient());
 
   const handleSubmit = async (e) => {
     e.preventDefault();
