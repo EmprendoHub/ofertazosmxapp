@@ -1,6 +1,5 @@
 'use client';
 import React, { useContext, useEffect, useState } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import { getOrderItemsQuantities, getTotalFromItems } from '@/backend/helpers';
@@ -12,7 +11,7 @@ const OneOrder = ({ id, currentCookies }) => {
   const { getOneOrder } = useContext(AuthContext);
   const [order, setOrder] = useState([]);
   const [address, setAddress] = useState([]);
-  const { userInfo } = useSelector((state) => state.compras);
+  const { userInfo, affiliateInfo } = useSelector((state) => state.compras);
 
   useEffect(() => {
     async function getOrder() {
@@ -36,6 +35,7 @@ const OneOrder = ({ id, currentCookies }) => {
         email: userInfo?.email,
         user: userInfo,
         shipping: address,
+        affiliateInfo: affiliateInfo,
       }),
     });
 

@@ -11,7 +11,8 @@ export const POST = async (request) => {
 
   try {
     const reqBody = await request.json();
-    const { order, items, email, user, shipping } = await reqBody;
+    const { order, items, email, user, shipping, affiliateInfo } =
+      await reqBody;
 
     const existingCustomers = await stripe.customers.list({
       email: user.email,
@@ -64,6 +65,7 @@ export const POST = async (request) => {
         layaway: true,
         payoff: true,
         order: order._id,
+        referralID: affiliateInfo,
       },
       shipping_options: [
         {
