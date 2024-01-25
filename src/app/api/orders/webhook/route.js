@@ -21,6 +21,8 @@ export async function POST(req, res) {
       signature,
       process.env.STRIPE_WEBHOOK_SECRET
     );
+
+    console.log('EVENT', event);
     const session = event.data.object;
 
     // credit card checkout
@@ -52,7 +54,6 @@ export async function POST(req, res) {
         currentOrder.orderStatus = 'Procesando';
         currentOrder.paymentInfo.status = 'Paid';
         if (session?.metadata?.referralID) {
-          console.log(totalOrderAmount * 0.1, 'totalOrderAmount');
           const referralLink = await ReferralLink.findOne({
             _id: session?.metadata?.referralID,
           });
@@ -62,9 +63,10 @@ export async function POST(req, res) {
           const timestamp = cstDateTime(); // Current timestamp
           //transfer amount to affiliate
           const transfer = await stripe.transfers.create({
-            amount: 300,
+            amount: totalOrderAmount * 0.1,
             currency: 'mxn',
             destination: affiliate?.stripe_id,
+            source_transaction: session?.latest_charge,
           });
           // Create a ReferralEvent object
           const newReferralEvent = await ReferralEvent.create({

@@ -56,6 +56,14 @@ export async function POST(req) {
     const account = await stripe.accounts.create({
       type: 'express',
       email: email,
+      settings: {
+        payouts: {
+          schedule: {
+            delay_days: 28,
+            interval: 'daily',
+          },
+        },
+      },
       metadata: {
         affiliateId: newAffiliate._id,
       },
