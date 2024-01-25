@@ -24,16 +24,28 @@ const uploadToBucket = async (folder, filename, file) => {
 };
 
 export const GET = async (req) => {
-  await dbConnect();
-
-  const _id = await req.url.split('?')[1];
+  const token = await req.headers.get('cookie');
+  if (!token) {
+    // Not Signed in
+    const notAuthorized = 'You are not authorized no no no';
+    return new Response(JSON.stringify(notAuthorized), {
+      status: 400,
+    });
+  }
 
   try {
+    await dbConnect();
+
+    const _id = await req.url.split('?')[1];
     const product = await Product?.findOne({ _id });
+    const trendingProducts = await Product.find({
+      category: product.category,
+    }).limit(4);
     const response = NextResponse.json({
       message: 'One Product fetched successfully',
       success: true,
       product,
+      trendingProducts,
     });
     return response;
   } catch (error) {

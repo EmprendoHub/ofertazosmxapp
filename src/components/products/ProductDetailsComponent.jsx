@@ -5,13 +5,13 @@ import { Bounce, toast } from 'react-toastify';
 import { motion } from 'framer-motion';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '@/redux/shoppingSlice';
-import { IoIosStar } from 'react-icons/io';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import { calculatePercentage } from '@/backend/helpers';
+import ProductCard from './ProductCard';
 
-const ProductDetailsComponent = ({ product }) => {
+const ProductDetailsComponent = ({ product, trendingProducts }) => {
   const router = useRouter();
   const imageRef = useRef(null);
   const dispatch = useDispatch();
@@ -124,10 +124,6 @@ const ProductDetailsComponent = ({ product }) => {
                     <span className="t font-bodyFont">{product?.category}</span>
                   </span>
                   <span>
-                    Marca:{' '}
-                    <span className="t font-bodyFont">{product?.brand}</span>
-                  </span>
-                  <span>
                     Genero:{' '}
                     <span className="t font-bodyFont">{product?.gender}</span>
                   </span>
@@ -190,6 +186,14 @@ const ProductDetailsComponent = ({ product }) => {
                 </motion.div>
               </div>
             </div>
+          </div>
+        </div>
+        <div className="px-8 maxsm:px-4 my-8 w-[80%]  mx-auto">
+          <p className="text-xl py-1 font-semibold">{'Productos destacados'}</p>
+          <div className="grid maxxsm:grid-cols-1 maxmd:grid-cols-2 grid-cols-4 gap-4 mt-2">
+            {trendingProducts?.map((product) => (
+              <ProductCard key={product._id} item={product} />
+            ))}
           </div>
         </div>
       </main>
