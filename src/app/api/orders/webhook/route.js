@@ -31,7 +31,13 @@ export async function POST(req, res) {
       event.type === 'checkout.session.async_payment_succeeded'
     ) {
       // get all the details from stripe checkout to create new order
+      const payIntentId = session?.payment_intent;
 
+      const paymentIntent = await stripe?.paymentIntents.retrieve({
+        id: payIntentId,
+      });
+
+      console.log('PAY INTENT', paymentIntent);
       const currentOrder = await Order.findOne({
         _id: session?.metadata?.order,
       });
@@ -66,7 +72,7 @@ export async function POST(req, res) {
             amount: totalOrderAmount * 0.1,
             currency: 'mxn',
             destination: affiliate?.stripe_id,
-            source_transaction: session?.latest_charge,
+            source_transaction: paymentIntent?.latest_charge,
           });
           // Create a ReferralEvent object
           const newReferralEvent = await ReferralEvent.create({
@@ -120,7 +126,7 @@ export async function POST(req, res) {
   } catch (error) {
     return NextResponse.json(
       {
-        error: 'Error al crear Pedido',
+        error: 'Error al Pagar el pedido con stripe Pedido',
       },
       { status: 500 }
     );
