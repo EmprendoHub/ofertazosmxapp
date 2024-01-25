@@ -52,12 +52,7 @@ export async function POST(req, res) {
         currentOrder.orderStatus = 'Procesando';
         currentOrder.paymentInfo.status = 'Paid';
         if (session?.metadata?.referralID) {
-          const transfer = await stripe.transfers.create({
-            amount: 300,
-            currency: 'mxn',
-            destination: session?.metadata?.referralID,
-          });
-          console.log(transfer, 'transfer');
+          console.log(totalOrderAmount * 0.1, 'totalOrderAmount');
           const referralLink = await ReferralLink.findOne({
             _id: session?.metadata?.referralID,
           });
@@ -65,6 +60,12 @@ export async function POST(req, res) {
           const affiliate = await Affiliate.findOne(referralLink.affiliateId);
           const affiliateId = await affiliate?._id.toString();
           const timestamp = cstDateTime(); // Current timestamp
+          //transfer amount to affiliate
+          const transfer = await stripe.transfers.create({
+            amount: 300,
+            currency: 'mxn',
+            destination: affiliate?.stripe_id,
+          });
           // Create a ReferralEvent object
           const newReferralEvent = await ReferralEvent.create({
             referralLinkId: { _id: session?.metadata?.referralID },
@@ -74,7 +75,6 @@ export async function POST(req, res) {
             userAgent: 'user-agent',
             timestamp: timestamp,
           });
-          console.log(newReferralEvent, 'newReferralEvent');
           await newReferralEvent.save();
           referralLink.clickCount = referralLink.clickCount + 1;
           await referralLink.save();
