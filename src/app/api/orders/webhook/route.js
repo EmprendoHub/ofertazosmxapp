@@ -33,9 +33,7 @@ export async function POST(req, res) {
       // get all the details from stripe checkout to create new order
       const payIntentId = session?.payment_intent;
 
-      const paymentIntent = await stripe?.paymentIntents.retrieve({
-        id: payIntentId,
-      });
+      const paymentIntent = await stripe?.paymentIntents.retrieve(payIntentId);
 
       console.log('PAY INTENT', paymentIntent);
       const currentOrder = await Order.findOne({
