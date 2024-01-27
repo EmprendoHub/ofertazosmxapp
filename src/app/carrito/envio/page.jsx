@@ -1,19 +1,27 @@
-'use client';
+import { options } from '@/app/api/auth/[...nextauth]/options';
 import Shipping from '@/components/cart/Shipping';
-import AuthContext from '@/context/AuthContext';
-import React, { useContext, useEffect, useState } from 'react';
+import { getServerSession } from 'next-auth';
 
-const ShippingPage = () => {
-  const { getAllAddresses } = useContext(AuthContext);
-  const [addresses, setAddresses] = useState([]);
+async function getAllAddresses() {
+  try {
+    const session = await getServerSession(options);
+    const stringSession = JSON.stringify(session);
+    const URL = `${process.env.NEXTAUTH_URL}/api/addresses`;
+    const res = await fetch(URL, {
+      headers: {
+        Session: stringSession,
+        'Content-Type': 'application/json; charset=utf-8',
+      },
+    });
+    const data = res.json();
+    return data;
+  } catch (error) {
+    console.log(error?.response?.data?.message);
+  }
+}
 
-  useEffect(() => {
-    async function getAddresses() {
-      const addressesGet = await getAllAddresses();
-      setAddresses(addressesGet);
-    }
-    getAddresses();
-  }, [getAllAddresses]);
+const ShippingPage = async () => {
+  const addresses = await getAllAddresses();
 
   return <Shipping addresses={addresses} />;
 };

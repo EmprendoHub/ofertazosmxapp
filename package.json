@@ -20,6 +20,7 @@
     "axios": "^1.6.2",
     "bcrypt": "^5.1.1",
     "countries-list": "^3.0.6",
+    "fetch-blob": "^4.0.0",
     "framer-motion": "^10.16.16",
     "gsap": "^3.12.4",
     "jsonwebtoken": "^9.0.2",
@@ -35,6 +36,7 @@
     "react-bootstrap": "^2.9.2",
     "react-datetime-picker": "^5.6.0",
     "react-dom": "^18",
+    "react-dropzone": "^14.2.3",
     "react-icons": "^4.12.0",
     "react-redux": "^9.0.4",
     "react-select": "^5.8.0",
@@ -47,7 +49,8 @@
     "stripe": "^14.9.0",
     "styled-components": "^6.1.6",
     "sweetalert2": "^11.10.3",
-    "use-debounce": "^10.0.0"
+    "use-debounce": "^10.0.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "autoprefixer": "^10.0.1",

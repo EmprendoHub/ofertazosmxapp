@@ -1,11 +1,31 @@
 'use client';
-import React, { useContext, useState } from 'react';
-import { countries } from 'countries-list';
-import AuthContext from '@/context/AuthContext';
-import { toast } from 'react-toastify';
-import { MdCancel } from 'react-icons/md';
+import { addAddress } from '@/app/_actions';
+import { useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
-const NewAddress = () => {
+const NewAddress = ({ searchParams }) => {
+  const cartUrl = searchParams?.callbackUrl;
+  const router = useRouter();
+  const formRef = useRef();
+  const [validationError, setValidationError] = useState(null);
+
+  async function action(data) {
+    const result = await addAddress(data);
+
+    if (result?.error) {
+      setValidationError(result.error);
+    } else {
+      setValidationError(null);
+      //reset the form
+      formRef.current.reset();
+      if (cartUrl) {
+        router.push(cartUrl);
+      } else {
+        router.push('/perfil/direcciones');
+      }
+    }
+  }
+
   const provincias = [
     { clave: 'AGS', nombre: 'AGUASCALIENTES' },
     { clave: 'BC', nombre: 'BAJA CALIFORNIA' },
@@ -40,74 +60,15 @@ const NewAddress = () => {
     { clave: 'YUC', nombre: 'YUCATAN' },
     { clave: 'ZAC', nombre: 'ZACATECAS' },
   ];
-  const { user, addNewAddress, clearErrors, error } = useContext(AuthContext);
-  const countriesList = Object.values(countries);
-  const [street, setStreet] = useState('');
-  const [city, setCity] = useState('');
-  const [province, setProvince] = useState('');
-  const [country, setCountry] = useState(countriesList[156].name);
-  const [zipcode, setZipcode] = useState('');
-  const [phone, setPhone] = useState('');
-
-  const submitHandler = (e) => {
-    const phoneRegex = /^(\+\d{2}\s?)?(\d{3}[-\s]?\d{3}[-\s]?\d{4})$/;
-    e.preventDefault();
-
-    if (street === '') {
-      toast.error(
-        'Por favor complete el nombre y numero de la calle para continuar.'
-      );
-      return;
-    }
-    if (city === '') {
-      toast.error('Por favor agregar ciudad para continuar.');
-      return;
-    }
-    if (province === '') {
-      toast.error('Por favor selecciona una provincia  para continuar.');
-      return;
-    }
-    if (zipcode === '') {
-      toast.error('Por favor agregar el código postal para continuar.');
-      return;
-    }
-    if (phone === '' || !phoneRegex.test(phone)) {
-      toast.error(
-        'Por favor agregar un teléfono válido para continuar. El formato correcto es: 331 235 4455'
-      );
-      return;
-    }
-    if (country === '') {
-      toast.error('Por favor agregue un país para continuar.');
-      return;
-    }
-
-    const newAddress = {
-      street,
-      city,
-      province,
-      zipcode,
-      country,
-      phone,
-      user,
-    };
-    addNewAddress(newAddress);
-  };
+  const countriesList = [
+    { clave: 'MEX', name: 'Mexico' },
+    { clave: 'USA', name: 'Estados Unidos' },
+  ];
 
   return (
     <>
       <div className=" relative mt-1 mb-20 p-4 md:p-7 mx-auto rounded bg-white shadow-lg ">
-        <form onSubmit={submitHandler} className="relative w-full">
-          {error && (
-            <div
-              onClick={clearErrors}
-              className="absolute drop-shadow-lg border border-slate-300 top-1/3 left-1/3 bg-white p-10 w-[350px] z-40"
-            >
-              <MdCancel className="absolute top-2 right-2 text-red-500 cursor-pointer" />
-              <h3 className="text-xl text-red-600 ">Error:</h3>
-              <p className="text-sm text-red-400">{error}</p>
-            </div>
-          )}
+        <form ref={formRef} action={action} className="relative w-full">
           <h2 className="mb-5 text-2xl font-semibold font-EB_Garamond">
             Agregar Nueva Dirección
           </h2>
@@ -118,9 +79,13 @@ const NewAddress = () => {
               className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
               type="text"
               placeholder="Ingresa tu dirección"
-              value={street}
-              onChange={(e) => setStreet(e.target.value)}
+              name="street"
             />
+            {validationError?.street && (
+              <p className="text-sm text-red-400">
+                {validationError.street._errors.join(', ')}
+              </p>
+            )}
           </div>
 
           <div className="grid md:grid-cols-2 gap-x-3">
@@ -130,17 +95,20 @@ const NewAddress = () => {
                 className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
                 type="text"
                 placeholder="Ingresa tu Ciudad"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
+                name="city"
               />
+              {validationError?.city && (
+                <p className="text-sm text-red-400">
+                  {validationError.city._errors.join(', ')}
+                </p>
+              )}
             </div>
 
             <div className="mb-4 maxmd:col-span-2">
               <label className="block mb-1"> Provincia </label>
               <select
                 className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
-                value={province}
-                onChange={(e) => setProvince(e.target.value)}
+                name="province"
               >
                 {provincias.map((province) => (
                   <option key={province.nombre} value={province.nombre}>
@@ -148,6 +116,11 @@ const NewAddress = () => {
                   </option>
                 ))}
               </select>
+              {validationError?.province && (
+                <p className="text-sm text-red-400">
+                  {validationError.province._errors.join(', ')}
+                </p>
+              )}
             </div>
           </div>
 
@@ -158,9 +131,13 @@ const NewAddress = () => {
                 className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
                 type="number"
                 placeholder="Ingresa tu código postal"
-                value={zipcode}
-                onChange={(e) => setZipcode(e.target.value)}
+                name="zip_code"
               />
+              {validationError?.zip_code && (
+                <p className="text-sm text-red-400">
+                  {validationError.zip_code._errors.join(', ')}
+                </p>
+              )}
             </div>
 
             <div className="mb-4 md:col-span-1">
@@ -169,20 +146,22 @@ const NewAddress = () => {
                 className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
                 type="tel"
                 placeholder="Ingresa tu teléfono"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                name="phone"
               />
               <p className="text-sm text-slate-500">331 235 4455</p>
+              {validationError?.phone && (
+                <p className="text-sm text-red-400">
+                  {validationError.phone._errors.join(', ')}
+                </p>
+              )}
             </div>
           </div>
 
           <div className="mb-4 md:col-span-2 ">
             <label className="block mb-1"> País </label>
             <select
-              disabled
               className=" appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full "
-              value={country}
-              onChange={(e) => setCountry(e.target.value)}
+              name="country"
             >
               {countriesList.map((country) => (
                 <option key={country.name} value={country.name}>
@@ -190,6 +169,11 @@ const NewAddress = () => {
                 </option>
               ))}
             </select>
+            {validationError?.country && (
+              <p className="text-sm text-red-400">
+                {validationError.country._errors.join(', ')}
+              </p>
+            )}
           </div>
 
           <button

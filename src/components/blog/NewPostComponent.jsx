@@ -1,23 +1,18 @@
 'use client';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Image from 'next/image';
-import AuthContext from '@/context/AuthContext';
-import { toast } from 'react-toastify';
-import { FaImage } from 'react-icons/fa';
+import { useDropzone } from 'react-dropzone';
+import { FaWindowClose, FaArrowUp } from 'react-icons/fa';
 import { cstDateTimeClient } from '@/backend/helpers';
+import { addPost } from '@/app/_actions';
+import { useRouter } from 'next/navigation';
 
 const NewPostComponent = () => {
-  const { createPost } = useContext(AuthContext);
-
-  const [inputImageFields, setInputImageFields] = useState([
-    {
-      i_file: '',
-      i_filePreview: '/images/shopout_clothing_placeholder.webp',
-    },
-  ]);
-
+  const router = useRouter();
+  const formRef = useRef();
+  const [files, setFiles] = useState([]);
+  const [rejected, setRejected] = useState([]);
   const available_categories = ['Moda', 'Estilo', 'Tendencias'];
-
   const [title, setTitle] = useState('');
   const [summary, setSummary] = useState('');
   const [content, setContent] = useState('');
@@ -25,124 +20,114 @@ const NewPostComponent = () => {
   const [createdAt, setCreatedAt] = useState(
     cstDateTimeClient().toLocaleString()
   );
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const [validationError, setValidationError] = useState(null);
 
-    if (title === '') {
-      toast.error(
-        'Por favor complete el nombre de la Publicación para continuar.'
-      );
-      return;
-    }
-    if (summary === '') {
-      toast.error(
-        'Por favor complete el resumen de la Publicación para continuar.'
-      );
-      return;
-    }
-    if (content === '') {
-      toast.error('Por favor agregue una content para continuar.');
-      return;
+  const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
+    if (acceptedFiles?.length) {
+      setFiles((previousFiles) => [
+        // If allowing multiple files
+        ...previousFiles,
+        ...acceptedFiles.map((file) =>
+          Object.assign(file, { preview: URL.createObjectURL(file) })
+        ),
+      ]);
     }
 
-    if (category === '') {
-      toast.error(
-        'Por favor agrega la categoría de la Publicación para continuar.'
-      );
-      return;
+    if (rejectedFiles?.length) {
+      setRejected((previousFiles) => [...previousFiles, ...rejectedFiles]);
     }
+  }, []);
 
-    if (inputImageFields > 0) {
-      inputImageFields.map((field) => {
-        if (field.i_file === '') {
-          toast.error('Por favor agrega imágenes al bono(s) para continuar.');
-          return;
-        }
-      });
-    } else {
-      if (inputImageFields[0].i_file === '') {
-        toast.error('Por favor agrega imágenes al bono(s) para continuar.');
-        return;
-      }
-    }
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    accept: {
+      'image/*': [],
+    },
+    maxSize: 1024 * 1000,
+    maxFiles: 3,
+    onDrop,
+  });
 
-    try {
-      const formData = new FormData();
-      formData.set('title', title);
-      formData.set('content', content);
-      formData.set('category', category);
-      formData.set('summary', summary);
-      // Convert arrays to JSON strings
-      const imagesJson = JSON.stringify(inputImageFields);
+  useEffect(() => {
+    // Revoke the data uris to avoid memory leaks
+    return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
+  }, [files]);
 
-      // Append JSON strings to FormData
-      formData.set('images', imagesJson);
-      formData.set('createdAt', createdAt);
-      try {
-        const res = await createPost(formData);
-        if (res.ok) {
-          toast.success('La Publicación se creo exitosamente');
-          setTitle('');
-          setSummary('');
-          setContent('');
-          setCategory('Moda');
-          setInputImageFields([
-            {
-              i_file: '',
-              i_filePreview: '/images/shopout_clothing_placeholder.webp',
-            },
-          ]);
-          setCreatedAt(cstDateTimeClient().toLocaleString());
-
-          return;
-        }
-      } catch (error) {
-        toast.error('Error creando Publicación. Por favor Intenta de nuevo.');
-      }
-    } catch (error) {
-      console.log(error);
-    }
+  const removeFile = (name) => {
+    setFiles((files) => files.filter((file) => file.name !== name));
   };
 
+  const removeAll = () => {
+    setFiles([]);
+    setRejected([]);
+  };
+
+  const removeRejected = (name) => {
+    setRejected((files) => files.filter(({ file }) => file.name !== name));
+  };
+
+  async function action() {
+    const file = files[0];
+    if (!file) {
+      const noFileError = { images: { _errors: ['Se requiere una imagen '] } };
+      setValidationError(noFileError);
+      return;
+    }
+    if (!title) {
+      const noTitleError = { title: { _errors: ['Se requiere un titulo '] } };
+      setValidationError(noTitleError);
+      return;
+    }
+    if (!content) {
+      const noContentError = {
+        content: { _errors: ['Se requiere contenido '] },
+      };
+      setValidationError(noContentError);
+      return;
+    }
+    if (!summary) {
+      const noSummaryError = {
+        summary: { _errors: ['Se requiere un resumen breve '] },
+      };
+      setValidationError(noSummaryError);
+      return;
+    }
+
+    const imageFormData = new FormData();
+    files.forEach((file) => {
+      imageFormData.append('images', file);
+    });
+    const endpoint = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/minio`;
+    const data = await fetch(endpoint, {
+      method: 'POST',
+      body: imageFormData,
+    }).then((res) => res.json());
+
+    let images = [];
+    await data.images.forEach((element) => {
+      images.push(element);
+    });
+
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('category', category);
+    formData.append('summary', summary);
+    formData.append('images', JSON.stringify(images));
+    formData.append('createdAt', createdAt);
+    // write to database using server actions
+
+    const result = await addPost(formData);
+    if (result?.error) {
+      setValidationError(result.error);
+    } else {
+      setValidationError(null);
+      //reset the form
+      formRef.current.reset();
+      router.push('/admin/blog');
+    }
+  }
   const handleCategoryChange = async (e) => {
     setCategory(e);
-  };
-
-  const handleAddImageField = () => {
-    setInputImageFields([
-      ...inputImageFields,
-      {
-        i_file: '',
-        i_filePreview: '/images/shopout_clothing_placeholder.webp',
-      },
-    ]);
-  };
-
-  const handleImageInputChange = (index, fieldName, event) => {
-    const newInputImageFields = [...inputImageFields];
-    if (fieldName === 'i_file') {
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (reader.readyState === 2) {
-          newInputImageFields[index]['i_filePreview'] = reader.result;
-          setInputImageFields(newInputImageFields); // Update state after setting filePreview
-        }
-      };
-      if (event.target.files?.[0]) {
-        reader.readAsDataURL(event.target.files[0]);
-        newInputImageFields[index][fieldName] = event.target.files[0];
-        newInputImageFields[index]['i_file'] = event.target.files[0].name;
-      }
-    } else {
-      newInputImageFields[index][fieldName] = event.target.value;
-      setInputImageFields(newInputImageFields); // Update state for other fields
-    }
-  };
-
-  const handleImageDeleteField = (index) => {
-    const newInputFields = [...inputImageFields];
-    newInputFields.splice(index, 1);
-    setInputImageFields(newInputFields);
   };
 
   return (
@@ -152,11 +137,8 @@ const NewPostComponent = () => {
           Crear Nueva Publicación
         </h1>
 
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-row flex-wrap items-start gap-5 justify-start "
-        >
-          <div className="gap-y-5 flex-col flex px-2 w-1/2 maxsm:w-full">
+        <form action={action} ref={formRef}>
+          <div className="gap-y-5 flex-col flex px-2 w-full">
             <div className="mb-4">
               <label className="block mb-1"> Titulo de la Publicación</label>
               <input
@@ -167,6 +149,11 @@ const NewPostComponent = () => {
                 onChange={(e) => setTitle(e.target.value)}
                 name="title"
               />
+              {validationError?.title && (
+                <p className="text-sm text-red-400">
+                  {validationError.title._errors.join(', ')}
+                </p>
+              )}
             </div>
             <div className="mb-4">
               <label className="block mb-1"> Contenido </label>
@@ -178,6 +165,11 @@ const NewPostComponent = () => {
                 onChange={(e) => setContent(e.target.value)}
                 name="content"
               ></textarea>
+              {validationError?.content && (
+                <p className="text-sm text-red-400">
+                  {validationError.content._errors.join(', ')}
+                </p>
+              )}
             </div>
             <div className="mb-4">
               <label className="block mb-1"> Resumen del Publicación</label>
@@ -189,6 +181,11 @@ const NewPostComponent = () => {
                 onChange={(e) => setSummary(e.target.value)}
                 name="summary"
               />
+              {validationError?.summary && (
+                <p className="text-sm text-red-400">
+                  {validationError.summary._errors.join(', ')}
+                </p>
+              )}
             </div>
           </div>
 
@@ -207,6 +204,11 @@ const NewPostComponent = () => {
                     </option>
                   ))}
                 </select>
+                {validationError?.category && (
+                  <p className="text-sm text-red-400">
+                    {validationError.category._errors.join(', ')}
+                  </p>
+                )}
                 <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
                   <svg
                     width="22"
@@ -221,61 +223,104 @@ const NewPostComponent = () => {
             </div>
           </div>
 
-          <div className=" gap-x-2 mt-5 w-full">
-            <button
-              type="button"
-              className=" bg-fuchsia-900 text-white rounded-md p-4 mb-5 flex flex-row items-center"
-              onClick={handleAddImageField}
-            >
-              Agregar Imagen <FaImage className="text-white ml-1" />
-            </button>
-            {inputImageFields.map((inputImageField, index) => (
-              <div
-                key={index}
-                className="mb-4 p-4 border-gray-200 border shadow-md"
-              >
-                <div className="flex flex-row items-center gap-4 mb-4">
-                  {index > 0 && (
-                    <button
-                      type="button"
-                      onClick={() => handleImageDeleteField(index)}
-                      className="text-red-500"
-                    >
-                      X
-                    </button>
-                  )}
+          <div {...getRootProps({})}>
+            <input {...getInputProps({ name: 'file' })} />
 
-                  <p className="font-bold flex flex-row items-center gap-1">
-                    Imagen <FaImage /> #{index + 1}
-                  </p>
-                </div>
-                <div className="">
-                  <div className="mb-4 px-5 maxsm:px-0">
-                    <div className="items-center justify-center">
-                      <div className="w-40 h-40 relative space-x-3 mt-1 ">
-                        <Image
-                          className="rounded-md object-cover"
-                          src={inputImageField.i_filePreview}
-                          fill={true}
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          alt="imagen de bono"
-                        />
-                      </div>
-                      <input
-                        className="form-control block w-40 overflow-hidden px-2 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none mt-6 cursor-pointer"
-                        type="file"
-                        id="i_file"
-                        name="i_file"
-                        onChange={(e) =>
-                          handleImageInputChange(index, 'i_file', e)
-                        }
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
+            <div className="flex flex-col items-center justify-center gap-4 min-h-44">
+              <FaArrowUp className="h-5 w-5 fill-current" />
+              {isDragActive ? (
+                <p>Suelta los archivos aquí...</p>
+              ) : (
+                <p>
+                  Arrastre y suelte archivos aquí, o haga clic para seleccionar
+                  archivos
+                </p>
+              )}
+              {validationError?.images && (
+                <p className="text-sm text-red-400">
+                  {validationError.images._errors.join(', ')}
+                </p>
+              )}
+            </div>
           </div>
+
+          {/* Preview */}
+          <section className="mt-10">
+            <div className="flex gap-4">
+              <h2 className="title text-3xl font-semibold">Vista previa</h2>
+              <button
+                type="button"
+                onClick={removeAll}
+                className="mt-1 rounded-md border border-rose-400 px-3 text-[12px] font-bold uppercase tracking-wider text-stone-500 transition-colors hover:bg-rose-400 hover:text-white"
+              >
+                Eliminar todos los archivos
+              </button>
+            </div>
+            {/* Accepted files */}
+            <h3 className="title mt-10 border-b pb-3 text-lg font-semibold text-stone-600">
+              Archivos aceptados
+            </h3>
+            <ul className="mt-6 grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+              {files.map((file) => (
+                <li
+                  key={file.name}
+                  className="relative h-32 rounded-md shadow-lg"
+                >
+                  <Image
+                    src={file.preview}
+                    alt={file.name}
+                    width={100}
+                    height={100}
+                    onLoad={() => {
+                      URL.revokeObjectURL(file.preview);
+                    }}
+                    className="h-full w-full rounded-md object-contain"
+                  />
+                  <button
+                    type="button"
+                    className="absolute -right-3 -top-3 flex h-7 w-7 items-center justify-center rounded-full border border-rose-400 bg-rose-400 transition-colors hover:bg-white"
+                    onClick={() => removeFile(file.name)}
+                  >
+                    <FaWindowClose className="h-5 w-5 fill-white transition-colors hover:fill-rose-400" />
+                  </button>
+                  <p className="mt-2 text-[12px] font-medium text-stone-500">
+                    {file.name}
+                  </p>
+                </li>
+              ))}
+            </ul>
+
+            {/* Rejected Files */}
+            <h3 className="title mt-24 border-b pb-3 text-lg font-semibold text-stone-600">
+              Archivos rechazados
+            </h3>
+            <ul className="mt-6 flex flex-col">
+              {rejected.map(({ file, errors }) => (
+                <li
+                  key={file.name}
+                  className="flex items-start justify-between"
+                >
+                  <div>
+                    <p className="mt-2 text-sm font-medium text-stone-500">
+                      {file.name}
+                    </p>
+                    <ul className="text-[12px] text-red-400">
+                      {errors.map((error) => (
+                        <li key={error.code}>{error.message}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <button
+                    type="button"
+                    className="mt-1 rounded-md border border-rose-400 px-3 py-1 text-[12px] font-bold uppercase tracking-wider text-stone-500 transition-colors hover:bg-rose-400 hover:text-white"
+                    onClick={() => removeRejected(file.name)}
+                  >
+                    remove
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </section>
 
           <button
             type="submit"

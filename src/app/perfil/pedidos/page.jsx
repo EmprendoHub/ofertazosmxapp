@@ -1,7 +1,8 @@
-import { options } from '@/app/api/auth/[...nextauth]/options';
 import ServerPagination from '@/components/pagination/ServerPagination';
 import UserOrders from '@/components/user/profile/UserOrders';
+import { options } from '@/app/api/auth/[...nextauth]/options';
 import { getServerSession } from 'next-auth';
+
 import { revalidatePath } from 'next/cache';
 import React from 'react';
 

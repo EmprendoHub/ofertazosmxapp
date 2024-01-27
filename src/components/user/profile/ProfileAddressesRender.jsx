@@ -1,25 +1,11 @@
 'use client';
-import React, { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { AiTwotoneHome } from 'react-icons/ai';
-import AuthContext from '@/context/AuthContext';
 import Swal from 'sweetalert2';
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
-import { useRouter } from 'next/navigation';
+import { deleteAddress } from '@/app/_actions';
 
-const ProfileAddressesRender = () => {
-  const { deleteAddress, getAllAddresses } = useContext(AuthContext);
-  const [addresses, setAddresses] = useState([]);
-  const router = useRouter();
-
-  useEffect(() => {
-    async function getAddresses() {
-      const addressesGet = await getAllAddresses();
-      setAddresses(addressesGet);
-    }
-    getAddresses();
-  }, [getAllAddresses]);
-
+const ProfileAddressesRender = ({ addresses }) => {
   const deleteHandler = (address_id) => {
     Swal.fire({
       title: 'Estas seguro(a)?',

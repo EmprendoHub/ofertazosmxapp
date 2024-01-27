@@ -36,7 +36,7 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
                       : '/images/vw_GTI_2024_2.jpg'
                   }
                   alt="product image"
-                  className="rounded-lg object-cover ease-in-out duration-500"
+                  className="rounded-lg object-cover ease-in-out duration-500 h-[500px]"
                   width={800}
                   height={800}
                 />
