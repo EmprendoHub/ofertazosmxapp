@@ -15,7 +15,7 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
   const router = useRouter();
   const imageRef = useRef(null);
   const dispatch = useDispatch();
-
+  console.log(product?.colors);
   return (
     <div className="container-class maxsm:py-8">
       <main className="bg-gray-100 flex min-h-screen flex-col items-center justify-between">
@@ -127,21 +127,41 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
                     Genero:{' '}
                     <span className="t font-bodyFont">{product?.gender}</span>
                   </span>
-                  <span>
-                    Colores:{' '}
-                    {product?.colors.map((color, index) => (
-                      <span key={index} className="t font-bodyFont">
-                        {color?.value},
-                      </span>
-                    ))}
-                  </span>
+                  {product?.colors.length > 0 ? (
+                    <span>
+                      Colores:{' '}
+                      <select
+                        className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                        name="color"
+                      >
+                        {product?.colors.map((color, index) => (
+                          <option key={color?.value} value={color?.value}>
+                            {color?.value}
+                          </option>
+                        ))}
+                      </select>
+                    </span>
+                  ) : (
+                    <div className="grid maxxsm:grid-cols-1 maxmd:grid-cols-2 grid-cols-4 gap-4 mt-2">
+                      {product?.colors?.map((color, index) => (
+                        <p key={index} className="text-black">
+                          {color.value}
+                        </p>
+                      ))}
+                    </div>
+                  )}
                   <span>
                     Tallas:{' '}
-                    {product?.sizes.map((size, index) => (
-                      <span key={index} className="t font-bodyFont">
-                        {size?.value},
-                      </span>
-                    ))}
+                    <select
+                      className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                      name="i_color-${index + 1}"
+                    >
+                      {product?.sizes.map((size, index) => (
+                        <option key={index} value={size.value}>
+                          {size.value}
+                        </option>
+                      ))}
+                    </select>
                   </span>
                 </motion.div>
                 <motion.div

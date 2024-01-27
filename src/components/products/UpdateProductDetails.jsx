@@ -299,7 +299,7 @@ const UpdateProductDetails = ({ product }) => {
                 initial={{ x: -50, opacity: 0 }}
                 whileInView={{ x: 0, opacity: 1 }}
                 transition={{ duration: 0.7 }}
-                className="p-2  max-h-[300px] relative overflow-hidden"
+                className="p-2 relative"
               >
                 <Image
                   ref={imageRef}
@@ -309,7 +309,7 @@ const UpdateProductDetails = ({ product }) => {
                       : '/images/shopout_clothing_placeholder.webp'
                   }
                   alt="product image"
-                  className="rounded-lg object-cover ease-in-out duration-500"
+                  className="rounded-lg object-cover h-[500px] ease-in-out duration-500"
                   width={800}
                   height={800}
                 />

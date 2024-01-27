@@ -1,4 +1,4 @@
-import TabOne from '@/components/bulkmailer/bulkEmailsPage/tabOne';
+import TabOne from '@/components/bulkmailer/bulkEmailsPage/TabOne';
 import Template from '@/components/bulkmailer/template';
 import React from 'react';
 

@@ -1,8 +1,5 @@
 import OneOrder from '@/components/user/profile/OneOrder';
-import axios from 'axios';
 import React from 'react';
-import { cookies } from 'next/headers';
-import { getSessionCookiesName } from '@/backend/helpers';
 import { getServerSession } from 'next-auth';
 import { options } from '@/app/api/auth/[...nextauth]/options';
 

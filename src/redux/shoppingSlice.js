@@ -6,6 +6,7 @@ const initialState = {
   shippingInfo: null,
   orderData: [],
   affiliateInfo: null,
+  emailListData: [],
 };
 
 export const shoppingSlice = createSlice({
@@ -70,6 +71,28 @@ export const shoppingSlice = createSlice({
     resetOrder: (state) => {
       state.orderData = {};
     },
+    saveEmailReceiver: (state, action) => {
+      const existingEmail = state.emailListData.find(
+        (item) => item.id === action.payload.id
+      );
+      if (existingEmail) {
+        const clientIdToRemove = action.payload.id;
+        state.emailListData = state.emailListData.filter(
+          (item) => item.id !== clientIdToRemove
+        );
+      } else {
+        state.emailListData.push(action.payload);
+      }
+    },
+    removeEmailReceiver: (state, action) => {
+      const clientIdToRemove = action.payload;
+      state.emailListData = state.emailListData.filter(
+        (item) => item.id !== clientIdToRemove
+      );
+    },
+    resetEmailReceiver: (state) => {
+      state.emailListData = [];
+    },
   },
 });
 
@@ -86,6 +109,9 @@ export const {
   saveOrder,
   repopulateCart,
   addShippingInfo,
+  saveEmailReceiver,
+  removeEmailReceiver,
+  resetEmailReceiver,
 } = shoppingSlice.actions;
 
 export default shoppingSlice.reducer;

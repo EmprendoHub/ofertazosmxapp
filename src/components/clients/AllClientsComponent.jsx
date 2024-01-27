@@ -1,12 +1,15 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { FaPencilAlt, FaTrash, FaUserCircle } from 'react-icons/fa';
 import Swal from 'sweetalert2';
-import AdminPagination from '../pagination/AdminPagination';
 import AdminClientSearch from '../layout/AdminClientSearch';
+import { useDispatch, useSelector } from 'react-redux';
+import { saveEmailReceiver } from '@/redux/shoppingSlice';
 
 const AllClientsComponent = ({ clients, filteredClientsCount }) => {
+  const dispatch = useDispatch();
+  const { emailListData } = useSelector((state) => state.compras);
   const deleteHandler = (product_id) => {
     Swal.fire({
       title: 'Estas seguro(a)?',
@@ -28,6 +31,16 @@ const AllClientsComponent = ({ clients, filteredClientsCount }) => {
       }
     });
   };
+  console.log(emailListData, 'emails');
+  const handleCheckBox = (client) => {
+    // If the client with the same ID doesn't exist, add it to the list
+    const receiver = {
+      id: client?._id,
+      email: client?.email,
+      name: client?.name,
+    };
+    dispatch(saveEmailReceiver(receiver));
+  };
 
   return (
     <>
@@ -43,6 +56,7 @@ const AllClientsComponent = ({ clients, filteredClientsCount }) => {
         <table className="w-full text-sm  text-left">
           <thead className="text-l text-gray-700 uppercase">
             <tr>
+              <th></th>
               <th scope="col" className="px-6 maxsm:px-0 py-3 maxmd:hidden">
                 Id
               </th>
@@ -63,6 +77,13 @@ const AllClientsComponent = ({ clients, filteredClientsCount }) => {
           <tbody>
             {clients?.map((client, index) => (
               <tr className="bg-white" key={index}>
+                <td>
+                  <input
+                    type="checkbox"
+                    id={client._id}
+                    onChange={() => handleCheckBox(client)}
+                  />
+                </td>
                 <td className="px-6 maxsm:px-2 py-2 maxmd:hidden">
                   <Link
                     key={index}
@@ -77,8 +98,8 @@ const AllClientsComponent = ({ clients, filteredClientsCount }) => {
                 <td className={`px-6 maxsm:px-0 py-2 font-bold `}>
                   {client.name}
                 </td>
-                <td className="px-1 py-2 ">{client.email}</td>
-                <td className="px-1 py-2 ">
+                <td className="px-1 py-2">{client.email}</td>
+                <td className="px-1 py-2  w-24 flex flex-row">
                   <div>
                     <Link
                       href={`/admin/asociados/cuenta/${client._id}`}
