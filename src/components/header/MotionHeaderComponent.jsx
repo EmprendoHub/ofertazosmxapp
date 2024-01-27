@@ -13,7 +13,7 @@ const MotionHeaderComponent = () => {
 
   useMotionValueEvent(scrollY, 'change', (latest) => {
     const previous = scrollY.getPrevious();
-    if (latest > previous && latest > 300) {
+    if (latest > previous && latest > 150) {
       setHidden(false);
     } else {
       setHidden(true);
@@ -30,7 +30,6 @@ const MotionHeaderComponent = () => {
       } flex flex-row justify-between header-class from bg-gradient-to-tr from-gray-100 to-gray-100 text-black text-xl sticky top-0 z-[50]  w-full mx-auto py-3  border-b shadow-lg px-24 maxmd:px-2`}
     >
       <WhiteLogoComponent className={'ml-5 mt-4 w-[200px] sm:w-[120px]'} />
-
       <MobileMenuComponent />
     </motion.div>
   );

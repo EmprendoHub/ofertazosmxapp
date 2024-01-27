@@ -15,7 +15,7 @@ const ServerPagination = ({
       {isPageOutOfRange ? (
         <div>No mas paginas...</div>
       ) : (
-        <div className="flex justify-center items-center mt-16">
+        <div className="flex justify-center items-center mt-16  maxsm:mt-5">
           <div className="flex border-[1px] gap-4 rounded-[10px] border-light-green p-4">
             {page === 1 ? (
               <div
