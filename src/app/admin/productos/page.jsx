@@ -52,7 +52,7 @@ const AdminProductsPage = async ({ searchParams }) => {
   const nextPage = page + 1;
   const isPageOutOfRange = page > totalPages;
   const pageNumbers = [];
-  const offsetNumber = 3;
+  const offsetNumber = 1;
   const search =
     typeof searchParams.search === 'string' ? searchParams.search : undefined;
   for (let i = page - offsetNumber; i <= page + offsetNumber; i++) {

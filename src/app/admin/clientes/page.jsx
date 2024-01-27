@@ -43,7 +43,7 @@ const ClientsPage = async ({ searchParams }) => {
   const nextPage = page + 1;
   const isPageOutOfRange = page > totalPages;
   const pageNumbers = [];
-  const offsetNumber = 3;
+  const offsetNumber = 1;
   for (let i = page - offsetNumber; i <= page + offsetNumber; i++) {
     if (i >= 1 && i <= totalPages) {
       pageNumbers.push(i);
