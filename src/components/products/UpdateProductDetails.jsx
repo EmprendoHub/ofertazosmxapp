@@ -668,7 +668,7 @@ const UpdateProductDetails = ({ product }) => {
               >
                 Agregar Imagen <FaImage className="text-white ml-1" />
               </button>
-              <div className="flex flex-row items-center gap-x-2 mt-5 ">
+              <div className="flex flex-row maxsm:flex-col items-center gap-x-2 mt-5 ">
                 {inputImageFields.map((inputImageField, index) => (
                   <div
                     key={index}
