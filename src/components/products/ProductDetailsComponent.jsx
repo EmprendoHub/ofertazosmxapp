@@ -36,7 +36,7 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
                       : '/images/vw_GTI_2024_2.jpg'
                   }
                   alt="product image"
-                  className="rounded-lg object-cover ease-in-out duration-500 h-[500px]"
+                  className="rounded-lg object-cover ease-in-out duration-500 h-[700px] w-full"
                   width={800}
                   height={800}
                 />
@@ -102,7 +102,7 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
                   initial={{ y: 50, opacity: 0 }}
                   whileInView={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.6 }}
-                  className=" font-bodyFont description-class"
+                  className="text-slate-600 description-class tracking-wider"
                 >
                   {product?.description ? product?.description : ''}
                 </motion.div>
@@ -112,21 +112,6 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
                   transition={{ duration: 0.7 }}
                   className="text-sm text-lightText flex flex-col"
                 >
-                  <span>
-                    SKU: <span className=" font-bodyFont">{product?._id}</span>
-                  </span>
-                  <span>
-                    Existencias:{' '}
-                    <span className=" font-bodyFont">{product?.stock}</span>
-                  </span>
-                  <span>
-                    Categoría:{' '}
-                    <span className="t font-bodyFont">{product?.category}</span>
-                  </span>
-                  <span>
-                    Genero:{' '}
-                    <span className="t font-bodyFont">{product?.gender}</span>
-                  </span>
                   {product?.colors.length > 0 ? (
                     <span>
                       Colores:{' '}
@@ -150,7 +135,7 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
                       ))}
                     </div>
                   )}
-                  <span>
+                  <span className="w-80 mt-5">
                     Tallas:{' '}
                     <select
                       className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
@@ -179,7 +164,7 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
                     <motion.button
                       whileHover={{ scale: 1.07 }}
                       whileTap={{ scale: 0.9 }}
-                      className="bg-gold-gradient border border-black drop-shadow-md flex flex-row items-center justify-between px-4 py-2 text-sm gap-x-4 tracking-wide rounded-full text-black hover:bg-darkText ease-in-out  duration-500"
+                      className="bg-gold-gradient border border-black drop-shadow-md flex flex-row items-center justify-between px-6 py-3 text-sm gap-x-4 tracking-wide rounded-sm  bg-black text-white ease-in-out  duration-300 w-80 uppercase tracking-wider"
                       onClick={() =>
                         dispatch(addToCart(product)) &&
                         toast.success(
@@ -204,12 +189,38 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
                     </motion.button>
                   )}
                 </motion.div>
+                <div className="flex flex-col">
+                  <span>
+                    SKU:{' '}
+                    <span className=" font-bodyFont">
+                      <b>{product?._id}</b>
+                    </span>
+                  </span>
+                  <span>
+                    Existencias:{' '}
+                    <span className=" font-bodyFont">
+                      <b>{product?.stock}</b>
+                    </span>
+                  </span>
+                  <span>
+                    Categoría:{' '}
+                    <span className="t font-bodyFont">
+                      <b>{product?.category}</b>
+                    </span>
+                  </span>
+                  <span>
+                    Genero:{' '}
+                    <span className="t font-bodyFont">{product?.gender}</span>
+                  </span>
+                </div>
               </div>
             </div>
           </div>
         </div>
         <div className="px-8 maxsm:px-4 my-8 w-[80%]  mx-auto">
-          <p className="text-xl py-1 font-semibold">{'Productos destacados'}</p>
+          <p className="text-4xl font-EB_Garamond py-1 font-semibold">
+            {'Productos destacados'}
+          </p>
           <div className="grid maxxsm:grid-cols-1 maxmd:grid-cols-2 grid-cols-4 gap-4 mt-2">
             {trendingProducts?.map((product) => (
               <ProductCard key={product._id} item={product} />

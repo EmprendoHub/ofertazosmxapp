@@ -8,11 +8,11 @@ const Profile = () => {
   const { user } = useContext(AuthContext);
   return (
     <>
-      <figure className="flex items-start sm:items-center text-black">
-        <div className="relative">
+      <figure className="flex maxsm:flex-col items-start sm:items-center text-black">
+        <div className="relative flex ">
           {user?.image ? (
             <Image
-              className="w-16 h-16 rounded-full mr-4"
+              className="w-16 h-16 maxsm:w-10 maxsm:h-10  rounded-full mr-4"
               src={user?.image ? user?.image : '/next.svg'}
               alt={user?.name ? user?.name : 'avatar'}
               width={50}
@@ -25,19 +25,24 @@ const Profile = () => {
           )}
         </div>
         <figcaption>
-          <h5 className="font-semibold text-lg">
-            {user?.name}
-            <span className="text-red-400 text-sm pl-2">( {user?.role} )</span>
+          <h5 className="font-semibold text-lg flex items-center maxsm:text-base">
+            <span>{user?.name.substring(0, 13)}...</span>
+            <span className="text-red-400 text-sm maxsm:text-xs pl-2">
+              ( {user?.role} )
+            </span>
           </h5>
-          <p>
-            <b>Email:</b> {user?.email}
+          <p className="flex items-center maxsm:text-sm">
+            {' '}
+            <b className="pr-1">Email: </b> <span>{user?.email}</span>
           </p>
-          <p>
-            <b>Se Unió el: </b>
-            {user?.createdAt &&
-              `${formatDate(
-                user?.createdAt.substring(0, 24)
-              )} a las ${formatTime(user?.createdAt.substring(0, 24))} CST`}
+          <p className="flex items-center maxsm:text-sm">
+            <b className="pr-1">Fecha: </b>
+            <span>
+              {user?.createdAt &&
+                ` ${formatDate(
+                  user?.createdAt.substring(0, 24)
+                )} a las ${formatTime(user?.createdAt.substring(0, 24))}`}
+            </span>
           </p>
         </figcaption>
       </figure>

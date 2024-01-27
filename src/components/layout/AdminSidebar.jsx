@@ -25,7 +25,7 @@ const AdminSidebar = () => {
   }
 
   return (
-    <aside className=" w-1/5 maxmd:w-full px-4 maxsm:px-2 py-8 flex flex-col maxmd:flex-row maxmd:justify-between maxmd:items-center items-start justify-start">
+    <aside className=" w-1/5 maxmd:w-full px-4 maxsm:px-2 py-8 maxsm:py-2 flex flex-col  maxmd:justify-between maxmd:items-center items-start justify-start">
       <ul className="sidebar flex flex-col maxmd:flex-row gap-x-2 ">
         <Link
           href="/admin"
@@ -88,7 +88,7 @@ const AdminSidebar = () => {
           </li>
         </Link>
       </ul>
-      <hr className="my-4 maxsm:px-1" />
+      <hr className="my-4 maxsm:px-1 maxsm:my-0" />
       <ul className="sidebar flex flex-col maxmd:flex-row gap-x-2">
         <Link
           href="/admin/clientes"

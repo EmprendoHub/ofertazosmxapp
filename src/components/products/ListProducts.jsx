@@ -2,7 +2,6 @@
 import React, { useEffect } from 'react';
 import ProductCard from './ProductCard';
 import MobileFilterComponet from './MobileFilterComponet';
-import AdminPagination from '../pagination/AdminPagination';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
@@ -24,7 +23,7 @@ const ListProducts = ({
   }, [session?.user?.role]);
 
   return (
-    <section className="py-12 mx-auto px-20 maxmd:px-2 mb-40 flex flex-col justify-center items-center">
+    <section className="py-12 mx-auto px-20 maxmd:px-2  flex flex-col justify-center items-center">
       <MobileFilterComponet
         allBrands={allBrands}
         allCategories={allCategories}

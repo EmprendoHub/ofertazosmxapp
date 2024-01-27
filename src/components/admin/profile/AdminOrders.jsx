@@ -1,41 +1,25 @@
-'use client';
-import React, { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { FaPencilAlt } from 'react-icons/fa';
 import { formatDate, formatTime } from '@/backend/helpers';
 import { getTotalFromItems } from '@/backend/helpers';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import AdminOrderSearch from '@/components/layout/AdminOrderSearch';
-import AuthContext from '@/context/AuthContext';
-import AdminPagination from '@/components/pagination/AdminPagination';
 
 const AdminOrders = ({ orders, filteredOrdersCount }) => {
-  // const { getAllOrders } = useContext(AuthContext);
-  // const [orders, setOrders] = useState([]);
-
-  // useEffect(() => {
-  //   async function getOrders() {
-  //     const ordersData = await getAllOrders(searchParams, currentCookies);
-  //     setOrders(ordersData?.orders.orders);
-  //     setFilteredOrdersCount(ordersData?.filteredOrdersCount);
-  //   }
-  //   getOrders();
-  // }, [getAllOrders, searchParams, currentCookies]);
-
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <div className=" flex flex-row maxsm:flex-col maxsm:items-start items-center justify-between">
         {' '}
-        <h1 className="text-3xl my-5 ml-4 font-bold">
+        <h1 className="text-3xl maxsm:text-xl my-5 maxsm:my-2 ml-4 font-bold font-EB_Garamond">
           {`${filteredOrdersCount} Pedidos `}
         </h1>
         <AdminOrderSearch />
       </div>
-      <table className="w-full text-sm text-left">
-        <thead className="text-l text-gray-700 uppercase">
+      <table className="w-full text-sm maxsm:xs text-left">
+        <thead className=" text-gray-700 uppercase">
           <tr>
             <th scope="col" className="px-6 maxsm:px-0 py-3">
-              Pedido
+              No.
             </th>
             <th scope="col" className="px-6 py-3 maxmd:hidden">
               Total
@@ -81,7 +65,7 @@ const AdminOrders = ({ orders, filteredOrdersCount }) => {
                     : 'text-slate-600'
                 }`}
               >
-                {order.orderStatus}
+                {order.orderStatus.substring(0, 6)}...
               </td>
               <td className="px-6 py-2 maxsm:hidden">
                 {order?.createdAt &&

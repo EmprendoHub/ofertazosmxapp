@@ -1,6 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import { FaSearch } from 'react-icons/fa';
 
 const AdminOrderSearch = () => {
   const [keyword, setKeyword] = useState('');
@@ -17,10 +18,10 @@ const AdminOrderSearch = () => {
   return (
     <form
       onSubmit={submitHandler}
-      className="flex flex-nowrap items-center w-full order-last maxmd:order-none my-5 maxmd:mt-0 maxmd:w-2/4 lg:w-2/4"
+      className="flex flex-row items-center w-full order-last maxmd:order-none my-5 maxmd:mt-0 "
     >
       <input
-        className="flex-grow appearance-none border border-gray-200 bg-gray-100 rounded-md mr-2 py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400"
+        className="flex-grow appearance-none border border-gray-200 bg-gray-100 rounded-md mr-2 py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-40"
         type="text"
         placeholder="búsqueda"
         value={keyword}
@@ -28,10 +29,10 @@ const AdminOrderSearch = () => {
       />
       <button
         type="button"
-        className="px-4 py-2 inline-block text-white border border-transparent  rounded-md bg-black"
+        className="px-4 py-2 text-white border border-transparent rounded-md bg-black flex-row flex items-center gap-x-3"
         onClick={submitHandler}
       >
-        Buscar
+        <span className="maxsm:hidden"> Buscar</span> <FaSearch />
       </button>
     </form>
   );

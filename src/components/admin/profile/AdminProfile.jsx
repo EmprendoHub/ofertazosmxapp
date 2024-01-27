@@ -9,10 +9,10 @@ const AdminProfile = () => {
 
   return (
     <>
-      <figure className="flex items-start sm:items-center text-black">
+      <figure className="flex  items-start sm:items-center text-black">
         <div className="relative">
           <Image
-            className="w-16 h-16 rounded-full mr-4"
+            className="w-16 h-16 maxsm:w-10 maxsm:h-10 rounded-full mr-4"
             src={user?.image ? user?.image : '/next.svg'}
             alt={user?.name ? user?.name : 'avatar'}
             width={50}
@@ -20,7 +20,7 @@ const AdminProfile = () => {
           />
         </div>
         <figcaption>
-          <h5 className="font-semibold text-lg">
+          <h5 className="font-semibold text-lg maxsm:text-base">
             {user?.name}
             <span className="text-red-400 text-sm pl-2">( {user?.role} )</span>
           </h5>

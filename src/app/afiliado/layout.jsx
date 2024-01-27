@@ -9,7 +9,7 @@ export default function UserLayout({ children }) {
           <h1 className="text-bold text-2xl text-black">Panel de Control</h1>
         </div>
       </section>
-      <section className="py-10  bg-slate-100 text-black">
+      <section className="py-10  maxsm:py-2  bg-slate-100 text-black">
         <div className=" mx-auto px-4 maxsm:px-1">
           <div className="flex flex-row maxmd:flex-col ">
             <AffiliateSidebar />
