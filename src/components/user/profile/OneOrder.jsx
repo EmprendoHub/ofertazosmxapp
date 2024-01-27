@@ -1,40 +1,29 @@
 'use client';
-import React, { useContext, useEffect, useState } from 'react';
 import Image from 'next/image';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import { getOrderItemsQuantities, getTotalFromItems } from '@/backend/helpers';
 import { loadStripe } from '@stripe/stripe-js';
 import { useSelector } from 'react-redux';
-import AuthContext from '@/context/AuthContext';
 
-const OneOrder = ({ id, currentCookies }) => {
-  const { getOneOrder } = useContext(AuthContext);
-  const [order, setOrder] = useState([]);
-  const [address, setAddress] = useState([]);
-  const { userInfo, affiliateInfo } = useSelector((state) => state.compras);
-
-  useEffect(() => {
-    async function getOrder() {
-      const orderData = await getOneOrder(id, currentCookies);
-      setOrder(orderData?.order);
-      setAddress(orderData?.deliveryAddress);
-    }
-    getOrder();
-  }, [getOneOrder, currentCookies]);
-
+const OneOrder = ({ order, session }) => {
   const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE__KEY);
+  const { affiliateInfo } = useSelector((state) => state.compras);
+
   const handleCheckout = async () => {
     const stripe = await stripePromise;
-
+    const stringSession = JSON.stringify(session);
     const response = await fetch(`/api/layaway`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        Session: stringSession,
+        'Content-Type': 'application/json; charset=utf-8',
+      },
       body: JSON.stringify({
         order: order,
         items: order?.orderItems,
-        email: userInfo?.email,
-        user: userInfo,
-        shipping: address,
+        email: session?.user?.email,
+        user: session?.user,
+        shipping: order?.deliveryAddress,
         affiliateInfo: affiliateInfo,
       }),
     });
@@ -82,7 +71,7 @@ const OneOrder = ({ id, currentCookies }) => {
           </h2>
           <h2
             className={`text-3xl mb-8 ml-4 font-bold uppercase ${
-              order?.orderStatus && order?.orderStatus === 'Apartado'
+              order && order?.orderStatus === 'Apartado'
                 ? 'text-amber-700'
                 : order.orderStatus === 'En Camino'
                 ? 'text-blue-700'
@@ -117,11 +106,11 @@ const OneOrder = ({ id, currentCookies }) => {
           </thead>
           <tbody>
             <tr className="bg-white">
-              <td className="px-6 py-2">{address?.street}</td>
-              <td className="px-6 py-2">{address?.city}</td>
-              <td className="px-6 py-2">{address?.province}</td>
-              <td className="px-6 py-2">{address?.zip_code}</td>
-              <td className="px-6 py-2">{address?.phone}</td>
+              <td className="px-6 py-2">{order?.deliveryAddress?.street}</td>
+              <td className="px-6 py-2">{order?.deliveryAddress?.city}</td>
+              <td className="px-6 py-2">{order?.deliveryAddress?.province}</td>
+              <td className="px-6 py-2">{order?.deliveryAddress?.zip_code}</td>
+              <td className="px-6 py-2">{order?.deliveryAddress?.phone}</td>
             </tr>
           </tbody>
         </table>
