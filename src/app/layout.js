@@ -18,7 +18,7 @@ export default async function RootLayout({ children }) {
   const session = await getServerSession(options);
   return (
     <html lang="en">
-      <body className={`overflow-x-hidden`}>
+      <body className={`overflow-x-hidden max-w-full`}>
         <CustomSessionProvider>
           <HeaderComponent />
           {children}
