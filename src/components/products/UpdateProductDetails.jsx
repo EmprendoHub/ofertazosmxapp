@@ -290,9 +290,9 @@ const UpdateProductDetails = ({ product }) => {
   };
 
   return (
-    <div className="container-class maxsm:py-8">
+    <div className="container-class maxsm:pb-8">
       <main className="bg-gray-100 flex  flex-col items-center justify-between">
-        <div className="w-full mx-auto wrapper-class gap-5 bg-slate-100 text-black bg-opacity-80 p-4 rounded-lg">
+        <div className="w-full mx-auto wrapper-class gap-5 bg-slate-100 text-black bg-opacity-80 rounded-lg">
           <div className="flex flex-row maxsm:flex-col-reverse items-start justify-start gap-x-5  maxmd:py-4 maxmd:px-5 maxsm:px-0">
             <div className="image-class w-1/2 maxsm:w-full flex flex-col items-end justify-end">
               <motion.div
@@ -316,13 +316,17 @@ const UpdateProductDetails = ({ product }) => {
               </motion.div>
             </div>
             <div className="description-class w-1/2 maxsm:w-full h-full ">
-              <div className="flex flex-col items-start justify-start pt-10 maxsm:pt-2 gap-y-10 w-[90%] maxmd:w-full p-5 pb-10">
+              <div className="flex flex-col items-start justify-start pt-10 maxsm:pt-2 gap-y-10 w-[90%] maxmd:w-full pb-10">
+                <h1 className="text-xl maxmd:text-3xl font-semibold font-EB_Garamond text-black">
+                  Actualizar Producto
+                </h1>
+
                 <motion.div
                   initial={{ x: 50, opacity: 0 }}
                   whileInView={{ x: 0, opacity: 1 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <p className="text-7xl font-semibold font-EB_Garamond">
+                  <p className="text-7xl maxsm:text-5xl font-semibold font-EB_Garamond">
                     {product?.title}
                   </p>
                   <div className="text-xl font-semibold">
@@ -423,19 +427,18 @@ const UpdateProductDetails = ({ product }) => {
           </div>
         </div>
       </main>
-      <main className="w-full pl-4">
-        <section className=" p-6 ">
-          <h1 className="text-xl maxmd:text-3xl font-semibold text-black mb-8">
-            Actualizar Producto
-          </h1>
-
+      <main className="w-full ">
+        <section className=" p-6 maxsm:p-0 w-full ">
           <form
             onSubmit={handleSubmit}
             className="flex flex-row flex-wrap items-start gap-5 justify-start "
           >
             <div className="gap-y-5 flex-col flex px-2 w-1/2 maxsm:w-full">
               <div className="mb-4">
-                <label className="block mb-1"> Titulo del Producto</label>
+                <label className="block mb-1 text-slate-500">
+                  {' '}
+                  Titulo del Producto
+                </label>
                 <input
                   type="text"
                   className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
@@ -446,7 +449,10 @@ const UpdateProductDetails = ({ product }) => {
                 />
               </div>
               <div className="mb-4">
-                <label className="block mb-1"> Description Corta</label>
+                <label className="block mb-1  text-slate-500">
+                  {' '}
+                  Description Corta
+                </label>
                 <textarea
                   rows="2"
                   className="appearance-none border  bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
@@ -457,7 +463,10 @@ const UpdateProductDetails = ({ product }) => {
                 ></textarea>
               </div>
               <div className="mb-4">
-                <label className="block mb-1"> Marca del Producto</label>
+                <label className="block mb-1 text-slate-500">
+                  {' '}
+                  Marca del Producto
+                </label>
                 <input
                   type="text"
                   className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
@@ -467,9 +476,11 @@ const UpdateProductDetails = ({ product }) => {
                   name="brand"
                 />
               </div>
-              <div className="flex flex-row items-center gap-5">
-                <div className="mb-4">
-                  <label className="block mb-1"> Precio de Venta </label>
+              <div className="flex flex-row maxsm:flex-col items-center gap-5">
+                <div className="mb-4 w-full">
+                  <label className="block mb-1  text-slate-500">
+                    Precio de Venta{' '}
+                  </label>
                   <div className="relative">
                     <div className="col-span-2">
                       <input
@@ -483,8 +494,8 @@ const UpdateProductDetails = ({ product }) => {
                     </div>
                   </div>
                 </div>
-                <div className="mb-4">
-                  <label className="block mb-1"> Costo </label>
+                <div className="mb-4 w-full">
+                  <label className="block mb-1 text-slate-500"> Costo </label>
                   <div className="relative">
                     <div className="col-span-2">
                       <input
@@ -498,8 +509,11 @@ const UpdateProductDetails = ({ product }) => {
                     </div>
                   </div>
                 </div>
-                <div className="mb-4">
-                  <label className="block mb-1"> Existencias </label>
+                <div className="mb-4 w-full">
+                  <label className="block mb-1 text-slate-500">
+                    {' '}
+                    Existencias{' '}
+                  </label>
                   <div className="relative">
                     <div className="col-span-2">
                       <input
@@ -514,7 +528,10 @@ const UpdateProductDetails = ({ product }) => {
                   </div>
                 </div>
                 <div className="mb-4 w-full">
-                  <label className="block mb-1"> Destacado </label>
+                  <label className="block mb-1 text-slate-500">
+                    {' '}
+                    Destacado{' '}
+                  </label>
                   <div className="relative">
                     <select
                       className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
@@ -545,7 +562,7 @@ const UpdateProductDetails = ({ product }) => {
 
             <div className="flex-col flex justify-start px-2 gap-y-5 w-1/3 maxsm:w-full">
               <div className="mb-4">
-                <label className="block mb-1"> Género </label>
+                <label className="block mb-1 text-slate-500"> Género </label>
                 <div className="relative">
                   <select
                     className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
@@ -572,7 +589,7 @@ const UpdateProductDetails = ({ product }) => {
                 </div>
               </div>
               <div className="mb-4">
-                <label className="block mb-1"> Categoría </label>
+                <label className="block mb-1 text-slate-500"> Categoría </label>
                 <div className="relative">
                   <select
                     className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
@@ -601,7 +618,7 @@ const UpdateProductDetails = ({ product }) => {
                 </div>
               </div>
               <div className="mb-4">
-                <label className="block mb-1"> Tallas </label>
+                <label className="block mb-1 text-slate-500"> Tallas </label>
                 <div className="relative">
                   <MultiselectComponent
                     values={sizes}
@@ -611,7 +628,10 @@ const UpdateProductDetails = ({ product }) => {
                 </div>
               </div>
               <div className="mb-4">
-                <label className="block mb-1"> Precio de Oferta </label>
+                <label className="block mb-1 text-slate-500">
+                  {' '}
+                  Precio de Oferta{' '}
+                </label>
                 <div className="relative">
                   <div className="col-span-2">
                     <input
@@ -626,7 +646,10 @@ const UpdateProductDetails = ({ product }) => {
                 </div>
               </div>
               <div className="mb-4">
-                <label className="block mb-1"> Finalización de Oferta </label>
+                <label className="block mb-1 text-slate-500">
+                  {' '}
+                  Finalización de Oferta{' '}
+                </label>
                 <div className="  cursor-pointer">
                   <DateTimePicker
                     onChange={onChangeDate}
@@ -640,7 +663,7 @@ const UpdateProductDetails = ({ product }) => {
             <div>
               <button
                 type="button"
-                className=" bg-fuchsia-900 text-white rounded-md p-4 mb-5 flex flex-row items-center w-[250px]"
+                className=" bg-black text-white rounded-md p-4 mb-5 flex flex-row items-center w-[250px]"
                 onClick={handleAddImageField}
               >
                 Agregar Imagen <FaImage className="text-white ml-1" />
@@ -649,7 +672,7 @@ const UpdateProductDetails = ({ product }) => {
                 {inputImageFields.map((inputImageField, index) => (
                   <div
                     key={index}
-                    className="mb-4 p-4 border-gray-200 border shadow-md"
+                    className="mb-4 p-4 maxsm:p-0 border-gray-200 border w-full shadow-md"
                   >
                     <div className="flex flex-row items-center gap-4 mb-4">
                       {index > 0 && (
@@ -667,9 +690,9 @@ const UpdateProductDetails = ({ product }) => {
                       </p>
                     </div>
                     <div className="flex flex-col items-center">
-                      <div className="mb-4 px-5">
+                      <div className="mb-4 w-full">
                         <div className="items-center justify-center">
-                          <div className="w-40 h-40 relative space-x-3 my-2 ">
+                          <div className="w-40 h-40 maxsm:w-full maxsm:h-80 relative space-x-3 my-2 ">
                             <FaExchangeAlt className="absolute z-20 text-3xl top-[50%] left-[50%] text-slate-200" />
                             <Image
                               className="rounded-md object-cover"
@@ -691,9 +714,11 @@ const UpdateProductDetails = ({ product }) => {
                               }
                             />
                           </div>
-                          <span>Color Actual: {inputImageField?.color}</span>
                         </div>
-                        <label className="block mb-1"> Color </label>
+                        <label className="block mb-1 text-slate-500">
+                          {' '}
+                          Color{' '}
+                        </label>
                         <div className="relative">
                           <select
                             className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full cursor-pointer"
