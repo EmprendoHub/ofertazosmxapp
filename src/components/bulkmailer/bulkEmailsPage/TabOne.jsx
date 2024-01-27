@@ -104,29 +104,19 @@ export default function TabOne() {
   return (
     <div>
       <span className="space-y-5 w-full">
-        <div className="flex flex-row items-center justify-between gap-x-10">
+        <div className="flex flex-row maxsm:flex-col gap-2 items-center justify-between gap-x-10">
           {/* Sender Name */}
-          <div className="w-1/3">
-            <Badge
-              badgeContent="optional"
-              color="info"
-              className="w-full "
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-            >
-              <input
-                type="text"
-                className="login_subject p-4 w-full text-sm text-gray-900 bg-gray-50 rounded-lg shadow-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Nombre del Remitente"
-                onChange={(e) => setSenderName(e.target.value)}
-              ></input>
-            </Badge>
+          <div className="w-1/3 maxsm:w-full">
+            <input
+              type="text"
+              className="login_subject p-4 w-full text-sm text-gray-900 bg-gray-50 rounded-lg shadow-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+              placeholder="Nombre del Remitente"
+              onChange={(e) => setSenderName(e.target.value)}
+            ></input>
           </div>
 
           {/* Subject */}
-          <div className="w-1/2">
+          <div className="w-1/2  maxsm:w-full flex flex-row maxsm:flex-col">
             <input
               type="text"
               className="login_subject p-4 text-sm text-gray-900 bg-gray-50 rounded-lg shadow-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
@@ -140,13 +130,13 @@ export default function TabOne() {
                 onChange={handleChange}
                 inputProps={{ 'aria-label': 'controlled' }}
               />
-              <span className="ml-1 my-2">
+              <span className="ml-1 my-2 maxsm:text-[10px]">
                 Usar el nombre del Remitente como el Asunto
               </span>
             </span>
           </div>
         </div>
-        <div className="flex flex-row items-center gap-x-10">
+        <div className="flex flex-row maxsm:flex-col  maxsm:gap-y-2 items-center gap-x-10">
           {/* Greeting */}
           <input
             type="text"
@@ -202,13 +192,13 @@ export default function TabOne() {
       <h3 className="mt-10">
         <b>{emailListData.length}</b> Contactos Seleccionados
       </h3>
-      <div className="mt-5 w-1/3">
+      <div className="mt-5 w-1/3 maxsm:w-full">
         {emailListData.map((client) => (
           <div
             key={client.id}
             className="flex flex-wrap justify-between gap-x-10 items-center "
           >
-            <div>{client.name}</div>
+            <div className="font-semibold">{client.name}</div>
             <div>{client.email}</div>
           </div>
         ))}
