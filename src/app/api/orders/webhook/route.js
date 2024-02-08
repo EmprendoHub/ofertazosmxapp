@@ -48,8 +48,7 @@ export async function POST(req, res) {
           { $inc: { stock: -item.quantity } },
           { new: true } // To return the updated document
         );
-
-        revalidatePath(`/producto/${updatedProduct._id}`);
+        console.log(updatedProduct);
       });
 
       let newPaymentAmount;
