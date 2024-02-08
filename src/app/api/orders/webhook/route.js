@@ -43,12 +43,16 @@ export async function POST(req, res) {
       currentOrder?.orderItems.forEach(async (item) => {
         const productId = item.product.toString();
         // Find the product by its _id and update its stock
-        const updatedProduct = await Product.findOneAndUpdate(
-          { _id: productId },
-          { $inc: { stock: -item.quantity } },
-          { new: true } // To return the updated document
-        );
-        console.log(updatedProduct);
+        const product = await Product.findOne({ _id: productId });
+        if (product) {
+          // Decrement the quantity
+          product.stock -= item.quantity; // Assuming you want to decrease the quantity by 1
+
+          // Save the updated product
+          await product.save();
+        } else {
+          console.log('Product not found');
+        }
       });
 
       let newPaymentAmount;
