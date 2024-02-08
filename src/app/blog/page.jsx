@@ -1,5 +1,5 @@
 import React from 'react';
-import { getCookiesName } from '@/backend/helpers';
+import { getCookiesName, getSessionCookiesName } from '@/backend/helpers';
 import { cookies } from 'next/headers';
 import BlogCoverSection from '@/components/blog/BlogCoverSection';
 import FeaturedPosts from '@/components/blog/FeaturedPosts';
@@ -37,7 +37,7 @@ const getAllPosts = async (searchParams, currentCookies) => {
 
 const BlogPage = async ({ searchParams }) => {
   const nextCookies = cookies();
-  const cookieName = getCookiesName();
+  const cookieName = getSessionCookiesName();
   let nextAuthSessionToken = nextCookies.get(cookieName);
   nextAuthSessionToken = nextAuthSessionToken?.value;
   const currentCookies = `${cookieName}=${nextAuthSessionToken}`;
