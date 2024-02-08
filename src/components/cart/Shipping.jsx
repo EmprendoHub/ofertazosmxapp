@@ -44,8 +44,8 @@ const Shipping = ({ addresses }) => {
     <div>
       <BreadCrumbs breadCrumbs={breadCrumbs} />
       <section className="py-10 bg-gray-50">
-        <div className="container max-w-screen-xl mx-auto px-4">
-          <div className="flex flex-col md:flex-row gap-4 lg:gap-8">
+        <div className=" max-w-screen-xl mx-auto px-4">
+          <div className="flex maxsm:flex-col flex-row gap-4 lg:gap-8">
             <main className="md:w-2/3">
               <article className="border border-gray-200 bg-white shadow-sm rounded p-4 lg:p-6 mb-5">
                 <h2 className="text-xl font-semibold mb-5">

@@ -5,6 +5,7 @@ import Product from '@/backend/models/Product';
 import ReferralEvent from '@/backend/models/ReferralEvent';
 import ReferralLink from '@/backend/models/ReferralLink';
 import dbConnect from '@/lib/db';
+import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
@@ -43,12 +44,18 @@ export async function POST(req, res) {
 
       currentOrder?.orderItems.forEach(async (item) => {
         const productId = item.product;
+        console.log(productId, 'productId');
         // Update product quantity
-        await Product.updateOne(
+        const updateProduct = await Product.updateOne(
           { _id: productId },
           { $inc: { stock: -item.quantity } }
         );
+        await updateProduct.save();
+
+        console.log(updateProduct, 'updateProduct');
       });
+
+      revalidatePath('/producto/[id]');
 
       let newPaymentAmount;
       if (session.payment_status === 'unpaid') {

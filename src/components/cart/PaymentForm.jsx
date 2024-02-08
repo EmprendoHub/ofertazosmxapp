@@ -63,7 +63,7 @@ const PaymentForm = () => {
   //=============================== Stripe Payment ends here ============================
   return (
     <section className="p-2 maxsm:py-7 bg-gray-100">
-      <div className="container max-w-screen-xl mx-auto bg-white flex flex-col justify-between p-2">
+      <div className=" max-w-screen-xl mx-auto bg-white flex flex-col justify-between p-2">
         <h2>Totales</h2>
         <ul className="mb-5">
           <li className="flex justify-between text-gray-600  mb-1">

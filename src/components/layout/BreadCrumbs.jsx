@@ -5,7 +5,7 @@ import { BsChevronRight } from 'react-icons/bs';
 const BreadCrumbs = ({ breadCrumbs }) => {
   return (
     <section className="py-5 sm:py-7 bg-blue-100 text-black">
-      <div className="container max-w-screen-xl mx-auto px-4">
+      <div className=" max-w-screen-xl mx-auto px-4">
         <ol className="inline-flex flex-wrap text-gray-600 space-x-1 maxmd:space-x-3 items-center">
           {breadCrumbs?.map((crumb, index) => (
             <li key={index} className="inline-flex items-center">
