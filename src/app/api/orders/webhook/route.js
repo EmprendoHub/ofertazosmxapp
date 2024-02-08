@@ -51,7 +51,7 @@ export async function POST(req, res) {
           { _id: productId },
           { $inc: { stock: -item.quantity } }
         );
-        console.log(updateProduct, 'updateProduct');
+
         revalidatePath(`/producto/${updateProduct._id}`);
       });
 
