@@ -43,19 +43,16 @@ export async function POST(req, res) {
       });
 
       currentOrder?.orderItems.forEach(async (item) => {
-        const productId = item.product;
+        const productId = item.product.toString();
         console.log(productId, 'productId');
         // Update product quantity
         const updateProduct = await Product.updateOne(
           { _id: productId },
           { $inc: { stock: -item.quantity } }
         );
-        await updateProduct.save();
-
         console.log(updateProduct, 'updateProduct');
+        revalidatePath(`/producto/${updateProduct._id}`);
       });
-
-      revalidatePath('/producto/[id]');
 
       let newPaymentAmount;
       if (session.payment_status === 'unpaid') {
