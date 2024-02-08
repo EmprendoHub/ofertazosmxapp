@@ -44,15 +44,14 @@ export async function POST(req, res) {
         const productId = item.product.toString();
         // Find the product by its _id and update its stock
         const product = await Product.findOne({ _id: productId });
-        console.log('product', product);
         if (product) {
           // Decrement the quantity
           product.stock -= item.quantity; // Assuming you want to decrease the quantity by 1
 
           // Save the updated product
-          const updatedProduct = await product.save();
+          await product.save();
 
-          console.log(updatedProduct); // Output the updated product
+          revalidatePath(`/producto/${product._id}`);
         } else {
           console.log('Product not found');
         }
