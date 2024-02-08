@@ -47,7 +47,7 @@ export async function POST(req, res) {
         const productId = item.product.toString();
         console.log(productId, 'productId');
         // Update product quantity
-        const updateProduct = await Product.updateOne(
+        await Product.updateOne(
           { _id: productId },
           { $inc: { stock: -item.quantity } }
         );
