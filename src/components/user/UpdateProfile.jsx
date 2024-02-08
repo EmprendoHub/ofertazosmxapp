@@ -4,93 +4,189 @@ import Image from 'next/image';
 import AuthContext from '@/context/AuthContext';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { updateClient } from '@/app/_actions';
+import {
+  cstDateTimeClient,
+  isValidEmail,
+  isValidPhone,
+} from '@/backend/helpers';
 
 const UpdateProfileWithFormData = () => {
-  const { user, error, clearErrors, loading, updateProfile } =
-    useContext(AuthContext);
-
+  const { user } = useContext(AuthContext);
+  const [loading, setLoading] = useState(null);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [avatar, setAvatar] = useState('');
-  const [avatarPreview, setAvatarPreview] = useState('');
+  // const [avatarPreview, setAvatarPreview] = useState(
+  //   '/images/avatar_placeholder.jpg'
+  // );
+  const [phone, setPhone] = useState('');
+  const [updatedAt, setUpdatedAt] = useState(cstDateTimeClient());
+  const [validationError, setValidationError] = useState(null);
+
+  const handlePhoneChange = (e) => {
+    const inputPhone = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+    let formattedPhone = '';
+
+    if (inputPhone.length <= 10) {
+      formattedPhone = inputPhone.replace(
+        /(\d{3})(\d{0,3})(\d{0,4})/,
+        '$1 $2 $3'
+      );
+    } else {
+      // If the phone number exceeds 10 digits, truncate it
+      formattedPhone = inputPhone
+        .slice(0, 10)
+        .replace(/(\d{3})(\d{0,3})(\d{0,4})/, '$1 $2 $3');
+    }
+
+    setPhone(formattedPhone);
+  };
 
   useEffect(() => {
     if (user) {
-      const userAvatar = user?.avatar
-        ? user.avatar.url
-        : '/images/avatar_placeholder.jpg';
+      // const userAvatar = user?.avatar
+      //   ? user.avatar.url
+      //   : '/images/avatar_placeholder.jpg';
       setName(user?.name);
       setEmail(user?.email);
-      setAvatarPreview(userAvatar);
+      setPhone(user?.phone);
+      // setAvatarPreview(userAvatar);
     }
-
-    if (error) {
-      toast.error(error);
-      clearErrors;
-    }
-  }, [user, error]);
+  }, [user]);
 
   const submitHandler = async (e) => {
+    setLoading(true);
     e.preventDefault();
+
+    if (name === '') {
+      toast.error('Por favor complete el nombre de usuario para registrarse.');
+      return;
+    }
+
+    if (email === '') {
+      toast.error('Por favor agregue su correo electrónico para registrarse.');
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      toast.error('Utilice un correo electrónico válido.');
+      return;
+    }
+    if (phone === '') {
+      toast.error(
+        'Por favor agregar un teléfono válido para continuar. El formato correcto es: 331 235 4455'
+      );
+      return;
+    }
+    if (!isValidPhone(phone)) {
+      toast.error(
+        'Por favor agregar un teléfono válido para continuar. El formato correcto es: 331 235 4455'
+      );
+      return;
+    }
 
     const formData = new FormData();
     formData.set('name', name);
     formData.set('_id', user?._id);
     formData.set('email', email);
-    formData.set('image', avatar);
+    formData.set('phone', phone);
+    // formData.set('avatar', avatar);
+    formData.set('updatedAt', updatedAt);
 
-    try {
-      const res = await updateProfile(formData);
-    } catch (error) {
-      toast.error('Error updating profile. Please try again.');
+    const result = await updateClient(formData);
+    if (result?.error) {
+      setValidationError(result.error);
+      setLoading(null);
+    } else {
+      setValidationError(null);
+      setLoading(null);
+      toast.success('El perfil se actualizo exitosamente');
     }
   };
 
-  const onImageChange = (e) => {
-    const reader = new FileReader();
+  // const onImageChange = (e) => {
+  //   const reader = new FileReader();
 
-    reader.onload = () => {
-      if (reader.readyState === 2) {
-        setAvatarPreview(reader.result);
-      }
-    };
-    reader.readAsDataURL(e);
+  //   reader.onload = () => {
+  //     if (reader.readyState === 2) {
+  //       setAvatarPreview(reader.result);
+  //     }
+  //   };
+  //   reader.readAsDataURL(e);
 
-    setAvatar(e);
-  };
+  //   setAvatar(e);
+  // };
 
   return (
     <>
       <div className="mt-1 mb-20 p-4 md:p-7 mx-auto rounded bg-white max-w-[580px]">
         <form onSubmit={submitHandler}>
-          <h2 className="mb-5 text-2xl font-semibold">Actualizar Cuenta</h2>
+          <h2 className="mb-5 text-2xl font-semibold font-EB_Garamond">
+            Actualizar Perfil
+          </h2>
 
           <div className="mb-4">
-            <label className="block mb-1"> Nombre Completo </label>
+            <label className="block mb-1  font-EB_Garamond">
+              {' '}
+              Nombre Completo{' '}
+            </label>
             <input
               className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
               type="text"
               placeholder="Ingresa tu nombre"
               required
+              name="email"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
+            {validationError?.name && (
+              <p className="text-sm text-red-400">
+                {validationError.name._errors.join(', ')}
+              </p>
+            )}
           </div>
 
           <div className="mb-4">
-            <label className="block mb-1"> Correo Electrónico </label>
+            <label className="block mb-1  font-EB_Garamond">
+              {' '}
+              Correo Electrónico{' '}
+            </label>
             <input
               className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
               type="text"
               placeholder="Ingresa tu correo electrónico"
               required
+              name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
+            {validationError?.email && (
+              <p className="text-sm text-red-400">
+                {validationError.email._errors.join(', ')}
+              </p>
+            )}
+          </div>
+          <div className="mb-4 md:col-span-1">
+            <label className="block mb-1  font-EB_Garamond"> Teléfono </label>
+            <input
+              className="appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full "
+              type="tel"
+              placeholder="Ingresa tu teléfono"
+              name="phone"
+              value={phone}
+              onChange={handlePhoneChange}
+            />
+            {validationError?.phone && (
+              <p className="text-sm text-red-400">
+                {validationError.phone._errors.join(', ')}
+              </p>
+            )}
+            <p className="text-sm text-slate-500">331 235 4455</p>
           </div>
 
-          <div className="mb-4">
-            <label className="block mb-1"> Avatar </label>
+          {/* <div className="mb-4">
+            <label className="block mb-1  font-EB_Garamond"> Avatar </label>
             <div className="mb-4 flex flex-col md:flex-row">
               <div className="flex items-center mb-4 space-x-3 mt-4 cursor-pointer md:w-1/5 lg:w-1/4">
                 <Image
@@ -110,7 +206,7 @@ const UpdateProfileWithFormData = () => {
                 />
               </div>
             </div>
-          </div>
+          </div> */}
 
           <button
             type="submit"

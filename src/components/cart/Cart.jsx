@@ -24,8 +24,8 @@ const Cart = () => {
 
   return (
     <>
-      <section className="py-5 sm:py-7 bg-gray-100">
-        <div className="container max-w-screen-xl mx-auto px-4">
+      <section className="mt-5  bg-gray-100">
+        <div className="max-w-screen-xl mx-auto px-4">
           <h2 className="text-3xl font-semibold mb-2 font-EB_Garamond">
             {productsData?.length || 0} Artículos(s) en el Carrito
           </h2>

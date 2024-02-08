@@ -1,5 +1,15 @@
 export const cx = (...classNames) => classNames.filter(Boolean).join(' ');
 
+export const isValidEmail = (email) => {
+  const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+  return emailRegex.test(email);
+};
+
+export const isValidPhone = (phone) => {
+  const phoneRegex = /^(\+\d{2}\s?)?(\d{3}[-\s]?\d{3}[-\s]?\d{4})$/;
+  return phoneRegex.test(phone);
+};
+
 export const sortBlogs = (blogs) => {
   return blogs.slice().sort((a, b) => {
     const dateA = new Date(a.createdAt);

@@ -1,7 +1,6 @@
 import React from 'react';
 import Profile from '@/components/user/profile/Profile';
 import AfiliadoDashboard from '@/components/afiliados/AfiliadoDashboard';
-import axios from 'axios';
 import { getCookiesName } from '@/backend/helpers';
 import { cookies } from 'next/headers';
 import { getAffiliateDashboard } from '@/backend/controllers/affiliateController';

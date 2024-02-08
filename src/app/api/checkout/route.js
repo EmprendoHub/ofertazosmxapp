@@ -48,12 +48,6 @@ async function getCartItems(items) {
         return;
       }
 
-      // Update product quantity and create order item
-      await Product.updateOne(
-        { _id: productId },
-        { $inc: { stock: -item.quantity } }
-      );
-
       cartItems.push({
         product: { _id: item._id },
         name: item.title,
@@ -187,83 +181,88 @@ export const POST = async (request) => {
     //await Order.create(orderData);
     const newOrder = await new Order(orderData);
 
-    if (isLayaway) {
-      session = await stripe.checkout.sessions.create({
-        payment_method_types: pay_method_options,
-        mode: 'payment',
-        customer: customerId,
-        payment_method_options: {
-          oxxo: {
-            expires_after_days: 2,
-          },
-          customer_balance: {
-            funding_type: 'bank_transfer',
-            bank_transfer: {
-              type: 'mx_bank_transfer',
+    try {
+      if (isLayaway) {
+        session = await stripe.checkout.sessions.create({
+          payment_method_types: pay_method_options,
+          mode: 'payment',
+          customer: customerId,
+          payment_method_options: {
+            oxxo: {
+              expires_after_days: 2,
             },
-          },
-        },
-        locale: 'es-419',
-        client_reference_id: user?._id,
-        success_url: `${process.env.NEXTAUTH_URL}/perfil/pedidos?pedido_exitoso=true`,
-        cancel_url: `${
-          process.env.NEXTAUTH_URL
-        }/cancelado?id=${newOrder._id.toString()}`,
-        metadata: {
-          shippingInfo,
-          layaway: isLayaway,
-          order: newOrder._id.toString(),
-          referralID: affiliateInfo,
-        },
-        line_items: [
-          {
-            price_data: {
-              currency: 'mxn',
-              unit_amount: installmentAmount * 100, // Convert to cents
-              product_data: {
-                name: 'Pago Inicial de Apartado',
-                description: `Pago inicial para apartado de pedido #${newOrder.orderId}`,
+            customer_balance: {
+              funding_type: 'bank_transfer',
+              bank_transfer: {
+                type: 'mx_bank_transfer',
               },
             },
-            quantity: 1,
           },
-        ],
-      });
-    } else {
-      session = await stripe.checkout.sessions.create({
-        payment_method_types: pay_method_options,
-        mode: 'payment',
-        customer: customerId,
-        payment_method_options: {
-          oxxo: {
-            expires_after_days: 2,
+          locale: 'es-419',
+          client_reference_id: user?._id,
+          success_url: `${process.env.NEXTAUTH_URL}/perfil/pedidos?pedido_exitoso=true`,
+          cancel_url: `${
+            process.env.NEXTAUTH_URL
+          }/cancelado?id=${newOrder._id.toString()}`,
+          metadata: {
+            shippingInfo,
+            layaway: isLayaway,
+            order: newOrder._id.toString(),
+            referralID: affiliateInfo,
           },
-          customer_balance: {
-            funding_type: 'bank_transfer',
-            bank_transfer: {
-              type: 'mx_bank_transfer',
+          line_items: [
+            {
+              price_data: {
+                currency: 'mxn',
+                unit_amount: installmentAmount * 100, // Convert to cents
+                product_data: {
+                  name: 'Pago Inicial de Apartado',
+                  description: `Pago inicial para apartado de pedido #${newOrder.orderId}`,
+                },
+              },
+              quantity: 1,
+            },
+          ],
+        });
+      } else {
+        session = await stripe.checkout.sessions.create({
+          payment_method_types: pay_method_options,
+          mode: 'payment',
+          customer: customerId,
+          payment_method_options: {
+            oxxo: {
+              expires_after_days: 2,
+            },
+            customer_balance: {
+              funding_type: 'bank_transfer',
+              bank_transfer: {
+                type: 'mx_bank_transfer',
+              },
             },
           },
-        },
-        locale: 'es-419',
-        success_url: `${process.env.NEXTAUTH_URL}/perfil/pedidos?pedido_exitoso=true`,
-        cancel_url: `${
-          process.env.NEXTAUTH_URL
-        }/cancelado?id=${newOrder._id.toString()}`,
-        client_reference_id: user?._id,
-        metadata: {
-          shippingInfo,
-          layaway: isLayaway,
-          order: newOrder._id.toString(),
-          referralID: affiliateInfo,
-        },
-        shipping_options: [
-          {
-            shipping_rate: 'shr_1OW9lzF1B19DqtcQpzK984xg',
+          locale: 'es-419',
+          success_url: `${process.env.NEXTAUTH_URL}/perfil/pedidos?pedido_exitoso=true`,
+          cancel_url: `${
+            process.env.NEXTAUTH_URL
+          }/cancelado?id=${newOrder._id.toString()}`,
+          client_reference_id: user?._id,
+          metadata: {
+            shippingInfo,
+            layaway: isLayaway,
+            order: newOrder._id.toString(),
+            referralID: affiliateInfo,
           },
-        ],
-        line_items,
-      });
+          shipping_options: [
+            {
+              shipping_rate: 'shr_1OW9lzF1B19DqtcQpzK984xg',
+            },
+          ],
+          line_items,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
     await newOrder.save();

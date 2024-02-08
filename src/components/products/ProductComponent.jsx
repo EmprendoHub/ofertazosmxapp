@@ -8,11 +8,16 @@ import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { calculatePercentage } from '@/backend/helpers';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '@/redux/shoppingSlice';
+import { Bounce, toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 
 const ProductComponent = ({ product, trendingProducts }) => {
+  const dispatch = useDispatch();
+  const router = useRouter();
   const images = product?.images;
   const slideRef = useRef(null);
-  console.log(product.colors);
 
   useEffect(() => {
     if (slideRef.current) {
@@ -86,6 +91,20 @@ const ProductComponent = ({ product, trendingProducts }) => {
       // Reorder the items in the list
       slideRef.current.insertBefore(clickedItem, slideRef.current.firstChild);
     }
+  };
+
+  const handleClick = () => {
+    dispatch(addToCart(product));
+    toast.success(
+      `${product?.title.substring(0, 15)}... se agrego al carrito`,
+      {
+        position: toast.POSITION.TOP_CENTER,
+        className: 'foo-bar',
+        theme: 'dark',
+        transition: Bounce,
+      }
+    );
+    router.push('/carrito');
   };
 
   return (
@@ -252,22 +271,7 @@ const ProductComponent = ({ product, trendingProducts }) => {
                       whileHover={{ scale: 1.07 }}
                       whileTap={{ scale: 0.9 }}
                       className="bg-gold-gradient border border-black drop-shadow-md flex flex-row items-center justify-between px-6 py-3 text-sm gap-x-4 rounded-sm  bg-black text-white ease-in-out  duration-300 w-80 uppercase tracking-wider"
-                      onClick={() =>
-                        dispatch(addToCart(product)) &&
-                        toast.success(
-                          `${product?.title.substring(
-                            0,
-                            15
-                          )}... se agrego al carrito`,
-                          {
-                            position: toast.POSITION.TOP_CENTER,
-                            className: 'foo-bar',
-                            theme: 'dark',
-                            transition: Bounce,
-                          }
-                        ) &&
-                        router.push('/carrito')
-                      }
+                      onClick={handleClick}
                     >
                       Agregar a carrito
                       <span className="text-xl text-slate-400 w-12 flex items-center justify-center group-hover:bg-black hover:text-white duration-200  rounded-full py-2">

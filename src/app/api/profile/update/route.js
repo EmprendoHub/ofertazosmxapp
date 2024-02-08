@@ -28,12 +28,13 @@ export async function PUT(req, res) {
       await dbConnect();
       const { payload } = await req.json();
       const file = payload?.get('image');
-      let { name, email, _id } = payload;
+      let { name, email, phone, _id } = payload;
 
       const updateUser = await User.findOne({ _id: _id });
 
       updateUser.name = name;
       updateUser.email = email;
+      updateUser.phone = phone;
 
       if (!file) {
         // Save the Product to the database

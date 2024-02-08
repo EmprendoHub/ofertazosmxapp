@@ -5,6 +5,8 @@ import { getServerSession } from 'next-auth';
 import { options } from './api/auth/[...nextauth]/options';
 import {
   AddressEntrySchema,
+  ClientPasswordUpdateSchema,
+  ClientUpdateSchema,
   PostEntrySchema,
   PostUpdateSchema,
   ProductEntrySchema,
@@ -14,12 +16,13 @@ import Post from '@/backend/models/Post';
 import Product from '@/backend/models/Product';
 import User from '@/backend/models/User';
 import Affiliate from '@/backend/models/Affiliate';
+import bcrypt from 'bcrypt';
 
-export async function updateClient(_id) {
+export async function changeClientStatus(_id) {
   const session = await getServerSession(options);
-  //check for errors
-  await dbConnect();
+
   try {
+    await dbConnect();
     const client = await User.findOne({ _id: _id });
     if (client && client.active === false) {
       client.active = true;
@@ -28,6 +31,115 @@ export async function updateClient(_id) {
     }
     client.save();
     revalidatePath('/admin/clientes');
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
+
+export async function updateClient(data) {
+  let { _id, name, phone, email, updatedAt } = Object.fromEntries(data);
+
+  updatedAt = new Date(updatedAt);
+
+  try {
+    // validate form data
+    const result = ClientUpdateSchema.safeParse({
+      name: name,
+      phone: phone,
+      email: email,
+      updatedAt: updatedAt,
+    });
+
+    //check for errors
+    const { error: zodError } = result;
+    if (zodError) {
+      return { error: zodError.format() };
+    }
+
+    await dbConnect();
+    let CustomZodError;
+    const client = await User.findOne({ _id: _id });
+
+    if (client?.email != email) {
+      const emailExist = await User.find({ email: email });
+      if (emailExist) {
+        CustomZodError = {
+          _errors: [],
+          email: { _errors: ['El email ya esta en uso'] },
+        };
+        console.log({ error: CustomZodError });
+        return { error: CustomZodError };
+      }
+    }
+
+    if (client?.phone != phone) {
+      const phoneExist = await User.find({ phone: phone });
+      console.log(phoneExist);
+      if (phoneExist.length > 0) {
+        CustomZodError = {
+          _errors: [],
+          phone: { _errors: ['El teléfono ya esta en uso'] },
+        };
+        console.log({ error: CustomZodError });
+        return { error: CustomZodError };
+      }
+    }
+
+    client.name = name;
+    client.phone = phone;
+    client.email = email;
+    client.updatedAt = updatedAt;
+    // client.avatar = avatar;
+    client.save();
+    revalidatePath('/perfil/actualizar');
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
+
+export async function updateClientPassword(data) {
+  let { _id, newPassword, currentPassword, updatedAt } =
+    Object.fromEntries(data);
+
+  updatedAt = new Date(updatedAt);
+
+  try {
+    // validate form data
+    const result = ClientPasswordUpdateSchema.safeParse({
+      newPassword: newPassword,
+      currentPassword: currentPassword,
+      updatedAt: updatedAt,
+    });
+
+    //check for errors
+    const { error: zodError } = result;
+    if (zodError) {
+      return { error: zodError.format() };
+    }
+
+    await dbConnect();
+    let CustomZodError;
+    let hashedPassword;
+    const client = await User.findOne({ _id: _id }).select('+password');
+    const comparePass = await bcrypt.compare(currentPassword, client.password);
+    if (!comparePass) {
+      CustomZodError = {
+        _errors: [],
+        currentPassword: {
+          _errors: ['La contraseña actual no es la correcta'],
+        },
+      };
+      return { error: CustomZodError };
+    } else {
+      hashedPassword = await bcrypt.hash(newPassword, 10);
+    }
+
+    client.password = hashedPassword;
+    client.updatedAt = updatedAt;
+    client.save();
+    revalidatePath('/perfil/actualizar_contrasena');
   } catch (error) {
     console.log(error);
     throw Error(error);
@@ -341,8 +453,8 @@ export async function addProduct(data) {
   const sale_price_end_date = salePriceEndDate;
 
   createdAt = new Date(createdAt);
+
   // validate form data
-  // Create a new Product in the database
   const result = ProductEntrySchema.safeParse({
     title: title,
     description: description,
@@ -362,10 +474,9 @@ export async function addProduct(data) {
   //check for errors
   const { error: zodError } = result;
   if (zodError) {
-    console.log(zodError);
     return { error: zodError.format() };
   }
-
+  // Create a new Product in the database
   await dbConnect();
   const { error } = await Product.create({
     title,

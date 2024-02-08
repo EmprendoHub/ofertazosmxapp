@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 import AdminClientSearch from '../layout/AdminClientSearch';
 import { useDispatch, useSelector } from 'react-redux';
 import { saveEmailReceiver } from '@/redux/shoppingSlice';
-import { updateClient } from '@/app/_actions';
+import { changeClientStatus } from '@/app/_actions';
 
 const AllClientsComponent = ({ clients, filteredClientsCount }) => {
   const dispatch = useDispatch();
@@ -68,7 +68,7 @@ const AllClientsComponent = ({ clients, filteredClientsCount }) => {
           text: successText,
           icon: icon,
         });
-        updateClient(client_id);
+        changeClientStatus(client_id);
       }
     });
   };

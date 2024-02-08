@@ -91,6 +91,7 @@ export const options = {
             _id: existinguser._id,
             name: user.name,
             email: user.email,
+            phone: user.phone,
             role: existinguser.role,
             createdAt: existinguser.createdAt,
             updatedAt: existinguser.updatedAt,
@@ -122,6 +123,7 @@ export const options = {
         session.user.accessToken = token.accessToken;
         session.user.createdAt = token.user.createdAt;
         session.user.role = token.user.role;
+        session.user.phone = token.user.phone;
         session.user.stripeId = token.user.stripe_id || token.user.stripeId;
       }
       return session;

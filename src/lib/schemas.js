@@ -1,5 +1,22 @@
 import { z } from 'zod';
 
+export const ClientUpdateSchema = z.object({
+  name: z.string().min(5, { message: 'Se requiere el nombre' }),
+  phone: z.string().min(3, { message: 'Se requiere el teléfono' }),
+  email: z.string().min(5, { message: 'Se requiere el email' }),
+  updatedAt: z.date(),
+});
+
+export const ClientPasswordUpdateSchema = z.object({
+  newPassword: z
+    .string()
+    .min(8, { message: 'Se requiere una contraseña nueva' }),
+  currentPassword: z
+    .string()
+    .min(6, { message: 'Se requiere tu contraseña actual' }),
+  updatedAt: z.date(),
+});
+
 export const AddressEntrySchema = z.object({
   street: z.string().min(5, { message: 'Se requiere la calle y numero' }),
   city: z.string().min(3, { message: 'Se requiere la ciudad' }),

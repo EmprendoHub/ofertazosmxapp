@@ -1,6 +1,7 @@
 import { cstDateTime } from '@/backend/helpers';
 import Affiliate from '@/backend/models/Affiliate';
 import Order from '@/backend/models/Order';
+import Product from '@/backend/models/Product';
 import ReferralEvent from '@/backend/models/ReferralEvent';
 import ReferralLink from '@/backend/models/ReferralLink';
 import dbConnect from '@/lib/db';
@@ -38,6 +39,15 @@ export async function POST(req, res) {
       console.log('PAY INTENT', paymentIntent);
       const currentOrder = await Order.findOne({
         _id: session?.metadata?.order,
+      });
+
+      currentOrder?.orderItems.forEach(async (item) => {
+        const productId = item.product;
+        // Update product quantity
+        await Product.updateOne(
+          { _id: productId },
+          { $inc: { stock: -item.quantity } }
+        );
       });
 
       let newPaymentAmount;
