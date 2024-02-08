@@ -29,6 +29,8 @@ const PaymentForm = () => {
 
   const totalAmountCalc = Number(amountTotal) + Number(shipAmount);
 
+  // Helper function to extract device information from user agent string
+
   //=============================== Stripe Payment starts here ============================
 
   const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE__KEY);

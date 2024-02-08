@@ -42,7 +42,7 @@ const BlogPage = async ({ searchParams }) => {
   nextAuthSessionToken = nextAuthSessionToken?.value;
   const currentCookies = `${cookieName}=${nextAuthSessionToken}`;
   const allBlogData = await getAllPosts(searchParams, currentCookies);
-  const allBlogs = allBlogData?.posts.posts;
+  const allBlogs = await allBlogData?.posts?.posts;
   return (
     <>
       <main className="flex flex-col items-center justify-center mt-10">

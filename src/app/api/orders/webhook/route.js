@@ -26,7 +26,7 @@ export async function POST(req, res) {
 
     const session = event.data.object;
 
-    // credit card checkout
+    // Payment confirmed
     if (
       event.type === 'checkout.session.completed' ||
       event.type === 'checkout.session.async_payment_succeeded'

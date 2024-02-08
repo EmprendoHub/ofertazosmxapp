@@ -6,35 +6,6 @@ import ReferralLink from '@/backend/models/ReferralLink';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-// Helper function to extract device information from user agent string
-async function parseUserAgent(userAgent) {
-  const deviceInfo = {};
-
-  // Detect device type
-  if (/mobile/i.test(userAgent)) {
-    deviceInfo.deviceType = 'Mobile';
-  } else if (/tablet/i.test(userAgent)) {
-    deviceInfo.deviceType = 'Tablet';
-  } else {
-    deviceInfo.deviceType = 'Desktop';
-  }
-
-  // Extract browser information (a simplified example)
-  if (/chrome/i.test(userAgent)) {
-    deviceInfo.browser = 'Chrome';
-  } else if (/firefox/i.test(userAgent)) {
-    deviceInfo.browser = 'Firefox';
-  } else if (/safari/i.test(userAgent)) {
-    deviceInfo.browser = 'Safari';
-  } else if (/msie|trident/i.test(userAgent)) {
-    deviceInfo.browser = 'Internet Explorer';
-  } else {
-    deviceInfo.browser = 'Unknown';
-  }
-
-  return deviceInfo;
-}
-
 async function getCartItems(items) {
   return new Promise((resolve, reject) => {
     let cartItems = [];
