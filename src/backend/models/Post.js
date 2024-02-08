@@ -1,20 +1,18 @@
 import mongoose from 'mongoose';
 
 const PostSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    require: true,
-    unique: true,
-  },
   category: {
     type: String,
     require: true,
   },
+  mainTitle: {
+    type: String,
+    require: true,
+    unique: true,
+  },
   mainImage: {
-    url: {
-      type: String,
-      require: true,
-    },
+    type: String,
+    require: true,
   },
   metaTitle: {
     type: String,
@@ -23,20 +21,101 @@ const PostSchema = new mongoose.Schema({
     type: String,
   },
   summary: {
-    require: true,
     type: String,
   },
-  content: {
-    require: true,
+  sectionTwoTitle: {
     type: String,
   },
-  images: [
-    {
-      url: {
-        type: String,
-      },
-    },
-  ],
+  sectionTwoParagraphOne: {
+    type: String,
+  },
+  sectionTwoParagraphTwo: {
+    type: String,
+  },
+  sectionThreeTitle: {
+    type: String,
+  },
+  sectionThreeParagraphOne: {
+    type: String,
+  },
+  sectionThreeImage: {
+    type: String,
+  },
+  sectionThreeParagraphFooter: {
+    type: String,
+  },
+  sectionFourTitle: {
+    type: String,
+  },
+  sectionFourOptionOne: {
+    type: String,
+  },
+  sectionFourOptionTwo: {
+    type: String,
+  },
+  sectionFourOptionThree: {
+    type: String,
+  },
+  sectionFourParagraphOne: {
+    type: String,
+  },
+  sectionFourImage: {
+    type: String,
+  },
+  sectionFourParagraphFooter: {
+    type: String,
+  },
+  sectionFiveTitle: {
+    type: String,
+  },
+  sectionFiveImage: {
+    type: String,
+  },
+  sectionFiveParagraphOne: {
+    type: String,
+  },
+  sectionFiveParagraphTwo: {
+    type: String,
+  },
+  sectionSixColOneTitle: {
+    type: String,
+  },
+  sectionSixColOneParagraph: {
+    type: String,
+  },
+  sectionSixColOneImage: {
+    type: String,
+  },
+  sectionSixColTwoTitle: {
+    type: String,
+  },
+  sectionSixColTwoParagraph: {
+    type: String,
+  },
+  sectionSixColTwoImage: {
+    type: String,
+  },
+  sectionSixColThreeTitle: {
+    type: String,
+  },
+  sectionSixColThreeParagraph: {
+    type: String,
+  },
+  sectionSixColThreeImage: {
+    type: String,
+  },
+  sectionSixColOneParagraphFooter: {
+    type: String,
+  },
+  sectionSevenTitle: {
+    type: String,
+  },
+  sectionSevenImage: {
+    type: String,
+  },
+  sectionSevenParagraph: {
+    type: String,
+  },
   published: {
     type: Boolean,
     default: false,

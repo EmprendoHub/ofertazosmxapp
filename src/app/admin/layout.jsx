@@ -5,7 +5,7 @@ export default function UserLayout({ children }) {
     <>
       <section className="py-3 maxsm:py-1 font-EB_Garamond bg-gray-200">
         <div className="container  mx-auto px-4">
-          <h1 className="text-bold text-2xl  maxsm:text-lg text-black">
+          <h1 className="text-bold text-2xl  maxsm:text-lg text-black font-EB_Garamond">
             Panel de Control
           </h1>
         </div>

@@ -25,7 +25,7 @@ const AdminPostsComponent = ({ data, filteredOrdersCount }) => {
       if (result.isConfirmed) {
         Swal.fire({
           title: 'Eliminado!',
-          text: 'Tu publicación ha sido eliminado.',
+          text: 'Tu publicación ha sido eliminada.',
           icon: 'success',
         });
         deletePost(post_id);
@@ -72,7 +72,7 @@ const AdminPostsComponent = ({ data, filteredOrdersCount }) => {
                   <span className="relative flex items-center justify-center text-black w-12 h-12 maxsm:w-10 maxsm:h-10 shadow mt-2">
                     <Link key={index} href={`/admin/blog/editar/${post._id}`}>
                       <Image
-                        src={post?.images[0].url}
+                        src={post?.mainImage}
                         alt="Title"
                         width={100}
                         height={100}
@@ -85,7 +85,7 @@ const AdminPostsComponent = ({ data, filteredOrdersCount }) => {
                   <b>{post?.category.substring(0, 7)}...</b>
                 </td>
                 <td className={`px-6 maxsm:px-0 py-2 font-bold `}>
-                  {post?.title.substring(0, 12)}...
+                  {post?.mainTitle.substring(0, 12)}...
                 </td>
                 <td className="px-6 py-2 maxsm:hidden">
                   {post?.createdAt &&

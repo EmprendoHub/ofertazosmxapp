@@ -1,77 +1,257 @@
 'use client';
-import React, { useRef } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import AnimationWrapper from '../motions/AnimationWrapper';
+import ProductCard from '../products/ProductCard';
+import { formatDate } from '@/backend/helpers';
 
-const ViewPostDetails = ({ post }) => {
-  const imageRef = useRef(null);
-
+const ViewPostDetails = ({ post, trendingProducts }) => {
   return (
-    <div className="container-class maxsm:py-8">
-      <main className="bg-gray-100 flex  flex-col items-center justify-between">
-        <div className="w-full mx-auto wrapper-class gap-5 bg-slate-100 text-black bg-opacity-80 p-4 rounded-lg">
-          <div className="flex flex-row maxsm:flex-col-reverse items-start justify-start gap-x-5  maxmd:py-4 maxmd:px-5 maxsm:px-0">
-            <div className="image-class w-1/2 maxsm:w-full flex flex-col items-end justify-end">
-              <motion.div
-                initial={{ x: -50, opacity: 0 }}
-                whileInView={{ x: 0, opacity: 1 }}
-                transition={{ duration: 0.7 }}
-                className="p-2  max-h-[300px] relative"
-              >
-                <Image
-                  ref={imageRef}
-                  src={
-                    post?.images[0]
-                      ? post?.images[0].url
-                      : '/images/shopout_clothing_placeholder.webp'
-                  }
-                  alt="post image"
-                  className="rounded-lg object-cover ease-in-out duration-500"
-                  width={800}
-                  height={800}
-                />
-              </motion.div>
-            </div>
-            <div className="content-class w-1/2 maxsm:w-full h-full ">
-              <div className="flex flex-col items-start justify-start pt-10 maxsm:pt-2 gap-y-10 w-[90%] maxmd:w-full p-5 pb-10">
-                <motion.div
-                  initial={{ x: 50, opacity: 0 }}
-                  whileInView={{ x: 0, opacity: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <p className="text-7xl font-semibold font-EB_Garamond">
-                    {post?.title}
-                  </p>
-
-                  <div>
-                    <p className="text-xs font-normal text-gray-600">
-                      {post?.summary}
-                    </p>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  initial={{ y: 50, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.6 }}
-                  className=" font-bodyFont content-class"
-                >
-                  {post?.content ? post?.content : ''}
-                </motion.div>
-                <motion.div
-                  initial={{ y: 50, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.7 }}
-                  className="text-sm text-lightText flex flex-col"
-                >
-                  <span>
-                    Categoría:{' '}
-                    <span className="t font-bodyFont">{post?.category}</span>
-                  </span>
-                </motion.div>
+    <div className="flex flex-row items-start justify-center w-full gap-x-10">
+      <aside className="sticky top-20 z-[50] min-h-full w-[450px] flex flex-col items-center justify-center">
+        <div className="w-full ml-36 ">
+          <p className="text-4xl font-EB_Garamond py-1 font-semibold">
+            {'Productos destacados'}
+          </p>
+          <div className="w-full relative ">
+            {trendingProducts?.map((product, index) => (
+              <ProductCard key={product._id} item={product} />
+            ))}
+          </div>
+        </div>
+      </aside>
+      <main className="flex flex-col items-center w-full">
+        <div className="w-full">
+          {/* Blog Header */}
+          <span className="mx-auto max-w-[1200px] w-full flex flex-row items-center justify-between mb-10">
+            <div className="max-md:hidden text-black line-clamp-1 flex w-full  font-EB_Garamond leading-loose">
+              <div className="font-bold font-EB_Garamond text-5xl flex flex-row items-center gap-1 w-full">
+                {post?.mainTitle}
               </div>
             </div>
-          </div>
+          </span>
+
+          <AnimationWrapper>
+            <section>
+              <div className="mx-auto max-w-[1200px] w-full">
+                {/* Section 1 - Title, Image */}
+                <div className="relative aspect-video bg-white border-4 border-gray-300">
+                  <Image
+                    alt="blogBanner"
+                    src={post?.mainImage}
+                    width={1280}
+                    height={1280}
+                    className="w-full h-full object-cover z-20"
+                  />
+                  <div className="flex flex-row items-center justify-between">
+                    <p>Publicada el {formatDate(post?.createdAt)}</p>
+                    <p>Categoría: {post?.category}</p>
+                  </div>
+                </div>
+                <div className="content">
+                  <div className="flex flex-col maxsm:flex-col items-center gap-x-2 mt-5 ">
+                    {/* Section 2 - Title, 2 Paragraphs */}
+                    <div className="my-5 w-full">
+                      <div className="mb-4 w-full">
+                        <div className="font-bold font-EB_Garamond text-4xl flex flex-row items-center gap-1 w-full">
+                          {post?.sectionTwoTitle}
+                        </div>
+                      </div>
+
+                      <div className="font-bold font-EB_Garamond text-xl flex flex-row items-center gap-1 w-full mb-5">
+                        {post?.sectionTwoParagraphOne}
+                      </div>
+                      <div className="font-bold font-EB_Garamond text-xl flex flex-row items-center gap-1 w-full mb-5">
+                        {post?.sectionTwoParagraphTwo}
+                      </div>
+                    </div>
+                    {/* Section 3 - Image | Title, Description / 1 Paragraph */}
+                    <div className="w-full">
+                      <div className="my-5 w-full flex flex-row items-center gap-5">
+                        <div className=" w-full h-80 relative  my-2 ">
+                          <Image
+                            className="rounded-md object-cover"
+                            src={post?.sectionThreeImage}
+                            fill={true}
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            alt="section Two Image"
+                          />
+                        </div>
+                        <div className="w-full">
+                          <div className="font-bold font-EB_Garamond text-4xl flex flex-row items-center gap-1 w-full mb-3">
+                            {post?.sectionThreeTitle}
+                          </div>
+                          <div className="font-bold font-EB_Garamond text-xl flex flex-row items-center gap-1 w-full">
+                            {post?.sectionThreeParagraphOne}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="mb-5 w-full">
+                        <div className="font-bold font-EB_Garamond text-xl flex flex-row items-center gap-1 w-full mb-5">
+                          {post?.sectionThreeParagraphFooter}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Section 4 - Title, 3 options, paragraph | Image / 1 Paragraph */}
+                    <div className="w-full">
+                      <div className="w-full flex flex-row items-center gap-5">
+                        <div className="w-full">
+                          <div className="font-bold font-EB_Garamond text-4xl flex flex-row items-center gap-1 w-full mb-3">
+                            {post?.sectionFourTitle}
+                          </div>
+                          <ol className="mb-3">
+                            <li className="flex flex-row items-center justify-start mb-3">
+                              <p className="w-[25px]">1.-</p>
+                              <div>{post?.sectionFourOptionOne}</div>
+                            </li>
+                            <li className="flex flex-row items-center justify-start mb-3">
+                              <p className="w-[25px]">2.-</p>
+                              <div>{post?.sectionFourOptionTwo}</div>
+                            </li>
+                            <li className="flex flex-row items-center justify-start mb-3">
+                              <p className="w-[25px]">3.-</p>
+                              <div>{post?.sectionFourOptionThree}</div>
+                            </li>
+                          </ol>
+                          <div className="font-bold font-EB_Garamond text-xl flex flex-row items-center gap-1 w-full">
+                            {post?.sectionFourParagraphOne}
+                          </div>
+                        </div>
+                        <div className=" w-full h-80 relative  my-2 ">
+                          <Image
+                            className="rounded-md object-cover"
+                            src={post?.sectionFourImage}
+                            fill={true}
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            alt="imagen de producto"
+                          />
+                        </div>
+                      </div>
+                      <div className="mb-5 w-full">
+                        <div className="font-bold font-EB_Garamond text-xl flex flex-row items-center gap-1 w-full mb-5">
+                          {post?.sectionFourParagraphFooter}
+                        </div>
+                      </div>
+                    </div>
+                    {/* Section 5 - Title, Image, 2 Paragraph */}
+                    <div className="w-full my-10">
+                      <div className="mb-4 w-full">
+                        <div className="font-bold font-EB_Garamond text-4xl flex flex-row items-center gap-1 w-full">
+                          {post?.sectionFiveTitle}
+                        </div>
+                        <div className="items-center justify-center">
+                          <div className=" w-full h-80 relative  my-2 ">
+                            <Image
+                              className="rounded-md object-cover"
+                              src={post?.sectionFiveImage}
+                              fill={true}
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                              alt="imagen de blog"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="font-bold font-EB_Garamond text-xl flex flex-row items-center gap-1 w-full">
+                        {post?.sectionFiveParagraphOne}
+                      </div>
+                      <div className="font-bold font-EB_Garamond text-xl flex flex-row items-center gap-1 w-full my-5">
+                        {post?.sectionFiveParagraphTwo}
+                      </div>
+                    </div>
+                    {/* Section 6 - 3 Columns with title, image, paragraph / 1 Paragraph  */}
+                    <div className="w-full my-10">
+                      <div className="w-full mb-5 flex flex-row maxsm:flex-col items-center gap-7">
+                        {/* Col 1 */}
+                        <div className="flex flex-col gap-3 items-center justify-center w-full my-2 ">
+                          <div className="font-bold font-EB_Garamond text-2xl w-full mb-3 text-center">
+                            {post?.sectionSixColOneTitle}
+                          </div>
+
+                          <Image
+                            className="rounded-md object-cover h-40"
+                            src={post?.sectionSixColOneImage}
+                            width={500}
+                            height={500}
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            alt="imagen de producto"
+                          />
+                          <div className="font-bold font-EB_Garamond text-xl text-center w-full">
+                            {post?.sectionSixColOneParagraph}
+                          </div>
+                        </div>
+                        {/* Col 2 */}
+                        <div className="flex flex-col gap-3 items-center justify-center w-full my-2 ">
+                          <div className="font-bold font-EB_Garamond text-2xl w-full mb-3 text-center">
+                            {post?.sectionSixColTwoTitle}
+                          </div>
+
+                          <Image
+                            className="rounded-md object-cover h-40"
+                            src={post?.sectionSixColTwoImage}
+                            width={500}
+                            height={500}
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            alt="imagen de blog"
+                          />
+                          <div className="font-bold font-EB_Garamond text-xl text-center w-full">
+                            {post?.sectionSixColTwoParagraph}
+                          </div>
+                        </div>
+                        {/* Col 3 */}
+                        <div className="flex flex-col gap-3 items-center justify-center w-full my-2 ">
+                          <div className="font-bold font-EB_Garamond text-2xl w-full mb-3 text-center">
+                            {post?.sectionSixColThreeTitle}
+                          </div>
+
+                          <Image
+                            className="rounded-md object-cover h-40"
+                            src={post?.sectionSixColThreeImage}
+                            width={500}
+                            height={500}
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            alt="imagen de blog"
+                          />
+
+                          <div className="font-bold font-EB_Garamond text-xl text-center w-full">
+                            {post?.sectionSixColThreeParagraph}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="mb-5 w-full">
+                        <div className="font-bold font-EB_Garamond text-xl flex flex-row items-center gap-1 w-full mb-5">
+                          {post?.sectionSixColOneParagraphFooter}
+                        </div>
+                      </div>
+                    </div>
+                    {/* Section 7 - Overlay image title, 1 Paragraph */}
+                    <div className="w-full">
+                      <div className=" w-full h-80 relative  my-5 ">
+                        <div className="font-bold font-EB_Garamond text-6xl flex flex-row items-center gap-1 w-full mb-3 absolute z-20 top-[40%] left-1/3 text-white text-center bg-transparent">
+                          {post?.sectionSevenTitle}
+                        </div>
+
+                        <Image
+                          className="rounded-md object-cover"
+                          src={post?.sectionSevenImage}
+                          fill={true}
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          alt="imagen de producto"
+                        />
+                        {/* overlay */}
+                        <div className="min-h-[100%] absolute z-[1] min-w-[100%] top-0 left-0 bg-black bg-opacity-30" />
+                      </div>
+                      <div className="font-bold font-EB_Garamond text-xl flex flex-row items-center gap-1 w-full mb-5">
+                        {post?.sectionSevenParagraph}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </AnimationWrapper>
         </div>
       </main>
     </div>

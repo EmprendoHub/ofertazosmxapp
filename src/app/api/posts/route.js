@@ -22,7 +22,7 @@ export async function GET(request) {
       postQuery = Post.find({ published: true });
     }
 
-    const resPerPage = 5;
+    const resPerPage = 10;
     // Extract page and per_page from request URL
     const page = Number(request.nextUrl.searchParams.get('page')) || 1;
     // total number of documents in database

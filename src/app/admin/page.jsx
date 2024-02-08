@@ -30,6 +30,15 @@ const ProfilePage = async () => {
   const affiliates = data?.affiliates;
   const orders = data?.orders;
   const posts = data?.posts;
+  const orderCountPreviousMonth = data?.orderCountPreviousMonth;
+  const affiliateCountPreviousMonth = data?.affiliateCountPreviousMonth;
+  const postCountPreviousMonth = data?.postCountPreviousMonth;
+  const clientCountPreviousMonth = data?.clientCountPreviousMonth;
+  const totalOrderCount = data?.totalOrderCount;
+  const totalAffiliateCount = data?.totalAffiliateCount;
+  const totalProductCount = data?.totalProductCount;
+  const totalClientCount = data?.totalClientCount;
+  const totalPostCount = data?.totalPostCount;
   return (
     <>
       <Profile />
@@ -39,6 +48,15 @@ const ProfilePage = async () => {
         orders={orders}
         products={products}
         posts={posts}
+        orderCountPreviousMonth={orderCountPreviousMonth}
+        affiliateCountPreviousMonth={affiliateCountPreviousMonth}
+        postCountPreviousMonth={postCountPreviousMonth}
+        clientCountPreviousMonth={clientCountPreviousMonth}
+        totalOrderCount={totalOrderCount}
+        totalAffiliateCount={totalAffiliateCount}
+        totalProductCount={totalProductCount}
+        totalClientCount={totalClientCount}
+        totalPostCount={totalPostCount}
       />
     </>
   );

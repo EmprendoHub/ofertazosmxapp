@@ -2,6 +2,10 @@ import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema(
   {
+    active: {
+      default: true,
+      type: Boolean,
+    },
     name: {
       type: String,
       require: true,
@@ -10,6 +14,9 @@ const UserSchema = new mongoose.Schema(
       type: String,
       require: true,
       unique: true,
+    },
+    phone: {
+      type: String,
     },
     stripe_id: {
       type: String,
@@ -22,6 +29,29 @@ const UserSchema = new mongoose.Schema(
     avatar: {
       public_id: String,
       url: String,
+    },
+    favorites: [
+      {
+        _id: {
+          type: String,
+        },
+        title: {
+          type: String,
+        },
+        price: {
+          type: Number,
+        },
+        images: [
+          {
+            url: {
+              type: String,
+            },
+          },
+        ],
+      },
+    ],
+    points: {
+      type: Number,
     },
     role: {
       type: String,

@@ -1,7 +1,7 @@
 'use client';
 import React, { useContext } from 'react';
 import Link from 'next/link';
-import { IoMdCart } from 'react-icons/io';
+import { IoMdCart, IoMdHeart } from 'react-icons/io';
 import { AiOutlineUser, AiOutlineMail } from 'react-icons/ai';
 import { FiLogOut } from 'react-icons/fi';
 import { useSession, signOut } from 'next-auth/react';
@@ -23,9 +23,11 @@ const MiniMenuComponent = () => {
 
   const isLoggedIn = Boolean(session?.user);
 
-  const { productsData, emailListData } = useSelector((state) => state.compras);
+  const { productsData, favoritesData, emailListData } = useSelector(
+    (state) => state.compras
+  );
 
-  const [totalAmt, setTotalAmt] = useState(0);
+  const [totalCartAmt, setTotalCartAmt] = useState(0);
 
   useEffect(() => {
     let amt = 0;
@@ -33,7 +35,7 @@ const MiniMenuComponent = () => {
       amt += item.price * item.quantity;
       return;
     });
-    setTotalAmt(amt);
+    setTotalCartAmt(amt);
   }, [productsData]);
 
   return (
@@ -93,17 +95,28 @@ const MiniMenuComponent = () => {
 
         {/* Cart Button */}
         {isLoggedIn && session?.user.role != 'manager' ? (
-          <Link href={'/carrito'}>
-            <div className="bg-gray-100 hover:bg-slate-100 rounded-full text-slate-800 hover:text-black flex items-center justify-center gap-x-1 px-1 py-1.5 border-[1px]  border-gray-100 hover:border-slate-600 ease-in-out duration-300 cursor-pointer">
-              <IoMdCart className="text-xl" />
-              <p className="text-sm maxsm:hidden">
-                <FormattedPrice amount={totalAmt ? totalAmt : 0} />
-              </p>
-              <span className="bg-white text-black rounded-full font-bold text-xs relative -right-2 -top-2 flex items-center justify-center w-4 h-5 shadow-xl ">
-                {productsData ? productsData?.length : 0}
-              </span>
-            </div>
-          </Link>
+          <div className="flex items-center gap-x-3">
+            <Link href={'/carrito'}>
+              <div className="bg-gray-100 hover:bg-slate-100 rounded-full text-slate-800 hover:text-black flex items-center justify-center gap-x-1 px-1 py-1.5 border-[1px]  border-gray-100 hover:border-slate-600 ease-in-out duration-300 cursor-pointer">
+                <IoMdCart className="text-xl" />
+                <p className="text-sm maxsm:hidden">
+                  <FormattedPrice amount={totalCartAmt ? totalCartAmt : 0} />
+                </p>
+                <span className="bg-white text-black rounded-full font-bold text-xs relative -right-2 -top-2 flex items-center justify-center w-4 h-5 shadow-xl ">
+                  {productsData ? productsData?.length : 0}
+                </span>
+              </div>
+            </Link>
+            {/* favorites Button */}
+            <Link href={'/perfil/favoritos'}>
+              <div className="  flex items-center justify-center  ease-in-out duration-300 cursor-pointer">
+                <IoMdHeart className="text-xl" />
+                <span className="bg-white text-black rounded-full font-bold text-xs relative  -top-2 flex items-center justify-center w-4 h-5 shadow-xl ">
+                  {favoritesData ? favoritesData?.length : 0}
+                </span>
+              </div>
+            </Link>
+          </div>
         ) : (
           ''
         )}

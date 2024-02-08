@@ -1,7 +1,7 @@
 import React from 'react';
-import ProductDetailsComponent from '@/components/products/ProductDetailsComponent';
 import { cookies } from 'next/headers';
 import { getSessionCookiesName } from '@/backend/helpers';
+import ProductComponent from '@/components/products/ProductComponent';
 
 const getOneProductDetails = async (id, currentCookies) => {
   const URL = `${process.env.NEXTAUTH_URL}/api/product?${id}`;
@@ -30,10 +30,10 @@ const ProductDetailsPage = async ({ params }) => {
   const product = data?.product;
   const trendingProducts = data?.trendingProducts;
   return (
-    <ProductDetailsComponent
-      product={product}
-      trendingProducts={trendingProducts}
-    />
+    <>
+      <ProductComponent product={product} trendingProducts={trendingProducts} />
+      {/* <ImageSlider /> */}
+    </>
   );
 };
 

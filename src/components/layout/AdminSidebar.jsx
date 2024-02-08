@@ -34,7 +34,9 @@ const AdminSidebar = () => {
           <li className="flex flex-row items-center gap-x-3 ">
             <MdOutlineDashboard className="text-2xl text-black" />
 
-            <div className="maxmd:hidden">Panel de Control</div>
+            <div className="maxmd:hidden  font-EB_Garamond">
+              Panel de Control
+            </div>
           </li>
         </Link>
         <button
@@ -78,7 +80,7 @@ const AdminSidebar = () => {
           </li>
         </Link>
         <Link
-          href="/admin/blog/nuevo"
+          href="/admin/blog/editor"
           className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
         >
           <li className="flex flex-row items-center gap-x-3">
@@ -108,16 +110,6 @@ const AdminSidebar = () => {
             <PiUserListLight className="text-2xl text-black" />
 
             <div className="maxmd:hidden">Afiliados</div>
-          </li>
-        </Link>
-        <Link
-          href="/admin/correos"
-          className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
-        >
-          <li className="flex flex-row items-center gap-x-3">
-            <SiAmazonsimpleemailservice className="text-2xl text-black" />
-
-            <div className="maxmd:hidden">Correos</div>
           </li>
         </Link>
         <Link

@@ -1,3 +1,21 @@
+export const cx = (...classNames) => classNames.filter(Boolean).join(' ');
+
+export const sortBlogs = (blogs) => {
+  return blogs.slice().sort((a, b) => {
+    const dateA = new Date(a.createdAt);
+    const dateB = new Date(b.createdAt);
+
+    // Compare dates in descending order
+    if (dateA > dateB) {
+      return -1;
+    } else if (dateA < dateB) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
+};
+
 export const calculatePercentage = (oldPrice, price) => {
   return !!parseFloat(price) && !!parseFloat(oldPrice)
     ? (100 - (oldPrice / price) * 100).toFixed(0)

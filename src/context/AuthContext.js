@@ -468,6 +468,24 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const getUserFavorites = async (favoritesData, session) => {
+    try {
+      const stringSession = JSON.stringify(session);
+      const stringFavorites = JSON.stringify(favoritesData);
+      const URL = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/client`;
+      const res = await fetch(URL, {
+        headers: {
+          Session: stringSession,
+          Favorites: stringFavorites,
+        },
+      });
+      const data = res.json();
+      return data;
+    } catch (error) {
+      console.log(error?.response?.data?.message);
+    }
+  };
+
   const updateAddress = async (address) => {
     try {
       const { data } = await axios.put(
@@ -812,6 +830,7 @@ export const AuthProvider = ({ children }) => {
         registerAffiliateUser,
         getAllAffiliates,
         deleteAffiliate,
+        getUserFavorites,
       }}
     >
       {children}

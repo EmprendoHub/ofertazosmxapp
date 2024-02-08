@@ -8,7 +8,22 @@ import {
   HiOutlineUserGroup,
 } from 'react-icons/hi';
 
-const DashComponent = ({ clients, affiliates, orders, products, posts }) => {
+const DashComponent = ({
+  clients,
+  affiliates,
+  orders,
+  products,
+  posts,
+  orderCountPreviousMonth,
+  affiliateCountPreviousMonth,
+  postCountPreviousMonth,
+  clientCountPreviousMonth,
+  totalOrderCount,
+  totalAffiliateCount,
+  totalProductCount,
+  totalClientCount,
+  totalPostCount,
+}) => {
   return (
     <div className="p-3 md:mx-auto  text-slate-300">
       <div className="flex-wrap flex gap-4 justify-start">
@@ -18,14 +33,14 @@ const DashComponent = ({ clients, affiliates, orders, products, posts }) => {
               <h3 className="text-gray-500 text-md uppercase">
                 Clientes Totales
               </h3>
-              <p className="text-2xl  text-slate-300">{clients?.length}</p>
+              <p className="text-2xl  text-slate-300">{totalClientCount}</p>
             </div>
             <HiOutlineUserGroup className="bg-teal-600  text-white rounded-full text-5xl p-3 shadow-lg" />
           </div>
           <div className="flex  gap-2 text-sm">
             <span className="text-green-500 flex items-center">
               <HiArrowNarrowUp />
-              {clients?.length}
+              {clientCountPreviousMonth}
             </span>
             <div className="text-gray-500">Mes Anterior</div>
           </div>
@@ -36,14 +51,14 @@ const DashComponent = ({ clients, affiliates, orders, products, posts }) => {
               <h3 className="text-gray-500 text-md uppercase">
                 Pedidos Totales
               </h3>
-              <p className="text-2xl text-slate-300">{orders?.length}</p>
+              <p className="text-2xl text-slate-300">{totalOrderCount}</p>
             </div>
             <HiOutlineUserGroup className="bg-teal-600  text-white rounded-full text-5xl p-3 shadow-lg" />
           </div>
           <div className="flex  gap-2 text-sm">
             <span className="text-green-500 flex items-center">
               <HiArrowNarrowUp />
-              {orders?.length}
+              {orderCountPreviousMonth}
             </span>
             <div className="text-gray-500">Mes Anterior</div>
           </div>
@@ -54,14 +69,14 @@ const DashComponent = ({ clients, affiliates, orders, products, posts }) => {
               <h3 className="text-gray-500 text-md uppercase">
                 Total de Afiliados
               </h3>
-              <p className="text-2xl  text-slate-300">{affiliates?.length}</p>
+              <p className="text-2xl  text-slate-300">{totalAffiliateCount}</p>
             </div>
             <HiAnnotation className="bg-indigo-600  text-white rounded-full text-5xl p-3 shadow-lg" />
           </div>
           <div className="flex  gap-2 text-sm">
             <span className="text-green-500 flex items-center">
               <HiArrowNarrowUp />
-              {affiliates?.length}
+              {affiliateCountPreviousMonth}
             </span>
             <div className="text-gray-500">Mes Anterior</div>
           </div>
@@ -72,30 +87,30 @@ const DashComponent = ({ clients, affiliates, orders, products, posts }) => {
               <h3 className="text-gray-500 text-md uppercase">
                 Total de Publicaciones
               </h3>
-              <p className="text-2xl  text-slate-300">{posts?.length}</p>
+              <p className="text-2xl  text-slate-300">{totalPostCount}</p>
             </div>
-            <HiDocumentText className="bg-lime-600  text-white rounded-full text-5xl p-3 shadow-lg" />
+            <HiDocumentText className="bg-lime-600 text-white rounded-full text-5xl p-3 shadow-lg" />
           </div>
           <div className="flex  gap-2 text-sm">
             <span className="text-green-500 flex items-center">
               <HiArrowNarrowUp />
-              {posts?.length}
+              {postCountPreviousMonth}
             </span>
             <div className="text-gray-500">Mes Anterior</div>
           </div>
         </div>
       </div>
       <div className="flex flex-wrap gap-4 py-3 mx-auto justify-start">
-        <div className="flex flex-col w-full md:w-auto shadow-md p-2 rounded-md dark:bg-gray-800">
+        <div className="flex flex-col w-72 maxmd:w-full shadow-md p-5 rounded-md dark:bg-gray-800">
           <div className="flex justify-between  p-5 text-sm font-semibold">
             <h1 className="text-center p-2">Clientes Recientes</h1>
             <button>
-              <Link href={'/admin/clients'}>Ver Todos</Link>
+              <Link href={'/admin/clientes'}>Ver Todos</Link>
             </button>
           </div>
           <table>
             <thead className=" text-slate-300">
-              <tr>
+              <tr className="flex justify-between items-center">
                 <th>Img.</th>
                 <th>Nombre</th>
               </tr>
@@ -103,7 +118,7 @@ const DashComponent = ({ clients, affiliates, orders, products, posts }) => {
             {clients &&
               clients.map((client) => (
                 <tbody key={client._id} className="divide-y">
-                  <tr className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                  <tr className="bg-white dark:border-gray-700 dark:bg-gray-800 flex justify-between items-center">
                     <td>
                       <Image
                         src={client.avatar || '/next.svg'}
@@ -121,9 +136,34 @@ const DashComponent = ({ clients, affiliates, orders, products, posts }) => {
               ))}
           </table>
         </div>
-        <div className="flex flex-col p-5 w-full md:w-auto shadow-md rounded-md dark:bg-gray-800">
+        <div className="flex flex-col w-72 maxmd:w-full shadow-md p-5 rounded-md dark:bg-gray-800">
           <div className="flex justify-between  p-3 text-sm font-semibold">
-            <h1 className="text-slate-300">Afiliados Recientes</h1>
+            <h1 className="text-center">Pedidos recientes</h1>
+            <button>
+              <Link href={'/admin/pedidos'}>Ver todos</Link>
+            </button>
+          </div>
+          <table>
+            <thead>
+              <tr className="flex justify-between mb-4">
+                <th>No.</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            {orders &&
+              orders.map((order) => (
+                <tbody key={order._id} className="divide-y">
+                  <tr className="bg-white flex justify-between dark:border-gray-700 dark:bg-gray-800">
+                    <td>{order.orderId}</td>
+                    <td>{order.orderStatus}</td>
+                  </tr>
+                </tbody>
+              ))}
+          </table>
+        </div>
+        <div className="flex flex-col w-72 maxmd:w-full shadow-md p-5 rounded-md dark:bg-gray-800">
+          <div className="flex justify-between text-sm font-semibold">
+            <h1 className="text-center">Afiliados Recientes</h1>
             <button>
               <Link href={'/admin/asociados'}>Ver Todos</Link>
             </button>
@@ -156,44 +196,19 @@ const DashComponent = ({ clients, affiliates, orders, products, posts }) => {
               </tr>
             </thead>
             {posts &&
-              posts.map((post) => (
-                <tbody key={post._id} className="divide-y">
+              posts?.map((post) => (
+                <tbody key={post?._id} className="divide-y">
                   <tr className="bg-white flex justify-between dark:border-gray-700 dark:bg-gray-800">
                     <td>
                       <Image
-                        src={post.images[0].url || '/next.svg'}
+                        src={post?.mainImage || '/next.svg'}
                         alt="user"
                         width={400}
                         height={400}
                         className="w-14 h-10 rounded-md bg-gray-500"
                       />
                     </td>
-                    <td>{post.title.substring(0, 20)}...</td>
-                  </tr>
-                </tbody>
-              ))}
-          </table>
-        </div>
-        <div className="flex flex-col w-auto shadow-md p-5 rounded-md dark:bg-gray-800">
-          <div className="flex justify-between  p-3 text-sm font-semibold">
-            <h1 className="text-center">Publicaciones recientes</h1>
-            <button>
-              <Link href={'/admin/blog'}>Ver todas</Link>
-            </button>
-          </div>
-          <table>
-            <thead>
-              <tr className="flex justify-between mb-4">
-                <th>No.</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            {orders &&
-              orders.map((order) => (
-                <tbody key={order._id} className="divide-y">
-                  <tr className="bg-white flex justify-between dark:border-gray-700 dark:bg-gray-800">
-                    <td>{order.orderId}</td>
-                    <td>{order.orderStatus}</td>
+                    <td>{post.mainTitle.substring(0, 20)}...</td>
                   </tr>
                 </tbody>
               ))}

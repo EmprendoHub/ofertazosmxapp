@@ -58,7 +58,9 @@ const CheckOutForm = () => {
           <li>
             <div className="border-b-[1px] border-b-slate-300 py-2">
               <div className="flex items-center justify-between">
-                <p className="uppercase font-medium">Apártalo por</p>
+                <p className=" font-medium font-EB_Garamond">
+                  Apártalo por solo
+                </p>
                 <p>
                   <FormattedPrice amount={layawayAmount} />
                 </p>
@@ -78,7 +80,7 @@ const CheckOutForm = () => {
 
             <Link
               href="/tienda"
-              className="px-4 mt-3 py-3 inline-block text-lg w-full text-center font-medium bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 text-black"
+              className="px-4 mt-3 py-3 inline-block text-lg w-full text-center font-medium bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 text-black font-EB_Garamond"
             >
               Regresar a la Tienda
             </Link>
@@ -98,7 +100,7 @@ const CheckOutForm = () => {
                 </Link>
                 <Link
                   href="/tienda"
-                  className="px-4 py-3 inline-block text-lg w-full text-center font-medium bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 text-black"
+                  className="px-4 py-3 inline-block text-lg w-full text-center font-medium bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 text-black font-EB_Garamond"
                 >
                   Regresar a la Tienda
                 </Link>

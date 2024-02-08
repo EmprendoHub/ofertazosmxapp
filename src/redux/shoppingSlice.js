@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   productsData: [],
+  favoritesData: [],
   userInfo: null,
   shippingInfo: null,
   orderData: [],
@@ -21,6 +22,18 @@ export const shoppingSlice = createSlice({
         existingProduct.quantity += action.payload.quantity;
       } else {
         state.productsData.push(action.payload);
+      }
+    },
+    addToFavorites: (state, action) => {
+      const existingProduct = state.favoritesData.find(
+        (item) => item._id === action.payload._id
+      );
+      if (existingProduct) {
+        state.favoritesData = state.favoritesData.filter(
+          (item) => item._id !== action.payload._id
+        );
+      } else {
+        state.favoritesData.push(action.payload);
       }
     },
     increaseQuantity: (state, action) => {
@@ -47,8 +60,16 @@ export const shoppingSlice = createSlice({
         (item) => item._id !== action.payload
       );
     },
+    deleteFavorite: (state, action) => {
+      state.favoritesData = state.favoritesData.filter(
+        (item) => item._id !== action.payload
+      );
+    },
     resetCart: (state) => {
       state.productsData = [];
+    },
+    resetFavorites: (state) => {
+      state.favoritesData = [];
     },
     addUser: (state, action) => {
       state.userInfo = action.payload;
@@ -67,6 +88,9 @@ export const shoppingSlice = createSlice({
     },
     repopulateCart: (state, action) => {
       state.productsData.push(action.payload);
+    },
+    repopulateFavorites: (state, action) => {
+      state.favoritesData.push(action.payload);
     },
     resetOrder: (state) => {
       state.orderData = {};
@@ -112,6 +136,10 @@ export const {
   saveEmailReceiver,
   removeEmailReceiver,
   resetEmailReceiver,
+  repopulateFavorites,
+  resetFavorites,
+  deleteFavorite,
+  addToFavorites,
 } = shoppingSlice.actions;
 
 export default shoppingSlice.reducer;

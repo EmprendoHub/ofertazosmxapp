@@ -1,5 +1,6 @@
 import React from 'react';
 import UpdatePostDetails from '@/components/blog/UpdatePostDetails';
+import BlogPublishedComponent from '@/components/blog/BlogPublishedComponent';
 
 const getOnePostDetails = async (id) => {
   const URL = `${process.env.NEXTAUTH_URL}/api/post?${id}`;
@@ -11,7 +12,7 @@ const getOnePostDetails = async (id) => {
 const PostDetailsPage = async ({ params }) => {
   const post = await getOnePostDetails(params.id);
 
-  return <UpdatePostDetails post={post} />;
+  return <BlogPublishedComponent post={post} />;
 };
 
 export default PostDetailsPage;

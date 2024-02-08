@@ -186,7 +186,6 @@ export const POST = async (request) => {
 
     //await Order.create(orderData);
     const newOrder = await new Order(orderData);
-    await newOrder.save();
 
     if (isLayaway) {
       session = await stripe.checkout.sessions.create({
@@ -266,6 +265,8 @@ export const POST = async (request) => {
         line_items,
       });
     }
+
+    await newOrder.save();
 
     return NextResponse.json({
       message: 'Connection is active',

@@ -3,7 +3,7 @@ import ViewUserOrders from '@/components/orders/ViewUserOrders';
 import { cookies } from 'next/headers';
 import React from 'react';
 
-const ProductDetailsPage = async ({ searchParams, params }) => {
+const ClientDetailsPage = async ({ searchParams, params }) => {
   const nextCookies = cookies();
   const cookieName = getSessionCookiesName();
   let nextAuthSessionToken = nextCookies.get(cookieName);
@@ -21,4 +21,4 @@ const ProductDetailsPage = async ({ searchParams, params }) => {
   );
 };
 
-export default ProductDetailsPage;
+export default ClientDetailsPage;

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useDropzone } from 'react-dropzone';
 import { FaWindowClose, FaArrowUp } from 'react-icons/fa';
 import { cstDateTimeClient } from '@/backend/helpers';
-import { addPost } from '@/app/_actions';
+//import { addPost } from '@/app/_actions';
 import { useRouter } from 'next/navigation';
 
 const NewPostComponent = () => {
@@ -99,6 +99,9 @@ const NewPostComponent = () => {
     const endpoint = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/minio`;
     const data = await fetch(endpoint, {
       method: 'POST',
+      headers: {
+        Type: 'posts',
+      },
       body: imageFormData,
     }).then((res) => res.json());
 
@@ -116,7 +119,7 @@ const NewPostComponent = () => {
     formData.append('createdAt', createdAt);
     // write to database using server actions
 
-    const result = await addPost(formData);
+    //const result = await addPost(formData);
     if (result?.error) {
       setValidationError(result.error);
     } else {

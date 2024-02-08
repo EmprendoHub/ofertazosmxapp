@@ -5,6 +5,7 @@ import { getToken } from 'next-auth/jwt';
 import { join } from 'path';
 import { writeFile } from 'fs/promises';
 import { mc } from '@/lib/minio';
+import Product from '@/backend/models/Product';
 
 // Put a file in bucket my-bucketname.
 const uploadToBucket = async (folder, filename, file) => {
@@ -25,16 +26,22 @@ const uploadToBucket = async (folder, filename, file) => {
 };
 
 export const GET = async (req) => {
-  await dbConnect();
-
-  const _id = await req.url.split('?')[1];
-
   try {
+    await dbConnect();
+
+    const _id = await req.url.split('?')[1];
+
     const post = await Post?.findOne({ _id });
+    // Find products matching any of the tag values
+    const trendingProducts = await Product.find({
+      'tags.value': post.category,
+    }).limit(4);
+
     const response = NextResponse.json({
       message: 'One Post fetched successfully',
       success: true,
       post,
+      trendingProducts,
     });
     return response;
   } catch (error) {

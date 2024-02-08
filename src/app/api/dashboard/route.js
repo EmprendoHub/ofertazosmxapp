@@ -6,6 +6,64 @@ import User from '@/backend/models/User';
 import dbConnect from '@/lib/db';
 import { NextResponse } from 'next/server';
 
+// Function to get the document count for all from the previous month
+const getDocumentCountPreviousMonth = async (model) => {
+  const now = new Date();
+  const firstDayOfPreviousMonth = new Date(
+    now.getFullYear(),
+    now.getMonth() - 1,
+    1
+  );
+  const lastDayOfPreviousMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+
+  try {
+    const documentCount = await model.countDocuments(
+      {
+        createdAt: {
+          $gte: firstDayOfPreviousMonth,
+          $lte: lastDayOfPreviousMonth,
+        },
+      },
+      {
+        published: { $ne: 'false' },
+      }
+    );
+
+    return documentCount;
+  } catch (error) {
+    console.error('Error counting documents from the previous month:', error);
+    throw error;
+  }
+};
+
+// Function to get the document count for all orders from the previous month
+const getClientCountPreviousMonth = async () => {
+  const now = new Date();
+  const firstDayOfPreviousMonth = new Date(
+    now.getFullYear(),
+    now.getMonth() - 1,
+    1
+  );
+  const lastDayOfPreviousMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+
+  try {
+    const clientCount = await User.countDocuments(
+      {
+        createdAt: {
+          $gte: firstDayOfPreviousMonth,
+          $lte: lastDayOfPreviousMonth,
+        },
+      },
+      { role: 'cliente' }
+    );
+
+    return clientCount;
+  } catch (error) {
+    console.error('Error counting clients from the previous month:', error);
+    throw error;
+  }
+};
+
 export const GET = async (request, res) => {
   const sessionRaw = await request.headers.get('session');
   const session = JSON.parse(sessionRaw);
@@ -25,67 +83,60 @@ export const GET = async (request, res) => {
     let posts;
 
     if (session?.user?.role === 'manager') {
-      orders = await Order.find({ orderStatus: { $ne: 'Cancelado' } });
-      affiliates = await Affiliate.find({ published: { $ne: 'false' } });
-      products = await Product.find({ published: { $ne: 'false' } });
-      clients = await User.find({ role: 'cliente' });
-      posts = await Post.find({ published: { $ne: 'false' } });
+      orders = await Order.find({ orderStatus: { $ne: 'Cancelado' } })
+        .sort({ createdAt: -1 }) // Sort in descending order of creation date
+        .limit(5);
+      affiliates = await Affiliate.find({ published: { $ne: 'false' } })
+        .sort({ createdAt: -1 }) // Sort in descending order of creation date
+        .limit(5);
+      products = await Product.find({ published: { $ne: 'false' } })
+        .sort({ createdAt: -1 }) // Sort in descending order of creation date
+        .limit(5);
+      clients = await User.find({ role: 'cliente' })
+        .sort({ createdAt: -1 }) // Sort in descending order of creation date
+        .limit(5);
+      posts = await Post.find({ published: { $ne: 'false' } })
+        .sort({ createdAt: -1 }) // Sort in descending order of creation date
+        .limit(5);
 
-      const totalOrderCount = orders.length;
-      const totalAffiliateCount = affiliates.length;
-      const totalProductCount = products.length;
-      const totalClientCount = clients.length;
-      const totalPostCount = posts.length;
+      const totalOrderCount = await Order.countDocuments({
+        orderStatus: { $ne: 'Cancelado' },
+      });
+      const totalAffiliateCount = await Affiliate.countDocuments({
+        published: { $ne: 'false' },
+      });
+      const totalProductCount = await Product.countDocuments({
+        published: { $ne: 'false' },
+      });
+      const totalClientCount = await User.countDocuments({ role: 'cliente' });
+      const totalPostCount = await Post.countDocuments({
+        published: { $ne: 'false' },
+      });
 
-      // Apply descending order based on a specific field (e.g., createdAt)
-      //   orders = await orders.sort({ createdAt: -1 });
-      //   affiliates = await affiliates.sort({ createdAt: -1 });
-      //   products = await products.sort({ createdAt: -1 });
-      //   clients = await clients.sort({ createdAt: -1 });
-
-      // await Promise.all(
-      //   ordersData.map(async (order) => {
-      //     let shippingInfo = await Address.findOne({
-      //       _id: order.shippingInfo,
-      //     });
-      //     let user = await User.findOne({ _id: order.user });
-      //     order.shippingInfo = shippingInfo;
-      //     order.user = user;
-      //   })
-      // );
-
-      // descending order
-      // const sortedOrders = ordersData
-      //   .slice()
-      //   .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-      // If you want a new sorted array without modifying the original one, use slice
-      orders = await orders
-        .slice()
-        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
-      affiliates = await affiliates
-        .slice()
-        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
-      products = await products
-        .slice()
-        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
-      clients = await clients
-        .slice()
-        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      const orderCountPreviousMonth = await getDocumentCountPreviousMonth(
+        Order
+      );
+      const affiliateCountPreviousMonth = await getDocumentCountPreviousMonth(
+        Affiliate
+      );
+      const postCountPreviousMonth = await getDocumentCountPreviousMonth(Post);
+      const clientCountPreviousMonth = await getClientCountPreviousMonth();
 
       const dataPacket = {
         orders,
         totalOrderCount,
+        orderCountPreviousMonth,
         affiliates,
         totalAffiliateCount,
+        affiliateCountPreviousMonth,
         products,
         totalProductCount,
         clients,
         totalClientCount,
+        clientCountPreviousMonth,
         posts,
         totalPostCount,
+        postCountPreviousMonth,
       };
       return new Response(JSON.stringify(dataPacket), { status: 201 });
     }

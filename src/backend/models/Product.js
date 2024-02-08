@@ -16,9 +16,22 @@ const ProductSchema = new mongoose.Schema({
     require: true,
     type: String,
   },
+  tags: [
+    {
+      value: {
+        type: String,
+      },
+      label: {
+        type: String,
+      },
+    },
+  ],
   colors: [
     {
       value: {
+        type: String,
+      },
+      label: {
         type: String,
       },
       hex: {
@@ -60,7 +73,7 @@ const ProductSchema = new mongoose.Schema({
   },
   rating: {
     type: Number,
-    default: 5,
+    default: 0,
   },
   price: {
     require: true,
@@ -87,7 +100,7 @@ const ProductSchema = new mongoose.Schema({
     default: true,
   },
   featured: {
-    type: 'String',
+    type: String,
     default: 'no',
   },
   quantity: {

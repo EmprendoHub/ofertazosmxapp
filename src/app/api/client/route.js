@@ -1,23 +1,32 @@
 import dbConnect from '@/lib/db';
 import User from '@/backend/models/User';
+import Product from '@/backend/models/Product';
 
-export async function DELETE(req) {
-  const sessionData = req.headers.get('x-mysession-key');
-  const session = JSON.parse(sessionData);
-  if (session) {
-    try {
-      await dbConnect();
-      const urlData = await req.url.split('?');
-      const id = urlData[1];
-      const deleteUser = await User.findByIdAndDelete(id);
-      return new Response(JSON.stringify(deleteUser), { status: 201 });
-    } catch (error) {
-      return new Response(JSON.stringify(error.message), { status: 500 });
-    }
-  } else {
+export async function GET(request) {
+  const sessionRaw = await request.headers.get('session');
+  const session = JSON.parse(sessionRaw);
+  if (!session) {
     // Not Signed in
     return new Response('You are not authorized, eh eh eh, no no no', {
       status: 400,
     });
+  }
+  try {
+    await dbConnect();
+    const favoritesRaw = await request.headers.get('favorites');
+    const newFavorites = JSON.parse(favoritesRaw);
+    const id = session.user._id;
+    const products = await Product.find({});
+
+    const uniqueFavorites = newFavorites.filter(
+      (favorite, index, self) =>
+        index === self.findIndex((t) => t._id === favorite._id)
+    );
+
+    // Extract values from the Map to get an array of unique objects
+    const uniqueObjects = Array.from(uniqueFavorites.values());
+    return new Response(JSON.stringify(uniqueObjects), { status: 201 });
+  } catch (error) {
+    return new Response(JSON.stringify(error.message), { status: 500 });
   }
 }

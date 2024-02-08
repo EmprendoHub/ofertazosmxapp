@@ -12,10 +12,10 @@ const uploadToBucket = async (folder, filename, file) => {
         console.log('Error from minio', err);
         reject(err);
       } else {
-        // console.log('Success uploading images to minio');
+        console.log('Success uploading images to minio', result);
         resolve({
           _id: result._id, // Make sure _id and url are properties of the result object
-          etag: result.etag,
+          url: result.url,
         });
       }
     });
@@ -27,7 +27,9 @@ export async function POST(request, res) {
   if (token && token.user.role === 'manager') {
     try {
       const images = await request.formData();
+
       // set image urls
+      const savedPostMinioBucketImages = [];
       const savedImagesResults = [];
 
       // upload images to bucket
@@ -56,6 +58,41 @@ export async function POST(request, res) {
         { status: 500 }
       );
     }
+  } else {
+    // Not Signed in
+    return new Response('You are not authorized, eh eh eh, no no no', {
+      status: 400,
+    });
+  }
+}
+
+export async function PUT(request, res) {
+  const token = await getToken({ req: request });
+  const name = await request.headers.get('name');
+  if (token && token.user.role === 'manager') {
+    const url = await new Promise((resolve, reject) => {
+      mc.presignedPutObject(
+        'uploads', // bucket name
+        name,
+        900, // 15 min expiry
+        function (err, url) {
+          if (err) {
+            console.log('Error from minio', err);
+            reject(err);
+          } else {
+            console.log('Success presigned Url');
+            resolve(url);
+          }
+        }
+      );
+    });
+    const response = NextResponse.json({
+      message: 'Las imágenes se subieron con éxito.',
+      success: true,
+      url: url,
+    });
+
+    return response;
   } else {
     // Not Signed in
     return new Response('You are not authorized, eh eh eh, no no no', {

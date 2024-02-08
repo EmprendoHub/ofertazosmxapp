@@ -1,12 +1,17 @@
 'use client';
 import Image from 'next/image';
 import 'react-toastify/dist/ReactToastify.css';
-import { calculatePercentage } from '@/backend/helpers';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { addToFavorites } from '@/redux/shoppingSlice';
+import { useDispatch } from 'react-redux';
+import { IoMdHeart } from 'react-icons/io';
+import { Bounce, toast } from 'react-toastify';
+import { calculatePercentage } from '@/backend/helpers';
 
 const ProductCard = ({ item }) => {
+  const dispatch = useDispatch();
   return (
     <motion.div
       initial={{ y: 30, opacity: 0 }}
@@ -48,11 +53,22 @@ const ProductCard = ({ item }) => {
         </div>
       </Link>
       <div className=" px-4 py-4 flex flex-col bg-gray-100 rounded-b-sm">
-        {/* star icons
-            <div className="flex items-center gap-x-1">{startArray}</div> */}
-        <p className="text-black tracking-widest font-EB_Garamond text-xl">
-          {item?.title.substring(0, 20) + '...'}
-        </p>
+        <div className="flex items-center justify-between gap-x-1">
+          <p className="text-black tracking-widest font-EB_Garamond text-xl">
+            {item?.title.substring(0, 15) + '...'}
+          </p>
+          <div className="flex items-center justify-between my-5">
+            {/* add to favorites button */}
+            <motion.button
+              whileHover={{ scale: 1.07 }}
+              whileTap={{ scale: 0.9 }}
+              className="bg-black h-7 w-7 text-sm flex flex-row rounded-full justify-center gap-x-2 items-center tracking-wide text-slate-100 hover:bg-black hover:text-white duration-500"
+              onClick={() => dispatch(addToFavorites(item))}
+            >
+              <IoMdHeart className="" />
+            </motion.button>
+          </div>
+        </div>
 
         <div className="pricing-class flex fle-row items-center gap-x-2">
           <div className="flex flex-col gap-y-1">
@@ -90,30 +106,6 @@ const ProductCard = ({ item }) => {
             />{' '}
             (30%)
           </p>
-        </div>
-        <div className="flex items-center justify-between my-5">
-          {/* add to cart button */}
-          {/* <motion.button
-            whileHover={{ scale: 1.07 }}
-            whileTap={{ scale: 0.9 }}
-            className="bg-black px-4 py-2 text-sm flex flex-row justify-between gap-x-2 items-center tracking-wide rounded-sm text-slate-100 hover:bg-black hover:text-white duration-500"
-            onClick={() =>
-              dispatch(addToCart(item)) &&
-              toast.success(
-                `${item?.title.substring(0, 15)} se agrego al carrito!`,
-                {
-                  position: toast.POSITION.TOP_CENTER,
-                  className: 'foo-bar',
-                  theme: 'dark',
-                  transition: Bounce,
-                }
-              ) &&
-              router.push('/carrito')
-            }
-          >
-            Agregar a carrito
-            <IoMdCart className="" />
-          </motion.button> */}
         </div>
       </div>
     </motion.div>

@@ -26,14 +26,14 @@ const Cart = () => {
     <>
       <section className="py-5 sm:py-7 bg-gray-100">
         <div className="container max-w-screen-xl mx-auto px-4">
-          <h2 className="text-3xl font-semibold mb-2">
+          <h2 className="text-3xl font-semibold mb-2 font-EB_Garamond">
             {productsData?.length || 0} Artículos(s) en el Carrito
           </h2>
         </div>
       </section>
 
       {productsData?.length > 0 && (
-        <section className="py-10 bg-gray-100">
+        <section className="pb-10 bg-gray-100">
           <div className="container max-w-screen-xl mx-auto bg-white p-5">
             <div className="flex flex-col md:flex-row gap-4">
               <main className="md:w-3/4">

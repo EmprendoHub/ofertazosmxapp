@@ -10,12 +10,12 @@ import { useRouter } from 'next/navigation';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import { calculatePercentage } from '@/backend/helpers';
 import ProductCard from './ProductCard';
+import OverlaySlider from '../sliders/OverlaySlider';
 
 const ProductDetailsComponent = ({ product, trendingProducts }) => {
   const router = useRouter();
   const imageRef = useRef(null);
   const dispatch = useDispatch();
-  console.log(product?.colors);
   return (
     <div className="container-class maxsm:py-8">
       <main className="bg-gray-100 flex min-h-screen flex-col items-center justify-between">
@@ -130,7 +130,7 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
                     <div className="grid maxxsm:grid-cols-1 maxmd:grid-cols-2 grid-cols-4 gap-4 mt-2">
                       {product?.colors?.map((color, index) => (
                         <p key={index} className="text-black">
-                          {color.value}
+                          {color?.value}
                         </p>
                       ))}
                     </div>
@@ -142,7 +142,7 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
                       name="i_color-${index + 1}"
                     >
                       {product?.sizes.map((size, index) => (
-                        <option key={index} value={size.value}>
+                        <option key={size.value} value={size.value}>
                           {size.value}
                         </option>
                       ))}
@@ -217,12 +217,13 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
             </div>
           </div>
         </div>
-        <div className="px-8 maxsm:px-4 my-8 w-[80%]  mx-auto">
+
+        <div className="px-8 maxsm:px-4 mb-10 mt-40 w-[80%]  mx-auto">
           <p className="text-4xl font-EB_Garamond py-1 font-semibold">
             {'Productos destacados'}
           </p>
           <div className="grid maxxsm:grid-cols-1 maxmd:grid-cols-2 grid-cols-4 gap-4 mt-2">
-            {trendingProducts?.map((product) => (
+            {trendingProducts?.map((product, index) => (
               <ProductCard key={product._id} item={product} />
             ))}
           </div>

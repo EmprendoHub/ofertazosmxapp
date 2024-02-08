@@ -12,15 +12,39 @@ export const AddressEntrySchema = z.object({
 });
 
 export const PostEntrySchema = z.object({
+  mainTitle: z.string().min(5, { message: 'Se requiere el titulo' }),
+  category: z.string().min(3, { message: 'Se requiere la categoría' }),
+  mainImage: z
+    .string()
+    .min(3, { message: 'Se requiere la la imagen principal' }),
+  //summary: z.string().min(5, { message: 'Se requiere el resumen' }),
+  createdAt: z.date(),
+});
+
+export const PostUpdateSchema = z.object({
+  mainTitle: z.string().min(5, { message: 'Se requiere el titulo' }),
+  category: z.string().min(3, { message: 'Se requiere la categoría' }),
+  mainImage: z
+    .string()
+    .min(3, { message: 'Se requiere la la imagen principal' }),
+  //summary: z.string().min(5, { message: 'Se requiere el resumen' }),
+  updatedAt: z.date(),
+});
+
+export const ProductEntrySchema = z.object({
   title: z.string().min(5, { message: 'Se requiere el titulo' }),
-  category: z.string().min(3, { message: 'Se requiere la categoria' }),
-  mainImage: z.object({
-    url: z
-      .string()
-      .min(1, { message: 'La imagen principal debe tener una URL válida' }),
-  }),
+  description: z.string().min(3, { message: 'Se requiere la description' }),
+  brand: z.string().min(3, { message: 'Se requiere la marca' }),
+  category: z.string().min(3, { message: 'Se requiere la categoría' }),
+  colors: z.array(
+    z.object({ value: z.string(), label: z.string(), hex: z.string() })
+  ),
+  sizes: z.array(z.object({ value: z.string(), label: z.string() })),
+  tags: z.array(z.object({ value: z.string(), label: z.string() })),
   images: z.array(z.object({ url: z.string() })),
-  summary: z.string().min(5, { message: 'Se requiere el resumen' }),
-  content: z.string().min(5, { message: 'Se requiere contenido ' }),
+  gender: z.string().min(1, { message: 'Se requiere el genero' }),
+  stock: z.number(),
+  price: z.number(),
+  cost: z.number(),
   createdAt: z.date(),
 });

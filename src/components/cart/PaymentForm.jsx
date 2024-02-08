@@ -98,7 +98,9 @@ const PaymentForm = () => {
           <li>
             <div className="border-b-[1px] border-b-slate-300 py-2">
               <div className="flex items-center justify-between">
-                <p className="uppercase font-medium">Apártalo por</p>
+                <p className=" font-medium  font-EB_Garamond">
+                  Apártalo por solo
+                </p>
                 <p>
                   <FormattedPrice amount={layawayAmount} />
                 </p>

@@ -32,6 +32,16 @@ const Sidebar = () => {
           </li>
         </Link>
         <Link
+          href="/perfil/favoritos"
+          className="block px-3 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
+        >
+          <li className="flex flex-row items-center gap-x-3">
+            <FaListCheck className="text-2xl text-black" />
+
+            <div className="maxmd:hidden">Favoritos</div>
+          </li>
+        </Link>
+        <Link
           href="/perfil/direcciones/nueva"
           className="block px-3 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
         >

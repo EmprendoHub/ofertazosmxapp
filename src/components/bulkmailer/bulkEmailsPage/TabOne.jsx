@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Alert, Badge, Checkbox, LinearProgress } from '@mui/material';
 import UploadOne from './upload/uploadOne';
 import Feedback from './Feedback';
@@ -29,6 +29,12 @@ export default function TabOne() {
   });
   // MUI states
   const { emailListData } = useSelector((state) => state?.compras);
+  useEffect(() => {
+    if (emailListData.length <= 0) {
+      return router.push('/admin/clientes');
+    }
+  }, [emailListData]);
+
   const [checked, setChecked] = useState(false);
   const handleChange = (event) => {
     setChecked(event.target.checked);
