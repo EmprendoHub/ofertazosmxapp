@@ -24,7 +24,6 @@ export async function POST(req, res) {
       process.env.STRIPE_WEBHOOK_SECRET
     );
 
-    console.log('EVENT', event);
     const session = event.data.object;
 
     // credit card checkout
@@ -41,18 +40,16 @@ export async function POST(req, res) {
         _id: session?.metadata?.order,
       });
 
-      console.log('currentOrder', currentOrder);
-
       currentOrder?.orderItems.forEach(async (item) => {
         const productId = item.product.toString();
-        console.log(productId, 'productId');
-        // Update product quantity
-        await Product.updateOne(
+        // Find the product by its _id and update its stock
+        const updatedProduct = await Product.findOneAndUpdate(
           { _id: productId },
-          { $inc: { stock: -item.quantity } }
+          { $inc: { stock: -item.quantity } },
+          { new: true } // To return the updated document
         );
 
-        revalidatePath(`/producto/${updateProduct._id}`);
+        revalidatePath(`/producto/${updatedProduct._id}`);
       });
 
       let newPaymentAmount;
