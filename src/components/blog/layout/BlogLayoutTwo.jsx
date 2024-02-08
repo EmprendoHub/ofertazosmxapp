@@ -6,14 +6,14 @@ const BlogLayoutTwo = ({ blog }) => {
   return (
     <div className="group flex flex-row maxmd:flex-col gap-4 items-center text-dark dark:text-light">
       <Link
-        href={blog?.url || '/'}
+        href={`/blog/publicacion/${blog?._id}` || '/'}
         className="w-full  h-full rounded-xl overflow-hidden"
       >
         <Image
-          src={blog?.images[0].url || '/images/next.svg'}
+          src={blog?.mainImage || '/images/next.svg'}
           placeholder="blur"
-          blurDataURL={blog?.images[0].url || '/images/next.svg'}
-          alt={blog?.title}
+          blurDataURL={blog?.mainImage || '/images/next.svg'}
+          alt={blog?.mainTitle || 'img'}
           width={800}
           height={800}
           className="aspect-square w-full h-full object-cover object-center group-hover:scale-105 transition-all ease duration-300"
@@ -25,13 +25,16 @@ const BlogLayoutTwo = ({ blog }) => {
         <span className="inline-block font-black w-full uppercase text-accent dark:text-accentDark text-xs sm:text-sm">
           {blog?.category}
         </span>
-        <Link href={blog?.url || '/'} className="inline-block my-1">
+        <Link
+          href={`/blog/publicacion/${blog?._id}` || '/'}
+          className="inline-block my-1"
+        >
           <h2 className="font-semibold capitalize text-base sm:text-lg">
             <span
               className="bg-gradient-to-r font-EB_Garamond from-orange-400 to-orange-600 bg-[length:0px_2px]
                 group-hover:bg-[length:100%_2px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 "
             >
-              {blog?.title}
+              {blog?.mainTitle}
             </span>
           </h2>
         </Link>

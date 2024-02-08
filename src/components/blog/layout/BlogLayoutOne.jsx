@@ -11,10 +11,10 @@ const BlogLayoutOne = ({ blog }) => {
             "
       />
       <Image
-        src={blog?.images[0].url || '/images/next.svg'}
+        src={blog?.mainImage || '/images/next.svg'}
         placeholder="blur"
-        blurDataURL={blog?.images[0].url || '/images/next.svg'}
-        alt={blog?.title}
+        blurDataURL={blog?.mainImage || '/images/next.svg'}
+        alt={blog?.mainTitle || 'img'}
         width={800}
         height={800}
         className="w-full h-full object-center object-cover rounded-xl group-hover:scale-105 transition-all ease duration-300"
@@ -27,13 +27,13 @@ const BlogLayoutOne = ({ blog }) => {
           name={blog?.category}
           className="px-6 text-xs  maxsm:text-sm py-1 sm:py-2 !border text-white"
         />
-        <Link href={blog?.url || '/'} className="mt-6">
+        <Link href={`/blog/publicacion/${blog?._id}`} className="mt-6">
           <h2 className="font-bold capitalize text-sm xs:text-base sm:text-xl md:text-2xl text-light mt-2 sm:mt-4">
             <span
               className="bg-gradient-to-r text-white font-EB_Garamond from-orange-400 to-orange-600 bg-[length:0px_2px] dark:from-accentDark/50 dark:to-accentDark/50
                 group-hover:bg-[length:100%_2px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 "
             >
-              {blog?.title}
+              {blog?.mainTitle}
             </span>
           </h2>
         </Link>

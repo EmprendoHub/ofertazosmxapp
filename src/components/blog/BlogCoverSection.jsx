@@ -20,7 +20,7 @@ const BlogCoverSection = ({ blogs }) => {
           src={blog?.mainImage || '/images/next.svg'}
           placeholder="blur"
           blurDataURL={blog?.mainImage || '/images/next.svg'}
-          alt={blog?.title}
+          alt={blog?.mainTitle}
           fill
           className="w-full h-full object-center object-cover rounded-3xl -z-10"
           sizes="100vw"
