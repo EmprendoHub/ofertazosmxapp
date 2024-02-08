@@ -37,10 +37,11 @@ export async function POST(req, res) {
 
       const paymentIntent = await stripe?.paymentIntents.retrieve(payIntentId);
 
-      console.log('PAY INTENT', paymentIntent);
       const currentOrder = await Order.findOne({
         _id: session?.metadata?.order,
       });
+
+      console.log('currentOrder', currentOrder);
 
       currentOrder?.orderItems.forEach(async (item) => {
         const productId = item.product.toString();
