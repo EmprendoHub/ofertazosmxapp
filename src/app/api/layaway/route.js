@@ -68,7 +68,7 @@ export const POST = async (request) => {
       locale: 'es-419',
       client_reference_id: user?._id,
       success_url: `${process.env.NEXTAUTH_URL}/perfil/pedidos?pedido_exitoso=true`,
-      cancel_url: `${process.env.NEXTAUTH_URL}/perfil/pedidos/${order._id}`,
+      cancel_url: `${process.env.NEXTAUTH_URL}/perfil/pedido/${order._id}`,
       metadata: {
         shippingInfo,
         layaway: true,

@@ -17,8 +17,8 @@ export const GET = async (request) => {
   }
   try {
     await dbConnect();
-    const _id = await request.url.split('?')[1];
-    let order = await Order.findOne({ _id });
+    const id = await request.headers.get('id');
+    let order = await Order.findOne({ _id: id });
 
     let deliveryAddress = await Address.findOne(order.shippingInfo);
     let orderUser = await User.findOne(order.user);
