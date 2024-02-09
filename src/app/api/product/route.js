@@ -23,8 +23,8 @@ const uploadToBucket = async (folder, filename, file) => {
   });
 };
 
-export const GET = async (req) => {
-  const token = await req.headers.get('cookie');
+export const GET = async (request) => {
+  const token = await request.headers.get('cookie');
   if (!token) {
     // Not Signed in
     const notAuthorized = 'You are not authorized no no no';
@@ -35,9 +35,9 @@ export const GET = async (req) => {
 
   try {
     await dbConnect();
+    const id = await request.headers.get('id');
+    const product = await Product?.findOne({ _id: id });
 
-    const _id = await req.url.split('?')[1];
-    const product = await Product?.findOne({ _id });
     const trendingProducts = await Product.find({
       category: product.category,
     }).limit(4);

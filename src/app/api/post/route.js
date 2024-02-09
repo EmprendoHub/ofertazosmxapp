@@ -27,7 +27,6 @@ const uploadToBucket = async (folder, filename, file) => {
 
 export const GET = async (request) => {
   const cookie = await request.headers.get('cookie');
-  console.log('cookie', cookie);
   if (!cookie) {
     // Not Signed in
     const notAuthorized = 'You are not authorized no no no';
@@ -40,9 +39,7 @@ export const GET = async (request) => {
     await dbConnect();
     const id = await request.headers.get('id');
     //const _id = await request.url.split('?')[1];
-    console.log('_id', id);
     const post = await Post?.findOne({ _id: id });
-    console.log('post', post);
     // Find products matching any of the tag values
     const trendingProducts = await Product.find({
       'tags.value': post.category,

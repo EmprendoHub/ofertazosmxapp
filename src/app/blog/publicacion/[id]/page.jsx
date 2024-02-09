@@ -8,7 +8,6 @@ const getOnePostDetails = async (id) => {
   const cookieName = getCookiesName();
   const nextAuthSessionToken = nextCookies.get(cookieName);
   const URL = `${process.env.NEXTAUTH_URL}/api/post`;
-  console.log('page id', id);
   const res = await fetch(
     URL,
     {

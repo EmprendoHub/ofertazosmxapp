@@ -4,7 +4,7 @@ import { getSessionCookiesName } from '@/backend/helpers';
 import ProductComponent from '@/components/products/ProductComponent';
 
 const getOneProductDetails = async (id, currentCookies) => {
-  const URL = `${process.env.NEXTAUTH_URL}/api/product?${id}`;
+  const URL = `${process.env.NEXTAUTH_URL}/api/product`;
   const res = await fetch(
     URL,
     {
@@ -12,6 +12,7 @@ const getOneProductDetails = async (id, currentCookies) => {
       headers: {
         'Content-Type': 'application/json',
         Cookie: currentCookies,
+        Id: `${id}`,
       },
     },
     { next: { revalidate: 120 } }
