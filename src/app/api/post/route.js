@@ -38,10 +38,10 @@ export const GET = async (request) => {
 
   try {
     await dbConnect();
-
-    const _id = await request.url.split('?')[1];
-    console.log('_id', _id);
-    const post = await Post?.findOne({ _id: _id });
+    const id = await request.headers.get('id');
+    //const _id = await request.url.split('?')[1];
+    console.log('_id', id);
+    const post = await Post?.findOne({ _id: id });
     console.log('post', post);
     // Find products matching any of the tag values
     const trendingProducts = await Product.find({
