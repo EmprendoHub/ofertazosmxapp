@@ -25,11 +25,21 @@ const uploadToBucket = async (folder, filename, file) => {
   });
 };
 
-export const GET = async (req) => {
+export const GET = async (request) => {
+  const cookie = await request.headers.get('cookie');
+  console.log('cookie', cookie);
+  if (!cookie) {
+    // Not Signed in
+    const notAuthorized = 'You are not authorized no no no';
+    return new Response(JSON.stringify(notAuthorized), {
+      status: 400,
+    });
+  }
+
   try {
     await dbConnect();
 
-    const _id = await req.url.split('?')[1];
+    const _id = await request.url.split('?')[1];
 
     const post = await Post?.findOne({ _id });
     // Find products matching any of the tag values

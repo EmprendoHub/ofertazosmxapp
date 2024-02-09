@@ -1,6 +1,5 @@
 import { getCookiesName } from '@/backend/helpers';
 import ViewPostDetails from '@/components/blog/ViewPostDetails';
-import axios from 'axios';
 import { cookies } from 'next/headers';
 import React from 'react';
 
@@ -9,18 +8,17 @@ const getOnePostDetails = async (id) => {
   const cookieName = getCookiesName();
   const nextAuthSessionToken = nextCookies.get(cookieName);
   const URL = `${process.env.NEXTAUTH_URL}/api/post?${id}`;
-
-  try {
-    const { data } = await axios.get(URL, {
+  const res = await fetch(
+    URL,
+    {
       headers: {
         Cookie: `${cookieName}=${nextAuthSessionToken?.value}`,
       },
-    });
-
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
+    },
+    { cache: 'no-cache' }
+  );
+  const data = await res.json();
+  return data;
 };
 
 const BlogPostPage = async ({ params }) => {
