@@ -9,7 +9,7 @@ const OrderSearch = () => {
     e.preventDefault();
 
     if (keyword) {
-      router.push(`/perfil/pedido/?keyword=${keyword}`);
+      router.push(`/perfil/pedidos/?keyword=${keyword}`);
     } else {
       router.push('/perfil/pedidos');
     }
