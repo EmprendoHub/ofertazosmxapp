@@ -45,6 +45,7 @@ export const GET = async (req) => {
     });
     return response;
   } catch (error) {
+    console.log(error);
     return NextResponse.json(
       {
         error: 'Post loading error',
