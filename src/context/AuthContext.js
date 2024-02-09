@@ -472,14 +472,13 @@ export const AuthProvider = ({ children }) => {
     try {
       const stringSession = JSON.stringify(session);
       const stringFavorites = JSON.stringify(favoritesData);
-      const URL = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/client`;
-      const res = await fetch(URL, {
+      const URL = `/api/client`;
+      const { data } = await axios.get(URL, {
         headers: {
           Session: stringSession,
           Favorites: stringFavorites,
         },
       });
-      const data = res.json();
       return data;
     } catch (error) {
       console.log(error?.response?.data?.message);
