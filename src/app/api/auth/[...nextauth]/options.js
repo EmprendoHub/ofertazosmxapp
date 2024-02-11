@@ -4,6 +4,7 @@ import User from '@/backend/models/User';
 import bcrypt from 'bcrypt';
 import { signJwtToken } from '@/lib/jwt';
 import dbConnect from '@/lib/db';
+import crypto from 'crypto';
 
 export const options = {
   providers: [
@@ -33,14 +34,27 @@ export const options = {
         const user = await User?.findOne({ email }).select('+password');
 
         if (!user) {
-          throw new Error('Invalid email or password');
+          console.log('no user error');
+          throw new Error('hubo un error al iniciar session');
         }
 
         const comparePass = await bcrypt.compare(password, user.password);
 
         if (!comparePass) {
-          throw new Error('Invalid email or password');
+          if (user) {
+            user.loginAttempts += 1;
+            await user.save();
+            if (user.loginAttempts >= 3) {
+              throw new Error('excediste el limite de intentos');
+            }
+          }
+          throw new Error('hubo un error al iniciar session');
         } else {
+          if (user.active === false) {
+            throw new Error('verify your email');
+          }
+          user.loginAttempts = 0;
+          await user.save();
           const { password, ...currentUser } = user._doc;
           const accessToken = signJwtToken(currentUser, { expiresIn: '6d' });
           return {
@@ -64,9 +78,14 @@ export const options = {
           }).select('+password');
 
           if (!existinguser) {
+            // Generate a random 64-byte token
+            const verificationToken = crypto.randomBytes(64).toString('hex');
+
             const newUser = new User({
               email: user.email,
               name: user.name,
+              verificationToken: verificationToken,
+              active: false,
             });
 
             await newUser.save();

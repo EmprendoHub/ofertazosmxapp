@@ -26,7 +26,7 @@ const UserOrders = ({ orders, filteredOrdersCount }) => {
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <div className=" flex flex-row justify-between items-center">
-        <h1 className="text-3xl my-5 ml-4 font-bold">
+        <h1 className="text-3xl w-full maxsm:text-xl my-5 maxsm:my-1 ml-4 maxsm:ml-0 font-bold font-EB_Garamond">
           {filteredOrdersCount} Pedidos
         </h1>
         <OrderSearch />

@@ -8,12 +8,18 @@ const initialState = {
   orderData: [],
   affiliateInfo: null,
   emailListData: [],
+  loginAttempts: null,
 };
 
 export const shoppingSlice = createSlice({
   name: 'compras',
   initialState,
   reducers: {
+    increaseLoginAttempts: (state, action) => {
+      console.log(state.loginAttempts, 'before', action.payload.count);
+      state.loginAttempts += action.payload.count;
+      console.log(state.loginAttempts, 'after', action.payload.count);
+    },
     addToCart: (state, action) => {
       const existingProduct = state.productsData.find(
         (item) => item._id === action.payload._id
@@ -140,6 +146,7 @@ export const {
   resetFavorites,
   deleteFavorite,
   addToFavorites,
+  increaseLoginAttempts,
 } = shoppingSlice.actions;
 
 export default shoppingSlice.reducer;

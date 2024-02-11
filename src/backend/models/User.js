@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const UserSchema = new mongoose.Schema(
   {
     active: {
-      default: true,
+      default: false,
       type: Boolean,
     },
     name: {
@@ -14,6 +14,9 @@ const UserSchema = new mongoose.Schema(
       type: String,
       require: true,
       unique: true,
+    },
+    verificationToken: {
+      type: String,
     },
     phone: {
       type: String,
@@ -27,8 +30,7 @@ const UserSchema = new mongoose.Schema(
       select: false,
     },
     avatar: {
-      public_id: String,
-      url: String,
+      type: String,
     },
     favorites: [
       {
@@ -50,6 +52,10 @@ const UserSchema = new mongoose.Schema(
         ],
       },
     ],
+    loginAttempts: {
+      type: Number,
+      default: 0,
+    },
     points: {
       type: Number,
     },

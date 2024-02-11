@@ -113,7 +113,7 @@ const AllAffiliatesAdmin = ({ affiliates, filteredAffiliatesCount }) => {
                 <td className="px-1 py-2 ">
                   {affiliate.email.substring(0, 12)}...
                 </td>
-                <td className="px-1 py-2 ">
+                <td className="px-1 py-2  w-24 flex flex-row">
                   <div>
                     <Link
                       href={`/admin/asociados/cuenta/${affiliate._id}`}

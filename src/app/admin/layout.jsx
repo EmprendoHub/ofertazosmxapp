@@ -4,7 +4,7 @@ export default function UserLayout({ children }) {
   return (
     <>
       <section className="py-3 maxsm:py-1 font-EB_Garamond bg-gray-200">
-        <div className="container  mx-auto px-4">
+        <div className="  mx-auto px-10">
           <h1 className="text-bold text-2xl  maxsm:text-lg text-black font-EB_Garamond">
             Panel de Control
           </h1>

@@ -2,9 +2,9 @@
 import React from 'react';
 import Link from 'next/link';
 import { signOut } from 'next-auth/react';
-import { RiLockPasswordLine, RiLogoutCircleRFill } from 'react-icons/ri';
+import { RiLogoutCircleRFill } from 'react-icons/ri';
 import { PiUserListLight, PiUserCircleGearLight } from 'react-icons/pi';
-import { SiAmazonsimpleemailservice } from 'react-icons/si';
+import { GiTakeMyMoney } from 'react-icons/gi';
 import {
   MdOutlineDashboard,
   MdOutlineAddBusiness,
@@ -34,7 +34,7 @@ const AdminSidebar = () => {
           <li className="flex flex-row items-center gap-x-3 ">
             <MdOutlineDashboard className="text-2xl text-black" />
 
-            <div className="maxmd:hidden  font-EB_Garamond">
+            <div className="maxmd:hidden font-EB_Garamond">
               Panel de Control
             </div>
           </li>
@@ -46,7 +46,7 @@ const AdminSidebar = () => {
           <li className="flex flex-row items-center gap-x-3">
             <TfiList className="text-2xl text-black" />
 
-            <div className="maxmd:hidden">Pedidos</div>
+            <div className="maxmd:hidden font-EB_Garamond">Pedidos</div>
           </li>
         </button>
         <Link
@@ -56,7 +56,7 @@ const AdminSidebar = () => {
           <li className="flex flex-row items-center gap-x-3">
             <TfiLayoutListThumb className="text-2xl text-black" />
 
-            <div className="maxmd:hidden">Productos</div>
+            <div className="maxmd:hidden font-EB_Garamond">Productos</div>
           </li>
         </Link>
         <Link
@@ -66,7 +66,7 @@ const AdminSidebar = () => {
           <li className="flex flex-row items-center gap-x-3">
             <MdOutlineAddBusiness className="text-2xl text-black" />
 
-            <div className="maxmd:hidden">Nuevo Producto</div>
+            <div className="maxmd:hidden font-EB_Garamond">Nuevo Producto</div>
           </li>
         </Link>
         <Link
@@ -76,7 +76,7 @@ const AdminSidebar = () => {
           <li className="flex flex-row items-center gap-x-3">
             <TfiLayoutListPost className="text-2xl text-black" />
 
-            <div className="maxmd:hidden">Publicaciones</div>
+            <div className="maxmd:hidden font-EB_Garamond">Publicaciones</div>
           </li>
         </Link>
         <Link
@@ -86,7 +86,9 @@ const AdminSidebar = () => {
           <li className="flex flex-row items-center gap-x-3">
             <MdOutlinePostAdd className="text-2xl text-black" />
 
-            <div className="maxmd:hidden">Nueva Publicación</div>
+            <div className="maxmd:hidden font-EB_Garamond">
+              Nueva Publicación
+            </div>
           </li>
         </Link>
       </ul>
@@ -99,7 +101,7 @@ const AdminSidebar = () => {
           <li className="flex flex-row items-center gap-x-3">
             <PiUserListLight className="text-2xl text-black" />
 
-            <div className="maxmd:hidden">Clientes</div>
+            <div className="maxmd:hidden font-EB_Garamond">Clientes</div>
           </li>
         </Link>
         <Link
@@ -107,9 +109,9 @@ const AdminSidebar = () => {
           className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
         >
           <li className="flex flex-row items-center gap-x-3">
-            <PiUserListLight className="text-2xl text-black" />
+            <GiTakeMyMoney className="text-2xl text-black" />
 
-            <div className="maxmd:hidden">Afiliados</div>
+            <div className="maxmd:hidden font-EB_Garamond">Afiliados</div>
           </li>
         </Link>
         <Link
@@ -119,7 +121,7 @@ const AdminSidebar = () => {
           <li className="flex flex-row items-center gap-x-3">
             <PiUserCircleGearLight className="text-2xl text-black" />
 
-            <div className="maxmd:hidden">Perfil</div>
+            <div className="maxmd:hidden font-EB_Garamond">Perfil</div>
           </li>
         </Link>
 
@@ -130,7 +132,7 @@ const AdminSidebar = () => {
           >
             <RiLogoutCircleRFill className="text-2xl text-black" />
 
-            <div className="maxmd:hidden">Cerrar Session</div>
+            <div className="maxmd:hidden font-EB_Garamond">Cerrar Session</div>
           </div>
         </li>
       </ul>

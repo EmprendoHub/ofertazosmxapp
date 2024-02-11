@@ -10,6 +10,7 @@ import {
   PostEntrySchema,
   PostUpdateSchema,
   ProductEntrySchema,
+  VerifyEmailSchema,
 } from '@/lib/schemas';
 import { revalidatePath } from 'next/cache';
 import Post from '@/backend/models/Post';
@@ -17,6 +18,9 @@ import Product from '@/backend/models/Product';
 import User from '@/backend/models/User';
 import Affiliate from '@/backend/models/Affiliate';
 import bcrypt from 'bcrypt';
+import nodemailer from 'nodemailer';
+import axios from 'axios';
+import { NextResponse } from 'next/server';
 
 export async function changeClientStatus(_id) {
   const session = await getServerSession(options);
@@ -68,14 +72,12 @@ export async function updateClient(data) {
           _errors: [],
           email: { _errors: ['El email ya esta en uso'] },
         };
-        console.log({ error: CustomZodError });
         return { error: CustomZodError };
       }
     }
 
     if (client?.phone != phone) {
       const phoneExist = await User.find({ phone: phone });
-      console.log(phoneExist);
       if (phoneExist.length > 0) {
         CustomZodError = {
           _errors: [],
@@ -500,4 +502,230 @@ export async function addProduct(data) {
   if (error) throw Error(error);
   revalidatePath('/admin/productos');
   revalidatePath('/tienda');
+}
+
+export async function resendEmail(data) {
+  let { email, gReCaptchaToken } = Object.fromEntries(data);
+  const secretKey = process?.env?.RECAPTCHA_SECRET_KEY;
+
+  //check for errors
+  const { error: zodError } = VerifyEmailSchema.safeParse({
+    email,
+  });
+  if (zodError) {
+    return { error: zodError.format() };
+  }
+
+  const formData = `secret=${secretKey}&response=${gReCaptchaToken}`;
+  let res;
+  try {
+    res = await axios.post(
+      'https://www.google.com/recaptcha/api/siteverify',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      }
+    );
+  } catch (e) {
+    console.log('recaptcha error:', e);
+  }
+
+  if (res && res.data?.success && res.data?.score > 0.5) {
+    // Save data to the database from here
+    try {
+      await dbConnect();
+      const user = await User.findOne({ email: email });
+      if (!user) {
+        return { error: { email: { _errors: ['Email does not exist'] } } };
+      }
+      if (user?.isActive === true) {
+        return { error: { email: { _errors: ['Email is already verified'] } } };
+      }
+      if (user?._id) {
+        try {
+          const subject = 'Confirmar email';
+          const body = `Por favor da click en confirmar email para verificar tu cuenta.`;
+          const title = 'Completar registro';
+          const greeting = `Saludos ${user?.name}`;
+          const action = 'CONFIRMAR EMAIL';
+          const bestRegards = 'Gracias por unirte a nuestro sitio.';
+          const recipient_email = email;
+          const sender_email = 'contacto@shopout.com.mx';
+          const fromName = 'Shopout Mx';
+
+          const transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 587,
+            secure: false,
+            auth: {
+              user: process.env.GOOGLE_MAIL,
+              pass: process.env.GOOGLE_MAIL_PASS_ONE,
+            },
+          });
+
+          try {
+            // Verify your transporter
+            //await transporter.verify();
+
+            const mailOptions = {
+              from: `"${fromName}" ${sender_email}`,
+              to: recipient_email,
+              subject,
+              html: `
+        <!DOCTYPE html>
+        <html lang="es">
+        <body>
+        <p>${greeting}</p>
+        <p>${title}</p>
+        <div>${body}</div>
+        <a href="${process.env.NEXTAUTH_URL}/exito?token=${user?.verificationToken}">${action}</a>
+        <p>${bestRegards}</p>
+        </body>
+        
+        </html>
+        
+        `,
+            };
+            await transporter.sendMail(mailOptions);
+
+            return {
+              error: {
+                success: {
+                  _errors: [
+                    'El correo se envió exitosamente revisa tu bandeja de entrada y tu correo no deseado',
+                  ],
+                },
+              },
+            };
+          } catch (error) {
+            console.log(error);
+          }
+        } catch (error) {
+          return { error: { email: { _errors: ['Error al enviar email'] } } };
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      throw Error(error);
+    }
+  } else {
+    return {
+      error: {
+        email: { _errors: [`Failed Google Captcha Score: ${res.data?.score}`] },
+      },
+    };
+  }
+}
+
+export async function resetAccountEmail(data) {
+  let { email, gReCaptchaToken } = Object.fromEntries(data);
+  const secretKey = process?.env?.RECAPTCHA_SECRET_KEY;
+
+  //check for errors
+  const { error: zodError } = VerifyEmailSchema.safeParse({
+    email,
+  });
+  if (zodError) {
+    return { error: zodError.format() };
+  }
+
+  const formData = `secret=${secretKey}&response=${gReCaptchaToken}`;
+  let res;
+  try {
+    res = await axios.post(
+      'https://www.google.com/recaptcha/api/siteverify',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      }
+    );
+  } catch (e) {
+    console.log('recaptcha error:', e);
+  }
+
+  if (res && res.data?.success && res.data?.score > 0.5) {
+    // Save data to the database from here
+    try {
+      await dbConnect();
+      const user = await User.findOne({ email: email });
+      if (!user) {
+        return { error: { email: { _errors: ['El correo no existe'] } } };
+      }
+      if (user?.active === false) {
+        return {
+          error: { email: { _errors: ['El correo no esta verificado'] } },
+        };
+      }
+      if (user?._id) {
+        try {
+          const subject = 'Desbloquear Cuenta Shopout Mx';
+          const body = `Por favor da click en desbloquear para reactivar tu cuenta`;
+          const title = 'Desbloquear Cuenta';
+          const btnAction = 'DESBLOQUEAR';
+          const greeting = `Saludos ${user?.name}`;
+          const bestRegards =
+            '¿Problemas? Ponte en contacto contacto@shopout.com.mx';
+          const recipient_email = email;
+          const sender_email = 'contacto@shopout.com.mx';
+          const fromName = 'Shopout Mx';
+
+          const transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 587,
+            secure: false,
+            auth: {
+              user: process.env.GOOGLE_MAIL,
+              pass: process.env.GOOGLE_MAIL_PASS_ONE,
+            },
+          });
+
+          const mailOption = {
+            from: `"${fromName}" ${sender_email}`,
+            to: recipient_email,
+            subject,
+            html: `
+              <!DOCTYPE html>
+              <html lang="es">
+              <body>
+              <p>${greeting}</p>
+              <p>${title}</p>
+              <div>${body}</div>
+              <a href="${process.env.NEXTAUTH_URL}/reiniciar?token=${user?.verificationToken}">${btnAction}</a>
+              <p>${bestRegards}</p>
+              </body>
+              
+              </html>
+              
+              `,
+          };
+
+          await transporter.sendMail(mailOption);
+
+          return {
+            error: {
+              success: {
+                _errors: [
+                  'El correo electrónico fue enviado exitosamente revisa tu bandeja de entrada y spam',
+                ],
+              },
+            },
+          };
+        } catch (error) {
+          return { error: { email: { _errors: ['Failed to send email'] } } };
+        }
+      }
+    } catch (error) {
+      if (error) throw Error(error);
+    }
+  } else {
+    return {
+      error: {
+        email: { _errors: [`Failed Google Captcha Score: ${res.data?.score}`] },
+      },
+    };
+  }
 }

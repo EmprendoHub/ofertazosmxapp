@@ -2,14 +2,14 @@ import React from 'react';
 import Link from 'next/link';
 import { getCookiesName } from '@/backend/helpers';
 import { cookies } from 'next/headers';
-import EmailVerification from '@/components/email/EmailVerification';
+import EmailAccountReset from '@/components/email/EmailAccountReset';
 import GoogleCaptchaWrapper from '@/components/forms/GoogleCaptchaWrapper';
 
-const verifyEmail = async (token) => {
+const resetAccountAccess = async (token) => {
   const nextCookies = cookies();
   const cookieName = getCookiesName();
   const nextAuthSessionToken = nextCookies.get(cookieName);
-  const URL = `${process.env.NEXTAUTH_URL}/api/verify`;
+  const URL = `${process.env.NEXTAUTH_URL}/api/reset`;
   try {
     const res = await fetch(
       URL,
@@ -31,8 +31,8 @@ const verifyEmail = async (token) => {
 
 const SuccessPage = async ({ searchParams }) => {
   const token = searchParams?.token;
-  const res = await verifyEmail(token);
-  const isVerified = res?.message === 'Usuario verificado';
+  const res = await resetAccountAccess(token);
+  const isUnblocked = res?.message === 'Cuenta desbloqueada';
   return (
     <>
       <div
@@ -40,16 +40,12 @@ const SuccessPage = async ({ searchParams }) => {
           'bg-white h-[80vh] flex items-center justify-center text-center mx-auto'
         }
       >
-        {isVerified ? (
+        {isUnblocked ? (
           <div className="w-[90%]">
             <p className="font-raleway text-slate-500 text-lg mt-3">
-              Tu correo fue verificado exitosamente
+              Tu cuenta de reactivo exitosamente
             </p>
             <h2 className="text-7xl font-EB_Garamond">Gracias</h2>
-
-            <h3 className="font-EB_Garamond text-2xl mt-3">
-              Por registrarte En Marort MX
-            </h3>
             <p className="text-base text-slate-600 mt-5">
               Ya puedes iniciar tu session.
             </p>
@@ -68,7 +64,7 @@ const SuccessPage = async ({ searchParams }) => {
           </div>
         ) : (
           <GoogleCaptchaWrapper>
-            <EmailVerification />
+            <EmailAccountReset />
           </GoogleCaptchaWrapper>
         )}
       </div>

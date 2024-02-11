@@ -16,6 +16,9 @@ const AffiliateSchema = new mongoose.Schema(
     fullName: {
       type: String,
     },
+    avatar: {
+      type: String,
+    },
     email: {
       type: String,
       require: true,

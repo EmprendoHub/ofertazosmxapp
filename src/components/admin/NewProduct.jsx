@@ -253,307 +253,345 @@ const NewProduct = () => {
   };
 
   return (
-    <main className="w-full pl-4 maxsm:pl-0 bg-slate-300">
+    <main className="w-full p-4 maxsm:p-2 bg-slate-300">
       <section className="w-full ">
-        <h1 className="text-xl maxmd:text-3xl font-semibold text-black mb-8">
+        <h1 className="text-2xl font-semibold text-black mb-8 font-EB_Garamond">
           Crear Nuevo Producto
         </h1>
 
         <form
           action={action}
           ref={formRef}
-          className="flex flex-row flex-wrap items-start gap-5 justify-start "
+          className="flex flex-col items-start gap-5 justify-start w-full"
         >
-          <div className="gap-y-5 flex-col flex px-2 w-1/2 maxsm:w-full">
-            <div className="mb-4">
-              <label className="block mb-1"> Titulo del Producto</label>
-              <input
-                type="text"
-                className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
-                placeholder="Nombre de Producto"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                name="title"
-              />
-              {validationError?.title && (
-                <p className="text-sm text-red-400">
-                  {validationError.title._errors.join(', ')}
-                </p>
-              )}
-            </div>
-            <div className="mb-4">
-              <label className="block mb-1"> Description Corta</label>
-              <textarea
-                rows="2"
-                className="appearance-none border  bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
-                placeholder="Descripción del Producto"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                name="description"
-              ></textarea>
-              {validationError?.description && (
-                <p className="text-sm text-red-400">
-                  {validationError.description._errors.join(', ')}
-                </p>
-              )}
-            </div>
-            <div className="mb-4">
-              <label className="block mb-1"> Marca del Producto</label>
-              <input
-                type="text"
-                className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
-                placeholder="Marca del Producto"
-                value={brand}
-                onChange={(e) => setBrand(e.target.value)}
-                name="brand"
-              />
-              {validationError?.brand && (
-                <p className="text-sm text-red-400">
-                  {validationError.brand._errors.join(', ')}
-                </p>
-              )}
-            </div>
-            <div className="flex flex-row maxsm:flex-col items-center gap-5">
-              <div className="mb-4 w-full">
-                <label className="block mb-1"> Precio de Venta </label>
-                <div className="relative">
-                  <div className="col-span-2">
-                    <input
-                      type="number"
-                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3focus:outline-none focus:border-gray-400 w-full"
-                      placeholder="0.00"
-                      min="1"
-                      value={price}
-                      onChange={(e) => setPrice(e.target.value)}
-                      name="price"
-                    />
-                    {validationError?.price && (
+          <div className="flex flex-row  items-center gap-5 justify-between w-full">
+            <div className="gap-y-5 flex-col flex px-2 w-full">
+              <div className="mb-4">
+                <label className="block mb-1  font-EB_Garamond">
+                  {' '}
+                  Titulo del Producto
+                </label>
+                <input
+                  type="text"
+                  className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
+                  placeholder="Nombre de Producto"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  name="title"
+                />
+                {validationError?.title && (
+                  <p className="text-sm text-red-400">
+                    {validationError.title._errors.join(', ')}
+                  </p>
+                )}
+              </div>
+              <div className="mb-4">
+                <label className="block mb-1  font-EB_Garamond">
+                  {' '}
+                  Description Corta
+                </label>
+                <textarea
+                  rows="2"
+                  className="appearance-none border  bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
+                  placeholder="Descripción del Producto"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  name="description"
+                ></textarea>
+                {validationError?.description && (
+                  <p className="text-sm text-red-400">
+                    {validationError.description._errors.join(', ')}
+                  </p>
+                )}
+              </div>
+              <div className="mb-4">
+                <label className="block mb-1  font-EB_Garamond">
+                  {' '}
+                  Marca del Producto
+                </label>
+                <input
+                  type="text"
+                  className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
+                  placeholder="Marca del Producto"
+                  value={brand}
+                  onChange={(e) => setBrand(e.target.value)}
+                  name="brand"
+                />
+                {validationError?.brand && (
+                  <p className="text-sm text-red-400">
+                    {validationError.brand._errors.join(', ')}
+                  </p>
+                )}
+              </div>
+              <div className="flex flex-row maxsm:flex-col items-center gap-5">
+                <div className="mb-4 w-full">
+                  <label className="block mb-1  font-EB_Garamond">
+                    {' '}
+                    Precio de Venta{' '}
+                  </label>
+                  <div className="relative">
+                    <div className="col-span-2">
+                      <input
+                        type="number"
+                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3focus:outline-none focus:border-gray-400 w-full"
+                        placeholder="0.00"
+                        min="1"
+                        value={price}
+                        onChange={(e) => setPrice(e.target.value)}
+                        name="price"
+                      />
+                      {validationError?.price && (
+                        <p className="text-sm text-red-400">
+                          {validationError.price._errors.join(', ')}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className="mb-4 w-full">
+                  <label className="block mb-1 font-EB_Garamond"> Costo </label>
+                  <div className="relative">
+                    <div className="col-span-2">
+                      <input
+                        type="number"
+                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3focus:outline-none focus:border-gray-400 w-full"
+                        placeholder="0.00"
+                        min="1"
+                        value={cost}
+                        onChange={(e) => setCost(e.target.value)}
+                        name="cost"
+                      />
+                      {validationError?.cost && (
+                        <p className="text-sm text-red-400">
+                          {validationError.cost._errors.join(', ')}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className="mb-4 w-full">
+                  <label className="block mb-1 font-EB_Garamond">
+                    {' '}
+                    Existencias{' '}
+                  </label>
+                  <div className="relative">
+                    <div className="col-span-2">
+                      <input
+                        type="number"
+                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                        placeholder="1"
+                        min="1"
+                        value={stock}
+                        onChange={(e) => setStock(e.target.value)}
+                        name="stock"
+                      />
+                      {validationError?.stock && (
+                        <p className="text-sm text-red-400">
+                          {validationError.stock._errors.join(', ')}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className="mb-4 w-full">
+                  <label className="block mb-1 font-EB_Garamond">
+                    {' '}
+                    Destacado{' '}
+                  </label>
+                  <div className="relative">
+                    <select
+                      className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                      name="featured"
+                      onChange={(e) => setFeatured(e.target.value)}
+                      value={featured}
+                    >
+                      {['No', 'Si'].map((opt) => (
+                        <option key={opt} value={opt}>
+                          {opt}
+                        </option>
+                      ))}
+                    </select>
+                    {validationError?.featured && (
                       <p className="text-sm text-red-400">
-                        {validationError.price._errors.join(', ')}
+                        {validationError.featured._errors.join(', ')}
                       </p>
                     )}
+                    <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
+                      <svg
+                        width="22"
+                        height="22"
+                        className="fill-current"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M7 10l5 5 5-5H7z"></path>
+                      </svg>
+                    </i>
                   </div>
                 </div>
               </div>
-              <div className="mb-4 w-full">
-                <label className="block mb-1"> Costo </label>
-                <div className="relative">
-                  <div className="col-span-2">
-                    <input
-                      type="number"
-                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3focus:outline-none focus:border-gray-400 w-full"
-                      placeholder="0.00"
-                      min="1"
-                      value={cost}
-                      onChange={(e) => setCost(e.target.value)}
-                      name="cost"
-                    />
-                    {validationError?.cost && (
+              <div className="flex flex-row maxsm:flex-col items-center gap-5">
+                <div className="mb-4 w-full">
+                  <label className="block mb-1 font-EB_Garamond">
+                    {' '}
+                    Género{' '}
+                  </label>
+                  <div className="relative">
+                    <select
+                      className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                      name="gender"
+                      onChange={(e) => handleGenderChange(e.target.value)}
+                    >
+                      {genders?.map((gender) => (
+                        <option key={gender.es} value={gender.es}>
+                          {gender.es}
+                        </option>
+                      ))}
+                    </select>
+                    {validationError?.gender && (
                       <p className="text-sm text-red-400">
-                        {validationError.cost._errors.join(', ')}
+                        {validationError.gender._errors.join(', ')}
                       </p>
                     )}
+                    <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
+                      <svg
+                        width="22"
+                        height="22"
+                        className="fill-current"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M7 10l5 5 5-5H7z"></path>
+                      </svg>
+                    </i>
+                  </div>
+                </div>
+                <div className="mb-4 w-full">
+                  <label className="block mb-1 font-EB_Garamond">
+                    {' '}
+                    Categoría{' '}
+                  </label>
+                  <div className="relative">
+                    <select
+                      className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                      name="category"
+                      onChange={(e) => handleCategoryChange(e.target.value)}
+                    >
+                      {product_categories.map((category) => (
+                        <option key={category.es} value={category.es}>
+                          {category.es}
+                        </option>
+                      ))}
+                    </select>
+                    {validationError?.category && (
+                      <p className="text-sm text-red-400">
+                        {validationError.category._errors.join(', ')}
+                      </p>
+                    )}
+                    <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
+                      <svg
+                        width="22"
+                        height="22"
+                        className="fill-current"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M7 10l5 5 5-5H7z"></path>
+                      </svg>
+                    </i>
                   </div>
                 </div>
               </div>
-              <div className="mb-4 w-full">
-                <label className="block mb-1"> Existencias </label>
-                <div className="relative">
-                  <div className="col-span-2">
-                    <input
-                      type="number"
-                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
-                      placeholder="1"
-                      min="1"
-                      value={stock}
-                      onChange={(e) => setStock(e.target.value)}
-                      name="stock"
-                    />
-                    {validationError?.stock && (
-                      <p className="text-sm text-red-400">
-                        {validationError.stock._errors.join(', ')}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </div>
-              <div className="mb-4 w-full">
-                <label className="block mb-1"> Destacado </label>
-                <div className="relative">
-                  <select
-                    className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
-                    name="featured"
-                    onChange={(e) => setFeatured(e.target.value)}
-                    value={featured}
-                  >
-                    {['No', 'Si'].map((opt) => (
-                      <option key={opt} value={opt}>
-                        {opt}
-                      </option>
-                    ))}
-                  </select>
-                  {validationError?.featured && (
-                    <p className="text-sm text-red-400">
-                      {validationError.featured._errors.join(', ')}
-                    </p>
-                  )}
-                  <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
-                    <svg
-                      width="22"
-                      height="22"
-                      className="fill-current"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M7 10l5 5 5-5H7z"></path>
-                    </svg>
-                  </i>
-                </div>
-              </div>
             </div>
-            <div className="flex flex-row maxsm:flex-col items-center gap-5">
-              <div className="mb-4 w-full">
-                <label className="block mb-1"> Género </label>
-                <div className="relative">
-                  <select
-                    className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
-                    name="gender"
-                    onChange={(e) => handleGenderChange(e.target.value)}
-                  >
-                    {genders?.map((gender) => (
-                      <option key={gender.es} value={gender.es}>
-                        {gender.es}
-                      </option>
-                    ))}
-                  </select>
-                  {validationError?.gender && (
-                    <p className="text-sm text-red-400">
-                      {validationError.gender._errors.join(', ')}
-                    </p>
-                  )}
-                  <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
-                    <svg
-                      width="22"
-                      height="22"
-                      className="fill-current"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M7 10l5 5 5-5H7z"></path>
-                    </svg>
-                  </i>
-                </div>
-              </div>
-              <div className="mb-4 w-full">
-                <label className="block mb-1"> Categoría </label>
-                <div className="relative">
-                  <select
-                    className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
-                    name="category"
-                    onChange={(e) => handleCategoryChange(e.target.value)}
-                  >
-                    {product_categories.map((category) => (
-                      <option key={category.es} value={category.es}>
-                        {category.es}
-                      </option>
-                    ))}
-                  </select>
-                  {validationError?.category && (
-                    <p className="text-sm text-red-400">
-                      {validationError.category._errors.join(', ')}
-                    </p>
-                  )}
-                  <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
-                    <svg
-                      width="22"
-                      height="22"
-                      className="fill-current"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M7 10l5 5 5-5H7z"></path>
-                    </svg>
-                  </i>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <div className="w-1/3 maxsm:w-full flex-col flex justify-start px-2 gap-y-5">
-            <div className="mb-4 w-full">
-              <label className="block mb-1"> Tallas </label>
-              <div className="relative">
-                <MultiselectComponent
-                  options={sizeSelection}
-                  handleAddSizeField={handleAddSizeField}
-                />
-                {validationError?.sizes && (
-                  <p className="text-sm text-red-400">
-                    {validationError.sizes._errors.join(', ')}
-                  </p>
-                )}
-              </div>
-            </div>
-            <div className="mb-4 w-full">
-              <label className="block mb-1"> Etiquetas </label>
-              <div className="relative">
-                <MultiselectTagComponent
-                  options={tagSelection}
-                  handleAddTagField={handleAddTagField}
-                />
-                {validationError?.tags && (
-                  <p className="text-sm text-red-400">
-                    {validationError.tags._errors.join(', ')}
-                  </p>
-                )}
-              </div>
-            </div>
-            <div className="mb-4 w-full">
-              <label className="block mb-1"> Colores </label>
-              <div className="relative">
-                <MultiselectColor
-                  options={colorSelection}
-                  handleAddColorField={handleAddColorField}
-                />
-                {validationError?.colors && (
-                  <p className="text-sm text-red-400">
-                    {validationError.colors._errors.join(', ')}
-                  </p>
-                )}
-              </div>
-            </div>
-            <div className="mb-4 w-full">
-              <label className="block mb-1"> Precio de Oferta </label>
-              <div className="relative">
-                <div className="col-span-2">
-                  <input
-                    type="number"
-                    className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3focus:outline-none focus:border-gray-400 w-full"
-                    placeholder="0.00"
-                    min="0"
-                    value={salePrice}
-                    onChange={(e) => setSalePrice(e.target.value)}
-                    name="salePrice"
+            <div className="w-full flex-col flex justify-start px-2 gap-y-5">
+              <div className="mb-4 w-full">
+                <label className="block mb-1 font-EB_Garamond"> Tallas </label>
+                <div className="relative">
+                  <MultiselectComponent
+                    options={sizeSelection}
+                    handleAddSizeField={handleAddSizeField}
                   />
-                  {validationError?.salePrice && (
+                  {validationError?.sizes && (
                     <p className="text-sm text-red-400">
-                      {validationError.salePrice._errors.join(', ')}
+                      {validationError.sizes._errors.join(', ')}
                     </p>
                   )}
                 </div>
               </div>
-            </div>
-            <div className="mb-4 w-full">
-              <label className="block mb-1"> Finalización de Oferta </label>
-              <div className="flex flex-row items-center gap-x-3"></div>
-              <DateTimePicker
-                onChange={onChangeDate}
-                value={salePriceEndDate}
-                locale={'es-MX'}
-                minDate={cstDateTimeClient()}
-              />
+              <div className="mb-4 w-full">
+                <label className="block mb-1 font-EB_Garamond">
+                  {' '}
+                  Etiquetas{' '}
+                </label>
+                <div className="relative">
+                  <MultiselectTagComponent
+                    options={tagSelection}
+                    handleAddTagField={handleAddTagField}
+                  />
+                  {validationError?.tags && (
+                    <p className="text-sm text-red-400">
+                      {validationError.tags._errors.join(', ')}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <div className="mb-4 w-full">
+                <label className="block mb-1 font-EB_Garamond"> Colores </label>
+                <div className="relative">
+                  <MultiselectColor
+                    options={colorSelection}
+                    handleAddColorField={handleAddColorField}
+                  />
+                  {validationError?.colors && (
+                    <p className="text-sm text-red-400">
+                      {validationError.colors._errors.join(', ')}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <div className="mb-4 w-full">
+                <label className="block mb-1 font-EB_Garamond">
+                  {' '}
+                  Precio de Oferta{' '}
+                </label>
+                <div className="relative">
+                  <div className="col-span-2">
+                    <input
+                      type="number"
+                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3focus:outline-none focus:border-gray-400 w-full"
+                      placeholder="0.00"
+                      min="0"
+                      value={salePrice}
+                      onChange={(e) => setSalePrice(e.target.value)}
+                      name="salePrice"
+                    />
+                    {validationError?.salePrice && (
+                      <p className="text-sm text-red-400">
+                        {validationError.salePrice._errors.join(', ')}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="mb-4 w-full">
+                <label className="block mb-1 font-EB_Garamond">
+                  {' '}
+                  Finalización de Oferta{' '}
+                </label>
+                <div className="flex flex-row items-center gap-x-3"></div>
+                <DateTimePicker
+                  onChange={onChangeDate}
+                  value={salePriceEndDate}
+                  locale={'es-MX'}
+                  minDate={cstDateTimeClient()}
+                />
+              </div>
             </div>
           </div>
           {/* Drop images */}
           <div className="w-full">
-            <div {...getRootProps({})} className="h-[300px]">
+            <div
+              {...getRootProps({})}
+              className="h-[300px] bg-slate-200 cursor-pointer"
+            >
               <input {...getInputProps({ name: 'file' })} />
 
               <div className="flex flex-col items-center justify-center gap-4 min-h-44">

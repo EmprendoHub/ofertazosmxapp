@@ -7,10 +7,11 @@ async function getOneOrder(id, session) {
   try {
     const stringSession = JSON.stringify(session);
     // Filter out undefined values
-    const URL = `${process.env.NEXTAUTH_URL}/api/order?${id}`;
+    const URL = `${process.env.NEXTAUTH_URL}/api/order`;
     const res = await fetch(URL, {
       headers: {
         Session: stringSession,
+        Id: `${id}`,
         'Content-Type': 'application/json; charset=utf-8',
       },
     });
@@ -24,6 +25,7 @@ async function getOneOrder(id, session) {
 const AdminOneOrderPage = async ({ searchParams, params }) => {
   const session = await getServerSession(options);
   const data = await getOneOrder(params.id, session);
+  console.log(data);
   const order = data?.order;
   return (
     <div>

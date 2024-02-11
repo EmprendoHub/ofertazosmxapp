@@ -31,7 +31,7 @@ const ViewUserOrders = ({ searchParams, currentCookies, params }) => {
   }, [getAdminUserOrders, searchParams, currentCookies, params]);
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-      <h1 className="text-3xl my-5 ml-4 font-bold">
+      <h1 className="text-3xl my-5 ml-4 font-bold font-EB_Garamond">
         {`${filteredOrdersCount}
         Pedidos para ${orders[0]?.user.name}`}
       </h1>

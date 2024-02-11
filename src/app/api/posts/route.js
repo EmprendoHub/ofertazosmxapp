@@ -5,7 +5,6 @@ import dbConnect from '@/lib/db';
 
 export async function GET(request) {
   const cookie = await request.headers.get('cookie');
-  console.log('cookie', cookie);
   if (!cookie) {
     // Not Signed in
     const notAuthorized = 'You are not authorized no no no';

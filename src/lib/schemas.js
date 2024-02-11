@@ -65,3 +65,7 @@ export const ProductEntrySchema = z.object({
   cost: z.number(),
   createdAt: z.date(),
 });
+
+export const VerifyEmailSchema = z.object({
+  email: z.string().min(5, { message: 'Se requiere un correo electrónico' }),
+});

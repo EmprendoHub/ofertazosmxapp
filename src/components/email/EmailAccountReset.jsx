@@ -1,9 +1,9 @@
 'use client';
-import { resendEmail } from '@/app/_actions';
+import { resetAccountEmail } from '@/app/_actions';
 import React, { useRef, useState } from 'react';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
-const EmailVerification = () => {
+const EmailAccountReset = () => {
   const formRef = useRef();
   const [validationError, setValidationError] = useState(null);
   const [notification, setNotification] = useState('');
@@ -11,6 +11,7 @@ const EmailVerification = () => {
 
   async function action(data) {
     if (!executeRecaptcha) {
+      console.log('Execute recaptcha not available yet');
       setNotification(
         'Execute recaptcha not available yet likely meaning key not recaptcha key not set'
       );
@@ -18,7 +19,7 @@ const EmailVerification = () => {
     }
     executeRecaptcha('enquiryFormSubmit').then(async (gReCaptchaToken) => {
       data.append('gReCaptchaToken', gReCaptchaToken);
-      const result = await resendEmail(data);
+      const result = await resetAccountEmail(data);
 
       if (result?.error) {
         setValidationError(result.error);
@@ -56,12 +57,11 @@ const EmailVerification = () => {
         )}
 
         <button className="bg-black py-4 px-5 text-white tracking-wider">
-          Reenviar Correo
+          Enviar Correo
         </button>
-        {notification && <p className="mt-3 text-info">{notification}</p>}
       </form>
     </div>
   );
 };
 
-export default EmailVerification;
+export default EmailAccountReset;
