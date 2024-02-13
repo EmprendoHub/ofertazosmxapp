@@ -16,6 +16,7 @@ import { useRouter } from 'next/navigation';
 const Cart = () => {
   //import CartContext and assign to addItemToCart
   const { productsData } = useSelector((state) => state?.compras);
+  console.log(productsData);
   const router = useRouter();
   const dispatch = useDispatch();
   if (productsData?.length <= 0) {

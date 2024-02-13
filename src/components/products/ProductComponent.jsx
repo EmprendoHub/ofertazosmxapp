@@ -28,13 +28,13 @@ const ProductComponent = ({ product, trendingProducts }) => {
   const [color, setColor] = useState(product?.variations[0].color);
   const [size, setSize] = useState(product?.variations[0].size);
   const [variation, setVariation] = useState({
+    _id: product?.variations[0]._id,
     size: product?.variations[0].size,
     color: product?.variations[0].color,
     price: product?.variations[0].price,
     stock: product?.variations[0].stock,
     image: product?.variations[0].image,
   });
-  console.log(variation);
 
   useEffect(() => {
     if (slideRef.current) {
@@ -112,6 +112,7 @@ const ProductComponent = ({ product, trendingProducts }) => {
 
   const handleClick = () => {
     variation.product = product._id;
+    variation.variation = variation._id;
     variation.title = product.title;
     variation.images = [{ url: variation.image }];
     variation.quantity = 1;
@@ -136,21 +137,13 @@ const ProductComponent = ({ product, trendingProducts }) => {
     const pickedColorVariation = product.variations.find(
       (variation) => variation.color === valueToCheck
     );
-    console.log(pickedColorVariation, 'pickedColorVariation');
     setSize(pickedColorVariation.size);
-    console.log(
-      product.variations,
-      valueToCheck,
-      size,
-      pickedColorVariation.size
-    );
+
     const pickedVariation = product.variations.find(
       (variation) =>
         variation.color === valueToCheck &&
         variation.size === pickedColorVariation.size
     );
-
-    console.log(pickedVariation);
 
     const currentSizes = [];
     product?.variations.forEach((variation) => {
@@ -166,7 +159,6 @@ const ProductComponent = ({ product, trendingProducts }) => {
 
   const handleSizeSelection = (e) => {
     e.preventDefault();
-    console.log(e.target.value);
     const valueToCheck = e.target.value;
     const pickedSizeVariation = product.variations.find(
       (variation) =>
