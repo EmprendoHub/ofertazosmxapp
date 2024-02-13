@@ -11,13 +11,13 @@ async function getCartItems(items) {
     let cartItems = [];
 
     items?.forEach(async (item) => {
-      const variationId = item._id;
+      const variationId = item.variation;
       const product = await Product.findOne({
         'variations._id': variationId,
       });
 
       const variation = product.variations.find((variation) =>
-        variation._id.equals(item._id)
+        variation._id.equals(item.variation)
       );
       // Check if there is enough stock
       if (variation.stock < item.quantity) {
@@ -27,7 +27,7 @@ async function getCartItems(items) {
 
       cartItems.push({
         product: { _id: item.product },
-        variation: item._id,
+        variation: variationId,
         name: item.title,
         color: item.color,
         size: item.size,
@@ -162,7 +162,6 @@ export const POST = async (request) => {
         affiliateId: affiliate?._id.toString() || '',
       };
     }
-
     //await Order.create(orderData);
     const newOrder = await new Order(orderData);
 
