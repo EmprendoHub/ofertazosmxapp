@@ -1,5 +1,5 @@
 import { options } from '@/app/api/auth/[...nextauth]/options';
-import AdminOrders from '@/components/admin/profile/AdminOrders';
+import AdminOrders from '@/components/admin/AdminOrders';
 import { getServerSession } from 'next-auth';
 import Link from 'next/link';
 import React from 'react';

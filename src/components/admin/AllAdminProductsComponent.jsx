@@ -77,14 +77,14 @@ const AllAdminProductsComponent = ({
                 <td className="px-6 maxsm:px-2 py-2 maxmd:hidden">
                   <Link
                     key={index}
-                    href={`/admin/productos/editar/${product._id}`}
+                    href={`/admin/productos/variacion/${product._id}`}
                   >
                     {product._id.substring(0, 10)}...
                   </Link>
                 </td>
                 <td className="px-6 maxsm:px-0 py-2 relative ">
                   <span className="relative flex items-center justify-center text-black w-12 h-12 maxsm:w-8 maxsm:h-8 shadow mt-2">
-                    <Link href={`/admin/productos/editar/${product._id}`}>
+                    <Link href={`/admin/productos/variacion/${product._id}`}>
                       <Image
                         src={product?.images[0].url}
                         alt="Title"
@@ -104,7 +104,7 @@ const AllAdminProductsComponent = ({
                 </td>
                 <td className="px-6 maxsm:px-0 py-2 ">
                   <b>
-                    <FormattedPrice amount={product.price} />
+                    <FormattedPrice amount={product?.variations[0].price} />
                   </b>
                 </td>
                 <td className={`px-6 maxsm:px-0 py-2 font-bold maxsm:hidden`}>
@@ -113,7 +113,7 @@ const AllAdminProductsComponent = ({
                 <td className="px-1 py-2 ">{product.stock}</td>
                 <td className="px-1 py-2 flex flex-row items-center gap-x-1">
                   <Link
-                    href={`/admin/productos/editar/${product._id}`}
+                    href={`/admin/productos/variacion/${product._id}`}
                     className="p-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
                   >
                     <FaPencilAlt className="maxsm:text-[10px]" />

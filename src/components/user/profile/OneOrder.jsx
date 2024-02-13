@@ -5,7 +5,7 @@ import { getOrderItemsQuantities, getTotalFromItems } from '@/backend/helpers';
 import { loadStripe } from '@stripe/stripe-js';
 import { useSelector } from 'react-redux';
 
-const OneOrder = ({ order, session }) => {
+const OneOrder = ({ order, session, deliveryAddress }) => {
   const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE__KEY);
   const { affiliateInfo } = useSelector((state) => state.compras);
 
@@ -106,11 +106,11 @@ const OneOrder = ({ order, session }) => {
           </thead>
           <tbody>
             <tr className="bg-white">
-              <td className="px-6 py-2">{order?.deliveryAddress?.street}</td>
-              <td className="px-6 py-2">{order?.deliveryAddress?.city}</td>
-              <td className="px-6 py-2">{order?.deliveryAddress?.province}</td>
-              <td className="px-6 py-2">{order?.deliveryAddress?.zip_code}</td>
-              <td className="px-6 py-2">{order?.deliveryAddress?.phone}</td>
+              <td className="px-6 py-2">{deliveryAddress?.street}</td>
+              <td className="px-6 py-2">{deliveryAddress?.city}</td>
+              <td className="px-6 py-2">{deliveryAddress?.province}</td>
+              <td className="px-6 py-2">{deliveryAddress?.zip_code}</td>
+              <td className="px-6 py-2">{deliveryAddress?.phone}</td>
             </tr>
           </tbody>
         </table>
@@ -120,7 +120,7 @@ const OneOrder = ({ order, session }) => {
           <thead className="text-l text-gray-700 uppercase">
             <tr>
               <th scope="col" className="px-6 py-3">
-                ID.
+                SKU
               </th>
               <th scope="col" className="px-6 py-3">
                 Cant.
@@ -128,7 +128,12 @@ const OneOrder = ({ order, session }) => {
               <th scope="col" className="px-6 py-3">
                 Nombre
               </th>
-
+              <th scope="col" className="px-6 py-3">
+                Color
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Talla
+              </th>
               <th scope="col" className="px-6 py-3">
                 Precio
               </th>
@@ -140,9 +145,14 @@ const OneOrder = ({ order, session }) => {
           <tbody>
             {order?.orderItems?.map((item, index) => (
               <tr className="bg-white" key={index}>
-                <td className="px-6 py-2">{item.product || item._id}</td>
+                <td className="px-6 py-2">
+                  {item.product.substring(0, 10) || item._id.substring(0, 10)}
+                  ...
+                </td>
                 <td className="px-6 py-2">{item.quantity}</td>
                 <td className="px-6 py-2">{item.name}</td>
+                <td className="px-6 py-2">{item.color}</td>
+                <td className="px-6 py-2">{item.size}</td>
                 <td className="px-6 py-2">
                   <FormattedPrice amount={item?.price || 0} />
                 </td>

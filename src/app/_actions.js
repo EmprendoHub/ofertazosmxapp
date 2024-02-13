@@ -10,6 +10,8 @@ import {
   PostEntrySchema,
   PostUpdateSchema,
   ProductEntrySchema,
+  VariationProductEntrySchema,
+  VariationUpdateProductEntrySchema,
   VerifyEmailSchema,
 } from '@/lib/schemas';
 import { revalidatePath } from 'next/cache';
@@ -21,6 +23,7 @@ import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
 import axios from 'axios';
 import { NextResponse } from 'next/server';
+import { generateUrlSafeTitle } from '@/backend/helpers';
 
 export async function changeClientStatus(_id) {
   const session = await getServerSession(options);
@@ -420,6 +423,226 @@ export async function updatePost(data) {
   revalidatePath('/blog');
 }
 
+export async function addVariationProduct(data) {
+  const session = await getServerSession(options);
+  const user = { _id: session?.user?._id };
+
+  let {
+    title,
+    description,
+    category,
+    tags,
+    featured,
+    mainImage,
+    brand,
+    gender,
+    variations,
+    salePrice,
+    salePriceEndDate,
+    createdAt,
+  } = Object.fromEntries(data);
+  // Parse variations JSON string with reviver function to convert numeric strings to numbers
+  let colors = [];
+  variations = JSON.parse(variations, (key, value) => {
+    if (key === 'color') {
+      const color = {
+        value: value,
+        label: value,
+      };
+      //check array of object to see if values exists
+      const exists = colors.some((c) => c.value === value || c.label === value);
+      if (!exists) {
+        colors.push(color); // add to colors array
+      }
+    }
+    // Check if the value is a string and represents a number
+    if (!isNaN(value) && value !== '' && !Array.isArray(value)) {
+      if (key != 'size') {
+        return Number(value); // Convert the string to a number
+      }
+    }
+    return value; // Return unchanged for other types of values
+  });
+
+  tags = JSON.parse(tags);
+  const sale_price = Number(salePrice);
+  const sale_price_end_date = salePriceEndDate;
+  const images = [{ url: mainImage }];
+
+  // calculate product stock
+  const stock = variations.reduce(
+    (total, variation) => total + variation.stock,
+    0
+  );
+  createdAt = new Date(createdAt);
+
+  // validate form data
+  const result = VariationProductEntrySchema.safeParse({
+    title: title,
+    description: description,
+    brand: brand,
+    category: category,
+    tags: tags,
+    images: images,
+    variations: variations,
+    stock: stock,
+    gender: gender,
+    createdAt: createdAt,
+  });
+
+  //check for errors
+  const { error: zodError } = result;
+  if (zodError) {
+    return { error: zodError.format() };
+  }
+  // Create a new Product in the database
+  await dbConnect();
+  const titleTag = generateUrlSafeTitle(title);
+
+  const usedTitle = await Product.find({ title: title });
+  if (usedTitle.length > 0) {
+    return {
+      error: {
+        title: { _errors: ['Este titulo ya esta en uso para otro producto'] },
+      },
+    };
+  }
+  const { error } = await Product.create({
+    type: 'variation',
+    title,
+    titleTag,
+    description,
+    featured,
+    brand,
+    gender,
+    category,
+    tags,
+    images,
+    colors,
+    variations,
+    stock,
+    sale_price,
+    sale_price_end_date,
+    createdAt,
+    user,
+  });
+  if (error) throw Error(error);
+  revalidatePath('/admin/productos');
+  revalidatePath('/tienda');
+}
+
+export async function updateVariationProduct(data) {
+  const session = await getServerSession(options);
+  const user = { _id: session?.user?._id };
+
+  let {
+    title,
+    description,
+    category,
+    tags,
+    featured,
+    mainImage,
+    brand,
+    gender,
+    variations,
+    salePrice,
+    salePriceEndDate,
+    updatedAt,
+    _id,
+  } = Object.fromEntries(data);
+  // Parse variations JSON string with reviver function to convert numeric strings to numbers
+  let colors = [];
+  variations = JSON.parse(variations, (key, value) => {
+    if (key === 'color') {
+      const color = {
+        value: value,
+        label: value,
+      };
+      //check array of object to see if values exists
+      const exists = colors.some((c) => c.value === value || c.label === value);
+      if (!exists) {
+        colors.push(color); // add to colors array
+      }
+    }
+    // Check if the value is a string and represents a number
+    if (!isNaN(value) && value !== '' && !Array.isArray(value)) {
+      if (key != 'size') {
+        return Number(value); // Convert the string to a number
+      }
+    }
+    return value; // Return unchanged for other types of values
+  });
+
+  tags = JSON.parse(tags);
+  const sale_price = Number(salePrice);
+  const sale_price_end_date = salePriceEndDate;
+  const images = [{ url: mainImage }];
+
+  // calculate product stock
+  const stock = variations.reduce(
+    (total, variation) => total + variation.stock,
+    0
+  );
+  updatedAt = new Date(updatedAt);
+
+  // validate form data
+  const result = VariationUpdateProductEntrySchema.safeParse({
+    title: title,
+    description: description,
+    brand: brand,
+    category: category,
+    tags: tags,
+    images: images,
+    variations: variations,
+    stock: stock,
+    gender: gender,
+    updatedAt: updatedAt,
+  });
+
+  //check for errors
+  const { error: zodError } = result;
+  if (zodError) {
+    return { error: zodError.format() };
+  }
+  // Create a new Product in the database
+  await dbConnect();
+  const usedTitle = await Product.find({ title: title, _id: { $ne: _id } });
+
+  if (usedTitle.length > 0) {
+    return {
+      error: {
+        title: { _errors: ['Este titulo ya esta en uso para otro producto'] },
+      },
+    };
+  }
+  const titleTag = generateUrlSafeTitle(title);
+  const { error } = await Product.updateOne(
+    { _id },
+    {
+      type: 'variation',
+      title,
+      titleTag,
+      description,
+      featured,
+      brand,
+      gender,
+      category,
+      tags,
+      images,
+      colors,
+      variations,
+      stock,
+      sale_price,
+      sale_price_end_date,
+      updatedAt,
+      user,
+    }
+  );
+  if (error) throw Error(error);
+  revalidatePath('/admin/productos');
+  revalidatePath('/tienda');
+}
+
 export async function addProduct(data) {
   const session = await getServerSession(options);
   const user = { _id: session?.user?._id };
@@ -480,8 +703,11 @@ export async function addProduct(data) {
   }
   // Create a new Product in the database
   await dbConnect();
+  const titleTag = generateUrlSafeTitle(title);
   const { error } = await Product.create({
+    type: 'simple',
     title,
+    titleTag,
     description,
     featured,
     brand,

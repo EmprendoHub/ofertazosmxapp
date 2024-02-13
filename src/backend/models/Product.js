@@ -1,9 +1,17 @@
 import mongoose from 'mongoose';
 
 const ProductSchema = new mongoose.Schema({
+  type: {
+    type: String,
+  },
   title: {
     require: true,
     type: String,
+    unique: true,
+  },
+  titleTag: {
+    type: String,
+    unique: true,
   },
   description: {
     require: true,
@@ -59,6 +67,31 @@ const ProductSchema = new mongoose.Schema({
       },
     },
   ],
+  variations: [
+    {
+      stock: {
+        type: Number,
+      },
+      color: {
+        type: String,
+      },
+      colorHex: {
+        type: String,
+      },
+      size: {
+        type: String,
+      },
+      cost: {
+        type: Number,
+      },
+      price: {
+        type: Number,
+      },
+      image: {
+        type: String,
+      },
+    },
+  ],
   gender: {
     type: String,
   },
@@ -69,7 +102,7 @@ const ProductSchema = new mongoose.Schema({
   stock: {
     require: true,
     type: Number,
-    default: 1,
+    default: 0,
   },
   rating: {
     type: Number,

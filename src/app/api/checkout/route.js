@@ -11,17 +11,27 @@ async function getCartItems(items) {
     let cartItems = [];
 
     items?.forEach(async (item) => {
-      const productId = item._id;
-      const product = await Product.findById(productId);
+      const variationId = item._id;
+      const product = await Product.findOne({
+        'variations._id': variationId,
+      });
+
+      const variation = product.variations.find((variation) =>
+        variation._id.equals(item._id)
+      );
+      console.log(variation);
       // Check if there is enough stock
-      if (product.stock < item.quantity) {
+      if (variation.stock < item.quantity) {
         console.log('Insufficient stock');
         return;
       }
 
       cartItems.push({
-        product: { _id: item._id },
+        product: { _id: item.product },
+        variation: item._id,
         name: item.title,
+        color: item.color,
+        size: item.size,
         price: item.price,
         quantity: item.quantity,
         image: item.images[0].url,
@@ -115,7 +125,12 @@ export const POST = async (request) => {
             name: item.title,
             description: item.description,
             images: [item.images[0].url],
-            metadata: { productId: item._id },
+            metadata: {
+              productId: item.product,
+              variationId: item._id,
+              color: item.color,
+              size: item.size,
+            },
           },
         },
         quantity: item.quantity,

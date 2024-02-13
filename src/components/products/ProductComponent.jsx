@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './productstyles.css';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import ProductCard from './ProductCard';
@@ -16,8 +16,25 @@ import { useRouter } from 'next/navigation';
 const ProductComponent = ({ product, trendingProducts }) => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const images = product?.images;
+  const [images, setImages] = useState(product?.images);
   const slideRef = useRef(null);
+  const [sizes, setSizes] = useState([product?.variations[0].size]);
+  const [colors, setColors] = useState(product?.colors);
+  const [price, setPrice] = useState(product?.variations[0].price);
+  const [variationStock, setVariationStock] = useState(
+    product?.variations[0].stock
+  );
+  const [quantity, setQuantity] = useState(1);
+  const [color, setColor] = useState(product?.variations[0].color);
+  const [size, setSize] = useState(product?.variations[0].size);
+  const [variation, setVariation] = useState({
+    size: product?.variations[0].size,
+    color: product?.variations[0].color,
+    price: product?.variations[0].price,
+    stock: product?.variations[0].stock,
+    image: product?.variations[0].image,
+  });
+  console.log(variation);
 
   useEffect(() => {
     if (slideRef.current) {
@@ -94,7 +111,12 @@ const ProductComponent = ({ product, trendingProducts }) => {
   };
 
   const handleClick = () => {
-    dispatch(addToCart(product));
+    variation.product = product._id;
+    variation.title = product.title;
+    variation.images = [{ url: variation.image }];
+    variation.quantity = 1;
+    variation.brand = product.brand;
+    dispatch(addToCart(variation));
     toast.success(
       `${product?.title.substring(0, 15)}... se agrego al carrito`,
       {
@@ -105,6 +127,53 @@ const ProductComponent = ({ product, trendingProducts }) => {
       }
     );
     router.push('/carrito');
+  };
+
+  const handleColorSelection = (e) => {
+    e.preventDefault();
+    const valueToCheck = e.target.value;
+    setColor(valueToCheck);
+    const pickedColorVariation = product.variations.find(
+      (variation) => variation.color === valueToCheck
+    );
+    console.log(pickedColorVariation, 'pickedColorVariation');
+    setSize(pickedColorVariation.size);
+    console.log(
+      product.variations,
+      valueToCheck,
+      size,
+      pickedColorVariation.size
+    );
+    const pickedVariation = product.variations.find(
+      (variation) =>
+        variation.color === valueToCheck &&
+        variation.size === pickedColorVariation.size
+    );
+
+    console.log(pickedVariation);
+
+    const currentSizes = [];
+    product?.variations.forEach((variation) => {
+      const exists = variation.color === valueToCheck;
+
+      if (exists) {
+        currentSizes.push(variation.size);
+        setVariation(variation);
+      }
+    });
+    setSizes(currentSizes);
+  };
+
+  const handleSizeSelection = (e) => {
+    e.preventDefault();
+    console.log(e.target.value);
+    const valueToCheck = e.target.value;
+    const pickedSizeVariation = product.variations.find(
+      (variation) =>
+        variation.size === valueToCheck && variation.color === color
+    );
+    setVariation(pickedSizeVariation);
+    setSize(valueToCheck);
   };
 
   return (
@@ -170,7 +239,7 @@ const ProductComponent = ({ product, trendingProducts }) => {
                       <div className="border-[1px] border-yellow-600 w-fit py-1 px-4 rounded-full text-xs text-black">
                         <p>
                           {calculatePercentage(
-                            product?.price,
+                            variation.price,
                             product?.sale_price
                           )}
                           % menos
@@ -178,7 +247,7 @@ const ProductComponent = ({ product, trendingProducts }) => {
                       </div>
                       <div className="flex items-center gap-x-2">
                         <p className="line-through text-sm text-gray-600 font-bodyFont">
-                          <FormattedPrice amount={product?.price} />
+                          <FormattedPrice amount={variation.price} />
                         </p>
                       </div>
                     </div>
@@ -189,8 +258,8 @@ const ProductComponent = ({ product, trendingProducts }) => {
                     <p className="font-semibold text-4xl text-black font-bodyFont">
                       {product?.sale_price > 0 ? (
                         <FormattedPrice amount={product?.sale_price} />
-                      ) : product?.price > 0 ? (
-                        <FormattedPrice amount={product?.price} />
+                      ) : variation.price > 0 ? (
+                        <FormattedPrice amount={variation.price} />
                       ) : (
                         ''
                       )}
@@ -199,7 +268,7 @@ const ProductComponent = ({ product, trendingProducts }) => {
                       Apártalo con solo 30%:
                     </p>
                     <p className="text-xl text-black font-bodyFont">
-                      <FormattedPrice amount={product?.price * 0.3} />
+                      <FormattedPrice amount={variation.price * 0.3} />
                     </p>
                   </div>
                 </motion.div>
@@ -212,48 +281,72 @@ const ProductComponent = ({ product, trendingProducts }) => {
                 >
                   {product?.description ? product?.description : ''}
                 </motion.div>
+                <span>
+                  Existencias:{' '}
+                  <span className=" font-bodyFont">
+                    <b>{variation.stock}</b>
+                  </span>
+                </span>
                 <motion.div
                   initial={{ y: 50, opacity: 0 }}
                   whileInView={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.7 }}
                   className="text-sm text-lightText flex flex-col"
                 >
-                  {product?.colors.length > 0 ? (
-                    <span className="text-black">
-                      Colores:{' '}
-                      <select
-                        className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
-                        name="color"
-                      >
-                        {product?.colors.map((color, index) => (
-                          <option key={index + 1} value={color?.value}>
-                            {color?.value}
-                          </option>
-                        ))}
-                      </select>
+                  <p className="text-slate-500 tracking-widest mb-2">
+                    Colores Disponibles:
+                  </p>
+                  {product?.variations.length > 0 && (
+                    <span className="text-black flex flex-row items-center gap-5">
+                      {colors?.map((c, index) => (
+                        <button
+                          value={c.value}
+                          key={index}
+                          onClick={handleColorSelection}
+                          className={`flex w-full cursor-pointer p-3  text-white ${
+                            color === c.value ? 'bg-black' : 'bg-slate-500'
+                          }`}
+                        >
+                          {c.value}
+                        </button>
+                      ))}
+                    </span>
+                  )}
+                </motion.div>
+                <motion.div
+                  initial={{ y: 50, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.7 }}
+                  className="text-sm text-lightText flex flex-col"
+                >
+                  <p className="text-slate-500 tracking-widest mb-2">
+                    Tallas Disponibles:
+                  </p>
+                  {product?.variations.length > 1 ? (
+                    <span className="flex items-center gap-5 justify-start mt-2 ">
+                      {sizes?.map((s, index) => (
+                        <button
+                          key={index}
+                          onClick={handleSizeSelection}
+                          value={s}
+                          className={`rounded-full border border-slate-400 flex items-center justify-center px-2 py-1 ${
+                            size === s
+                              ? ' bg-black text-white'
+                              : 'border-slate-400'
+                          }`}
+                        >
+                          {s}
+                        </button>
+                      ))}
                     </span>
                   ) : (
                     <div className="grid maxxsm:grid-cols-1 maxmd:grid-cols-2 grid-cols-4 gap-4 mt-2">
-                      {product?.colors?.map((color, index) => (
-                        <p key={index} className="text-black">
-                          {color.value}
-                        </p>
-                      ))}
+                      <p>Talla:</p>
+                      <p className="text-black">
+                        {product?.variations[0].size}
+                      </p>
                     </div>
                   )}
-                  <span className="w-80 mt-5">
-                    Tallas:{' '}
-                    <select
-                      className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
-                      name="i_color-${index + 1}"
-                    >
-                      {product?.sizes.map((size, index) => (
-                        <option key={index} value={size.value}>
-                          {size.value}
-                        </option>
-                      ))}
-                    </select>
-                  </span>
                 </motion.div>
                 <motion.div
                   initial={{ y: 50, opacity: 0 }}
@@ -287,12 +380,7 @@ const ProductComponent = ({ product, trendingProducts }) => {
                       <b>{product?._id}</b>
                     </span>
                   </span>
-                  <span>
-                    Existencias:{' '}
-                    <span className=" font-bodyFont">
-                      <b>{product?.stock}</b>
-                    </span>
-                  </span>
+
                   <span>
                     Categoría:{' '}
                     <span className="t font-bodyFont">

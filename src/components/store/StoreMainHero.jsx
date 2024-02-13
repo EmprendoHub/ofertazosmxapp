@@ -1,0 +1,76 @@
+'use client';
+import Image from 'next/image';
+import React from 'react';
+
+const StoreMainHero = () => {
+  return (
+    <div className="container flex flex-col items-center justify-center min-h-[400px]">
+      <div className=" flex flex-row items-center w-full bg-slate-300 h-[400px]">
+        <div className="flex flex-row w-3/4 bg-teal-100 h-full">
+          <div className="p-10 flex flex-col items-start justify-end h-[400px] w-6/12 oferta">
+            <p className=" text-3xl font-EB_Garamond">La Oferta del Mes</p>
+            <h2 className=" text-6xl font-black font-EB_Garamond mb-20">
+              MAS OFERTAS ADENTRO...
+            </h2>
+            <p className="text-xl tracking-widest font-bold font-raleway">
+              Lista de deseos {'>>'}
+            </p>
+          </div>
+          <div className="p-8 relative flex items-center justify-center h-[400px] w-6/12">
+            <Image
+              src={`/images/main_stylish_model.png`}
+              alt="img"
+              width={300}
+              height={300}
+              className="object-cover"
+            />
+          </div>
+        </div>
+        <div className="w-1/4  p-8 flex flex-col items-start justify-start  bg-slate-100 h-full">
+          <h3 className="text-bold text-2xl">Sugerencias de Michelle</h3>
+        </div>
+      </div>
+      <div className="container flex flex-row items-center w-full bg-slate-300 h-[400px]">
+        <div className="w-1/4 p-8 relative flex flex-col items-start justify-start bg-red-200 h-full">
+          <h3 className="text-bold text-2xl">Hasta un 30%</h3>
+          <p>En todas las bolsas de mano.</p>
+          <Image
+            alt="img"
+            width={250}
+            height={250}
+            src={`/images/main_stylish_model.png`}
+            className="absolute object-cover bottom-0"
+          />
+        </div>
+        <div className="w-1/4  p-8 relative flex flex-col items-start justify-start  bg-slate-200 h-full">
+          <h3 className="text-bold text-2xl">Explora las marcas </h3>
+          <p>Gucci, Fendi, Versace, etc...</p>
+          <Image
+            alt="img"
+            width={250}
+            height={250}
+            src={`/images/main_stylish_model.png`}
+            className="absolute object-cover bottom-0"
+          />
+        </div>
+        <div className="w-1/4  p-8 relative flex flex-col items-start justify-end  bg-green-200 h-full">
+          <h3 className="text-bold text-2xl">No te pierdas</h3>
+          <p>Las ofertas de temporada.</p>
+          <Image
+            alt="img"
+            width={220}
+            height={220}
+            src={`/images/main_stylish_model.png`}
+            className="absolute object-cover top-0"
+          />
+        </div>
+        <div className="w-1/4  p-8 flex flex-col items-start justify-start  bg-slate-100 h-full">
+          <h3 className="text-bold text-2xl">Hasta un 30%</h3>
+          <p>En todas las bolsas de mano.</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default StoreMainHero;

@@ -44,9 +44,14 @@ export async function POST(req, res) {
         const productId = item.product.toString();
         // Find the product by its _id and update its stock
         const product = await Product.findOne({ _id: productId });
-        if (product) {
+        // Find the product variation
+        const variation = product.variations.find((variation) =>
+          variation._id.equals(item._id)
+        );
+        if (variation) {
           // Decrement the quantity
-          product.stock -= item.quantity; // Assuming you want to decrease the quantity by 1
+          variation.stock -= item.quantity; // Decrease the quantity by 1
+          product.stock -= item.quantity; // Decrease the quantity by 1
 
           // Save the updated product
           await product.save();

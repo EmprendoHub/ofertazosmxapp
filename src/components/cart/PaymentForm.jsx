@@ -39,7 +39,7 @@ const PaymentForm = () => {
 
     const response = await fetch(`/api/checkout?${payType}`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', PayType: `${payType}` },
       body: JSON.stringify({
         items: productsData,
         email: session?.user?.email,

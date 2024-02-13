@@ -37,12 +37,39 @@ const Cart = () => {
           <div className="container max-w-screen-xl mx-auto bg-white p-5">
             <div className="flex flex-col md:flex-row gap-4">
               <main className="md:w-3/4">
+                {/* Titles */}
+                <article className="border border-gray-200  shadow-sm rounded p-3 lg:p-5">
+                  <div className="titulos">
+                    <div className="flex flex-wrap lg:flex-row gap-5 items-center">
+                      <div className="ml-3 w-10">Img.</div>
+                      <div className="ml-3 max-w-60 flex-auto">Titulo</div>
+                      <div className="max-w-12 flex-auto">Color</div>
+                      <div className="max-w-12 flex-auto">Talla</div>
+                      <div className="max-w-16 flex-auto">Cant.</div>
+                      <div>
+                        <div className="leading-5">
+                          <p className="font-semibold not-italic">$</p>
+                        </div>
+                      </div>
+                      <div className="flex-auto">
+                        <div className="float-right">
+                          <span className="text.lg hover:text-red-600 cursor-pointer duration-300">
+                            ...
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <hr className="my-4" />
+                  </div>
+                </article>
+                {/* Items */}
                 <article className="border border-gray-200  shadow-sm rounded mb-5 p-3 lg:p-5">
                   {productsData?.map((cartItem, index) => (
                     <div key={index}>
                       <div className="flex flex-wrap lg:flex-row gap-5  mb-4 items-center">
                         <div className="w-full lg:w-2/5 xl:w-2/4">
-                          <figure className="flex leading-5">
+                          <figure className="flex gap-3 leading-5">
                             <div>
                               <div className="block w-16 h-16 rounded border border-gray-200 overflow-hidden">
                                 <Image
@@ -56,7 +83,7 @@ const Cart = () => {
                             <figcaption className="ml-3">
                               <p>
                                 <a
-                                  href={`/producto/${cartItem?._id}`}
+                                  href={`/producto/${cartItem?.product}`}
                                   className="hover:text-blue-600"
                                 >
                                   {cartItem?.title}
@@ -67,6 +94,8 @@ const Cart = () => {
                                 Marca: {cartItem?.brand}
                               </p>
                             </figcaption>
+                            <div>{cartItem.color}</div>
+                            <div>{cartItem.size}</div>
                           </figure>
                         </div>
                         <div className="w-24">

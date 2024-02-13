@@ -5,6 +5,16 @@ export const isValidEmail = (email) => {
   return emailRegex.test(email);
 };
 
+export function generateUrlSafeTitle(title) {
+  // Convert the title to lowercase and replace spaces with dashes
+  let urlSafeTitle = title.toLowerCase().replace(/\s+/g, '-');
+
+  // Remove special characters and non-alphanumeric characters
+  urlSafeTitle = urlSafeTitle.replace(/[^\w-]+/g, '');
+
+  return urlSafeTitle;
+}
+
 export const isValidPhone = (phone) => {
   const phoneRegex = /^(\+\d{2}\s?)?(\d{3}[-\s]?\d{3}[-\s]?\d{4})$/;
   return phoneRegex.test(phone);

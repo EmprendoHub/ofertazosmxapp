@@ -66,6 +66,50 @@ export const ProductEntrySchema = z.object({
   createdAt: z.date(),
 });
 
+export const VariationProductEntrySchema = z.object({
+  title: z.string().min(5, { message: 'Se requiere el titulo' }),
+  description: z.string().min(3, { message: 'Se requiere la description' }),
+  brand: z.string().min(3, { message: 'Se requiere la marca' }),
+  category: z.string().min(3, { message: 'Se requiere la categoría' }),
+  images: z.array(z.object({ url: z.string() })),
+  tags: z.array(z.object({ value: z.string(), label: z.string() })),
+  variations: z.array(
+    z.object({
+      stock: z.number(),
+      color: z.string(),
+      size: z.string(),
+      cost: z.number(),
+      price: z.number(),
+      image: z.string(),
+    })
+  ),
+  stock: z.number(),
+  gender: z.string().min(1, { message: 'Se requiere el genero' }),
+  createdAt: z.date(),
+});
+
+export const VariationUpdateProductEntrySchema = z.object({
+  title: z.string().min(5, { message: 'Se requiere el titulo' }),
+  description: z.string().min(3, { message: 'Se requiere la description' }),
+  brand: z.string().min(3, { message: 'Se requiere la marca' }),
+  category: z.string().min(3, { message: 'Se requiere la categoría' }),
+  images: z.array(z.object({ url: z.string() })),
+  tags: z.array(z.object({ value: z.string(), label: z.string() })),
+  variations: z.array(
+    z.object({
+      stock: z.number(),
+      color: z.string(),
+      size: z.string(),
+      cost: z.number(),
+      price: z.number(),
+      image: z.string(),
+    })
+  ),
+  stock: z.number(),
+  gender: z.string().min(1, { message: 'Se requiere el genero' }),
+  updatedAt: z.date(),
+});
+
 export const VerifyEmailSchema = z.object({
   email: z.string().min(5, { message: 'Se requiere un correo electrónico' }),
 });

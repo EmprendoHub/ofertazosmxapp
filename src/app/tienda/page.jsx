@@ -2,8 +2,8 @@ import StoreHeroComponent from '@/components/hero/StoreHeroComponent';
 import ListProducts from '@/components/products/ListProducts';
 import { getCookiesName } from '@/backend/helpers';
 import { cookies } from 'next/headers';
-import axios from 'axios';
 import ServerPagination from '@/components/pagination/ServerPagination';
+import StoreMainHero from '@/components/store/StoreMainHero';
 
 export const metadata = {
   title: 'Tienda Shopout Mx',
@@ -78,8 +78,9 @@ const TiendaPage = async ({ searchParams }) => {
   }
 
   return (
-    <>
-      <StoreHeroComponent />
+    <div className="flex flex-col items-center justify-center gap-5">
+      {/* <StoreHeroComponent /> */}
+      <StoreMainHero />
       <ListProducts
         products={products}
         allBrands={allBrands}
@@ -94,7 +95,7 @@ const TiendaPage = async ({ searchParams }) => {
         nextPage={nextPage}
         totalPages={totalPages}
       />
-    </>
+    </div>
   );
 };
 

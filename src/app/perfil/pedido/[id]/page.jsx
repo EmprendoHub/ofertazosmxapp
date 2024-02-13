@@ -26,9 +26,15 @@ const UserOneOrderPage = async ({ params }) => {
   const session = await getServerSession(options);
   const data = await getOneOrder(params.id, session);
   const order = data?.order;
+  const deliveryAddress = data?.deliveryAddress;
   return (
     <div>
-      <OneOrder order={order} id={params?.id} session={session} />
+      <OneOrder
+        order={order}
+        id={params?.id}
+        session={session}
+        deliveryAddress={deliveryAddress}
+      />
     </div>
   );
 };

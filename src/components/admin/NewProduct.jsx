@@ -253,10 +253,10 @@ const NewProduct = () => {
   };
 
   return (
-    <main className="w-full p-4 maxsm:p-2 bg-slate-300">
+    <main className="w-full p-4 maxsm:p-2 bg-slate-200">
       <section className="w-full ">
         <h1 className="text-2xl font-semibold text-black mb-8 font-EB_Garamond">
-          Crear Nuevo Producto
+          Crear Nuevo Producto Simple
         </h1>
 
         <form
@@ -503,7 +503,7 @@ const NewProduct = () => {
 
             <div className="w-full flex-col flex justify-start px-2 gap-y-5">
               <div className="mb-4 w-full">
-                <label className="block mb-1 font-EB_Garamond"> Tallas </label>
+                <label className="block mb-1 font-EB_Garamond"> Talla </label>
                 <div className="relative">
                   <MultiselectComponent
                     options={sizeSelection}
@@ -534,7 +534,7 @@ const NewProduct = () => {
                 </div>
               </div>
               <div className="mb-4 w-full">
-                <label className="block mb-1 font-EB_Garamond"> Colores </label>
+                <label className="block mb-1 font-EB_Garamond"> Color </label>
                 <div className="relative">
                   <MultiselectColor
                     options={colorSelection}
