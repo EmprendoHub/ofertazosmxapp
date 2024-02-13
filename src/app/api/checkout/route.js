@@ -19,7 +19,6 @@ async function getCartItems(items) {
       const variation = product.variations.find((variation) =>
         variation._id.equals(item._id)
       );
-      console.log(variation);
       // Check if there is enough stock
       if (variation.stock < item.quantity) {
         console.log('Insufficient stock');

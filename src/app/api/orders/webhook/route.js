@@ -41,6 +41,7 @@ export async function POST(req, res) {
       });
 
       currentOrder?.orderItems.forEach(async (item) => {
+        console.log(item, 'item');
         const productId = item.product.toString();
         // Find the product by its _id and update its stock
         const product = await Product.findOne({ _id: productId });
@@ -55,6 +56,7 @@ export async function POST(req, res) {
 
           // Save the updated product
           await product.save();
+          console.log('product after save', product);
 
           revalidatePath(`/producto/${product._id}`);
         } else {
