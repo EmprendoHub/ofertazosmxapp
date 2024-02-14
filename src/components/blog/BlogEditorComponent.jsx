@@ -235,7 +235,7 @@ const BlogEditorComponent = () => {
     // write to database using server actions
     const result = await addNewPost(formData);
     if (result?.error) {
-      console.log(error);
+      console.log(result?.error);
       setValidationError(result.error);
     } else {
       setValidationError(null);
@@ -270,6 +270,7 @@ const BlogEditorComponent = () => {
                 {validationError.category._errors.join(', ')}
               </p>
             )}
+
             <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
               <svg
                 width="22"
@@ -282,18 +283,24 @@ const BlogEditorComponent = () => {
             </i>
           </div>
         </div>
+
         <nav className="mx-auto max-w-[900px] w-full flex flex-row items-center justify-between mb-10">
-          <p className="max-md:hidden text-black line-clamp-1 flex w-full  font-EB_Garamond leading-loose">
+          <p className=" text-black line-clamp-1 flex flex-col w-full leading-loose">
             <input
               name="mainTitle"
               value={mainTitle}
               onChange={(e) => setMainTitle(e.target.value)}
               placeholder="NUEVO BLOG"
-              className="font-bold font-EB_Garamond text-5xl flex flex-row items-center gap-1 w-full"
+              className="font-bold font-EB_Garamond text-5xl  w-full"
             />
             {validationError?.mainTitle && (
               <p className="text-sm text-red-400">
                 {validationError.mainTitle._errors.join(', ')}
+              </p>
+            )}
+            {validationError?.title && (
+              <p className="text-base text-red-400">
+                {validationError.title._errors.join(', ')}
               </p>
             )}
           </p>

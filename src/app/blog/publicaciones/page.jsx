@@ -4,11 +4,11 @@ import RecentPosts from '@/components/blog/RecentPosts';
 import { getAllPost } from '@/app/_actions';
 
 export const metadata = {
-  title: 'Blog Marort Mx',
+  title: 'Blog Shopout Mx',
   description: 'Ven y explora nuestro blog y descubre artículos de moda.',
 };
 
-const BlogPage = async ({ searchParams }) => {
+const AllPostsPage = async ({ searchParams }) => {
   const urlParams = {
     keyword: searchParams.keyword,
     page: searchParams.page,
@@ -30,4 +30,4 @@ const BlogPage = async ({ searchParams }) => {
   );
 };
 
-export default BlogPage;
+export default AllPostsPage;

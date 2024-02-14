@@ -925,6 +925,15 @@ export async function addNewPost(data) {
   //check for errors
   await dbConnect();
   const slug = generateUrlSafeTitle(mainTitle);
+
+  const slugExists = await Post.findOne({ slug: slug });
+  if (slugExists) {
+    return {
+      error: {
+        title: { _errors: ['Este Titulo de publicación ya esta en uso'] },
+      },
+    };
+  }
   const { error } = await Post.create({
     category,
     mainTitle,
@@ -1028,6 +1037,14 @@ export async function updatePost(data) {
   //check for errors
   await dbConnect();
   const slug = generateUrlSafeTitle(mainTitle);
+  const slugExists = await Post.findOne({ slug: slug, _id: { $ne: _id } });
+  if (slugExists) {
+    return {
+      error: {
+        title: { _errors: ['Este Titulo de publicación ya esta en uso'] },
+      },
+    };
+  }
   const { error } = await Post.updateOne(
     { _id },
     {

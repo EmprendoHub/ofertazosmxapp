@@ -4,7 +4,7 @@ import RecentPosts from '@/components/blog/RecentPosts';
 import { getAllPost } from '../_actions';
 
 export const metadata = {
-  title: 'Blog Marort Mx',
+  title: 'Blog Shopout Mx',
   description: 'Ven y explora nuestro blog y descubre artículos de moda.',
 };
 
