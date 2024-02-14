@@ -8,7 +8,6 @@ const PostSchema = new mongoose.Schema({
   mainTitle: {
     type: String,
     require: true,
-    unique: true,
   },
   slug: {
     type: String,
