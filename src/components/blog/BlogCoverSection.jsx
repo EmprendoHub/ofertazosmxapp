@@ -27,7 +27,10 @@ const BlogCoverSection = ({ blogs }) => {
 
         <div className="w-full lg:w-3/4 p-6 sm:p-8 md:p-12  lg:p-16 flex flex-col items-start justify-center z-0 text-light">
           <span className="text-white">
-            <Tag link={`/categories/${blog?.category}`} name={blog?.category} />
+            <Tag
+              link={`/blog/categorias/${blog?.category}`}
+              name={blog?.category}
+            />
           </span>
 
           <Link href={`/blog/publicacion/${blog?.slug}`} className="mt-6">
@@ -42,7 +45,7 @@ const BlogCoverSection = ({ blogs }) => {
             </h1>
           </Link>
           <p className="hidden  text-white sm:inline-block mt-4 md:text-lg lg:text-xl font-raleway">
-            {blog?.summary}
+            {blog?.sectionTwoParagraphOne.substring(0, 90)}...
           </p>
         </div>
       </article>

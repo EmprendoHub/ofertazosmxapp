@@ -7,7 +7,7 @@ const BlogLayoutThree = ({ blog }) => {
   return (
     <div className="group flex flex-col items-center text-dark dark:text-light">
       <Link
-        href={`/${blog?._id}`}
+        href={`/blog/publicacion/${blog?.slug}`}
         className="h-full rounded-xl overflow-hidden"
       >
         <Image
@@ -24,9 +24,14 @@ const BlogLayoutThree = ({ blog }) => {
 
       <div className="flex flex-col w-full mt-4">
         <span className="uppercase text-accent dark:text-accentDark font-semibold text-xs sm:text-sm">
-          {blog?.category}
+          <Link href={`/blog/categorias/${blog?.category}`}>
+            {blog?.category}
+          </Link>
         </span>
-        <Link href={`/${blog?._id}`} className="inline-block my-1">
+        <Link
+          href={`/blog/publicacion/${blog?.slug}`}
+          className="inline-block my-1"
+        >
           <h2 className="font-semibold capitalize  text-base sm:text-lg">
             <span
               className="bg-gradient-to-r from-orange-400 to-orange-600

@@ -23,7 +23,9 @@ const BlogLayoutTwo = ({ blog }) => {
 
       <div className=" w-full">
         <span className="inline-block font-black w-full uppercase text-accent dark:text-accentDark text-xs sm:text-sm">
-          {blog?.category}
+          <Link href={`/blog/categorias/${blog?.category}`}>
+            {blog?.category}
+          </Link>
         </span>
         <Link
           href={`/blog/publicacion/${blog?.slug}` || '/'}
