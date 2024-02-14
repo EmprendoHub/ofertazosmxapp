@@ -235,6 +235,7 @@ const BlogEditorComponent = () => {
     // write to database using server actions
     const result = await addNewPost(formData);
     if (result?.error) {
+      console.log(error);
       setValidationError(result.error);
     } else {
       setValidationError(null);

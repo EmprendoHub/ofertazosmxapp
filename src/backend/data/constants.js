@@ -37,9 +37,4 @@ export const SIDENAV_ITEMS = [
       { title: 'Afiliados', path: '/admin/asociados' },
     ],
   },
-  {
-    title: 'Salir',
-    path: '/help',
-    icon: <FaHandshake width="24" height="24" />,
-  },
 ];
