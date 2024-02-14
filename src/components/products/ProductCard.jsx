@@ -19,7 +19,7 @@ const ProductCard = ({ item }) => {
       transition={{ duration: 1.0 }}
       className="border-[1px] rounded-sm max-w-[350px] maxmd:max-w-[100%] overflow-hidden relative"
     >
-      <Link href={`/producto/${item._id}`}>
+      <Link href={`/producto/${item.slug}`}>
         <div className="w-full h-[300px] group overflow-hidden relative">
           <Image
             src={item?.images[0].url}

@@ -41,7 +41,7 @@ const AdminOrders = ({ orders, filteredOrdersCount }) => {
           {orders?.map((order, index) => (
             <tr className="bg-white" key={index}>
               <td className="px-6 maxsm:px-2 py-2">
-                <Link key={index} href={`/admin/pedidos/${order._id}`}>
+                <Link key={index} href={`/admin/pedido/${order._id}`}>
                   {order.orderId}
                 </Link>
               </td>
@@ -75,7 +75,7 @@ const AdminOrders = ({ orders, filteredOrdersCount }) => {
               <td className="px-1 py-2">
                 <div>
                   <Link
-                    href={`/admin/pedidos/${order._id}`}
+                    href={`/admin/pedido/${order._id}`}
                     className="px-2 py-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
                   >
                     <FaPencilAlt className="" />

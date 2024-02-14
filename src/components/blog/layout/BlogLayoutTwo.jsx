@@ -6,7 +6,7 @@ const BlogLayoutTwo = ({ blog }) => {
   return (
     <div className="group flex flex-row maxmd:flex-col gap-4 items-center text-dark dark:text-light">
       <Link
-        href={`/blog/publicacion/${blog?._id}` || '/'}
+        href={`/blog/publicacion/${blog?.slug}` || '/'}
         className="w-full  h-full rounded-xl overflow-hidden"
       >
         <Image
@@ -26,7 +26,7 @@ const BlogLayoutTwo = ({ blog }) => {
           {blog?.category}
         </span>
         <Link
-          href={`/blog/publicacion/${blog?._id}` || '/'}
+          href={`/blog/publicacion/${blog?.slug}` || '/'}
           className="inline-block my-1"
         >
           <h2 className="font-semibold capitalize text-base sm:text-lg">

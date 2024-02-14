@@ -5,7 +5,6 @@ import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import ProductCard from './ProductCard';
 import { IoMdCart } from 'react-icons/io';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { calculatePercentage } from '@/backend/helpers';
 import { useDispatch } from 'react-redux';
@@ -20,10 +19,6 @@ const ProductComponent = ({ product, trendingProducts }) => {
   const slideRef = useRef(null);
   const [sizes, setSizes] = useState([product?.variations[0].size]);
   const [colors, setColors] = useState(product?.colors);
-  const [price, setPrice] = useState(product?.variations[0].price);
-  const [variationStock, setVariationStock] = useState(
-    product?.variations[0].stock
-  );
   const [quantity, setQuantity] = useState(1);
   const [color, setColor] = useState(product?.variations[0].color);
   const [size, setSize] = useState(product?.variations[0].size);
@@ -138,20 +133,19 @@ const ProductComponent = ({ product, trendingProducts }) => {
       (variation) => variation.color === valueToCheck
     );
     setSize(pickedColorVariation.size);
+    setVariation(pickedColorVariation);
 
     const pickedVariation = product.variations.find(
       (variation) =>
         variation.color === valueToCheck &&
         variation.size === pickedColorVariation.size
     );
-
     const currentSizes = [];
     product?.variations.forEach((variation) => {
       const exists = variation.color === valueToCheck;
 
       if (exists) {
         currentSizes.push(variation.size);
-        setVariation(variation);
       }
     });
     setSizes(currentSizes);
@@ -348,18 +342,32 @@ const ProductComponent = ({ product, trendingProducts }) => {
                 >
                   {/* add to cart button */}
                   {product?.stock <= 0 ? (
-                    <span className="  border-[1px] border-black font-medium text-xl py-1 px-3 rounded-sm bg-black text-slate-100 ">
+                    <span className="  border-[1px] border-black font-medium text-xl py-1 px-3 rounded-sm bg-black ">
                       SOLD OUT
                     </span>
                   ) : (
                     <motion.button
+                      disabled={variation?.stock <= 0}
                       whileHover={{ scale: 1.07 }}
                       whileTap={{ scale: 0.9 }}
-                      className="bg-gold-gradient border border-black drop-shadow-md flex flex-row items-center justify-between px-6 py-3 text-sm gap-x-4 rounded-sm  bg-black text-white ease-in-out  duration-300 w-80 uppercase tracking-wider"
+                      className={`${
+                        variation?.stock <= 0
+                          ? 'bg-slate-300 grayscale-0 text-slate-500 border-slate-300'
+                          : 'text-white border-black'
+                      } border  drop-shadow-md flex flex-row items-center justify-between px-6 py-3 text-sm gap-x-4 rounded-sm  bg-black  ease-in-out  duration-300 w-80 uppercase tracking-wider`}
                       onClick={handleClick}
                     >
-                      Agregar a carrito
-                      <span className="text-xl text-slate-400 w-12 flex items-center justify-center group-hover:bg-black hover:text-white duration-200  rounded-full py-2">
+                      {variation?.stock <= 0
+                        ? 'Out of Stock'
+                        : 'Agregar a carrito'}
+
+                      <span
+                        className={`${
+                          variation?.stock <= 0
+                            ? 'bg-slate-300 grayscale-0 text-slate-500'
+                            : 'group-hover:bg-black hover:text-white duration-200 '
+                        } text-xl text-slate-400 w-12 flex items-center justify-center  rounded-full py-2`}
+                      >
                         <IoMdCart />
                       </span>
                     </motion.button>

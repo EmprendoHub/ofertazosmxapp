@@ -5,15 +5,10 @@ import Image from 'next/image';
 import AuthContext from '@/context/AuthContext';
 import { FaTrash, FaPencilAlt, FaStar } from 'react-icons/fa';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
-import AdminProductSearch from '../layout/AdminProductSearch';
 import Swal from 'sweetalert2';
 import SearchProducts from '@/app/admin/productos/search';
 
-const AllAdminProductsComponent = ({
-  products,
-  filteredProductsCount,
-  search,
-}) => {
+const AdminProducts = ({ products, filteredProductsCount, search }) => {
   const { deleteProduct } = useContext(AuthContext);
   const deleteHandler = (product_id) => {
     Swal.fire({
@@ -53,6 +48,9 @@ const AllAdminProductsComponent = ({
               <th scope="col" className="px-6 maxsm:px-0 py-3 maxmd:hidden">
                 SKU
               </th>
+              <th scope="col" className="px-6 maxsm:px-0 py-3 maxmd:hidden">
+                slug
+              </th>
               <th scope="col" className="px-6 maxsm:px-0 py-3 ">
                 Img
               </th>
@@ -77,14 +75,22 @@ const AllAdminProductsComponent = ({
                 <td className="px-6 maxsm:px-2 py-2 maxmd:hidden">
                   <Link
                     key={index}
-                    href={`/admin/productos/variacion/${product._id}`}
+                    href={`/admin/productos/variacion/${product.slug}`}
                   >
                     {product._id.substring(0, 10)}...
                   </Link>
                 </td>
+                <td className="px-6 maxsm:px-2 py-2 maxmd:hidden">
+                  <Link
+                    key={index}
+                    href={`/admin/productos/variacion/${product.slug}`}
+                  >
+                    {product.slug.substring(0, 10)}...
+                  </Link>
+                </td>
                 <td className="px-6 maxsm:px-0 py-2 relative ">
                   <span className="relative flex items-center justify-center text-black w-12 h-12 maxsm:w-8 maxsm:h-8 shadow mt-2">
-                    <Link href={`/admin/productos/variacion/${product._id}`}>
+                    <Link href={`/admin/productos/variacion/${product.slug}`}>
                       <Image
                         src={product?.images[0].url}
                         alt="Title"
@@ -113,7 +119,7 @@ const AllAdminProductsComponent = ({
                 <td className="px-1 py-2 ">{product.stock}</td>
                 <td className="px-1 py-2 flex flex-row items-center gap-x-1">
                   <Link
-                    href={`/admin/productos/variacion/${product._id}`}
+                    href={`/admin/productos/variacion/${product.slug}`}
                     className="p-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
                   >
                     <FaPencilAlt className="maxsm:text-[10px]" />
@@ -136,4 +142,4 @@ const AllAdminProductsComponent = ({
   );
 };
 
-export default AllAdminProductsComponent;
+export default AdminProducts;

@@ -1,41 +1,22 @@
-import { options } from '@/app/api/auth/[...nextauth]/options';
+import { getAllOrder } from '@/app/_actions';
 import AdminOrders from '@/components/admin/AdminOrders';
-import { getServerSession } from 'next-auth';
 import Link from 'next/link';
-import React from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
-async function getAllOrders(searchParams, session) {
-  try {
-    const urlParams = {
-      keyword: searchParams.keyword,
-      page: searchParams.page,
-    };
-    const stringSession = JSON.stringify(session);
-    // Filter out undefined values
-    const filteredUrlParams = Object.fromEntries(
-      Object.entries(urlParams).filter(([key, value]) => value !== undefined)
-    );
-    const searchQuery = new URLSearchParams(filteredUrlParams).toString();
-    const URL = `${process.env.NEXTAUTH_URL}/api/orders?${searchQuery}`;
-    const res = await fetch(URL, {
-      headers: {
-        Session: stringSession,
-        'Content-Type': 'application/json; charset=utf-8',
-      },
-    });
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    console.log(error.message);
-  }
-}
-
 const AdminOrdersPage = async ({ searchParams }) => {
-  const session = await getServerSession(options);
-  const data = await getAllOrders(searchParams, session);
+  const urlParams = {
+    keyword: searchParams.keyword,
+    page: searchParams.page,
+  };
+  const filteredUrlParams = Object.fromEntries(
+    Object.entries(urlParams).filter(([key, value]) => value !== undefined)
+  );
+  const searchQuery = new URLSearchParams(filteredUrlParams).toString();
+  const data = await getAllOrder(searchQuery);
+  const orders = JSON.parse(data.orders);
   const filteredOrdersCount = data?.itemCount;
-  const orders = data?.orders.orders;
+
+  // pagination
   let page = parseInt(searchParams.page, 10);
   page = !page || page < 1 ? 1 : page;
   const perPage = Number(data?.resPerPage);

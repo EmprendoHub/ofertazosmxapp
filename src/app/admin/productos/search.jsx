@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDebounce } from 'use-debounce';
+import { FaMagnifyingGlass } from 'react-icons/fa6';
 
 const SearchProducts = ({ search }) => {
   const router = useRouter();
@@ -25,12 +26,12 @@ const SearchProducts = ({ search }) => {
   }, [query]);
 
   return (
-    <div className="relative rounded-md shadow-sm">
+    <div className="relative rounded-md shadow-sm w-full">
       <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-        {/* <MagnifyingGlassIcon
+        <FaMagnifyingGlass
           className="h-5 w-5 text-gray-400"
           aria-hidden="true"
-        /> */}
+        />
       </div>
       <input
         value={text}

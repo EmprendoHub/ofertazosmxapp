@@ -18,8 +18,6 @@ const BlogCoverSection = ({ blogs }) => {
         />
         <Image
           src={blog?.mainImage || '/images/next.svg'}
-          placeholder="blur"
-          blurDataURL={blog?.mainImage || '/images/next.svg'}
           alt={blog?.mainTitle}
           fill
           className="w-full h-full object-center object-cover rounded-3xl -z-10"
@@ -32,7 +30,7 @@ const BlogCoverSection = ({ blogs }) => {
             <Tag link={`/categories/${blog?.category}`} name={blog?.category} />
           </span>
 
-          <Link href={`/blog/publicacion/${blog?._id}`} className="mt-6">
+          <Link href={`/blog/publicacion/${blog?.slug}`} className="mt-6">
             <h1 className="font-bold text-white font-EB_Garamond capitalize text-lg sm:text-xl md:text-3xl lg:text-4xl">
               <span
                 className="bg-gradient-to-r from-orange-400 to-orange-600

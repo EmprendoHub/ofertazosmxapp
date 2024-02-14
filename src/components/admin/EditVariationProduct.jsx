@@ -394,7 +394,7 @@ const EditVariationProduct = ({ product }) => {
             </div>
           </div>
 
-          <div className="flex flex-row maxmd:flex-col  items-center gap-5 justify-between w-full">
+          <div className="flex flex-row maxmd:flex-col items-start gap-5 justify-between w-full">
             <div className="gap-y-1 flex-col flex px-2 w-full">
               {/* Section 1 - Title, Image */}
               <label className="block  font-EB_Garamond">

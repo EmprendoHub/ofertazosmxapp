@@ -6,7 +6,6 @@ class APIPostsFilters {
 
   searchAllFields() {
     const keyword = this.queryStr.get('keyword');
-
     // Define the conditions to search for the keyword in title, description, and category
     const searchConditions = {
       $or: [

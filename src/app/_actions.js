@@ -22,8 +22,535 @@ import Affiliate from '@/backend/models/Affiliate';
 import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
 import axios from 'axios';
-import { NextResponse } from 'next/server';
 import { generateUrlSafeTitle } from '@/backend/helpers';
+import Order from '@/backend/models/Order';
+import APIPostsFilters from '@/lib/APIPostsFilters';
+import APIFilters from '@/lib/APIFilters';
+import APIOrderFilters from '@/lib/APIOrderFilters';
+import APIClientFilters from '@/lib/APIClientFilters';
+import APIAffiliateFilters from '@/lib/APIAffiliateFilters';
+
+// Function to get the document count for all from the previous month
+const getDocumentCountPreviousMonth = async (model) => {
+  const now = new Date();
+  const firstDayOfPreviousMonth = new Date(
+    now.getFullYear(),
+    now.getMonth() - 1,
+    1
+  );
+  const lastDayOfPreviousMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+
+  try {
+    const documentCount = await model.countDocuments(
+      {
+        createdAt: {
+          $gte: firstDayOfPreviousMonth,
+          $lte: lastDayOfPreviousMonth,
+        },
+      },
+      {
+        published: { $ne: 'false' },
+      }
+    );
+
+    return documentCount;
+  } catch (error) {
+    console.error('Error counting documents from the previous month:', error);
+    throw error;
+  }
+};
+
+// Function to get the document count for all orders from the previous month
+const getClientCountPreviousMonth = async () => {
+  const now = new Date();
+  const firstDayOfPreviousMonth = new Date(
+    now.getFullYear(),
+    now.getMonth() - 1,
+    1
+  );
+  const lastDayOfPreviousMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+
+  try {
+    const clientCount = await User.countDocuments(
+      {
+        createdAt: {
+          $gte: firstDayOfPreviousMonth,
+          $lte: lastDayOfPreviousMonth,
+        },
+      },
+      { role: 'cliente' }
+    );
+
+    return clientCount;
+  } catch (error) {
+    console.error('Error counting clients from the previous month:', error);
+    throw error;
+  }
+};
+
+export async function getDashboard() {
+  try {
+    await dbConnect();
+    const session = await getServerSession(options);
+    let orders;
+    let affiliates;
+    let products;
+    let clients;
+    let posts;
+
+    if (session) {
+      if (session?.user?.role === 'manager') {
+        orders = await Order.find({ orderStatus: { $ne: 'Cancelado' } })
+          .sort({ createdAt: -1 }) // Sort in descending order of creation date
+          .limit(5);
+        affiliates = await Affiliate.find({ published: { $ne: 'false' } })
+          .sort({ createdAt: -1 }) // Sort in descending order of creation date
+          .limit(5);
+        products = await Product.find({ published: { $ne: 'false' } })
+          .sort({ createdAt: -1 }) // Sort in descending order of creation date
+          .limit(5);
+        clients = await User.find({ role: 'cliente' })
+          .sort({ createdAt: -1 }) // Sort in descending order of creation date
+          .limit(5);
+        posts = await Post.find({ published: { $ne: 'false' } })
+          .sort({ createdAt: -1 }) // Sort in descending order of creation date
+          .limit(5);
+      }
+    }
+
+    const totalOrderCount = await Order.countDocuments({
+      orderStatus: { $ne: 'Cancelado' },
+    });
+    const totalAffiliateCount = await Affiliate.countDocuments({
+      published: { $ne: 'false' },
+    });
+    const totalProductCount = await Product.countDocuments({
+      published: { $ne: 'false' },
+    });
+    const totalClientCount = await User.countDocuments({ role: 'cliente' });
+    const totalPostCount = await Post.countDocuments({
+      published: { $ne: 'false' },
+    });
+
+    const orderCountPreviousMonth = await getDocumentCountPreviousMonth(Order);
+    const affiliateCountPreviousMonth = await getDocumentCountPreviousMonth(
+      Affiliate
+    );
+    const postCountPreviousMonth = await getDocumentCountPreviousMonth(Post);
+    const clientCountPreviousMonth = await getClientCountPreviousMonth();
+
+    orders = JSON.stringify(orders);
+    affiliates = JSON.stringify(affiliates);
+    products = JSON.stringify(products);
+    clients = JSON.stringify(clients);
+    posts = JSON.stringify(posts);
+
+    return {
+      orders: orders,
+      affiliates: affiliates,
+      products: products,
+      clients: clients,
+      posts: posts,
+      totalOrderCount: totalOrderCount,
+      orderCountPreviousMonth: orderCountPreviousMonth,
+      totalAffiliateCount: totalAffiliateCount,
+      affiliateCountPreviousMonth: affiliateCountPreviousMonth,
+      totalProductCount: totalProductCount,
+      totalClientCount: totalClientCount,
+      clientCountPreviousMonth: clientCountPreviousMonth,
+      totalPostCount: totalPostCount,
+      postCountPreviousMonth: postCountPreviousMonth,
+    };
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
+
+export async function getOnePost(slug) {
+  try {
+    await dbConnect();
+
+    let post = await Post.findOne({ slug: slug });
+    const postCategory = post.category;
+    // Find products matching any of the tag values
+    let trendingProducts = await Product.find({
+      'tags.value': postCategory,
+    }).limit(4);
+
+    // convert to string
+    post = JSON.stringify(post);
+    trendingProducts = JSON.stringify(trendingProducts);
+
+    return { post: post, trendingProducts: trendingProducts };
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
+
+export async function getAllPost(searchQuery) {
+  try {
+    await dbConnect();
+    const session = await getServerSession(options);
+    let postQuery;
+    if (session) {
+      if (session?.user?.role === 'manager') {
+        postQuery = Post.find();
+      }
+    } else {
+      postQuery = Post.find({ published: true });
+    }
+
+    const searchParams = new URLSearchParams(searchQuery);
+    const resPerPage = 10;
+    // Extract page and per_page from request URL
+    const page = Number(searchParams.get('page')) || 1;
+    // total number of documents in database
+    const itemCount = await Post.countDocuments();
+    // Extract all possible categories
+    const allCategories = await Post.distinct('category');
+
+    // Apply search Filters
+    const apiPostFilters = new APIPostsFilters(postQuery, searchParams)
+      .searchAllFields()
+      .filter();
+
+    let postsData = await apiPostFilters.query;
+
+    const filteredPostsCount = postsData.length;
+
+    // Pagination filter
+    apiPostFilters.pagination(resPerPage, page);
+    postsData = await apiPostFilters.query.clone();
+    // If you want a new sorted array without modifying the original one, use slice
+    // const sortedObj1 = obj1
+    //   .slice()
+    //   .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+    // descending order
+    // descending order
+    let sortedPosts = postsData
+      .slice()
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    sortedPosts = JSON.stringify(sortedPosts);
+
+    return {
+      posts: sortedPosts,
+      itemCount: itemCount,
+      filteredPostsCount: filteredPostsCount,
+    };
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
+
+export async function getOneOrder(id) {
+  const session = await getServerSession(options);
+
+  try {
+    await dbConnect();
+
+    let order = await Order.findOne({ _id: id });
+    let deliveryAddress = await Address.findOne(order.shippingInfo);
+
+    // convert to string
+    order = JSON.stringify(order);
+    deliveryAddress = JSON.stringify(deliveryAddress);
+    return { order: order, deliveryAddress: deliveryAddress };
+    // return { product };
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
+
+export async function getAllOrder(searchQuery) {
+  try {
+    await dbConnect();
+    const session = await getServerSession(options);
+    let orderQuery;
+    if (session?.user?.role === 'manager') {
+      orderQuery = Order.find({ orderStatus: { $ne: 'Cancelado' } });
+    } else if (session?.user?.role === 'afiliado') {
+      const affiliate = await Affiliate.findOne({ user: session?.user?._id });
+      orderQuery = Order.find({
+        affiliateId: affiliate?._id.toString(),
+        orderStatus: { $ne: 'Cancelado' },
+      });
+    } else {
+      orderQuery = Order.find({
+        user: session?.user?._id,
+        orderStatus: { $ne: 'Cancelado' },
+      });
+    }
+
+    const searchParams = new URLSearchParams(searchQuery);
+    const resPerPage = Number(searchParams.get('perpage')) || 5;
+    // Extract page and per_page from request URL
+    const page = Number(searchParams.get('page')) || 1;
+    // Apply descending order based on a specific field (e.g., createdAt)
+    orderQuery = orderQuery.sort({ createdAt: -1 });
+    const totalOrderCount = await Order.countDocuments();
+
+    // Apply search Filters including order_id and orderStatus
+    const apiOrderFilters = new APIOrderFilters(orderQuery, searchParams)
+      .searchAllFields()
+      .filter();
+    let ordersData = await apiOrderFilters.query;
+
+    const itemCount = ordersData.length;
+    apiOrderFilters.pagination(resPerPage, page);
+    ordersData = await apiOrderFilters.query.clone();
+
+    // await Promise.all(
+    //   ordersData.map(async (order) => {
+    //     let shippingInfo = await Address.findOne({
+    //       _id: order.shippingInfo,
+    //     });
+    //     let user = await User.findOne({ _id: order.user });
+    //     order.shippingInfo = shippingInfo;
+    //     order.user = user;
+    //   })
+    // );
+
+    // ordersData = await ordersData
+    //   .slice()
+    //   .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    let orders = JSON.stringify(ordersData);
+
+    return {
+      orders: orders,
+      totalOrderCount: totalOrderCount,
+      itemCount: itemCount,
+      resPerPage: resPerPage,
+    };
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
+
+export async function getOneProduct(slug, id) {
+  const session = await getServerSession(options);
+
+  try {
+    await dbConnect();
+    let product;
+    if (id) {
+      product = await Product.findOne({ _id: id });
+    } else {
+      product = await Product.findOne({ slug: slug });
+    }
+
+    let trendingProducts = await Product.find({
+      category: product.category,
+      _id: { $ne: product._id },
+    }).limit(4);
+    // convert to string
+    product = JSON.stringify(product);
+    trendingProducts = JSON.stringify(trendingProducts);
+    return { product: product, trendingProducts: trendingProducts };
+    // return { product };
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
+
+export async function getAllProduct(searchQuery) {
+  try {
+    await dbConnect();
+    const session = await getServerSession(options);
+    let productQuery;
+    if (session) {
+      if (session?.user?.role === 'manager') {
+        productQuery = Product.find();
+      }
+    } else {
+      productQuery = Product.find({ published: true });
+    }
+
+    const searchParams = new URLSearchParams(searchQuery);
+    const resPerPage = Number(searchParams.get('perpage')) || 5;
+    // Extract page and per_page from request URL
+    const page = Number(searchParams.get('page')) || 1;
+    // total number of documents in database
+    const productsCount = await Product.countDocuments();
+    // Extract all possible categories
+    let allCategories = await Product.distinct('category');
+    // Extract all possible categories
+    let allBrands = await Product.distinct('brand');
+    // Apply search Filters
+    const apiProductFilters = new APIFilters(productQuery, searchParams)
+      .searchAllFields()
+      .filter();
+
+    let productsData = await apiProductFilters.query;
+
+    const filteredProductsCount = productsData.length;
+
+    apiProductFilters.pagination(resPerPage, page);
+    productsData = await apiProductFilters.query.clone();
+
+    // If you want a new sorted array without modifying the original one, use slice
+    // const sortedObj1 = obj1
+    //   .slice()
+    //   .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+    // descending order
+    // descending order
+    let sortedProducts = productsData
+      .slice()
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    sortedProducts = JSON.stringify(sortedProducts);
+    allCategories = JSON.stringify(allCategories);
+    allBrands = JSON.stringify(allBrands);
+
+    return {
+      products: sortedProducts,
+      productsCount: productsCount,
+      filteredProductsCount: filteredProductsCount,
+      allCategories: allCategories,
+      allBrands: allBrands,
+    };
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
+
+export async function getAllUserOrder(searchQuery, id) {
+  const session = await getServerSession(options);
+
+  try {
+    await dbConnect();
+    const session = await getServerSession(options);
+    let orderQuery;
+    if (session?.user?.role === 'manager') {
+      orderQuery = Order.find({ orderStatus: { $ne: 'Cancelado' } });
+    } else if (session?.user?.role === 'afiliado') {
+      const affiliate = await Affiliate.findOne({ user: session?.user?._id });
+      orderQuery = Order.find({
+        affiliateId: affiliate?._id.toString(),
+        orderStatus: { $ne: 'Cancelado' },
+      });
+    } else {
+      orderQuery = Order.find({
+        user: session?.user?._id,
+        orderStatus: { $ne: 'Cancelado' },
+      });
+    }
+    let client = await User.findOne({ _id: id });
+
+    const searchParams = new URLSearchParams(searchQuery);
+    const resPerPage = Number(searchParams.get('perpage')) || 5;
+    // Extract page and per_page from request URL
+    const page = Number(searchParams.get('page')) || 1;
+    // Apply descending order based on a specific field (e.g., createdAt)
+    orderQuery = orderQuery.sort({ createdAt: -1 });
+    const totalOrderCount = await Order.countDocuments();
+
+    // Apply search Filters including order_id and orderStatus
+    const apiOrderFilters = new APIOrderFilters(orderQuery, searchParams)
+      .searchAllFields()
+      .filter();
+    let ordersData = await apiOrderFilters.query;
+
+    const itemCount = ordersData.length;
+    apiOrderFilters.pagination(resPerPage, page);
+    ordersData = await apiOrderFilters.query.clone();
+
+    // await Promise.all(
+    //   ordersData.map(async (order) => {
+    //     let shippingInfo = await Address.findOne({
+    //       _id: order.shippingInfo,
+    //     });
+    //     let user = await User.findOne({ _id: order.user });
+    //     order.shippingInfo = shippingInfo;
+    //     order.user = user;
+    //   })
+    // );
+
+    // ordersData = await ordersData
+    //   .slice()
+    //   .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    let orders = JSON.stringify(ordersData);
+    client = JSON.stringify(client);
+
+    return {
+      orders: orders,
+      client: client,
+      totalOrderCount: totalOrderCount,
+      itemCount: itemCount,
+      resPerPage: resPerPage,
+    };
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
+
+export async function getAllClient(searchQuery) {
+  try {
+    await dbConnect();
+    const session = await getServerSession(options);
+    let clientQuery;
+
+    if (session) {
+      if (session?.user?.role === 'manager') {
+        clientQuery = User.find({ role: 'cliente' });
+      }
+    }
+
+    const searchParams = new URLSearchParams(searchQuery);
+    const resPerPage = Number(searchParams.get('perpage')) || 5;
+    // Extract page and per_page from request URL
+    const page = Number(searchParams.get('page')) || 1;
+    // total number of documents in database
+    const clientsCount = await User.countDocuments();
+    // Extract all possible categories
+    // Apply search Filters
+    const apiClientFilters = new APIClientFilters(clientQuery, searchParams)
+      .searchAllFields()
+      .filter();
+
+    let clientsData = await apiClientFilters.query;
+
+    const filteredClientsCount = clientsData.length;
+
+    apiClientFilters.pagination(resPerPage, page);
+    clientsData = await apiClientFilters.query.clone();
+
+    // If you want a new sorted array without modifying the original one, use slice
+    // const sortedObj1 = obj1
+    //   .slice()
+    //   .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+    // descending order
+    // descending order
+    let sortedClients = clientsData
+      .slice()
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    let clients = JSON.stringify(sortedClients);
+
+    return {
+      clients: clients,
+      clientsCount: clientsCount,
+      filteredClientsCount: filteredClientsCount,
+      resPerPage: resPerPage,
+    };
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
 
 export async function changeClientStatus(_id) {
   const session = await getServerSession(options);
@@ -145,6 +672,130 @@ export async function updateClientPassword(data) {
     client.updatedAt = updatedAt;
     client.save();
     revalidatePath('/perfil/actualizar_contrasena');
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
+
+export async function getAllAffiliate(searchQuery) {
+  try {
+    await dbConnect();
+    const session = await getServerSession(options);
+    let affiliateQuery;
+
+    if (session) {
+      if (session?.user?.role === 'manager') {
+        affiliateQuery = Affiliate.find({});
+      }
+    }
+
+    const searchParams = new URLSearchParams(searchQuery);
+    const resPerPage = Number(searchParams.get('perpage')) || 5;
+    // Extract page and per_page from request URL
+    const page = Number(searchParams.get('page')) || 1;
+    // total number of documents in database
+    const affiliatesCount = await Affiliate.countDocuments();
+    // Extract all possible categories
+    // Apply search Filters
+    const apiAffiliateFilters = new APIAffiliateFilters(
+      affiliateQuery,
+      searchParams
+    )
+      .searchAllFields()
+      .filter();
+
+    let affiliatesData = await apiAffiliateFilters.query;
+
+    const filteredAffiliatesCount = affiliatesData.length;
+
+    apiAffiliateFilters.pagination(resPerPage, page);
+    affiliatesData = await apiAffiliateFilters.query.clone();
+
+    // If you want a new sorted array without modifying the original one, use slice
+    // const sortedObj1 = obj1
+    //   .slice()
+    //   .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+    // descending order
+    // descending order
+    let sortedAffiliates = affiliatesData
+      .slice()
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    let affiliates = JSON.stringify(sortedAffiliates);
+
+    return {
+      affiliates: affiliates,
+      affiliatesCount: affiliatesCount,
+      filteredAffiliatesCount: filteredAffiliatesCount,
+      resPerPage: resPerPage,
+    };
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
+
+export async function getAllAffiliateOrder(searchQuery, id) {
+  const session = await getServerSession(options);
+
+  try {
+    await dbConnect();
+    const session = await getServerSession(options);
+    let orderQuery;
+    let affiliate;
+    if (session) {
+      orderQuery = Order.find({
+        affiliateId: id,
+        orderStatus: { $ne: 'Cancelado' },
+      });
+      affiliate = await Affiliate.findOne({ _id: id });
+    }
+
+    const searchParams = new URLSearchParams(searchQuery);
+    const resPerPage = Number(searchParams.get('perpage')) || 5;
+    // Extract page and per_page from request URL
+    const page = Number(searchParams.get('page')) || 1;
+    // Apply descending order based on a specific field (e.g., createdAt)
+    orderQuery = orderQuery.sort({ createdAt: -1 });
+    const totalOrderCount = await Order.countDocuments();
+
+    // Apply search Filters including order_id and orderStatus
+    const apiOrderFilters = new APIOrderFilters(orderQuery, searchParams)
+      .searchAllFields()
+      .filter();
+    let ordersData = await apiOrderFilters.query;
+
+    const itemCount = ordersData.length;
+    apiOrderFilters.pagination(resPerPage, page);
+    ordersData = await apiOrderFilters.query.clone();
+
+    // await Promise.all(
+    //   ordersData.map(async (order) => {
+    //     let shippingInfo = await Address.findOne({
+    //       _id: order.shippingInfo,
+    //     });
+    //     let user = await User.findOne({ _id: order.user });
+    //     order.shippingInfo = shippingInfo;
+    //     order.user = user;
+    //   })
+    // );
+
+    // ordersData = await ordersData
+    //   .slice()
+    //   .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    let orders = JSON.stringify(ordersData);
+    affiliate = JSON.stringify(affiliate);
+
+    return {
+      orders: orders,
+      affiliate: affiliate,
+      totalOrderCount: totalOrderCount,
+      itemCount: itemCount,
+      resPerPage: resPerPage,
+    };
   } catch (error) {
     console.log(error);
     throw Error(error);
@@ -273,9 +924,11 @@ export async function addNewPost(data) {
 
   //check for errors
   await dbConnect();
+  const slug = generateUrlSafeTitle(mainTitle);
   const { error } = await Post.create({
     category,
     mainTitle,
+    slug,
     mainImage,
     sectionTwoTitle,
     sectionTwoParagraphOne,
@@ -374,11 +1027,13 @@ export async function updatePost(data) {
 
   //check for errors
   await dbConnect();
+  const slug = generateUrlSafeTitle(mainTitle);
   const { error } = await Post.updateOne(
     { _id },
     {
       category,
       mainTitle,
+      slug,
       mainImage,
       sectionTwoTitle,
       sectionTwoParagraphOne,
@@ -497,7 +1152,7 @@ export async function addVariationProduct(data) {
   }
   // Create a new Product in the database
   await dbConnect();
-  const titleTag = generateUrlSafeTitle(title);
+  const slug = generateUrlSafeTitle(title);
 
   const usedTitle = await Product.find({ title: title });
   if (usedTitle.length > 0) {
@@ -510,7 +1165,7 @@ export async function addVariationProduct(data) {
   const { error } = await Product.create({
     type: 'variation',
     title,
-    titleTag,
+    slug,
     description,
     featured,
     brand,
@@ -615,13 +1270,13 @@ export async function updateVariationProduct(data) {
       },
     };
   }
-  const titleTag = generateUrlSafeTitle(title);
+  const slug = generateUrlSafeTitle(title);
   const { error } = await Product.updateOne(
     { _id },
     {
       type: 'variation',
       title,
-      titleTag,
+      slug,
       description,
       featured,
       brand,
@@ -703,11 +1358,11 @@ export async function addProduct(data) {
   }
   // Create a new Product in the database
   await dbConnect();
-  const titleTag = generateUrlSafeTitle(title);
+  const slug = generateUrlSafeTitle(title);
   const { error } = await Product.create({
     type: 'simple',
     title,
-    titleTag,
+    slug,
     description,
     featured,
     brand,

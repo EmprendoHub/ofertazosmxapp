@@ -1,39 +1,14 @@
-'use client';
 import { formatDate, formatTime, getTotalFromItems } from '@/backend/helpers';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import Link from 'next/link';
-import React, { useContext, useEffect, useState } from 'react';
-import { AiOutlineInteraction } from 'react-icons/ai';
 import { FaPencilAlt } from 'react-icons/fa';
-import AdminPagination from '../pagination/AdminPagination';
-import AuthContext from '@/context/AuthContext';
 
-const ViewUserOrders = ({ searchParams, currentCookies, params }) => {
-  const { getAdminUserOrders } = useContext(AuthContext);
-  const [orders, setOrders] = useState([]);
-  const [filteredOrdersCount, setFilteredOrdersCount] = useState();
-  const page = searchParams['page'] ?? '1';
-  const per_page = 5;
-  const start = (Number(page) - 1) * Number(per_page); // 0, 5, 10 ...
-  const end = start + Number(per_page); // 5, 10, 15 ...
-
-  useEffect(() => {
-    async function getOrders() {
-      const ordersData = await getAdminUserOrders(
-        searchParams,
-        currentCookies,
-        params
-      );
-      setOrders(ordersData?.orders.orders);
-      setFilteredOrdersCount(ordersData?.filteredOrdersCount);
-    }
-    getOrders();
-  }, [getAdminUserOrders, searchParams, currentCookies, params]);
+const ViewUserOrders = ({ orders, filteredOrdersCount, client }) => {
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <h1 className="text-3xl my-5 ml-4 font-bold font-EB_Garamond">
         {`${filteredOrdersCount}
-        Pedidos para ${orders[0]?.user.name}`}
+        Pedidos para ${client.name}`}
       </h1>
 
       <table className="w-full text-sm text-left">
@@ -64,7 +39,7 @@ const ViewUserOrders = ({ searchParams, currentCookies, params }) => {
             <tr className="bg-white" key={index}>
               <td className="px-6 maxsm:px-1 py-2">
                 <Link
-                  href={`/admin/pedidos/${order._id}`}
+                  href={`/admin/pedido/${order._id}`}
                   className="px-2 py-2 inline-block text-black shadow-sm border border-gray-200 rounded-md bg-gray-100 cursor-pointer mr-2"
                 >
                   {order.orderId}
@@ -100,7 +75,7 @@ const ViewUserOrders = ({ searchParams, currentCookies, params }) => {
               <td className="px-2 maxsm:px-1 py-2">
                 <div>
                   <Link
-                    href={`/admin/pedidos/${order._id}`}
+                    href={`/admin/pedido/${order._id}`}
                     className="px-2 py-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
                   >
                     <FaPencilAlt className="" />
@@ -111,12 +86,6 @@ const ViewUserOrders = ({ searchParams, currentCookies, params }) => {
           ))}
         </tbody>
       </table>
-      <AdminPagination
-        hasNextPage={end < filteredOrdersCount}
-        hasPrevPage={start > 0}
-        totalItemCount={filteredOrdersCount}
-        perPage={per_page}
-      />
     </div>
   );
 };

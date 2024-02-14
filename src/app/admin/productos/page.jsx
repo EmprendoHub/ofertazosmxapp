@@ -1,8 +1,9 @@
 import React from 'react';
-import AllAdminProductsComponent from '@/components/admin/AllAdminProductsComponent';
 import ServerPagination from '@/components/pagination/ServerPagination';
 import { cookies } from 'next/headers';
 import { getCookiesName } from '@/backend/helpers';
+import AdminProducts from '@/components/admin/AdminProducts';
+import { getAllProduct } from '@/app/_actions';
 
 const getAllProducts = async (searchParams, cookie) => {
   const urlParams = {
@@ -36,13 +37,18 @@ const getAllProducts = async (searchParams, cookie) => {
 };
 
 const AdminProductsPage = async ({ searchParams }) => {
-  const nextCookies = cookies();
-  const cookieName = getCookiesName();
-  let nextAuthSessionToken = nextCookies.get(cookieName);
-  nextAuthSessionToken = nextAuthSessionToken?.value;
-  const cookie = `${cookieName}=${nextAuthSessionToken}`;
-  const data = await getAllProducts(searchParams, cookie);
-  // pagination const
+  const urlParams = {
+    keyword: searchParams.keyword,
+    page: searchParams.page,
+  };
+  const filteredUrlParams = Object.fromEntries(
+    Object.entries(urlParams).filter(([key, value]) => value !== undefined)
+  );
+  const searchQuery = new URLSearchParams(filteredUrlParams).toString();
+  const data = await getAllProduct(searchQuery);
+  const products = JSON.parse(data.products);
+
+  // pagination
   let page = parseInt(searchParams.page, 10);
   page = !page || page < 1 ? 1 : page;
   const perPage = 5;
@@ -61,13 +67,13 @@ const AdminProductsPage = async ({ searchParams }) => {
     }
   }
 
-  const products = data?.products?.products.map((item) =>
-    JSON.parse(JSON.stringify(item))
-  );
+  // const products = data?.products?.products.map((item) =>
+  //   JSON.parse(JSON.stringify(item))
+  // );
 
   return (
     <>
-      <AllAdminProductsComponent
+      <AdminProducts
         products={products}
         search={search}
         filteredProductsCount={itemCount}

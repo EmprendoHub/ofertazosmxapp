@@ -9,7 +9,7 @@ const AdminProfile = () => {
 
   return (
     <>
-      <figure className="flex  items-start sm:items-center text-black">
+      <figure className="flex flex-row items-center text-black">
         <div className="relative">
           <Image
             className="w-16 h-16 maxsm:w-10 maxsm:h-10 rounded-full mr-4"
@@ -19,11 +19,12 @@ const AdminProfile = () => {
             height={50}
           />
         </div>
-        <figcaption>
-          <h5 className="font-semibold text-lg maxsm:text-base">
-            {user?.name}
-            <span className="text-red-400 text-sm pl-2">( {user?.role} )</span>
-          </h5>
+        <h5 className="font-semibold text-lg maxsm:text-base pr-5">
+          {user?.name}
+          <span className="text-red-400 text-sm">( {user?.role} )</span>
+        </h5>
+
+        <figcaption className="flex gap-5 flex-row items-center justify-center">
           <p>
             <b>Email:</b> {user?.email}
           </p>

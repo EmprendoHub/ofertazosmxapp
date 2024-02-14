@@ -27,7 +27,7 @@ const BlogLayoutOne = ({ blog }) => {
           name={blog?.category}
           className="px-6 text-xs  maxsm:text-sm py-1 sm:py-2 !border text-white"
         />
-        <Link href={`/blog/publicacion/${blog?._id}`} className="mt-6">
+        <Link href={`/blog/publicacion/${blog?.slug}`} className="mt-6">
           <h2 className="font-bold capitalize text-sm xs:text-base sm:text-xl md:text-2xl text-light mt-2 sm:mt-4">
             <span
               className="bg-gradient-to-r text-white font-EB_Garamond from-orange-400 to-orange-600 bg-[length:0px_2px] dark:from-accentDark/50 dark:to-accentDark/50

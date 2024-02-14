@@ -36,7 +36,13 @@ export const GET = async (request) => {
   try {
     await dbConnect();
     const id = await request.headers.get('id');
-    const product = await Product?.findOne({ _id: id });
+    const slug = await request.headers.get('slug');
+    let product;
+    if (id) {
+      product = await Product?.findOne({ _id: id });
+    } else {
+      product = await Product?.findOne({ slug: slug });
+    }
 
     const trendingProducts = await Product.find({
       category: product.category,

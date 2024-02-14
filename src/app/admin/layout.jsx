@@ -1,11 +1,14 @@
-import AdminSidebar from '@/components/layout/AdminSidebar';
+import HeaderMobile from '@/components/layout/AdminSidebar';
 
 export default function UserLayout({ children }) {
   return (
     <>
-      <section className="py-3 maxsm:py-1 font-EB_Garamond bg-gray-200">
-        <div className="  mx-auto px-10">
-          <h1 className="text-bold text-2xl  maxsm:text-lg text-black font-EB_Garamond">
+      <section className="py-5 font-EB_Garamond bg-gray-200">
+        <div className="flex flex-row gap-3 items-center  mx-auto px-10">
+          <div className="relative flex ">
+            <HeaderMobile />
+          </div>
+          <h1 className="flex text-bold text-2xl  maxsm:text-lg text-black font-EB_Garamond">
             Panel de Control
           </h1>
         </div>
@@ -13,8 +16,7 @@ export default function UserLayout({ children }) {
       <section className="py-10 maxsm:py-2  bg-slate-100 text-black">
         <div className=" mx-auto px-4 maxsm:px-1">
           <div className="flex flex-row maxmd:flex-col ">
-            <AdminSidebar />
-            <main className="w-4/5 maxmd:w-full px-4 maxsm:px-0">
+            <main className="w-full px-4 maxsm:px-0 maxsm:mt-10">
               <article className="border border-gray-200 bg white shadow-md rounded mb-5 px-5 maxmd:px-3">
                 {children}
               </article>

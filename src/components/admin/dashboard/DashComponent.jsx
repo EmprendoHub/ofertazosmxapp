@@ -136,7 +136,7 @@ const DashComponent = ({
                       {client.name.substring(0, 14)}...
                     </td>
                     <td>
-                      <Link href={`/admin/clientes/cuenta/${client._id}`}>
+                      <Link href={`/admin/cliente/${client._id}`}>
                         <IoArrowRedoSharp className=" text-blue-500 " />
                       </Link>
                     </td>
@@ -167,7 +167,7 @@ const DashComponent = ({
                     <td>{order.orderId}</td>
                     <td>{order.orderStatus}</td>
                     <td>
-                      <Link href={`/admin/pedidos/${order._id}`}>
+                      <Link href={`/admin/pedido/${order._id}`}>
                         <IoArrowRedoSharp className=" text-teal-600 " />
                       </Link>
                     </td>
@@ -212,7 +212,7 @@ const DashComponent = ({
                       </p>
                     </td>
                     <td>
-                      <Link href={`/admin/asociados/cuenta/${affiliate._id}`}>
+                      <Link href={`/admin/asociado/${affiliate._id}`}>
                         <IoArrowRedoSharp className=" text-indigo-500 " />
                       </Link>
                     </td>
@@ -251,7 +251,7 @@ const DashComponent = ({
                     </td>
                     <td>{post.mainTitle.substring(0, 20)}...</td>
                     <td>
-                      <Link href={`/admin/blog/editar/${post._id}`}>
+                      <Link href={`/admin/blog/editar/${post.slug}`}>
                         <IoArrowRedoSharp className=" text-orange-500 " />
                       </Link>
                     </td>

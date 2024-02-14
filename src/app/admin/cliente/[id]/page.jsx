@@ -1,8 +1,10 @@
-import AllClientsComponent from '@/components/clients/AllClientsComponent';
+import { getAllUserOrder } from '@/app/_actions';
+import ViewUserOrders from '@/components/orders/ViewUserOrders';
 import ServerPagination from '@/components/pagination/ServerPagination';
-import { getAllClient } from '@/app/_actions';
+import Profile from '@/components/user/profile/Profile';
+import UserProfile from '@/components/user/profile/UserProfile';
 
-const ClientsPage = async ({ searchParams }) => {
+const ClientDetailsPage = async ({ searchParams, params }) => {
   const urlParams = {
     keyword: searchParams.keyword,
     page: searchParams.page,
@@ -11,14 +13,15 @@ const ClientsPage = async ({ searchParams }) => {
     Object.entries(urlParams).filter(([key, value]) => value !== undefined)
   );
   const searchQuery = new URLSearchParams(filteredUrlParams).toString();
-  const data = await getAllClient(searchQuery);
-  const clients = JSON.parse(data.clients);
-  const filteredClientsCount = data?.filteredClientsCount;
-  // pagination
+  const data = await getAllUserOrder(searchQuery, params.id);
+  const orders = JSON.parse(data.orders);
+  const client = JSON.parse(data.client);
+  const filteredOrdersCount = data?.itemCount;
+  //Pagination
   let page = parseInt(searchParams.page, 10);
   page = !page || page < 1 ? 1 : page;
-  const perPage = Number(data?.resPerPage);
-  const totalPages = Math.ceil(data.filteredClientsCount / perPage);
+  const perPage = 5;
+  const totalPages = Math.ceil(data.itemCount / perPage);
   const prevPage = page - 1 > 0 ? page - 1 : 1;
   const nextPage = page + 1;
   const isPageOutOfRange = page > totalPages;
@@ -29,11 +32,14 @@ const ClientsPage = async ({ searchParams }) => {
       pageNumbers.push(i);
     }
   }
+
   return (
     <>
-      <AllClientsComponent
-        clients={clients}
-        filteredClientsCount={filteredClientsCount}
+      <UserProfile user={client} />
+      <ViewUserOrders
+        orders={orders}
+        client={client}
+        filteredOrdersCount={filteredOrdersCount}
       />
       <ServerPagination
         isPageOutOfRange={isPageOutOfRange}
@@ -47,4 +53,4 @@ const ClientsPage = async ({ searchParams }) => {
   );
 };
 
-export default ClientsPage;
+export default ClientDetailsPage;

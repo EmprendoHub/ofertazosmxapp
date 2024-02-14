@@ -97,10 +97,7 @@ const AllAffiliatesAdmin = ({ affiliates, filteredAffiliatesCount }) => {
                 key={index}
               >
                 <td className="px-6 maxsm:px-2 py-2 ">
-                  <Link
-                    key={index}
-                    href={`/admin/asociados/cuenta/${affiliate._id}`}
-                  >
+                  <Link key={index} href={`/admin/asociado/${affiliate._id}`}>
                     {affiliate.fullName.substring(0, 15)}...
                   </Link>
                 </td>
@@ -116,7 +113,7 @@ const AllAffiliatesAdmin = ({ affiliates, filteredAffiliatesCount }) => {
                 <td className="px-1 py-2  w-24 flex flex-row">
                   <div>
                     <Link
-                      href={`/admin/asociados/cuenta/${affiliate._id}`}
+                      href={`/admin/asociado/${affiliate._id}`}
                       className="px-2 py-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
                     >
                       <FaPencilAlt className="" />

@@ -1,48 +1,24 @@
-import React from 'react';
 import Link from 'next/link';
-import AdminPostsComponent from '@/components/admin/AdminPostsComponent';
+import AdminPostsComponent from '@/components/admin/AdminPosts';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import { cookies } from 'next/headers';
-import { getCookiesName } from '@/backend/helpers';
+import { getAllPost } from '@/app/_actions';
+import AdminPosts from '@/components/admin/AdminPosts';
 
-const getAllPosts = async (searchParams, cookie) => {
+const AdminPostsPage = async ({ searchParams }) => {
   const urlParams = {
     keyword: searchParams.keyword,
     page: searchParams.page,
   };
-  // Filter out undefined values
   const filteredUrlParams = Object.fromEntries(
     Object.entries(urlParams).filter(([key, value]) => value !== undefined)
   );
   const searchQuery = new URLSearchParams(filteredUrlParams).toString();
-  const URL = `${process.env.NEXTAUTH_URL}/api/posts?${searchQuery}`;
-  try {
-    const res = await fetch(URL, {
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        Cookie: cookie,
-      },
-    });
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const AdminPostsPage = async ({ searchParams }) => {
-  //set cookies
-  const nextCookies = cookies();
-  const cookieName = getCookiesName();
-  const nextAuthSessionToken = nextCookies.get(cookieName);
-  const cookie = `${cookieName}=${nextAuthSessionToken?.value}`;
-  const data = await getAllPosts(searchParams, cookie);
-  //
-  const posts = data?.posts?.posts;
+  const data = await getAllPost(searchQuery);
+  const posts = JSON.parse(data.posts);
+  //Pagination
   let page = parseInt(searchParams.page, 10);
   page = !page || page < 1 ? 1 : page;
-  const perPage = 4;
+  const perPage = 5;
   const totalPages = Math.ceil(data.itemCount / perPage);
   const prevPage = page - 1 > 0 ? page - 1 : 1;
   const nextPage = page + 1;
@@ -58,10 +34,10 @@ const AdminPostsPage = async ({ searchParams }) => {
   return (
     <>
       <div className="container mx-auto mt-8">
-        <AdminPostsComponent data={posts} />
+        <AdminPosts posts={posts} />
 
         {isPageOutOfRange ? (
-          <div>No mas paginas...</div>
+          <div>No mas publicaciones...</div>
         ) : (
           <div className="flex justify-center items-center mt-16 maxsm:mt-5">
             <div className="flex border-[1px] gap-4 rounded-[10px] border-light-green p-4">

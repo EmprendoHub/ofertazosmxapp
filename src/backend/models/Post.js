@@ -10,6 +10,10 @@ const PostSchema = new mongoose.Schema({
     require: true,
     unique: true,
   },
+  slug: {
+    type: String,
+    unique: true,
+  },
   mainImage: {
     type: String,
     require: true,
@@ -17,9 +21,7 @@ const PostSchema = new mongoose.Schema({
   metaTitle: {
     type: String,
   },
-  slug: {
-    type: String,
-  },
+
   summary: {
     type: String,
   },

@@ -1,3 +1,4 @@
+import { getAllAffiliateOrder } from '@/app/_actions';
 import { getCookiesName } from '@/backend/helpers';
 import AffiliateProfile from '@/components/afiliados/AffiliateProfile';
 import ViewUserOrders from '@/components/orders/ViewUserOrders';
@@ -18,10 +19,20 @@ const getAffiliateProfile = async (id) => {
   return data;
 };
 
-const AffiliateProfilePage = async ({ params }) => {
-  const affiliate = await getAffiliateProfile(params.id);
+const AffiliateProfilePage = async ({ searchParams, params }) => {
+  const urlParams = {
+    keyword: searchParams.keyword,
+    page: searchParams.page,
+  };
+  const filteredUrlParams = Object.fromEntries(
+    Object.entries(urlParams).filter(([key, value]) => value !== undefined)
+  );
+  const searchQuery = new URLSearchParams(filteredUrlParams).toString();
+  const data = await getAllAffiliateOrder(searchQuery, params.id);
+  const affiliate = JSON.parse(data.affiliate);
+  const orders = JSON.parse(data.orders);
 
-  return <AffiliateProfile affiliate={affiliate} />;
+  return <AffiliateProfile affiliate={affiliate} order={orders} />;
 };
 
 export default AffiliateProfilePage;

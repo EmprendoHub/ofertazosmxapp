@@ -6,7 +6,7 @@ import AuthContext from '@/context/AuthContext';
 import { toast } from 'react-toastify';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 
-const AdminOneOrder = ({ order, id }) => {
+const AdminOneOrder = ({ order, deliveryAddress, id }) => {
   const { updateOrder } = useContext(AuthContext);
   const [orderStatus, setOrderStatus] = useState('pendiente');
   const [currentOrderStatus, setCurrentOrderStatus] = useState(
@@ -132,19 +132,19 @@ const AdminOneOrder = ({ order, id }) => {
           <tbody>
             <tr className="bg-white flex flex-row maxsm:flex-col">
               <td className="w-1/6 maxsm:w-full px-6 py-2">
-                {order?.deliveryAddress?.street}
+                {deliveryAddress?.street}
               </td>
               <td className="w-1/6 maxsm:w-full px-6 py-2">
-                {order?.deliveryAddress?.city}
+                {deliveryAddress?.city}
               </td>
               <td className="w-1/6 maxsm:w-full px-6 py-2">
-                {order?.deliveryAddress?.province}
+                {deliveryAddress?.province}
               </td>
               <td className="w-1/6 maxsm:w-full px-6 py-2">
-                {order?.deliveryAddress?.zip_code}
+                {deliveryAddress?.zip_code}
               </td>
               <td className="w-1/6 maxsm:w-full px-6 py-2">
-                {order?.deliveryAddress?.phone}
+                {deliveryAddress?.phone}
               </td>
             </tr>
           </tbody>

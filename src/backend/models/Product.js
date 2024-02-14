@@ -9,7 +9,7 @@ const ProductSchema = new mongoose.Schema({
     type: String,
     unique: true,
   },
-  titleTag: {
+  slug: {
     type: String,
     unique: true,
   },

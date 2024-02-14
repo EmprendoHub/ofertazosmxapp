@@ -41,7 +41,6 @@ export async function POST(req, res) {
       });
 
       currentOrder?.orderItems.forEach(async (item) => {
-        console.log(item, 'item');
         const productId = item.product.toString();
         const variationId = item.variation.toString();
         // Find the product by its _id and update its stock
@@ -50,7 +49,6 @@ export async function POST(req, res) {
         const variation = product.variations.find((variation) =>
           variation._id.equals(variationId)
         );
-        console.log('variation', variation);
         if (variation) {
           // Decrement the quantity
           variation.stock -= item.quantity; // Decrease the quantity by 1
@@ -58,9 +56,8 @@ export async function POST(req, res) {
 
           // Save the updated product
           await product.save();
-          console.log('product after save', product);
 
-          revalidatePath(`/producto/${product._id}`);
+          revalidatePath(`/producto/${product.slug}`);
         } else {
           console.log('Product not found');
         }

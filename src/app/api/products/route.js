@@ -27,7 +27,6 @@ export const GET = async (request, res) => {
     const allCategories = await Product.distinct('category');
     // Extract all possible categories
     const allBrands = await Product.distinct('brand');
-
     // Apply search Filters
     const apiProductFilters = new APIFilters(
       productQuery,

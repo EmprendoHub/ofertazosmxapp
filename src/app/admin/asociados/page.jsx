@@ -1,3 +1,4 @@
+import { getAllAffiliate } from '@/app/_actions';
 import { options } from '@/app/api/auth/[...nextauth]/options';
 import AllAffiliatesAdmin from '@/components/afiliados/AllAffiliatesAdmin';
 import ServerPagination from '@/components/pagination/ServerPagination';
@@ -31,10 +32,18 @@ async function getAllAffiliates(searchParams, session) {
 }
 
 const AffiliatesPage = async ({ searchParams }) => {
-  const session = await getServerSession(options);
-  const data = await getAllAffiliates(searchParams, session);
+  const urlParams = {
+    keyword: searchParams.keyword,
+    page: searchParams.page,
+  };
+  const filteredUrlParams = Object.fromEntries(
+    Object.entries(urlParams).filter(([key, value]) => value !== undefined)
+  );
+  const searchQuery = new URLSearchParams(filteredUrlParams).toString();
+  const data = await getAllAffiliate(searchQuery);
+  const affiliates = JSON.parse(data.affiliates);
   const filteredAffiliatesCount = data?.filteredAffiliatesCount;
-  const affiliates = data?.affiliates.affiliates;
+  // pagination
   let page = parseInt(searchParams.page, 10);
   page = !page || page < 1 ? 1 : page;
   const perPage = Number(data?.resPerPage);

@@ -1,143 +1,241 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { signOut } from 'next-auth/react';
-import { RiLogoutCircleRFill } from 'react-icons/ri';
-import { PiUserListLight, PiUserCircleGearLight } from 'react-icons/pi';
-import { GiTakeMyMoney } from 'react-icons/gi';
-import {
-  MdOutlineDashboard,
-  MdOutlineAddBusiness,
-  MdOutlinePostAdd,
-} from 'react-icons/md';
-import {
-  TfiLayoutListThumb,
-  TfiList,
-  TfiLayoutListPost,
-} from 'react-icons/tfi';
-import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
+import { SIDENAV_ITEMS } from '@/backend/data/constants';
+import { motion, useCycle } from 'framer-motion';
+import { FaChevronDown } from 'react-icons/fa';
+import { FaFolder, FaHandshake, FaHome, FaMailBulk } from 'react-icons/fa';
+import { FaGear } from 'react-icons/fa6';
 
-const AdminSidebar = () => {
-  const router = useRouter();
+const sidebar = {
+  open: (height = 1000) => ({
+    clipPath: `circle(${height * 2 + 200}px at 100% 0)`,
+    transition: {
+      type: 'spring',
+      stiffness: 20,
+      restDelta: 2,
+    },
+  }),
+  closed: {
+    clipPath: 'circle(0px at 100% 0)',
+    transition: {
+      type: 'spring',
+      stiffness: 400,
+      damping: 40,
+    },
+  },
+};
 
-  function handleClickLink(Url) {
-    router.push(Url);
-  }
+const HeaderMobile = () => {
+  const pathname = usePathname();
+  const containerRef = useRef(null);
+  const { height } = useDimensions(containerRef);
+  const [isOpen, toggleOpen] = useCycle(false, true);
 
   return (
-    <aside className=" w-1/5 maxmd:w-full px-4 maxsm:p-1 py-8 maxsm:py-2 flex flex-col  maxmd:justify-between maxmd:items-center items-start justify-start">
-      <ul className="sidebar flex flex-col maxmd:flex-row gap-x-2 ">
-        <Link
-          href="/admin"
-          className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
+    <div className="absolute -left-6 -top-4 z-50 font-EB_Garamond">
+      <MenuToggle toggle={toggleOpen} />
+      <motion.nav
+        initial={false}
+        animate={isOpen ? 'open' : 'closed'}
+        custom={height}
+        className={`relative inset-0 z-30 w-full  ${
+          isOpen ? '' : 'pointer-events-none'
+        }`}
+        ref={containerRef}
+      >
+        <motion.div
+          className="absolute inset-0 left-0 w-full bg-white"
+          variants={sidebar}
+        />
+        <motion.ul
+          variants={variants}
+          className={`${
+            isOpen ? 'bg-white w-full relative' : 'absolute'
+          }  grid w-full gap-3 px-10 py-16`}
         >
-          <li className="flex flex-row items-center gap-x-3 ">
-            <MdOutlineDashboard className="text-2xl text-black" />
+          {SIDENAV_ITEMS.map((item, idx) => {
+            const isLastItem = idx === SIDENAV_ITEMS.length - 1; // Check if it's the last item
 
-            <div className="maxmd:hidden font-EB_Garamond">
-              Panel de Control
-            </div>
-          </li>
-        </Link>
-        <button
-          onClick={() => handleClickLink('/admin/pedidos')}
-          className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
-        >
-          <li className="flex flex-row items-center gap-x-3">
-            <TfiList className="text-2xl text-black" />
+            return (
+              <div key={idx}>
+                {item.submenu ? (
+                  <MenuItemWithSubMenu
+                    item={item}
+                    toggleOpen={toggleOpen}
+                    isOpen={isOpen}
+                  />
+                ) : (
+                  <MenuItem>
+                    <Link
+                      href={item.path}
+                      onClick={() => toggleOpen()}
+                      className={`flex w-full text-2xl ${
+                        item.path === pathname ? 'font-bold' : ''
+                      }`}
+                    >
+                      {item.title}
+                    </Link>
+                  </MenuItem>
+                )}
 
-            <div className="maxmd:hidden font-EB_Garamond">Pedidos</div>
-          </li>
-        </button>
-        <Link
-          href="/admin/productos"
-          className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
-        >
-          <li className="flex flex-row items-center gap-x-3">
-            <TfiLayoutListThumb className="text-2xl text-black" />
-
-            <div className="maxmd:hidden font-EB_Garamond">Productos</div>
-          </li>
-        </Link>
-        <Link
-          href="/admin/productos/nuevo"
-          className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
-        >
-          <li className="flex flex-row items-center gap-x-3">
-            <MdOutlineAddBusiness className="text-2xl text-black" />
-
-            <div className="maxmd:hidden font-EB_Garamond">Nuevo Producto</div>
-          </li>
-        </Link>
-        <Link
-          href="/admin/blog"
-          className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
-        >
-          <li className="flex flex-row items-center gap-x-3">
-            <TfiLayoutListPost className="text-2xl text-black" />
-
-            <div className="maxmd:hidden font-EB_Garamond">Publicaciones</div>
-          </li>
-        </Link>
-        <Link
-          href="/admin/blog/editor"
-          className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
-        >
-          <li className="flex flex-row items-center gap-x-3">
-            <MdOutlinePostAdd className="text-2xl text-black" />
-
-            <div className="maxmd:hidden font-EB_Garamond">
-              Nueva Publicación
-            </div>
-          </li>
-        </Link>
-      </ul>
-      <hr className="my-4 maxsm:px-1 maxsm:my-0" />
-      <ul className="sidebar flex flex-col maxmd:flex-row gap-x-2">
-        <Link
-          href="/admin/clientes"
-          className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
-        >
-          <li className="flex flex-row items-center gap-x-3">
-            <PiUserListLight className="text-2xl text-black" />
-
-            <div className="maxmd:hidden font-EB_Garamond">Clientes</div>
-          </li>
-        </Link>
-        <Link
-          href="/admin/asociados"
-          className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
-        >
-          <li className="flex flex-row items-center gap-x-3">
-            <GiTakeMyMoney className="text-2xl text-black" />
-
-            <div className="maxmd:hidden font-EB_Garamond">Afiliados</div>
-          </li>
-        </Link>
-        <Link
-          href="/admin/actualizar"
-          className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
-        >
-          <li className="flex flex-row items-center gap-x-3">
-            <PiUserCircleGearLight className="text-2xl text-black" />
-
-            <div className="maxmd:hidden font-EB_Garamond">Perfil</div>
-          </li>
-        </Link>
-
-        <li>
-          <div
-            className=" px-3 maxsm:px-1 py-2 text-red-800 hover:bg-red-100 hover:text-white-500 rounded-md cursor-pointer flex flex-row items-center gap-x-3"
-            onClick={() => signOut()}
-          >
-            <RiLogoutCircleRFill className="text-2xl text-black" />
-
-            <div className="maxmd:hidden font-EB_Garamond">Cerrar Session</div>
-          </div>
-        </li>
-      </ul>
-    </aside>
+                {!isLastItem && (
+                  <MenuItem className="my-3 h-px w-full bg-gray-300" />
+                )}
+              </div>
+            );
+          })}
+        </motion.ul>
+      </motion.nav>
+    </div>
   );
 };
 
-export default AdminSidebar;
+export default HeaderMobile;
+
+const MenuToggle = ({ toggle }) => (
+  <button onClick={toggle} className="pointer-events-auto relative  z-50">
+    <svg width="30" height="30" viewBox="0 0 24 17">
+      <Path
+        d="M 2 3.423 L 20 3.423"
+        variants={{
+          closed: { opacity: 1 },
+          open: { opacity: 0 },
+        }}
+        transition={{ duration: 0.1 }}
+      />
+      <Path
+        d="M 2 9.423 L 20 9.423"
+        variants={{
+          closed: { opacity: 1 },
+          open: { opacity: 0 },
+        }}
+        transition={{ duration: 0.1 }}
+      />
+      <Path
+        d="M 2 15.423 L 20 15.423"
+        variants={{
+          closed: { opacity: 1 },
+          open: { opacity: 0 },
+        }}
+        transition={{ duration: 0.1 }}
+      />
+    </svg>
+  </button>
+);
+
+const Path = (props) => (
+  <motion.path
+    fill="transparent"
+    strokeWidth="2"
+    stroke="hsl(0, 0%, 18%)"
+    strokeLinecap="round"
+    {...props}
+  />
+);
+
+const MenuItem = ({ className, children }) => {
+  return (
+    <motion.li variants={MenuItemVariants} className={className}>
+      {children}
+    </motion.li>
+  );
+};
+
+const MenuItemWithSubMenu = ({ item, toggleOpen, isOpen }) => {
+  const pathname = usePathname();
+  const [subMenuOpen, setSubMenuOpen] = useState(false);
+
+  return (
+    <>
+      <MenuItem>
+        <button
+          className="flex w-full text-2xl"
+          onClick={() => setSubMenuOpen(!subMenuOpen)}
+        >
+          <div
+            className={`flex gap-2 flex-row justify-between w-full items-center`}
+          >
+            <span
+              className={`text-2xl ${
+                pathname.includes(item.path) ? 'font-bold ' : ''
+              }`}
+            >
+              {item.title}
+            </span>
+            <div
+              className={`${
+                subMenuOpen && 'rotate-180'
+              } duration-500 ease-in-out`}
+            >
+              <FaChevronDown className="text-base" />
+            </div>
+          </div>
+        </button>
+      </MenuItem>
+      <div className="mt-2 ml-2 flex flex-col space-y-2">
+        {subMenuOpen && (
+          <>
+            {item.subMenuItems?.map((subItem, subIdx) => {
+              return (
+                <MenuItem key={subIdx}>
+                  <Link
+                    href={subItem.path}
+                    onClick={() => toggleOpen()}
+                    className={`text-xl ${
+                      subItem.path === pathname ? 'font-bold' : ''
+                    }`}
+                  >
+                    {subItem.title}
+                  </Link>
+                </MenuItem>
+              );
+            })}
+          </>
+        )}
+      </div>
+    </>
+  );
+};
+
+const MenuItemVariants = {
+  open: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      y: { stiffness: 1000, velocity: -100 },
+    },
+  },
+  closed: {
+    y: 50,
+    opacity: 0,
+    transition: {
+      y: { stiffness: 1000 },
+      duration: 0.02,
+    },
+  },
+};
+
+const variants = {
+  open: {
+    transition: { staggerChildren: 0.02, delayChildren: 0.15 },
+  },
+  closed: {
+    transition: { staggerChildren: 0.01, staggerDirection: -1 },
+  },
+};
+
+const useDimensions = (ref) => {
+  const dimensions = useRef({ width: 0, height: 0 });
+
+  useEffect(() => {
+    if (ref.current) {
+      dimensions.current.width = ref.current.offsetWidth;
+      dimensions.current.height = ref.current.offsetHeight;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ref]);
+
+  return dimensions.current;
+};

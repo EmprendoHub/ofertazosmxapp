@@ -7,8 +7,7 @@ import { FaTrash, FaPencilAlt } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import { formatDate } from '@/backend/helpers';
 
-const AdminPostsComponent = ({ data, filteredOrdersCount }) => {
-  const posts = data;
+const AdminPosts = ({ posts }) => {
   const { deletePost } = useContext(AuthContext);
 
   const deleteHandler = (post_id) => {
@@ -64,13 +63,13 @@ const AdminPostsComponent = ({ data, filteredOrdersCount }) => {
             {posts?.map((post, index) => (
               <tr className="bg-white" key={index}>
                 <td className="px-6 maxsm:px-2 py-2 maxmd:hidden">
-                  <Link key={index} href={`/admin/blog/editar/${post._id}`}>
+                  <Link key={index} href={`/admin/blog/editar/${post.slug}`}>
                     {post._id}
                   </Link>
                 </td>
                 <td className="px-6 maxsm:px-0 py-2 relative ">
                   <span className="relative flex items-center justify-center text-black w-12 h-12 maxsm:w-10 maxsm:h-10 shadow mt-2">
-                    <Link key={index} href={`/admin/blog/editar/${post._id}`}>
+                    <Link key={index} href={`/admin/blog/editar/${post.slug}`}>
                       <Image
                         src={post?.mainImage}
                         alt="Title"
@@ -94,7 +93,7 @@ const AdminPostsComponent = ({ data, filteredOrdersCount }) => {
                 <td className="px-1 py-2">
                   <div>
                     <Link
-                      href={`/admin/blog/editar/${post._id}`}
+                      href={`/admin/blog/editar/${post.slug}`}
                       className="px-2 py-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
                     >
                       <FaPencilAlt className="maxsm:text-[10px]" />
@@ -112,4 +111,4 @@ const AdminPostsComponent = ({ data, filteredOrdersCount }) => {
   );
 };
 
-export default AdminPostsComponent;
+export default AdminPosts;
