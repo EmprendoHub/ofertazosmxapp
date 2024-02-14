@@ -1,7 +1,7 @@
 import BlogCoverSection from '@/components/blog/BlogCoverSection';
 import FeaturedPosts from '@/components/blog/FeaturedPosts';
 import RecentPosts from '@/components/blog/RecentPosts';
-import { getAllPost } from '../_actions';
+import { getAllPost } from '@/app/_actions';
 
 export const metadata = {
   title: 'Blog Marort Mx',
