@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react';
 import AnimationWrapper from '../motions/AnimationWrapper';
 import Image from 'next/image';
 import { cstDateTimeClient } from '@/backend/helpers';
-import { addNewPost, updatePost } from '@/app/_actions';
+import { updatePost } from '@/app/_actions';
 import { useRouter } from 'next/navigation';
 
 const BlogPublishedComponent = ({ post }) => {
@@ -142,7 +142,7 @@ const BlogPublishedComponent = ({ post }) => {
 
   // generate a pre-signed URL for use in uploading that file:
   async function retrieveNewURL(file, cb) {
-    const endpoint = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/minio`;
+    const endpoint = `/api/minio`;
     fetch(endpoint, {
       method: 'PUT',
       headers: {
