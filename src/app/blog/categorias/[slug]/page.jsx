@@ -1,6 +1,6 @@
 import React from 'react';
 
-const BlogCategoriesPage = ({ params }) => {
+const BlogCategoriesSlugPage = ({ params }) => {
   const slug = params.slug;
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
@@ -10,4 +10,4 @@ const BlogCategoriesPage = ({ params }) => {
   );
 };
 
-export default BlogCategoriesPage;
+export default BlogCategoriesSlugPage;

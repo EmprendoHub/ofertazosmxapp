@@ -12,7 +12,7 @@ const RecentPosts = ({ blogs }) => {
           Publicaciones recientes
         </h2>
         <Link
-          href="/blog/publicaciones"
+          href="/blog/categorias"
           className="inline-block  font-EB_Garamond  font-medium text-accent dark:text-accentDark underline underline-offset-2      text-base md:text-lg"
         >
           View all

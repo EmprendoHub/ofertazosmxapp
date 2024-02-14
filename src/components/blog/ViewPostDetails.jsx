@@ -8,7 +8,7 @@ import { formatDate } from '@/backend/helpers';
 
 const ViewPostDetails = ({ post, trendingProducts }) => {
   return (
-    <div className="flex flex-row maxmd:flex-col-reverse items-start justify-center w-full gap-x-10 p-5">
+    <div className="flex flex-row maxmd:flex-col-reverse items-start justify-center w-full gap-x-10 p-5 mt-10">
       <aside className="sticky top-20 z-[50] min-h-full w-[450px] flex flex-col items-center justify-center">
         <div className="w-full mx-auto ">
           <p className="text-2xl font-EB_Garamond py-1 font-semibold">
