@@ -9,7 +9,7 @@ const RecentPosts = ({ blogs }) => {
     <section className="w-full  mt-16 sm:mt-24  md:mt-32 px-5 sm:px-10 md:px-24  sxl:px-32 flex flex-col items-center justify-center">
       <div className="w-full flex  justify-between">
         <h2 className="w-fit font-EB_Garamond  inline-block font-bold capitalize text-2xl md:text-4xl text-dark dark:text-light">
-          Recent Posts
+          Publicaciones recientes
         </h2>
         <Link
           href="/blog/publicaciones"

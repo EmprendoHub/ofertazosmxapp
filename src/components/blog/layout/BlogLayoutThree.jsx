@@ -11,9 +11,9 @@ const BlogLayoutThree = ({ blog }) => {
         className="h-full rounded-xl overflow-hidden"
       >
         <Image
-          src={blog?.images[0].url || '/images/next.svg'}
+          src={blog?.mainImage || '/images/next.svg'}
           placeholder="blur"
-          blurDataURL={blog?.images[0].url || '/images/next.svg'}
+          blurDataURL={blog?.mainImage || '/images/next.svg'}
           alt={blog?.title}
           width={300}
           height={300}
