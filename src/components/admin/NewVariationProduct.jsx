@@ -344,7 +344,7 @@ const NewVariationProduct = () => {
         <section className="w-full ">
           <div className="flex flex-row maxmd:flex-col items-center justify-between">
             <h1 className="w-full text-2xl font-semibold text-black mb-8 font-EB_Garamond">
-              Crear Nuevo Producto Con Variaciones
+              Nuevo Producto Con Variaciones
             </h1>
 
             <div className="mb-4 w-full">
@@ -385,7 +385,7 @@ const NewVariationProduct = () => {
             <div className="gap-y-1 flex-col flex px-2 w-full">
               {/* Section 1 - Title, Image */}
               <label className="block  font-EB_Garamond">
-                Imagen principal del Producto
+                Imagen principal
               </label>
               <div className="relative aspect-video hover:opacity-80 bg-white border-4 border-gray-300">
                 <label htmlFor="selectorMain" className="cursor-pointer">
@@ -416,10 +416,7 @@ const NewVariationProduct = () => {
 
             <div className="w-full flex-col flex justify-start px-2 gap-y-5">
               <div className="mb-4">
-                <label className="block mb-1  font-EB_Garamond">
-                  {' '}
-                  Titulo del Producto
-                </label>
+                <label className="block mb-1  font-EB_Garamond"> Titulo</label>
                 <input
                   type="text"
                   className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
@@ -454,10 +451,7 @@ const NewVariationProduct = () => {
                 )}
               </div>
               <div className="mb-4">
-                <label className="block mb-1  font-EB_Garamond">
-                  {' '}
-                  Marca del Producto
-                </label>
+                <label className="block mb-1  font-EB_Garamond"> Marca</label>
                 <input
                   type="text"
                   className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
@@ -505,10 +499,7 @@ const NewVariationProduct = () => {
               </div>
 
               <div className="mb-4 w-full">
-                <label className="block mb-1 font-EB_Garamond">
-                  {' '}
-                  Etiquetas{' '}
-                </label>
+                <label className="block mb-1 font-EB_Garamond">Etiquetas</label>
                 <div className="relative">
                   <MultiselectTagComponent
                     options={tagSelection}
