@@ -12,7 +12,7 @@ const uploadToBucket = async (folder, filename, file) => {
         console.log('Error from minio', err);
         reject(err);
       } else {
-        console.log('Success uploading images to minio', result);
+        //console.log('Success uploading images to minio', result);
         resolve({
           _id: result._id, // Make sure _id and url are properties of the result object
           url: result.url,
@@ -77,10 +77,10 @@ export async function PUT(request, res) {
         900, // 15 min expiry
         function (err, url) {
           if (err) {
-            console.log('Error from minio', err);
+            //console.log('Error from minio', err);
             reject(err);
           } else {
-            console.log('Success presigned Url');
+            //console.log('Success presigned Url');
             resolve(url);
           }
         }

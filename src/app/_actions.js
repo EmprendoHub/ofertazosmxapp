@@ -1171,11 +1171,11 @@ export async function addVariationProduct(data) {
   await dbConnect();
   const slug = generateUrlSafeTitle(title);
 
-  const usedTitle = await Product.find({ title: title });
-  if (usedTitle.length > 0) {
+  const slugExists = await Product.findOne({ slug: slug });
+  if (slugExists) {
     return {
       error: {
-        title: { _errors: ['Este titulo ya esta en uso para otro producto'] },
+        title: { _errors: ['Este Titulo de producto ya esta en uso'] },
       },
     };
   }
@@ -1278,16 +1278,16 @@ export async function updateVariationProduct(data) {
   }
   // Create a new Product in the database
   await dbConnect();
-  const usedTitle = await Product.find({ title: title, _id: { $ne: _id } });
 
-  if (usedTitle.length > 0) {
+  const slug = generateUrlSafeTitle(title);
+  const slugExists = await Product.findOne({ slug: slug, _id: { $ne: _id } });
+  if (slugExists) {
     return {
       error: {
-        title: { _errors: ['Este titulo ya esta en uso para otro producto'] },
+        title: { _errors: ['Este Titulo de producto ya esta en uso'] },
       },
     };
   }
-  const slug = generateUrlSafeTitle(title);
   const { error } = await Product.updateOne(
     { _id },
     {
@@ -1376,6 +1376,14 @@ export async function addProduct(data) {
   // Create a new Product in the database
   await dbConnect();
   const slug = generateUrlSafeTitle(title);
+  const slugExists = await Post.findOne({ slug: slug });
+  if (slugExists) {
+    return {
+      error: {
+        title: { _errors: ['Este Titulo de producto ya esta en uso'] },
+      },
+    };
+  }
   const { error } = await Product.create({
     type: 'simple',
     title,
