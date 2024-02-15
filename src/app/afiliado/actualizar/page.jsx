@@ -2,7 +2,7 @@ import React from 'react';
 
 const AfiliadoProfileUpdatePage = () => {
   return (
-    <div className="text-2xl font-EB_Garamond">Afiliado Profile UpdatePage</div>
+    <div className="text-3xl font-EB_Garamond">Afiliado Profile UpdatePage</div>
   );
 };
 
