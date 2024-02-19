@@ -8,6 +8,11 @@ export const SIDENAV_ITEMS = [
     icon: <FaHome width="24" height="24" />,
   },
   {
+    title: 'Pedidos',
+    path: '/admin/pedidos',
+    icon: <FaHome width="24" height="24" />,
+  },
+  {
     title: 'Publicaciones',
     path: '/admin/blog',
     icon: <FaFolder width="24" height="24" />,

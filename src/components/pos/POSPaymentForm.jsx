@@ -7,16 +7,18 @@ import { resetPOSCart, savePOSOrder } from '@/redux/shoppingSlice';
 import { useDispatch } from 'react-redux';
 import Link from 'next/link';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
-import { revalidatePath } from 'next/cache';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
+import { payPOSDrawer } from '@/app/_actions';
 
 const POSPaymentForm = () => {
   const dispatch = useDispatch();
   const { data: session } = useSession();
+  const router = useRouter();
   const [amountReceived, setAmountReceived] = useState(0);
   const isLoggedIn = Boolean(session?.user);
-  const { productsPOS, userInfo } = useSelector((state) => state.compras);
-
+  const { productsPOS } = useSelector((state) => state.compras);
+  const [validationError, setValidationError] = useState(null);
   const amountTotal = productsPOS?.reduce(
     (acc, cartItem) => acc + cartItem.quantity * cartItem.price,
     0
@@ -33,25 +35,22 @@ const POSPaymentForm = () => {
       toast.error('La cantidad que recibe es menor al total');
       return;
     }
-    const response = await fetch(`/api/pos/checkout`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', PayType: `${payType}` },
-      body: JSON.stringify({
-        items: productsPOS,
-        email: session?.user?.email,
-        user: userInfo,
-        amountReceived: amountReceived,
-      }),
-    });
-
-    try {
-      const data = await response.json();
-
-      dispatch(savePOSOrder({ order: productsPOS, id: data.id }));
+    const formData = new FormData();
+    const items = JSON.stringify(productsPOS);
+    formData.append('items', items);
+    formData.append('amountReceived', amountReceived);
+    formData.append('payType', payType);
+    const result = await payPOSDrawer(formData);
+    console.log(result, result);
+    if (result?.error) {
+      console.log(result?.error);
+      setValidationError(result.error);
+    } else {
+      const order = await JSON.parse(result.newOrder);
+      setValidationError(null);
+      dispatch(savePOSOrder({ order: order }));
       dispatch(resetPOSCart());
-      revalidatePath('/pos/carrito');
-    } catch (error) {
-      console.log(error);
+      //router.push('/admin/pedidos');
     }
   };
 
@@ -70,6 +69,11 @@ const POSPaymentForm = () => {
     <section className="p-2 maxsm:py-7 bg-gray-100">
       <div className=" max-w-screen-xl mx-auto bg-white flex flex-col justify-between p-2">
         <h2 className="text-7xl font-EB_Garamond mb-4">Totales</h2>
+        {validationError?.title && (
+          <p className="text-sm text-red-400">
+            {validationError.title._errors.join(', ')}
+          </p>
+        )}
         <ul className="mb-5">
           <li className="flex justify-between text-gray-600  mb-2 text-2xl">
             <span>Sub-Total:</span>

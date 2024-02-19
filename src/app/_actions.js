@@ -24,7 +24,7 @@ import Affiliate from '@/backend/models/Affiliate';
 import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
 import axios from 'axios';
-import { generateUrlSafeTitle } from '@/backend/helpers';
+import { cstDateTime, generateUrlSafeTitle } from '@/backend/helpers';
 import Order from '@/backend/models/Order';
 import APIPostsFilters from '@/lib/APIPostsFilters';
 import APIFilters from '@/lib/APIFilters';
@@ -32,6 +32,7 @@ import APIOrderFilters from '@/lib/APIOrderFilters';
 import APIClientFilters from '@/lib/APIClientFilters';
 import APIAffiliateFilters from '@/lib/APIAffiliateFilters';
 import Page from '@/backend/models/Page';
+import mongoose from 'mongoose';
 
 // Function to get the document count for all from the previous month
 const getDocumentCountPreviousMonth = async (model) => {
@@ -90,6 +91,80 @@ const getClientCountPreviousMonth = async () => {
     throw error;
   }
 };
+
+export async function payPOSDrawer(data) {
+  const session = await getServerSession(options);
+  try {
+    let { items, payType, amountReceived } = Object.fromEntries(data);
+
+    await dbConnect();
+    const userId = session?.user._id;
+    items = JSON.parse(items);
+    const branchInfo = 'Sucursal Sahuayo';
+    const ship_cost = 0;
+    const date = cstDateTime();
+    const paymentInfo = {
+      id: 'paid',
+      status: 'paid',
+      amountPaid: amountReceived,
+      taxPaid: 0,
+      paymentIntent: 'paid',
+    };
+
+    const cartItems = [];
+    await Promise.all(
+      items?.map(async (item) => {
+        const variationId = item._id.toString();
+        const product = await Product.findOne({
+          'variations._id': variationId,
+        });
+
+        const variation = product.variations.find((variation) =>
+          variation._id.equals(variationId)
+        );
+        // Check if there is enough stock
+        if (variation.stock < item.quantity) {
+          console.log('Este producto no cuenta con existencias');
+          return {
+            error: {
+              title: { _errors: ['Este producto no cuenta con existencias'] },
+            },
+          };
+        } else {
+          cartItems.push({
+            product: product._id,
+            variation: variationId,
+            name: item.title,
+            color: item.color,
+            size: item.size,
+            price: item.price,
+            quantity: item.quantity,
+            image: item.image,
+          });
+        }
+      })
+    );
+    let orderData = {
+      user: userId,
+      ship_cost,
+      createdAt: date,
+      branch: branchInfo,
+      paymentInfo,
+      orderItems: cartItems,
+      orderStatus: 'Entregado',
+      layaway: false,
+      affiliateId: '',
+    };
+    let newOrder = await new Order(orderData);
+    await newOrder.save();
+    newOrder = JSON.stringify(newOrder);
+
+    return { newOrder: newOrder };
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
 
 export async function getDashboard() {
   try {

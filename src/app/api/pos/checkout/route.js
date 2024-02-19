@@ -45,8 +45,8 @@ export const POST = async (request) => {
   try {
     //const isLayaway = await request.headers.get('paytype');
     const reqBody = await request.json();
-    const { items, email, user, amountReceived } = await reqBody;
-
+    const { items, email, amountReceived } = await reqBody;
+    console.log(items, email, amountReceived);
     const existingUser = await User.findOne({
       email: email,
     });
