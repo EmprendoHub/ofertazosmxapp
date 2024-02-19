@@ -3,16 +3,16 @@ import ContactUsComponent from './ContactUsComponent';
 import IconListSectionComponent from './IconListSectionComponent';
 import HeroColTextComponent from '../texts/HeroColTextComponent';
 
-const ContactComponent = () => {
+const ContactComponent = ({ contacto }) => {
   return (
     <>
       <div>
         <section className="min-h-[700px] flex flex-row maxsm:flex-col justify-center items-center bg-[url('/images/medium-shot-woman-wardrobe-renovation.jpg')]  bg-cover bg-no-repeat bg-center bg-fixed grayscale">
           <div className="container mx-auto flex justify-center items-center text-center p-5 sm:py-20 text-white z-10">
             <HeroColTextComponent
-              pretitle={'Bienvenido a Shopout MX'}
-              title={'CONTACTO'}
-              subtitle={'Tu destino exclusivo para la moda de lujo! '}
+              pretitle={contacto?.preTitle}
+              title={contacto?.mainTitle}
+              subtitle={contacto?.subTitle}
             />
           </div>
           {/* overlay */}
@@ -23,30 +23,27 @@ const ContactComponent = () => {
           <div className="w-full flex flex-row maxmd:flex-col justify-center items-center">
             <div className="w-1/3 maxmd:w-full pl-20 maxmd:pl-0 text-lg text-gray-600 ">
               <IconListSectionComponent
-                mainTitle={'Información de Contacto'}
-                textTitleOne={'Teléfono'}
-                textOne={'Platiquemos marca ahora mismo'}
-                linkOne={'tel:523531332430'}
-                linkOneText={'(+52)353-133-2430'}
-                textTitleTwo={'Correo Electrónico'}
-                textTwo={'Manda un mensaje para resolver tus dudas'}
+                mainTitle={contacto?.sections[0].boxes[0].title}
+                textTitleOne={contacto?.sections[1].boxes[0].title}
+                textOne={contacto?.sections[1].boxes[0].subTitle}
+                linkOne={contacto?.sections[1].boxes[0].paragraphs[0].text}
+                linkOneText={`(+52)353-133-2430`}
+                textTitleTwo={contacto?.sections[2].boxes[0].title}
+                textTwo={contacto?.sections[2].boxes[0].subTitle}
                 linkTwo={'mailto:contacto@shopout.com.mx'}
-                linkTwoText={'contacto@shopout.com.mx'}
-                textTitleThree={'Oficinas'}
-                textThree={'No contamos con existencias en oficinas'}
+                linkTwoText={contacto?.sections[2].boxes[0].paragraphs[0].text}
+                textTitleThree={contacto?.sections[3].boxes[0].title}
+                textThree={contacto?.sections[3].boxes[0].subTitle}
                 linkThree={
                   'https://www.google.com/maps/dir//36.1584611,-115.140488/@36.158461,-115.140488,15z?hl=en-MX'
                 }
                 linkThreeText={
-                  'Juan Escutia 25, Sahuayo de Morelos, Michoacan 59053'
+                  contacto?.sections[3].boxes[0].paragraphs[0].text
                 }
               />
             </div>
 
             <div className="w-2/3 pb-10 pl-20 maxsm:pl-1 maxsm:w-full  flex flex-col justify-start items-start">
-              <h3 className="pb-4 font-playfair-display text-xl">
-                {'Ubicación Oficinas'}
-              </h3>
               <div className="w-[100%] px-3map-class">
                 <iframe
                   className="border-none grayscale"
@@ -62,7 +59,10 @@ const ContactComponent = () => {
           </div>
         </section>
 
-        <ContactUsComponent />
+        <ContactUsComponent
+          contactTitle={contacto?.sections[4].boxes[0].title}
+          contactSubTitle={contacto?.sections[4].boxes[0].subTitle}
+        />
       </div>
     </>
   );

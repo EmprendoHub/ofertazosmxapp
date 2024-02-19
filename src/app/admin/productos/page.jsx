@@ -1,40 +1,7 @@
 import React from 'react';
 import ServerPagination from '@/components/pagination/ServerPagination';
-import { cookies } from 'next/headers';
-import { getCookiesName } from '@/backend/helpers';
 import AdminProducts from '@/components/admin/AdminProducts';
 import { getAllProduct } from '@/app/_actions';
-
-const getAllProducts = async (searchParams, cookie) => {
-  const urlParams = {
-    keyword: searchParams.keyword,
-    page: searchParams.page,
-    category: searchParams.category,
-    brand: searchParams.brand,
-    'rating[gte]': searchParams.rating,
-    'price[lte]': searchParams.max,
-    'price[gte]': searchParams.min,
-  };
-  // Filter out undefined values
-  const filteredUrlParams = Object.fromEntries(
-    Object.entries(urlParams).filter(([key, value]) => value !== undefined)
-  );
-  const searchQuery = new URLSearchParams(filteredUrlParams).toString();
-  const URL = `${process.env.NEXTAUTH_URL}/api/products?${searchQuery}`;
-  try {
-    const res = await fetch(URL, {
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        Cookie: cookie,
-      },
-    });
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 const AdminProductsPage = async ({ searchParams }) => {
   const urlParams = {

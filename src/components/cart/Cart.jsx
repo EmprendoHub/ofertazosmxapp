@@ -4,7 +4,7 @@ import Image from 'next/image';
 import {
   decreaseQuantity,
   deleteProduct,
-  increaseQuantity,
+  increasePOSQuantity,
 } from '@/redux/shoppingSlice';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,7 +16,6 @@ import { useRouter } from 'next/navigation';
 const Cart = () => {
   //import CartContext and assign to addItemToCart
   const { productsData } = useSelector((state) => state?.compras);
-  console.log(productsData);
   const router = useRouter();
   const dispatch = useDispatch();
   if (productsData?.length <= 0) {
@@ -112,7 +111,7 @@ const Cart = () => {
                             <span>{cartItem?.quantity}</span>
                             <span
                               onClick={() =>
-                                dispatch(increaseQuantity(cartItem))
+                                dispatch(increasePOSQuantity(cartItem))
                               }
                               className="cursor-pointer"
                             >

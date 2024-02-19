@@ -8,43 +8,48 @@ import HeroTextComponent from '../texts/HeroTextComponent';
 import InnerSectionTextComponent from '../texts/InnerSectionTextComponent';
 import HeroColTextComponent from '../texts/HeroColTextComponent';
 
-const AboutUsComponent = () => {
+const AboutUsComponent = ({ acerca }) => {
   return (
     <div>
-      <section className="min-h-[700px] flex flex-row maxsm:flex-col justify-center items-center bg-[url('/images/shopout_about_us_cover.jpg')]  bg-cover bg-no-repeat bg-center bg-fixed grayscale">
+      <section className="min-h-[700px] flex flex-row maxsm:flex-col justify-center items-center grayscale">
         <div className="container mx-auto flex justify-center items-center text-center p-5 sm:py-20 text-white z-10">
           <HeroColTextComponent
-            pretitle={'Bienvenido a '}
-            title={'Shopout MX,'}
-            subtitle={'Tu destino exclusivo para la moda de lujo! '}
+            pretitle={acerca?.preTitle}
+            title={acerca?.mainTitle}
+            subtitle={acerca?.subTitle}
           />
         </div>
+        <Image
+          className="rounded-md object-cover"
+          src={acerca?.mainImage}
+          fill={true}
+          sizes="(max-width: 1080px) 100vw, (max-width: 1200px) 100vw, 33vw"
+          alt="imagen de portada"
+        />
         {/* overlay */}
         <div className="min-h-[100%] absolute z-[1] min-w-[100%] top-0 left-0 bg-black bg-opacity-30" />
       </section>
       <section className="bg-gray-100 text-center py-12 my-20 w-[50%] maxmd:w-[90%] p-5 mx-auto">
         <div className="container mx-auto">
           <InnerSectionTextComponent
-            title={'Experiencia Personalizada'}
-            paraOne={
-              'En Shopout MX, nos enorgullece ofrecer una experiencia de compra en línea única, donde la elegancia se encuentra con la conveniencia. Nos especializamos en llevar lo último de las marcas de lujo más codiciadas del mundo, como Gucci, Versace, Fendi y muchas más, directamente a tu puerta.'
-            }
+            title={acerca?.sections[0].boxes[0].title}
+            paraOne={acerca?.sections[0].boxes[0].paragraphs[0].text}
           />
         </div>
       </section>
       <section className=" text-center py-12 my-20 w-[80%] maxsm:w-[95%] mx-auto">
         <div className="container mx-auto">
           <h3 className="text-6xl font-semibold font-EB_Garamond text-gray-800 mb-5">
-            ¿Por qué elegirnos?
+            {acerca?.sections[1].boxes[0].title}
           </h3>
           <p className="text-gray-600 font-raleway font-semibold">
-            {'En Shopout MX, nos dedicamos a brindar:'}
+            {acerca?.sections[1].boxes[0].subTitle}
           </p>
 
           <div className="grid grid-cols-3 maxsm:grid-cols-1 gap-4 mt-5">
             <div className="bg-white rounded-lg p-8 shadow-md">
               <Image
-                src={`/images/shopout_about_us_cover.jpg`}
+                src={acerca?.sections[1].boxes[1].images[0].url}
                 width={100}
                 height={100}
                 alt="Icon"
@@ -52,16 +57,14 @@ const AboutUsComponent = () => {
               />
 
               <InnerSectionTextComponent
-                title="1. Autenticidad Garantizada: "
-                paraOne={
-                  'Cada producto que vendemos es auténtico y directamente adquirido de las casas de moda más prestigiosas del mundo. Puedes comprar con confianza, sabiendo que estás recibiendo productos genuinos y de alta calidad.'
-                }
+                title={acerca?.sections[1].boxes[1].title}
+                paraOne={acerca?.sections[1].boxes[1].paragraphs[0].text}
               />
               <div className="mt-10" />
             </div>
             <div className="bg-white rounded-lg p-8 shadow-md">
               <Image
-                src={`/images/shopout_about_us_cover.jpg`}
+                src={acerca?.sections[1].boxes[2].images[0].url}
                 width={100}
                 height={100}
                 alt="Icon"
@@ -69,16 +72,14 @@ const AboutUsComponent = () => {
               />
 
               <InnerSectionTextComponent
-                title="2. Variedad Exclusiva: "
-                paraOne={
-                  'Nuestra selección de marcas de lujo es cuidadosamente curada para ofrecer una variedad exclusiva de productos de moda. Desde elegantes bolsos hasta ropa de diseñador, tenemos todo lo que necesitas para expresar tu estilo único.'
-                }
+                title={acerca?.sections[1].boxes[2].title}
+                paraOne={acerca?.sections[1].boxes[2].paragraphs[0].text}
               />
               <div className="mt-10" />
             </div>
             <div className="bg-white rounded-lg p-8 shadow-md">
               <Image
-                src={`/images/shopout_about_us_cover.jpg`}
+                src={acerca?.sections[1].boxes[3].images[0].url}
                 width={100}
                 height={100}
                 alt="Icon"
@@ -86,10 +87,8 @@ const AboutUsComponent = () => {
               />
 
               <InnerSectionTextComponent
-                title="3. Atención Personalizada: "
-                paraOne={
-                  'En Shopout MX, valoramos a cada cliente y nos esforzamos por brindar un servicio personalizado. Nuestro equipo de atención al cliente está siempre dispuesto a ayudarte con cualquier pregunta o inquietud que puedas tener.'
-                }
+                title={acerca?.sections[1].boxes[3].title}
+                paraOne={acerca?.sections[1].boxes[3].paragraphs[0].text}
               />
               <div className="mt-10" />
             </div>
@@ -100,14 +99,10 @@ const AboutUsComponent = () => {
         <section className="text-center w-1/2 maxmd:w-full">
           <div className="container mx-auto px-6 sm:px-3">
             <SectionTextComponent
-              title={' Nuestra Mision'}
-              paraOne={
-                'Nuestra misión es hacer que cada cliente se sienta como una estrella de la moda al proporcionar acceso a productos de alta calidad y estilo incomparable. '
-              }
-              paraTwo={
-                'En Shopout MX, no solo vendemos ropa y accesorios de lujo, sino que también ofrecemos un servicio excepcional que eleva tu experiencia de compra a un nivel superior.'
-              }
-              btnText={'Ponte en Contacto'}
+              title={acerca?.sections[2].boxes[0].title}
+              paraOne={acerca?.sections[2].boxes[0].paragraphs[0].text}
+              paraTwo={acerca?.sections[2].boxes[0].paragraphs[1].text}
+              btnText={acerca?.sections[2].boxes[0].button}
               btnUrl={`/contacto`}
             />
           </div>
@@ -123,10 +118,10 @@ const AboutUsComponent = () => {
           >
             <div className="bg-white rounded-lg p-4 shadow-md">
               <Image
-                src="/images/shopout_about_us_cover.jpg"
+                src={acerca?.sections[2].boxes[0].images[0].url}
                 width={400}
                 height={400}
-                alt="Shoput MX"
+                alt="Shopout MX"
                 className="mx-auto mb-4 w-full h-full grayscale"
               />
             </div>
@@ -134,21 +129,24 @@ const AboutUsComponent = () => {
         </section>
       </div>
 
-      <section
-        className={`hero w-full h-[600px] bg-gray-100 text-center  bg-[url('/images/shopout_about_us_cover.jpg')]  bg-cover bg-no-repeat bg-center bg-fixed grayscale`}
-      >
-        <div className=" backdrop-brightness-50 w-full h-full items-center  justify-center flex px-40 maxmd:px-10 my-20">
-          <div className="container mx-auto">
-            <div className="container mx-auto text-white">
-              <HeroTextComponent
-                title={'Únete a la experiencia de compra de lujo'}
-                subtitle={'Descubre la moda de alta gama con solo un clic.'}
-                btnText={'Tienda en Linea'}
-                btnUrl={`/tienda`}
-              />
-            </div>
-          </div>
+      <section className="min-h-[700px] flex flex-row maxsm:flex-col justify-center items-center grayscale">
+        <div className="container mx-auto flex justify-center items-center text-center p-5 sm:py-20 text-white z-10">
+          <HeroTextComponent
+            title={acerca?.sections[3].boxes[0].title}
+            subtitle={acerca?.sections[3].boxes[0].subTitle}
+            btnText={acerca?.sections[3].boxes[0].button}
+            btnUrl={`/tienda`}
+          />
         </div>
+        <Image
+          className="rounded-md object-cover"
+          src={acerca?.sections[3].boxes[0].images[0].url}
+          fill={true}
+          sizes="(max-width: 1080px) 100vw, (max-width: 1200px) 100vw, 33vw"
+          alt="imagen de portada"
+        />
+        {/* overlay */}
+        <div className="min-h-[100%] absolute z-[1] min-w-[100%] top-0 left-0 bg-black bg-opacity-30" />
       </section>
     </div>
   );

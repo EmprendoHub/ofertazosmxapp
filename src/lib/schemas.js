@@ -48,6 +48,25 @@ export const PostUpdateSchema = z.object({
   updatedAt: z.date(),
 });
 
+export const PageEntrySchema = z.object({
+  mainTitle: z.string().min(5, { message: 'Se requiere el titulo' }),
+  mainImage: z
+    .string()
+    .min(3, { message: 'Se requiere la la imagen principal' }),
+  //summary: z.string().min(5, { message: 'Se requiere el resumen' }),
+  createdAt: z.date(),
+});
+
+export const PageUpdateSchema = z.object({
+  mainTitle: z.string().min(5, { message: 'Se requiere el titulo' }),
+  category: z.string().min(3, { message: 'Se requiere la categoría' }),
+  mainImage: z
+    .string()
+    .min(3, { message: 'Se requiere la la imagen principal' }),
+  //summary: z.string().min(5, { message: 'Se requiere el resumen' }),
+  updatedAt: z.date(),
+});
+
 export const ProductEntrySchema = z.object({
   title: z.string().min(5, { message: 'Se requiere el titulo' }),
   description: z.string().min(3, { message: 'Se requiere la description' }),

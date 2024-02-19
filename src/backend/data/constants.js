@@ -37,4 +37,14 @@ export const SIDENAV_ITEMS = [
       { title: 'Afiliados', path: '/admin/asociados' },
     ],
   },
+  {
+    title: 'Paginas',
+    path: '/admin/config',
+    icon: <FaGear width="24" height="24" />,
+    submenu: true,
+    subMenuItems: [
+      { title: 'Nosotros', path: '/admin/config/nosotros' },
+      { title: 'Contacto', path: '/admin/config/contacto' },
+    ],
+  },
 ];

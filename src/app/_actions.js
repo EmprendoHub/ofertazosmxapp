@@ -7,6 +7,8 @@ import {
   AddressEntrySchema,
   ClientPasswordUpdateSchema,
   ClientUpdateSchema,
+  PageEntrySchema,
+  PageUpdateSchema,
   PostEntrySchema,
   PostUpdateSchema,
   ProductEntrySchema,
@@ -29,6 +31,7 @@ import APIFilters from '@/lib/APIFilters';
 import APIOrderFilters from '@/lib/APIOrderFilters';
 import APIClientFilters from '@/lib/APIClientFilters';
 import APIAffiliateFilters from '@/lib/APIAffiliateFilters';
+import Page from '@/backend/models/Page';
 
 // Function to get the document count for all from the previous month
 const getDocumentCountPreviousMonth = async (model) => {
@@ -187,6 +190,133 @@ export async function getOnePost(slug) {
     console.log(error);
     throw Error(error);
   }
+}
+
+export async function getOnePage(category) {
+  try {
+    await dbConnect();
+    let page = await Page.findOne({ category: category });
+    // convert to string
+    page = JSON.stringify(page);
+
+    return { page: page };
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
+
+export async function addNewPage(data) {
+  const session = await getServerSession(options);
+  const user = { _id: session?.user?._id };
+  let {
+    category,
+    preTitle,
+    mainTitle,
+    subTitle,
+    mainImage,
+    sections,
+    createdAt,
+  } = Object.fromEntries(data);
+
+  sections = JSON.parse(sections);
+  createdAt = new Date(createdAt);
+  // validate form data
+  const result = PageEntrySchema.safeParse({
+    mainTitle: mainTitle,
+    mainImage: mainImage,
+    createdAt: createdAt,
+  });
+  const { error: zodError } = result;
+  if (zodError) {
+    return { error: zodError.format() };
+  }
+
+  //check for errors
+  await dbConnect();
+  const slug = generateUrlSafeTitle(mainTitle);
+
+  const slugExists = await Page.findOne({ slug: slug });
+  if (slugExists) {
+    return {
+      error: {
+        title: { _errors: ['Este Titulo de Pagina ya esta en uso'] },
+      },
+    };
+  }
+  const { error } = await Page.create({
+    category,
+    preTitle,
+    mainTitle,
+    subTitle,
+    slug,
+    mainImage,
+    sections,
+    createdAt,
+    published: true,
+    authorId: { _id: session?.user._id },
+  });
+  if (error) throw Error(error);
+  revalidatePath('/');
+}
+
+export async function updatePage(data) {
+  const session = await getServerSession(options);
+  let {
+    _id,
+    category,
+    preTitle,
+    mainTitle,
+    subTitle,
+    mainImage,
+    sections,
+    createdAt,
+  } = Object.fromEntries(data);
+  sections = JSON.parse(sections);
+  const updatedAt = new Date(createdAt);
+  // validate form data
+  const result = PageUpdateSchema.safeParse({
+    category: category,
+    mainTitle: mainTitle,
+    mainImage: mainImage,
+    updatedAt: updatedAt,
+  });
+  const { error: zodError } = result;
+  if (zodError) {
+    return { error: zodError.format() };
+  }
+
+  //check for errors
+  await dbConnect();
+  const slug = generateUrlSafeTitle(mainTitle);
+  const slugExists = await Page.findOne({
+    slug: slug,
+    _id: { $ne: _id },
+  });
+  if (slugExists) {
+    return {
+      error: {
+        title: { _errors: ['Este Titulo de Pagina ya esta en uso'] },
+      },
+    };
+  }
+  const { error } = await Page.updateOne(
+    { _id },
+    {
+      category,
+      preTitle,
+      mainTitle,
+      subTitle,
+      slug,
+      mainImage,
+      sections,
+      updatedAt,
+      published: true,
+      authorId: { _id: session?.user._id },
+    }
+  );
+  if (error) throw Error(error);
+  revalidatePath('/');
 }
 
 export async function getAllPost(searchQuery) {
@@ -355,6 +485,58 @@ export async function getOneProduct(slug, id) {
     trendingProducts = JSON.stringify(trendingProducts);
     return { product: product, trendingProducts: trendingProducts };
     // return { product };
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
+
+export async function getOnePOSProduct(variationId) {
+  const session = await getServerSession(options);
+
+  try {
+    await dbConnect();
+    // Find the product that contains the variation with the specified variation ID
+    let product = await Product.findOne({ 'variations._id': variationId });
+
+    if (product) {
+      // Find the variation within the variations array
+      let variation = product.variations.find(
+        (variation) => variation._id.toString() === variationId
+      );
+      // Update the stock of the variation
+      variation.stock -= 1; // Example stock update
+
+      // Save the product to persist the changes
+      await product.save();
+      // convert to string
+      product = JSON.stringify(product);
+      variation = JSON.stringify(variation);
+      console.log('Variation stock updated successfully');
+      return { product: product, variation: variation };
+    } else {
+      console.log('Product not found');
+      throw Error('Product not found');
+    }
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
+
+export async function getAllPOSProduct() {
+  try {
+    await dbConnect();
+    // Find the product that contains the variation with the specified variation ID
+    let products = await Product.find({});
+
+    if (products) {
+      products = JSON.stringify(products);
+      return { products: products };
+    } else {
+      console.log('Product not found');
+      throw Error('Product not found');
+    }
   } catch (error) {
     console.log(error);
     throw Error(error);

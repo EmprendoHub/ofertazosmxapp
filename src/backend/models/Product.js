@@ -69,6 +69,9 @@ const ProductSchema = new mongoose.Schema({
   ],
   variations: [
     {
+      title: {
+        type: String,
+      },
       stock: {
         type: Number,
       },
@@ -88,6 +91,13 @@ const ProductSchema = new mongoose.Schema({
         type: Number,
       },
       image: {
+        type: String,
+      },
+      quantity: {
+        type: Number,
+        default: 1,
+      },
+      productId: {
         type: String,
       },
     },

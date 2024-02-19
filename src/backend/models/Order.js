@@ -80,6 +80,9 @@ const OrderSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
   },
+  branch: {
+    type: String,
+  },
   shippingInfo: {
     type: mongoose.Schema.Types.ObjectId,
     require: true,
