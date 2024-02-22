@@ -32,6 +32,17 @@ const UserSchema = new mongoose.Schema(
     avatar: {
       type: String,
     },
+    permissions: [
+      {
+        name: {
+          type: String,
+        },
+        active: {
+          default: false,
+          type: Boolean,
+        },
+      },
+    ],
     favorites: [
       {
         _id: {

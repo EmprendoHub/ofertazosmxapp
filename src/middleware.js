@@ -31,6 +31,20 @@ export async function middleware(request) {
       return NextResponse.redirect(signInUrl);
     }
   }
+  if (pathname.includes('puntodeventa')) {
+    //if admin user is not logged in
+    let signInUrl;
+    if (!token) {
+      signInUrl = new URL('/api/auth/signin', request.url);
+      signInUrl.searchParams.set('callbackUrl', pathname);
+      return NextResponse.redirect(signInUrl);
+    }
+
+    if (token?.user?.role !== 'sucursal') {
+      signInUrl = new URL('/no-autorizado', request.url);
+      return NextResponse.redirect(signInUrl);
+    }
+  }
   if (
     pathname.includes('afiliado') ||
     pathname === '/registro/affiliate/stripe'

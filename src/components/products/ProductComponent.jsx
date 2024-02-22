@@ -307,7 +307,7 @@ const ProductComponent = ({ product, trendingProducts }) => {
                               value={c.value}
                               key={index}
                               onClick={handleColorSelection}
-                              className={`flex w-full cursor-pointer p-3  text-white ${
+                              className={`flex cursor-pointer p-3  text-white ${
                                 color === c.value ? 'bg-black' : 'bg-slate-500'
                               }`}
                             >

@@ -54,31 +54,19 @@ const POSCheckOutForm = () => {
               <FormattedPrice amount={totalAmountCalc} />
             </span>
           </li>
-          <li>
-            <div className="border-b-[1px] border-b-slate-300 py-2">
-              <div className="flex items-center justify-between">
-                <p className=" font-medium font-EB_Garamond">
-                  Apártalo por solo
-                </p>
-                <p>
-                  <FormattedPrice amount={layawayAmount} />
-                </p>
-              </div>
-            </div>
-          </li>
         </ul>
 
         {isLoggedIn ? (
           <div className="flex flex-col items-center gap-1">
             <Link
-              href="/pos/carrito/caja"
+              href="/puntodeventa/carrito/caja"
               className="text-slate-100 text-center bg-green-600 border mt-4 py-3 px-6  hover:bg-slate-200 hover:border-slate-400 hover:border hover:text-black duration-300 ease-in-out cursor-pointer w-full"
             >
               PAGAR
             </Link>
 
             <Link
-              href="/pos/qr/scanner"
+              href="/puntodeventa/qr/scanner"
               className="px-4 mt-3 py-3 inline-block text-lg w-full text-center font-medium bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 text-black font-EB_Garamond"
             >
               Escanear mas Productos
@@ -98,7 +86,7 @@ const POSCheckOutForm = () => {
                   </div>
                 </Link>
                 <Link
-                  href="/pos/qr/scanner"
+                  href="/puntodeventa/qr/scanner"
                   className="px-4 py-3 inline-block text-lg w-full text-center font-medium bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 text-black font-EB_Garamond"
                 >
                   Escanear mas Productos

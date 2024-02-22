@@ -11,15 +11,15 @@ const DrawerComponent = () => {
     },
     {
       name: `pos`,
-      url: `/pos`,
+      url: `/puntodeventa`,
     },
     {
       name: `carrito`,
-      url: `/pos/carrito`,
+      url: `/puntodeventa/carrito`,
     },
     {
       name: `caja`,
-      url: `/pos/carrito/caja`,
+      url: `/puntodeventa/carrito/caja`,
     },
   ];
 

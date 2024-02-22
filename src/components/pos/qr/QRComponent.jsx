@@ -1,7 +1,5 @@
 'use client';
-import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import qrcode from 'qrcode';
 import { Html5QrcodeScanner } from 'html5-qrcode';
 import { useRouter } from 'next/navigation';
 
@@ -30,7 +28,7 @@ const QRComponent = () => {
 
   useEffect(() => {
     if (scanResult) {
-      router.push(`/pos/scan/${scanResult}`);
+      router.push(`/puntodeventa/scan/${scanResult}`);
     }
   }, [scanResult]);
 

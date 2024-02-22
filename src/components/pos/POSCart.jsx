@@ -19,9 +19,9 @@ const POSCart = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   // if (productsPOS?.length <= 0) {
-  //   router.replace('/pos/qr');
+  //   router.replace('/puntodeventa/qr');
   // }
-  console.log(productsPOS, 'productsPOS');
+
   return (
     <div className="w-full">
       <section className="mt-5  bg-gray-100">

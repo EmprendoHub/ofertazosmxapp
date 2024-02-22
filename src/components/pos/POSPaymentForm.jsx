@@ -51,7 +51,7 @@ const POSPaymentForm = () => {
       dispatch(savePOSOrder({ order: order }));
       dispatch(resetPOSCart());
       setAmountReceived(0);
-      router.push('/admin/pedidos');
+      router.push('/puntodeventa/pedidos');
     }
   };
 
@@ -134,7 +134,7 @@ const POSPaymentForm = () => {
             </button>
 
             <Link
-              href="/pos/carrito"
+              href="/puntodeventa/carrito"
               className="w-full mt-4 text-center px-5 py-2 inline-block text-gray-90 bg-slate-300 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:text-black ease-in-out"
             >
               Regresar

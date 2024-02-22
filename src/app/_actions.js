@@ -249,6 +249,58 @@ export async function getDashboard() {
   }
 }
 
+export async function getPOSDashboard() {
+  try {
+    await dbConnect();
+    const session = await getServerSession(options);
+    let orders;
+    let products;
+    let clients;
+
+    if (session) {
+      if (session?.user?.role === 'sucursal') {
+        orders = await Order.find({ orderStatus: { $ne: 'Cancelado' } })
+          .sort({ createdAt: -1 }) // Sort in descending order of creation date
+          .limit(5);
+        products = await Product.find({ published: { $ne: 'false' } })
+          .sort({ createdAt: -1 }) // Sort in descending order of creation date
+          .limit(5);
+        clients = await User.find({ role: 'cliente' })
+          .sort({ createdAt: -1 }) // Sort in descending order of creation date
+          .limit(5);
+      }
+    }
+
+    const totalOrderCount = await Order.countDocuments({
+      orderStatus: { $ne: 'Cancelado' },
+    });
+    const totalProductCount = await Product.countDocuments({
+      published: { $ne: 'false' },
+    });
+    const totalClientCount = await User.countDocuments({ role: 'cliente' });
+    const orderCountPreviousMonth = await getDocumentCountPreviousMonth(Order);
+    const clientCountPreviousMonth = await getClientCountPreviousMonth();
+
+    orders = JSON.stringify(orders);
+    products = JSON.stringify(products);
+    clients = JSON.stringify(clients);
+
+    return {
+      orders: orders,
+      products: products,
+      clients: clients,
+      totalOrderCount: totalOrderCount,
+      orderCountPreviousMonth: orderCountPreviousMonth,
+      totalProductCount: totalProductCount,
+      totalClientCount: totalClientCount,
+      clientCountPreviousMonth: clientCountPreviousMonth,
+    };
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
+
 export async function getOnePost(slug) {
   try {
     await dbConnect();
@@ -543,9 +595,53 @@ export async function getAllOrder(searchQuery) {
   }
 }
 
+export async function getAllPOSOrder(searchQuery) {
+  try {
+    await dbConnect();
+    const session = await getServerSession(options);
+    let orderQuery;
+    if (session?.user?.role === 'sucursal') {
+      orderQuery = Order.find({
+        $and: [
+          { orderStatus: 'Sucursal' },
+          { orderStatus: { $ne: 'Cancelado' } },
+        ],
+      });
+    }
+
+    const searchParams = new URLSearchParams(searchQuery);
+
+    const resPerPage = Number(searchParams.get('perpage')) || 5;
+    // Extract page and per_page from request URL
+    const page = Number(searchParams.get('page')) || 1;
+    // Apply descending order based on a specific field (e.g., createdAt)
+    orderQuery = orderQuery.sort({ createdAt: -1 });
+
+    // Apply search Filters including order_id and orderStatus
+    const apiOrderFilters = new APIOrderFilters(orderQuery, searchParams)
+      .searchAllFields()
+      .filter();
+    let ordersData = await apiOrderFilters.query;
+
+    const itemCount = ordersData.length;
+
+    apiOrderFilters.pagination(resPerPage, page);
+    ordersData = await apiOrderFilters.query.clone();
+    let orders = JSON.stringify(ordersData);
+
+    return {
+      orders: orders,
+      itemCount: itemCount,
+      resPerPage: resPerPage,
+    };
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
+
 export async function getOneProduct(slug, id) {
   const session = await getServerSession(options);
-  console.log(id);
   try {
     await dbConnect();
     let product;
@@ -554,7 +650,6 @@ export async function getOneProduct(slug, id) {
     } else {
       product = await Product.findOne({ slug: slug });
     }
-    console.log(product);
     let trendingProducts = await Product.find({
       category: product.category,
       _id: { $ne: product._id },
@@ -634,15 +729,9 @@ export async function getOnePOSProduct(variationId) {
       let variation = product.variations.find(
         (variation) => variation._id.toString() === variationId
       );
-      // Update the stock of the variation
-      variation.stock -= 1; // Example stock update
-
-      // Save the product to persist the changes
-      await product.save();
       // convert to string
       product = JSON.stringify(product);
       variation = JSON.stringify(variation);
-      console.log('Variation stock updated successfully');
       return { product: product, variation: variation };
     } else {
       console.log('Product not found');

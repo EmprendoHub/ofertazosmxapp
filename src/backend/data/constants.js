@@ -53,3 +53,26 @@ export const SIDENAV_ITEMS = [
     ],
   },
 ];
+
+export const POSNAV_ITEMS = [
+  {
+    title: 'Inicio',
+    path: '/puntodeventa',
+    icon: <FaHome width="24" height="24" />,
+  },
+  {
+    title: 'Pedidos',
+    path: '/puntodeventa/pedidos',
+    icon: <FaHome width="24" height="24" />,
+  },
+  {
+    title: 'Scanner',
+    path: '/puntodeventa/qr/scanner',
+    icon: <FaHome width="24" height="24" />,
+  },
+  {
+    title: 'Etiquetas QR',
+    path: '/puntodeventa/qr/generador',
+    icon: <FaHome width="24" height="24" />,
+  },
+];

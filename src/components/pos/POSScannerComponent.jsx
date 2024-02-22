@@ -11,7 +11,7 @@ const POSScannerComponent = ({ product, variation }) => {
   useEffect(() => {
     if (variation?.stock > 0) {
       dispatch(addToPOSCart(variation));
-      router.push('/pos/carrito');
+      router.push('/puntodeventa/carrito');
     } else {
       Swal.fire({
         title: '¡Sin Existencias!',
@@ -21,7 +21,7 @@ const POSScannerComponent = ({ product, variation }) => {
         confirmButtonText: 'OK',
       }).then((result) => {
         if (result.isConfirmed) {
-          router.push('/pos/qr/scanner');
+          router.push('/puntodeventa/pedidos');
         }
       });
     }
