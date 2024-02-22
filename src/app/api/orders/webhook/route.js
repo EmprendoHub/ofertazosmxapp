@@ -54,6 +54,7 @@ export async function POST(req, res) {
         const variation = product.variations.find((variation) =>
           variation._id.equals(variationId)
         );
+        console.log('variation ', variation);
         if (variation) {
           // Decrement the quantity
           variation.stock -= item.quantity; // Decrease the quantity by 1
