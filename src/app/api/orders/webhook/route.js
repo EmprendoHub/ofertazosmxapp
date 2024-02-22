@@ -50,7 +50,7 @@ export async function POST(req, res) {
         // Find the product by its _id and update its stock
         const product = await Product.findOne({ _id: productId });
         // Find the product variation
-        console.log('variations ', product.variations, variationId);
+        console.log('product ', product);
         const variation = product.variations.find((variation) =>
           variation._id.equals(variationId)
         );
