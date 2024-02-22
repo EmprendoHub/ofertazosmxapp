@@ -40,6 +40,8 @@ export async function POST(req, res) {
         _id: session?.metadata?.order,
       });
 
+      console.log('currentOrder', currentOrder);
+
       currentOrder?.orderItems.forEach(async (item) => {
         const productId = item.product.toString();
         const variationId = item.variation;
@@ -137,13 +139,13 @@ export async function POST(req, res) {
       currentOrder.paymentInfo.amountPaid = payAmount;
 
       await currentOrder.save();
+      return NextResponse.json(
+        {
+          success: true,
+        },
+        { status: 201 }
+      );
     }
-    return NextResponse.json(
-      {
-        success: true,
-      },
-      { status: 201 }
-    );
   } catch (error) {
     return NextResponse.json(
       {
