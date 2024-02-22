@@ -34,7 +34,7 @@ const POSSidebar = () => {
   const [isOpen, toggleOpen] = useCycle(false, true);
 
   return (
-    <div className="absolute -left-6 -top-4 z-50 font-EB_Garamond">
+    <div className="absolute -left-6 -top-4 z-50 font-EB_Garamond  print:hidden">
       <MenuToggle toggle={toggleOpen} />
       <motion.nav
         initial={false}

@@ -790,7 +790,9 @@ export async function getAllPOSProduct() {
   try {
     await dbConnect();
     // Find the product that contains the variation with the specified variation ID
-    let products = await Product.find({});
+    let products = await Product.find({
+      $and: [{ stock: { $gt: 0 } }, { availability: true }],
+    });
 
     if (products) {
       products = JSON.stringify(products);
