@@ -1,15 +1,15 @@
 'use client';
-import React, { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import AuthContext from '@/context/AuthContext';
 import { FaTrash, FaPencilAlt, FaStar } from 'react-icons/fa';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import Swal from 'sweetalert2';
 import SearchProducts from '@/app/admin/productos/search';
+import { changeProductAvailability, changeProductStatus } from '@/app/_actions';
+import { TiCancel } from 'react-icons/ti';
+import { FaShop } from 'react-icons/fa6';
 
 const AdminProducts = ({ products, filteredProductsCount, search }) => {
-  const { deleteProduct } = useContext(AuthContext);
   const deleteHandler = (product_id) => {
     Swal.fire({
       title: 'Estas seguro(a)?',
@@ -18,16 +18,110 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
       showCancelButton: true,
       confirmButtonColor: '#d33',
       cancelButtonColor: '#000',
-      confirmButtonText: '¡Sí, eliminar!',
+      confirmButtonText: '¡Sí, desactivar!',
       cancelButtonText: 'No, cancelar!',
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
-          title: 'Eliminado!',
-          text: 'Tu producto ha sido eliminado.',
+          title: 'Desactivado!',
+          text: 'Tu producto ha sido Desactivado.',
           icon: 'success',
         });
-        deleteProduct(product_id);
+        changeProductStatus(product_id);
+      }
+    });
+  };
+  const deactivateHandler = (product_id, active) => {
+    let title;
+    let text;
+    let confirmBtn;
+    let successTitle;
+    let successText;
+    let icon;
+    let confirmBtnColor;
+    if (active === true) {
+      icon = 'warning';
+      title = 'Estas seguro(a)?';
+      text =
+        '¡Estas a punto de desactivar a este producto y quedara sin acceso!';
+      confirmBtn = '¡Sí, desactivar producto!';
+      confirmBtnColor = '#CE7E00';
+      successTitle = 'Desactivar!';
+      successText = 'El producto ha sido desactivado.';
+    } else {
+      icon = 'success';
+      title = 'Estas seguro(a)?';
+      text = '¡Estas a punto de reactivar a este producto!';
+      confirmBtn = '¡Sí, reactivar producto!';
+      confirmBtnColor = '#228B22';
+      successTitle = 'Reactivado!';
+      successText = 'El producto ha sido reactivado.';
+    }
+    Swal.fire({
+      title: title,
+      text: text,
+      icon: icon,
+      showCancelButton: true,
+      confirmButtonColor: confirmBtnColor,
+      cancelButtonColor: '#000',
+      confirmButtonText: confirmBtn,
+      cancelButtonText: 'No, cancelar!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: successTitle,
+          text: successText,
+          icon: icon,
+        });
+        changeProductStatus(product_id);
+      }
+    });
+  };
+
+  const deactivateBranchHandler = (product_id, active) => {
+    let title;
+    let text;
+    let confirmBtn;
+    let successTitle;
+    let successText;
+    let icon;
+    let confirmBtnColor;
+    if (active === true) {
+      icon = 'warning';
+      title = 'Estas seguro(a)?';
+      text =
+        '¡Estas a punto de desactivar a este producto de la sucursal física y quedara sin acceso!';
+      confirmBtn = '¡Sí, desactivar producto!';
+      confirmBtnColor = '#CE7E00';
+      successTitle = 'Desactivar!';
+      successText = 'El producto ha sido desactivado.';
+    } else {
+      icon = 'success';
+      title = 'Estas seguro(a)?';
+      text =
+        '¡Estas a punto de reactivar a este producto a la sucursal física!';
+      confirmBtn = '¡Sí, reactivar producto!';
+      confirmBtnColor = '#228B22';
+      successTitle = 'Reactivado!';
+      successText = 'El producto ha sido reactivado.';
+    }
+    Swal.fire({
+      title: title,
+      text: text,
+      icon: icon,
+      showCancelButton: true,
+      confirmButtonColor: confirmBtnColor,
+      cancelButtonColor: '#000',
+      confirmButtonText: confirmBtn,
+      cancelButtonText: 'No, cancelar!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: successTitle,
+          text: successText,
+          icon: icon,
+        });
+        changeProductAvailability(product_id);
       }
     });
   };
@@ -71,7 +165,14 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
           </thead>
           <tbody>
             {products?.map((product, index) => (
-              <tr className="bg-white" key={index}>
+              <tr
+                className={` ${
+                  product?.active === true
+                    ? 'bg-slate-100'
+                    : 'bg-slate-200 text-slate-400'
+                }`}
+                key={index}
+              >
                 <td className="px-6 maxsm:px-2 py-2 maxmd:hidden">
                   <Link
                     key={index}
@@ -125,10 +226,26 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                     <FaPencilAlt className="maxsm:text-[10px]" />
                   </Link>
                   <button
-                    onClick={() => deleteHandler(product._id)}
-                    className="p-2 inline-block text-white hover:text-black bg-red-600 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
+                    onClick={() =>
+                      deactivateHandler(product._id, product?.active)
+                    }
+                    className="p-2 inline-block text-white hover:text-black bg-slate-600 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
                   >
-                    <FaTrash className="maxsm:text-[10px]" />
+                    <TiCancel className="maxsm:text-[10px]" />
+                  </button>
+                  <button
+                    onClick={() =>
+                      deactivateBranchHandler(product._id, product?.active)
+                    }
+                    className="p-2 inline-block text-white hover:text-black bg-slate-300 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
+                  >
+                    <FaShop
+                      className={` ${
+                        product?.availability === true
+                          ? 'text-green-600 maxsm:text-[10px]'
+                          : 'text-slate-400 maxsm:text-[10px]'
+                      }`}
+                    />
                   </button>
                 </td>
               </tr>

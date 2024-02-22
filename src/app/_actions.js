@@ -692,6 +692,49 @@ export async function updateProductQuantity(variationId) {
   }
 }
 
+export async function changeProductStatus(productId) {
+  const session = await getServerSession(options);
+
+  try {
+    await dbConnect();
+    // Find the product that contains the variation with the specified variation ID
+    let product = await Product.findOne({ _id: productId });
+
+    if (product.active === true) {
+      product.active = false; // Deactivate Product
+    } else {
+      product.active = true; // ReActivate Product
+    }
+    // Save the product to persist the changes
+    await product.save();
+    revalidatePath('/admin/productos');
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
+
+export async function changeProductAvailability(productId) {
+  const session = await getServerSession(options);
+
+  try {
+    await dbConnect();
+    // Find the product that contains the variation with the specified variation ID
+    let product = await Product.findOne({ _id: productId });
+
+    if (product.availability === true) {
+      product.availability = false; // Remove from physical branch
+    } else {
+      product.availability = true; // Add to physical branch
+    }
+    // Save the product to persist the changes
+    await product.save();
+    revalidatePath('/admin/productos');
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
 export async function getVariationStock(variationId) {
   const session = await getServerSession(options);
 
