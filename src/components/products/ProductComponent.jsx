@@ -7,19 +7,20 @@ import { IoMdCart } from 'react-icons/io';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import { motion } from 'framer-motion';
 import { calculatePercentage } from '@/backend/helpers';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '@/redux/shoppingSlice';
 import { Bounce, toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 
 const ProductComponent = ({ product, trendingProducts }) => {
   const dispatch = useDispatch();
+  const { productsData } = useSelector((state) => state?.compras);
   const router = useRouter();
   const [images, setImages] = useState(product?.images);
   const slideRef = useRef(null);
   const [sizes, setSizes] = useState([product?.variations[0].size]);
   const [colors, setColors] = useState(product?.colors);
-  const [quantity, setQuantity] = useState(1);
+  const [alreadyCart, setAlreadyCart] = useState(false);
   const [color, setColor] = useState(product?.variations[0].color);
   const [size, setSize] = useState(product?.variations[0].size);
   const [variation, setVariation] = useState({
@@ -36,6 +37,18 @@ const ProductComponent = ({ product, trendingProducts }) => {
       appendClone();
     }
   }, [images]);
+
+  useEffect(() => {
+    // Find matches based on _id property
+    const existingProduct = productsData.find((item1) =>
+      product.variations.some((item2) => item1._id === item2._id)
+    );
+    console.log(existingProduct);
+
+    if (existingProduct?.quantity >= product.stock) {
+      setAlreadyCart(true);
+    }
+  }, [productsData]);
 
   const appendClone = () => {
     const lists = slideRef.current.querySelectorAll('.item');
@@ -165,8 +178,8 @@ const ProductComponent = ({ product, trendingProducts }) => {
   return (
     <div className="container-class maxsm:py-8 h-full">
       <main className="bg-gray-100 flex min-h-screen flex-col items-center justify-between">
-        <div className="w-full mx-auto wrapper-class gap-5 bg-slate-100 text-black bg-opacity-80 rounded-lg">
-          <div className="flex flex-row maxsm:flex-col items-start justify-start gap-x-5 px-20 py-8 maxmd:py-4  maxsm:px-0">
+        <div className="w-full mx-auto wrapper-class gap-3 bg-slate-100 text-black bg-opacity-80 rounded-lg">
+          <div className="flex flex-row maxsm:flex-col items-start justify-start gap-x-5 px-20 py-8 maxmd:py-4  maxmd:px-3">
             <div className="image-class w-1/2 maxsm:w-full flex flex-col items-center justify-center ">
               <motion.div
                 initial={{ x: -50, opacity: 0 }}
@@ -174,7 +187,7 @@ const ProductComponent = ({ product, trendingProducts }) => {
                 transition={{ duration: 0.7 }}
                 className="p-2 w-full relative"
               >
-                <h2 className="hidden maxsm:block maxlg:text-5xl font-semibold font-EB_Garamond mb-5">
+                <h2 className="hidden maxsm:block text-5xl font-semibold font-EB_Garamond mb-5">
                   BRAND
                 </h2>
                 <div className="container body  " ref={slideRef}>
@@ -204,13 +217,13 @@ const ProductComponent = ({ product, trendingProducts }) => {
               </motion.div>
             </div>
             <div className="description-class w-1/2 maxsm:w-full h-full ">
-              <div className="flex flex-col items-start justify-start pt-10 maxsm:pt-2 gap-y-10 w-[90%] maxmd:w-full p-5 pb-10">
+              <div className="flex flex-col items-start justify-start pt-10 maxsm:pt-2 gap-y-5 w-[90%] maxmd:w-full p-5 pb-10">
                 <motion.div
                   initial={{ x: 50, opacity: 0 }}
                   whileInView={{ x: 0, opacity: 1 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <p className="text-5xl maxlg:text-3xl font-semibold font-EB_Garamond">
+                  <p className="text-7xl font-semibold font-EB_Garamond mb-3">
                     {product?.brand}
                   </p>
                   <div className="text-xl font-normal s">
@@ -273,77 +286,89 @@ const ProductComponent = ({ product, trendingProducts }) => {
                     <b>{variation.stock}</b>
                   </span>
                 </span>
-                <motion.div
-                  initial={{ y: 50, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.7 }}
-                  className="text-sm text-lightText flex flex-col"
-                >
-                  <p className="text-slate-500 tracking-widest mb-2">
-                    Colores Disponibles:
-                  </p>
-                  {product?.variations.length > 0 && (
-                    <span className="text-black flex flex-row items-center gap-5">
-                      {colors?.map((c, index) => (
-                        <button
-                          value={c.value}
-                          key={index}
-                          onClick={handleColorSelection}
-                          className={`flex w-full cursor-pointer p-3  text-white ${
-                            color === c.value ? 'bg-black' : 'bg-slate-500'
-                          }`}
-                        >
-                          {c.value}
-                        </button>
-                      ))}
-                    </span>
-                  )}
-                </motion.div>
-                <motion.div
-                  initial={{ y: 50, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.7 }}
-                  className="text-sm text-lightText flex flex-col"
-                >
-                  <p className="text-slate-500 tracking-widest mb-2">
-                    Tallas Disponibles:
-                  </p>
-                  {product?.variations.length > 1 ? (
-                    <span className="flex items-center gap-5 justify-start mt-2 ">
-                      {sizes?.map((s, index) => (
-                        <button
-                          key={index}
-                          onClick={handleSizeSelection}
-                          value={s}
-                          className={`rounded-full border border-slate-400 flex items-center justify-center px-2 py-1 ${
-                            size === s
-                              ? ' bg-black text-white'
-                              : 'border-slate-400'
-                          }`}
-                        >
-                          {s}
-                        </button>
-                      ))}
-                    </span>
-                  ) : (
-                    <div className="grid maxxsm:grid-cols-1 maxmd:grid-cols-2 grid-cols-4 gap-4 mt-2">
-                      <p>Talla:</p>
-                      <p className="text-black">
-                        {product?.variations[0].size}
+                {product?.stock <= 0 || alreadyCart ? (
+                  ''
+                ) : (
+                  <>
+                    {' '}
+                    <motion.div
+                      initial={{ y: 50, opacity: 0 }}
+                      whileInView={{ y: 0, opacity: 1 }}
+                      transition={{ duration: 0.7 }}
+                      className="text-sm text-lightText flex flex-col"
+                    >
+                      <p className="text-slate-500 tracking-widest mb-2">
+                        Colores Disponibles:
                       </p>
-                    </div>
-                  )}
-                </motion.div>
+                      {product?.variations.length > 0 && (
+                        <span className="text-black flex flex-row items-center gap-5">
+                          {colors?.map((c, index) => (
+                            <button
+                              value={c.value}
+                              key={index}
+                              onClick={handleColorSelection}
+                              className={`flex w-full cursor-pointer p-3  text-white ${
+                                color === c.value ? 'bg-black' : 'bg-slate-500'
+                              }`}
+                            >
+                              {c.value}
+                            </button>
+                          ))}
+                        </span>
+                      )}
+                    </motion.div>
+                    <motion.div
+                      initial={{ y: 50, opacity: 0 }}
+                      whileInView={{ y: 0, opacity: 1 }}
+                      transition={{ duration: 0.7 }}
+                      className="text-sm text-lightText flex flex-col"
+                    >
+                      <p className="text-slate-500 tracking-widest mb-2">
+                        Tallas Disponibles:
+                      </p>
+                      {product?.variations.length > 1 ? (
+                        <span className="flex items-center gap-5 justify-start mt-2 ">
+                          {sizes?.map((s, index) => (
+                            <button
+                              key={index}
+                              onClick={handleSizeSelection}
+                              value={s}
+                              className={`rounded-full border border-slate-400 flex items-center justify-center px-2 py-1 ${
+                                size === s
+                                  ? ' bg-black text-white'
+                                  : 'border-slate-400'
+                              }`}
+                            >
+                              {s}
+                            </button>
+                          ))}
+                        </span>
+                      ) : (
+                        <div className="grid maxxsm:grid-cols-1 maxmd:grid-cols-2 grid-cols-4 gap-4 mt-2">
+                          <p>Talla:</p>
+                          <p className="text-black">
+                            {product?.variations[0].size}
+                          </p>
+                        </div>
+                      )}
+                    </motion.div>
+                  </>
+                )}
+
                 <motion.div
                   initial={{ y: 50, opacity: 0 }}
                   whileInView={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.8 }}
-                  className="flex items-center cursor-pointer group"
+                  className="flex items-center group"
                 >
                   {/* add to cart button */}
                   {product?.stock <= 0 ? (
-                    <span className="  border-[1px] border-black font-medium text-xl py-1 px-3 rounded-sm bg-black ">
+                    <span className="  border-[1px] border-black font-medium text-xl py-1 px-3 rounded-sm bg-black text-slate-100">
                       SOLD OUT
+                    </span>
+                  ) : alreadyCart ? (
+                    <span className="  border-[1px] border-black text-sm py-1 px-3 rounded-sm bg-black text-slate-100">
+                      TODAS LAS EXISTENCIAS ESTÁN EN CARRITO
                     </span>
                   ) : (
                     <motion.button
@@ -354,7 +379,7 @@ const ProductComponent = ({ product, trendingProducts }) => {
                         variation?.stock <= 0
                           ? 'bg-slate-300 grayscale-0 text-slate-500 border-slate-300'
                           : 'text-white border-black'
-                      } border  drop-shadow-md flex flex-row items-center justify-between px-6 py-3 text-sm gap-x-4 rounded-sm  bg-black  ease-in-out  duration-300 w-80 uppercase tracking-wider`}
+                      } border  drop-shadow-md flex flex-row items-center justify-between px-6 py-3 text-sm gap-x-4 rounded-sm  bg-black  ease-in-out  duration-300 w-80 uppercase tracking-wider cursor-pointer `}
                       onClick={handleClick}
                     >
                       {variation?.stock <= 0

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import {
   decreaseQuantity,
   deleteProduct,
-  increasePOSQuantity,
+  increaseQuantity,
 } from '@/redux/shoppingSlice';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +12,7 @@ import { AiOutlineClose } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 import CheckOutForm from './CheckOutForm';
 import { useRouter } from 'next/navigation';
+import { getVariationStock } from '@/app/_actions';
 
 const Cart = () => {
   //import CartContext and assign to addItemToCart
@@ -21,6 +22,20 @@ const Cart = () => {
   if (productsData?.length <= 0) {
     router.replace('/tienda');
   }
+
+  const handleIncreaseQuantity = async (cartItem) => {
+    const currentStock = await getVariationStock(cartItem._id);
+    const existingProduct = productsData.find(
+      (item) => item._id === cartItem._id
+    );
+    if (
+      existingProduct &&
+      currentStock.currentStock > existingProduct.quantity
+    ) {
+      dispatch(increaseQuantity(cartItem));
+    }
+    //dispatch(increaseQuantity(cartItem));
+  };
 
   return (
     <>
@@ -37,32 +52,6 @@ const Cart = () => {
           <div className="container max-w-screen-xl mx-auto bg-white p-5">
             <div className="flex flex-col md:flex-row gap-4">
               <main className="md:w-3/4">
-                {/* Titles */}
-                <article className="border border-gray-200  shadow-sm rounded p-3 lg:p-5">
-                  <div className="titulos">
-                    <div className="flex flex-wrap lg:flex-row gap-5 items-center">
-                      <div className="ml-3 w-10">Img.</div>
-                      <div className="ml-3 max-w-60 flex-auto">Titulo</div>
-                      <div className="max-w-12 flex-auto">Color</div>
-                      <div className="max-w-12 flex-auto">Talla</div>
-                      <div className="max-w-16 flex-auto">Cant.</div>
-                      <div>
-                        <div className="leading-5">
-                          <p className="font-semibold not-italic">$</p>
-                        </div>
-                      </div>
-                      <div className="flex-auto">
-                        <div className="float-right">
-                          <span className="text.lg hover:text-red-600 cursor-pointer duration-300">
-                            ...
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <hr className="my-4" />
-                  </div>
-                </article>
                 {/* Items */}
                 <article className="border border-gray-200  shadow-sm rounded mb-5 p-3 lg:p-5">
                   {productsData?.map((cartItem, index) => (
@@ -81,14 +70,7 @@ const Cart = () => {
                               </div>
                             </div>
                             <figcaption className="ml-3">
-                              <p>
-                                <a
-                                  href={`/producto/${cartItem?.product}`}
-                                  className="hover:text-blue-600"
-                                >
-                                  {cartItem?.title}
-                                </a>
-                              </p>
+                              <p>{cartItem?.title}</p>
                               <p className="mt-1 text-gray-400">
                                 {' '}
                                 Marca: {cartItem?.brand}
@@ -110,9 +92,7 @@ const Cart = () => {
                             </span>
                             <span>{cartItem?.quantity}</span>
                             <span
-                              onClick={() =>
-                                dispatch(increasePOSQuantity(cartItem))
-                              }
+                              onClick={() => handleIncreaseQuantity(cartItem)}
                               className="cursor-pointer"
                             >
                               <FiChevronRight />

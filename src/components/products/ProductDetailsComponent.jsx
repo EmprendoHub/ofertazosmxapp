@@ -3,7 +3,7 @@ import React, { useRef } from 'react';
 import { IoMdCart } from 'react-icons/io';
 import { Bounce, toast } from 'react-toastify';
 import { motion } from 'framer-motion';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '@/redux/shoppingSlice';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -16,6 +16,36 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
   const router = useRouter();
   const imageRef = useRef(null);
   const dispatch = useDispatch();
+  const { productsData } = useSelector((state) => state?.compras);
+
+  const handleAddToCart = (product) => {
+    const existingProduct = productsData.find(
+      (item) => item._id === product._id
+    );
+    if (existingProduct.stock > 0) {
+      dispatch(addToCart(product));
+      toast.success(
+        `${product?.title.substring(0, 15)}... se agrego al carrito`,
+        {
+          position: toast.POSITION.TOP_CENTER,
+          className: 'foo-bar',
+          theme: 'dark',
+          transition: Bounce,
+        }
+      );
+      router.push('/carrito');
+    } else {
+      toast.error(
+        `${product?.title.substring(0, 15)}... no tiene mas existencias`,
+        {
+          position: toast.POSITION.TOP_CENTER,
+          className: 'foo-bar',
+          theme: 'dark',
+          transition: Bounce,
+        }
+      );
+    }
+  };
   return (
     <div className="container-class maxsm:py-8">
       <main className="bg-gray-100 flex min-h-screen flex-col items-center justify-between">
@@ -49,7 +79,7 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
                   whileInView={{ x: 0, opacity: 1 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <p className="text-5xl maxlg:text-3xl font-semibold font-EB_Garamond">
+                  <p className="text-7xl font-semibold font-EB_Garamond">
                     {product?.brand}
                   </p>
                   <div className="text-xl font-normal s">
@@ -153,7 +183,7 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
                   initial={{ y: 50, opacity: 0 }}
                   whileInView={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.8 }}
-                  className="flex items-center cursor-pointer group"
+                  className="flex items-center group"
                 >
                   {/* add to cart button */}
                   {product?.stock <= 0 ? (
@@ -164,23 +194,8 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
                     <motion.button
                       whileHover={{ scale: 1.07 }}
                       whileTap={{ scale: 0.9 }}
-                      className="bg-gold-gradient border border-black drop-shadow-md flex flex-row items-center justify-between px-6 py-3 text-sm gap-x-4 tracking-wide rounded-sm  bg-black text-white ease-in-out  duration-300 w-80 uppercase tracking-wider"
-                      onClick={() =>
-                        dispatch(addToCart(product)) &&
-                        toast.success(
-                          `${product?.title.substring(
-                            0,
-                            15
-                          )}... se agrego al carrito`,
-                          {
-                            position: toast.POSITION.TOP_CENTER,
-                            className: 'foo-bar',
-                            theme: 'dark',
-                            transition: Bounce,
-                          }
-                        ) &&
-                        router.push('/carrito')
-                      }
+                      className="bg-gold-gradient border border-black drop-shadow-md flex flex-row items-center justify-between px-6 py-3 text-sm gap-x-4 tracking-wide rounded-sm  bg-black text-white ease-in-out  duration-300 w-80 uppercase  cursor-pointer "
+                      onClick={() => handleAddToCart(product)}
                     >
                       Agregar a carrito
                       <span className="text-xl text-slate-400 w-12 flex items-center justify-center group-hover:bg-black hover:text-white duration-200  rounded-full py-2">

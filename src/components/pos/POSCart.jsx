@@ -23,9 +23,9 @@ const POSCart = () => {
   // }
   console.log(productsPOS, 'productsPOS');
   return (
-    <>
+    <div className="w-full">
       <section className="mt-5  bg-gray-100">
-        <div className="max-w-screen-xl mx-auto px-4">
+        <div className=" mx-auto px-4">
           <h2 className="text-3xl font-semibold mb-2 font-EB_Garamond">
             {productsPOS?.length || 0} Artículos(s) en el Carrito
           </h2>
@@ -34,9 +34,9 @@ const POSCart = () => {
 
       {productsPOS?.length > 0 && (
         <section className="pb-10 bg-gray-100">
-          <div className="container max-w-screen-xl mx-auto bg-white p-5">
+          <div className="container  mx-auto bg-white p-5">
             <div className="flex flex-col md:flex-row gap-4">
-              <main className="md:w-3/4">
+              <main className="w-full">
                 <article className="border border-gray-200  shadow-sm rounded p-3 lg:p-5"></article>
                 {/* Items */}
                 <article className="border border-gray-200  shadow-sm rounded mb-5 p-3 lg:p-5">
@@ -44,7 +44,7 @@ const POSCart = () => {
                     productsPOS?.map((cartItem, index) => (
                       <div key={index}>
                         <div className="flex flex-wrap lg:flex-row gap-5  mb-4 items-center">
-                          <div className="w-full lg:w-2/5 xl:w-2/4">
+                          <div className="w-full">
                             <figure className="flex gap-3 leading-5">
                               <div>
                                 <div className="block w-16 h-16 rounded border border-gray-200 overflow-hidden">
@@ -120,16 +120,14 @@ const POSCart = () => {
                     ))}
                 </article>
               </main>
-              <aside className="md:w-1/4">
-                <article className="border border-gray-200 bg-white shadow-sm rounded mb-5 p-1">
-                  <POSCheckOutForm />
-                </article>
+              <aside className="max-w-full">
+                <POSCheckOutForm />
               </aside>
             </div>
           </div>
         </section>
       )}
-    </>
+    </div>
   );
 };
 

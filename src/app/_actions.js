@@ -131,6 +131,8 @@ export async function payPOSDrawer(data) {
             },
           };
         } else {
+          variation.stock -= 1;
+          product.stock -= 1;
           cartItems.push({
             product: product._id,
             variation: variationId,
@@ -141,6 +143,7 @@ export async function payPOSDrawer(data) {
             quantity: item.quantity,
             image: item.image,
           });
+          product.save();
         }
       })
     );
@@ -151,10 +154,11 @@ export async function payPOSDrawer(data) {
       branch: branchInfo,
       paymentInfo,
       orderItems: cartItems,
-      orderStatus: 'Entregado',
+      orderStatus: 'Sucursal',
       layaway: false,
       affiliateId: '',
     };
+
     let newOrder = await new Order(orderData);
     await newOrder.save();
     newOrder = JSON.stringify(newOrder);
@@ -541,7 +545,7 @@ export async function getAllOrder(searchQuery) {
 
 export async function getOneProduct(slug, id) {
   const session = await getServerSession(options);
-
+  console.log(id);
   try {
     await dbConnect();
     let product;
@@ -550,7 +554,7 @@ export async function getOneProduct(slug, id) {
     } else {
       product = await Product.findOne({ slug: slug });
     }
-
+    console.log(product);
     let trendingProducts = await Product.find({
       category: product.category,
       _id: { $ne: product._id },
@@ -560,6 +564,57 @@ export async function getOneProduct(slug, id) {
     trendingProducts = JSON.stringify(trendingProducts);
     return { product: product, trendingProducts: trendingProducts };
     // return { product };
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
+
+export async function updateProductQuantity(variationId) {
+  const session = await getServerSession(options);
+
+  try {
+    await dbConnect();
+    // Find the product that contains the variation with the specified variation ID
+    let product = await Product.findOne({ 'variations._id': variationId });
+
+    if (product) {
+      // Find the variation within the variations array
+      let variation = product.variations.find(
+        (variation) => variation._id.toString() === variationId
+      );
+      // Update the stock of the variation
+      variation.stock -= 1; // Example stock update
+      // Save the product to persist the changes
+      await product.save();
+    } else {
+      console.log('Product not found');
+      throw Error('Product not found');
+    }
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
+
+export async function getVariationStock(variationId) {
+  const session = await getServerSession(options);
+
+  try {
+    await dbConnect();
+    // Find the product that contains the variation with the specified variation ID
+    let product = await Product.findOne({ 'variations._id': variationId });
+
+    if (product) {
+      // Find the variation within the variations array
+      let variation = product.variations.find(
+        (variation) => variation._id.toString() === variationId
+      );
+      return { currentStock: variation.stock };
+    } else {
+      console.log('Product not found');
+      throw Error('Product not found');
+    }
   } catch (error) {
     console.log(error);
     throw Error(error);

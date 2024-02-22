@@ -5,7 +5,6 @@ import qrcode from 'qrcode';
 
 const QRGenerator = ({ products }) => {
   const [imageQR, setImageQR] = useState([]);
-  console.log(imageQR);
   useEffect(() => {
     products.forEach(async (product) => {
       product.variations.forEach(async (variation) => {
@@ -19,6 +18,7 @@ const QRGenerator = ({ products }) => {
             title: variation.title,
             size: variation.size,
             color: variation.color,
+            stock: variation.stock,
           };
           return [...prevImageQrs, newQr];
         });
@@ -43,7 +43,7 @@ const QRGenerator = ({ products }) => {
           </div>
           <hr className="border border-slate-300 my-3" />
           <div className="card-body w-full flex flex-wrap">
-            {imageQR.length > 1 &&
+            {imageQR.length > 0 &&
               imageQR.map((item, index) => (
                 <div key={index}>
                   <Image
@@ -52,6 +52,7 @@ const QRGenerator = ({ products }) => {
                     width={250}
                     height={250}
                   />
+                  <p>{item.stock}</p>
                   <p>{item.title}</p>
                   <p>{item.id}</p>
                   <p>

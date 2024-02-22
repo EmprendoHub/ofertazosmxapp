@@ -15,7 +15,7 @@ const POSPaymentForm = () => {
   const dispatch = useDispatch();
   const { data: session } = useSession();
   const router = useRouter();
-  const [amountReceived, setAmountReceived] = useState(0);
+
   const isLoggedIn = Boolean(session?.user);
   const { productsPOS } = useSelector((state) => state.compras);
   const [validationError, setValidationError] = useState(null);
@@ -27,11 +27,12 @@ const POSPaymentForm = () => {
   const layawayAmount = Number(amountTotal) * 0.3;
 
   const totalAmountCalc = Number(amountTotal);
+  const [amountReceived, setAmountReceived] = useState(totalAmountCalc);
 
   //=============================== Drawer Payment starts here ============================
 
   const handleCheckout = async (payType) => {
-    if (totalAmountCalc > amountReceived) {
+    if (!amountReceived || totalAmountCalc > amountReceived) {
       toast.error('La cantidad que recibe es menor al total');
       return;
     }
@@ -41,7 +42,6 @@ const POSPaymentForm = () => {
     formData.append('amountReceived', amountReceived);
     formData.append('payType', payType);
     const result = await payPOSDrawer(formData);
-    console.log(result, result);
     if (result?.error) {
       console.log(result?.error);
       setValidationError(result.error);
@@ -50,7 +50,8 @@ const POSPaymentForm = () => {
       setValidationError(null);
       dispatch(savePOSOrder({ order: order }));
       dispatch(resetPOSCart());
-      //router.push('/admin/pedidos');
+      setAmountReceived(0);
+      router.push('/admin/pedidos');
     }
   };
 
@@ -159,14 +160,6 @@ const POSPaymentForm = () => {
             </p>
           </div>
         )}
-        {/* <div className="trustfactor-class mx-auto">
-          <Image
-            src={'/images/stripe-badge-transparente.webp'}
-            width={500}
-            height={200}
-            alt="Stripe Payment"
-          />
-        </div> */}
       </div>
     </section>
   );

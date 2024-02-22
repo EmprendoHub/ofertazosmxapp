@@ -22,8 +22,8 @@ const POSCheckOutForm = () => {
   const totalAmountCalc = Number(amountTotal) + Number(shipAmount);
 
   return (
-    <section className="p-2 maxsm:py-7 bg-gray-100">
-      <div className=" max-w-screen-xl mx-auto bg-white flex flex-col justify-between p-2">
+    <section className="max-w-full p-2 maxsm:py-7 bg-gray-100">
+      <div className=" mx-auto bg-white flex flex-col justify-between p-2">
         <h2>Totales</h2>
         <ul className="mb-5">
           <li className="flex justify-between text-gray-600  mb-1">
@@ -90,7 +90,7 @@ const POSCheckOutForm = () => {
             {!session && (
               <>
                 <Link href={'/iniciar'}>
-                  <div className=" w-1/4 maxmd:w-2/3 sm:w-full bg-black text-slate-100 mt-4 py-3 px-6 hover:bg-green-600 duration-500 cursor-pointer">
+                  <div className=" w-full bg-black text-slate-100 mt-4 py-3 px-6 hover:bg-green-600 duration-500 cursor-pointer">
                     <div className="flex flex-row justify-center items-center gap-x-3 ">
                       <AiOutlineUser className="text-ld" />
                       <p className="text-sm font-base">Iniciar/Registro</p>

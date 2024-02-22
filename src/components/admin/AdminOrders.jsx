@@ -61,10 +61,12 @@ const AdminOrders = ({ orders, filteredOrdersCount }) => {
                     ? 'text-blue-700'
                     : order.orderStatus === 'Entregado'
                     ? 'text-green-700'
+                    : order.orderStatus === 'Sucursal'
+                    ? 'text-purple-950'
                     : 'text-slate-600'
                 }`}
               >
-                {order.orderStatus.substring(0, 6)}...
+                {order.orderStatus}
               </td>
               <td className="px-6 py-2 maxsm:hidden">
                 {order?.createdAt &&

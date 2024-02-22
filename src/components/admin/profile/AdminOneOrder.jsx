@@ -109,56 +109,66 @@ const AdminOneOrder = ({ order, deliveryAddress, id }) => {
             </h2>
           )}
         </div>
-        <table className="w-full text-sm text-left flex flex-col maxsm:flex-row">
-          <thead className="text-l text-gray-700 uppercase">
-            <tr className="flex flex-row maxsm:flex-col">
-              <th scope="col" className="w-1/6 px-6 py-2">
-                Domicilio
-              </th>
-              <th scope="col" className="w-1/6 maxsm:w-full px-6 py-2">
-                Ciudad
-              </th>
-              <th scope="col" className="w-1/6 maxsm:w-full px-6 py-2">
-                Entidad
-              </th>
-              <th scope="col" className="w-1/6 maxsm:w-full px-6 py-2">
-                Código Postal
-              </th>
-              <th scope="col" className="w-1/6 maxsm:w-full px-6 py-2">
-                Tel
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="bg-white flex flex-row maxsm:flex-col">
-              <td className="w-1/6 maxsm:w-full px-6 py-2">
-                {deliveryAddress?.street}
-              </td>
-              <td className="w-1/6 maxsm:w-full px-6 py-2">
-                {deliveryAddress?.city}
-              </td>
-              <td className="w-1/6 maxsm:w-full px-6 py-2">
-                {deliveryAddress?.province}
-              </td>
-              <td className="w-1/6 maxsm:w-full px-6 py-2">
-                {deliveryAddress?.zip_code}
-              </td>
-              <td className="w-1/6 maxsm:w-full px-6 py-2">
-                {deliveryAddress?.phone}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        {order?.orderStatus !== 'Sucursal' ? (
+          <table className="w-full text-sm text-left flex flex-col maxsm:flex-row">
+            <thead className="text-l text-gray-700 uppercase">
+              <tr className="flex flex-row maxsm:flex-col">
+                <th scope="col" className="w-1/6 px-6 py-2">
+                  Domicilio
+                </th>
+                <th scope="col" className="w-1/6 maxsm:w-full px-6 py-2">
+                  Ciudad
+                </th>
+                <th scope="col" className="w-1/6 maxsm:w-full px-6 py-2">
+                  Entidad
+                </th>
+                <th scope="col" className="w-1/6 maxsm:w-full px-6 py-2">
+                  Código Postal
+                </th>
+                <th scope="col" className="w-1/6 maxsm:w-full px-6 py-2">
+                  Tel
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="bg-white flex flex-row maxsm:flex-col">
+                <td className="w-1/6 maxsm:w-full px-6 py-2">
+                  {deliveryAddress?.street}
+                </td>
+                <td className="w-1/6 maxsm:w-full px-6 py-2">
+                  {deliveryAddress?.city}
+                </td>
+                <td className="w-1/6 maxsm:w-full px-6 py-2">
+                  {deliveryAddress?.province}
+                </td>
+                <td className="w-1/6 maxsm:w-full px-6 py-2">
+                  {deliveryAddress?.zip_code}
+                </td>
+                <td className="w-1/6 maxsm:w-full px-6 py-2">
+                  {deliveryAddress?.phone}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        ) : (
+          <div>{order?.branch}</div>
+        )}
       </div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg p-5">
         <table className="w-full text-sm text-left">
           <thead className="text-l text-gray-700 uppercase">
             <tr>
-              <th scope="col" className="px-2 py-3 maxsm:hidden">
-                SKU
-              </th>
               <th scope="col" className="px-2 maxsm:px-0 py-3">
                 Nombre
+              </th>
+              <th scope="col" className="px-2 maxsm:px-0 py-3">
+                Img
+              </th>
+              <th scope="col" className="px-2 maxsm:px-0 py-3">
+                Tamaño
+              </th>
+              <th scope="col" className="px-2 maxsm:px-0 py-3">
+                Color
               </th>
               <th scope="col" className="px-2 maxsm:px-0 py-3">
                 Cant.
@@ -166,23 +176,13 @@ const AdminOneOrder = ({ order, deliveryAddress, id }) => {
               <th scope="col" className="px-2 maxsm:px-0 py-3">
                 Precio
               </th>
-              <th scope="col" className="px-2 maxsm:px-0 py-3">
-                Img
-              </th>
             </tr>
           </thead>
           <tbody>
             {order?.orderItems?.map((item, index) => (
               <tr className="bg-white" key={index}>
-                <td className="px-2 py-2 maxsm:hidden">
-                  {item.product.substring(0, 8) || item._id.substring(0, 8)}...
-                </td>
                 <td className="px-2 maxsm:px-0 py-2">
                   {item.name.substring(0, 13)}...
-                </td>
-                <td className="px-2 maxsm:px-0 py-2">{item.quantity}</td>
-                <td className="px-2 maxsm:px-0 py-2">
-                  <FormattedPrice amount={item.price || 0} />
                 </td>
                 <td className="px-2 maxsm:px-0 py-2">
                   <Image
@@ -191,6 +191,12 @@ const AdminOneOrder = ({ order, deliveryAddress, id }) => {
                     width={50}
                     height={50}
                   />
+                </td>
+                <td className="px-2 maxsm:px-0 py-2">{item.size}</td>
+                <td className="px-2 maxsm:px-0 py-2">{item.color}</td>
+                <td className="px-2 maxsm:px-0 py-2">{item.quantity}</td>
+                <td className="px-2 maxsm:px-0 py-2">
+                  <FormattedPrice amount={item.price || 0} />
                 </td>
               </tr>
             ))}
@@ -279,6 +285,11 @@ const AdminOneOrder = ({ order, deliveryAddress, id }) => {
           <div className="w-2/3 maxmd:w-full">
             <hr />{' '}
           </div>
+        ) : order?.orderStatus === 'Sucursal' ? (
+          <div className="w-2/3 maxmd:w-full">
+            <hr />
+            {'Compra en sucursal'}
+          </div>
         ) : (
           <div className="w-2/3 maxmd:w-full">
             <hr />
@@ -296,6 +307,8 @@ const AdminOneOrder = ({ order, deliveryAddress, id }) => {
                       ? 'text-amber-700'
                       : order?.orderStatus === 'Entregado'
                       ? 'text-green-700'
+                      : order.orderStatus === 'Sucursal'
+                      ? 'text-purple-950'
                       : ''
                   } text-3xl mb-8 ml-4 font-bold uppercase`}
                 >
