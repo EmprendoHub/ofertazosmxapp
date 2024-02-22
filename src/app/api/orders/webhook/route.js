@@ -45,6 +45,8 @@ export async function POST(req, res) {
       currentOrder?.orderItems.forEach(async (item) => {
         const productId = item.product.toString();
         const variationId = item.variation;
+        console.log('variationId', variationId);
+        console.log('productId', productId);
         // Find the product by its _id and update its stock
         const product = await Product.findOne({ _id: productId });
         // Find the product variation
@@ -59,7 +61,6 @@ export async function POST(req, res) {
 
           // Save the updated product
           await product.save();
-          console.log(product);
         } else {
           console.log('Product not found');
         }
