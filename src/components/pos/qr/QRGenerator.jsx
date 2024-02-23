@@ -51,31 +51,32 @@ const QRGenerator = ({ products }) => {
           Generador de códigos QR
         </h2>
       </div>
-      <button className="printButton  print:hidden" onClick={print}>
+      <button
+        className="bg-black text-white p-4 print:hidden mt-4"
+        onClick={print}
+      >
         Imprimir QR&apos;s
       </button>
-      <div className=" text-center mt-8 print:mt-0  w-full">
+      <div className=" text-center mt-8 print:mt-0 w-full">
         <div className="card w-full">
-          <hr className="border border-slate-300 my-3" />
-          <div className="card-body w-full relative flex flex-wrap text-sm">
+          <hr className="border border-slate-300 my-3 print:hidden" />
+          <div className="card-body w-full relative flex flex-wrap text-sm ">
             {imageQR.length > 0 &&
               imageQR.map((item, index) => (
                 <div key={index}>
                   <Image
                     src={item.qr}
-                    alt="qr code img here"
+                    alt="qr code"
                     width={150}
                     height={150}
-                    className="mx-auto text-center object-cover w-full h-auto"
+                    className="mx-auto text-center h-auto p-0"
                   />
-                  <p className="break-words w-[80%] mx-auto text-sm">
-                    {item.amount}
-                  </p>
+
                   <p className="break-words w-[80%] mx-auto text-sm">
                     {item.title.substring(0, 13)}...
                   </p>
-                  <p className="break-words w-[80%] mx-auto text-sm">
-                    {item.size} / {item.color}
+                  <p className="break-words w-[80%] mx-auto text-sm ">
+                    {item.amount} - {item.size} / {item.color}
                   </p>
                 </div>
               ))}

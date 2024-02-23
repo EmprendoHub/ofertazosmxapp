@@ -1,7 +1,7 @@
 'use client';
 import { increaseLoginAttempts } from '@/redux/shoppingSlice';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { CiWarning } from 'react-icons/ci';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast, Bounce } from 'react-toastify';
@@ -10,6 +10,8 @@ const ErrorComponent = ({
   ifEmailNotVerified,
   ifLoginError,
   ifExceededAttempts,
+  ifBotLoginAttempt,
+  ifNoCookieLoginError,
 }) => {
   const { loginAttempts } = useSelector((state) => state?.compras);
   const router = useRouter();
@@ -56,6 +58,20 @@ const ErrorComponent = ({
                 Inicio de Session
               </button>
             </div>
+          </div>
+        )}
+        {ifBotLoginAttempt && (
+          <div>
+            <div>Hubo un error al iniciar sesión</div>
+            <p>Eres un bot malicioso y hemos bloqueado tu ip.</p>
+            <div className="mt-3"></div>
+          </div>
+        )}
+        {ifNoCookieLoginError && (
+          <div>
+            <div>Hubo un error al iniciar sesión</div>
+            <p>Estas intentando un llamado desde un sitio no autorizado.</p>
+            <div className="mt-3"></div>
           </div>
         )}
         {ifExceededAttempts && (

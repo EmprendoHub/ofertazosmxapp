@@ -19,6 +19,7 @@ const RegisterFormComponent = ({ cookie }) => {
     }
   }, [session, router]);
 
+  const [honeypot, setHoneypot] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -72,6 +73,7 @@ const RegisterFormComponent = ({ cookie }) => {
             email,
             password,
             recaptcha: gReCaptchaToken,
+            honeypot,
           }),
         });
 
@@ -131,6 +133,13 @@ const RegisterFormComponent = ({ cookie }) => {
             type="email"
             placeholder="Correo Electrónico..."
             onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            hidden
+            className="text-center py-2"
+            type="text"
+            placeholder="Honeypot"
+            onChange={(e) => setHoneypot(e.target.value)}
           />
           <input
             className="text-center py-2"

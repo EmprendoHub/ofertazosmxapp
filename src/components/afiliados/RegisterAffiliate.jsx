@@ -8,8 +8,10 @@ import WhiteLogoComponent from '../logos/WhiteLogoComponent';
 import Swal from 'sweetalert2';
 import { generateRandomPassword } from '@/backend/helpers';
 import AuthContext from '@/context/AuthContext';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
-const RegisterAffiliate = () => {
+const RegisterAffiliate = ({ cookie }) => {
+  const { executeRecaptcha } = useGoogleReCaptcha();
   const router = useRouter();
   const session = useSession();
   const { registerAffiliateUser, clearErrors, error } = useContext(AuthContext);
@@ -51,6 +53,7 @@ const RegisterAffiliate = () => {
   );
   const [password, setPassword] = useState('');
   const [phone, setPhone] = useState('');
+  const [honeypot, setHoneypot] = useState('');
 
   const handlePhoneChange = (e) => {
     const inputPhone = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
@@ -130,25 +133,57 @@ const RegisterAffiliate = () => {
       return false;
     }
 
-    try {
-      const newAffiliate = {
-        name,
-        email,
-        phone,
-        password,
-      };
-      const res = await registerAffiliateUser(newAffiliate);
-      if (res.ok) {
-        toast.success('Successfully registered the user');
-        setTimeout(() => {
-          const callback = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/registro/affiliate/stripe`;
-          router.replace(`/iniciar?callbackUrl=${callback}`);
-        }, 200);
-        return;
-      }
-    } catch (error) {
-      console.log(error);
+    if (!executeRecaptcha) {
+      console.log('Execute recaptcha not available yet');
+      setNotification(
+        'Execute recaptcha not available yet likely meaning key not recaptcha key not set'
+      );
+      return;
     }
+    executeRecaptcha('enquiryFormSubmit').then(async (gReCaptchaToken) => {
+      try {
+        const res = await fetch(`/api/affiliate/register`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Cookie: cookie,
+          },
+          method: 'POST',
+          body: JSON.stringify({
+            name,
+            email,
+            phone,
+            password,
+            recaptcha: gReCaptchaToken,
+            honeypot,
+            cookie,
+          }),
+        });
+        console.log(res?.data?.success);
+        if (res?.data?.success === true) {
+          toast.success(`Success with score: ${res?.data?.score}`);
+        } else {
+          toast.warning(`Failure with score: ${res?.data?.score}`);
+        }
+        if (res.status === 400) {
+          toast.warning('This email is already in use');
+          //setError('This email is already in use');
+        }
+        if (res.status === 401) {
+          toast.warning('Bots no se permiten');
+          //setError('This email is already in use');
+        }
+        if (res.ok) {
+          toast.success('Se registro el afiliado con éxito');
+          setTimeout(() => {
+            const callback = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/registro/affiliate/stripe`;
+            router.replace(`/iniciar?callbackUrl=${callback}`);
+          }, 200);
+          return;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    });
   };
 
   return (
@@ -159,16 +194,7 @@ const RegisterAffiliate = () => {
         <h2 className="my-4 text-black font-bold font-EB_Garamond text-2xl">
           Registro de Afiliado
         </h2>
-        {/* <button
-          className="w-full hover:text-black hover:bg-slate-300 duration-500 ease-in-out text-white bg-black mb-4 flex flex-row gap-4
-            items-center py-4 justify-center"
-          onClick={() => {
-            signIn('google');
-          }}
-        >
-          <IoLogoGoogle />
-          Continua con Google
-        </button> */}
+
         <form
           onSubmit={handleSubmit}
           className="flex flex-col justify-center items-center text-center gap-y-4 text-black"
@@ -184,6 +210,12 @@ const RegisterAffiliate = () => {
             type="email"
             placeholder="Correo Electrónico..."
             onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            className="text-center py-2"
+            type="text"
+            placeholder="Honeypot"
+            onChange={(e) => setHoneypot(e.target.value)}
           />
           <p className="text-red-600">{error}</p>
           <div className="mb-4 md:col-span-1">

@@ -7,8 +7,10 @@ import { toast } from 'react-toastify';
 import { IoLogoGoogle } from 'react-icons/io';
 import WhiteLogoComponent from '../logos/WhiteLogoComponent';
 import { useSelector } from 'react-redux';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
-const LoginComponent = () => {
+const LoginComponent = ({ cookie }) => {
+  const { executeRecaptcha } = useGoogleReCaptcha();
   const { loginAttempts } = useSelector((state) => state?.compras);
   const session = useSession();
   const [email, setEmail] = useState('');
@@ -16,6 +18,7 @@ const LoginComponent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callback = searchParams.get('callbackUrl');
+  const [honeypot, setHoneypot] = useState('');
 
   useEffect(() => {
     if (session?.status === 'authenticated') {
@@ -35,24 +38,45 @@ const LoginComponent = () => {
       toast.error('Password must be at least 8 characters long');
       return;
     }
-    try {
-      const res = await signIn('credentials', {
-        email,
-        password,
-      });
-
-      console.log(res);
-
-      if (res.ok) {
-        setTimeout(() => {
-          router.push('/tienda');
-        }, 200);
-      } else {
-        toast.error('Error occured while loggin');
-      }
-    } catch (error) {
-      console.log(error);
+    if (!executeRecaptcha) {
+      console.log('Execute recaptcha not available yet');
+      setNotification(
+        'Execute recaptcha not available yet likely meaning key not recaptcha key not set'
+      );
+      return;
     }
+    executeRecaptcha('enquiryFormSubmit').then(async (gReCaptchaToken) => {
+      try {
+        const res = await signIn('credentials', {
+          email,
+          password,
+          recaptcha: gReCaptchaToken,
+          honeypot,
+          cookie,
+        });
+
+        if (res?.data?.success === true) {
+          setNotification(`Success with score: ${res?.data?.score}`);
+        } else {
+          setNotification(`Failure with score: ${res?.data?.score}`);
+        }
+
+        if (res.status === 400) {
+          toast.warning('This email is already in use');
+          setError('This email is already in use');
+        }
+        if (res.ok) {
+          toast.success('Iniciar ');
+          setTimeout(() => {
+            router.push('/tienda');
+          }, 200);
+          return;
+        }
+      } catch (error) {
+        toast.error('Error occured while loggin');
+        console.log(error);
+      }
+    });
   };
 
   return (
@@ -87,6 +111,13 @@ const LoginComponent = () => {
               type="email"
               placeholder="Correo Electrónico..."
               onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+              hidden
+              className="text-center py-2"
+              type="text"
+              placeholder="Honeypot"
+              onChange={(e) => setHoneypot(e.target.value)}
             />
             <input
               className="text-center py-2"

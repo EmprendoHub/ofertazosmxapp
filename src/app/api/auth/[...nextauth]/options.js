@@ -5,6 +5,8 @@ import bcrypt from 'bcrypt';
 import { signJwtToken } from '@/lib/jwt';
 import dbConnect from '@/lib/db';
 import crypto from 'crypto';
+import axios from 'axios';
+import { NextResponse } from 'next/server';
 
 export const options = {
   providers: [
@@ -27,40 +29,71 @@ export const options = {
         },
       },
 
-      async authorize(credentials, req) {
-        const { email, password } = credentials;
-
-        await dbConnect();
-        const user = await User?.findOne({ email }).select('+password');
-
-        if (!user) {
-          console.log('no user error');
-          throw new Error('hubo un error al iniciar session');
+      async authorize(credentials, request) {
+        const { email, password, recaptcha, honeypot, cookie } = credentials;
+        if (honeypot) {
+          throw new Error('no bots thank you');
         }
-
-        const comparePass = await bcrypt.compare(password, user.password);
-
-        if (!comparePass) {
-          if (user) {
-            user.loginAttempts += 1;
-            await user.save();
-            if (user.loginAttempts >= 3) {
-              throw new Error('excediste el limite de intentos');
+        if (!cookie) {
+          // Not Signed in
+          throw new Error('You are not authorized no no no');
+        }
+        const secretKey = process?.env?.RECAPTCHA_SECRET_KEY;
+        const formData = `secret=${secretKey}&response=${recaptcha}`;
+        let response;
+        try {
+          response = await axios.post(
+            'https://www.google.com/recaptcha/api/siteverify',
+            formData,
+            {
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
             }
+          );
+        } catch (error) {
+          console.log('recaptcha error:', error);
+        }
+        if (response && response.data?.success && response.data?.score > 0.5) {
+          await dbConnect();
+          const user = await User?.findOne({ email }).select('+password');
+
+          if (!user) {
+            console.log('no user error');
+            throw new Error('hubo un error al iniciar session');
           }
-          throw new Error('hubo un error al iniciar session');
+
+          const comparePass = await bcrypt.compare(password, user.password);
+
+          if (!comparePass) {
+            if (user) {
+              user.loginAttempts += 1;
+              await user.save();
+              if (user.loginAttempts >= 3) {
+                throw new Error('excediste el limite de intentos');
+              }
+            }
+            throw new Error('hubo un error al iniciar session');
+          } else {
+            if (user.active === false) {
+              throw new Error('verify your email');
+            }
+            user.loginAttempts = 0;
+            await user.save();
+            const { password, ...currentUser } = user._doc;
+            const accessToken = signJwtToken(currentUser, { expiresIn: '6d' });
+            return {
+              ...currentUser,
+              accessToken,
+            };
+          }
         } else {
-          if (user.active === false) {
-            throw new Error('verify your email');
-          }
-          user.loginAttempts = 0;
-          await user.save();
-          const { password, ...currentUser } = user._doc;
-          const accessToken = signJwtToken(currentUser, { expiresIn: '6d' });
-          return {
-            ...currentUser,
-            accessToken,
-          };
+          console.log('fail: res.data?.score:', response.data?.score);
+          return NextResponse.json({
+            success: false,
+            email,
+            score: response.data?.score,
+          });
         }
       },
     }),

@@ -17,7 +17,17 @@ export async function POST(request) {
   }
 
   try {
-    const { username, email, password: pass, recaptcha } = await request.json();
+    const {
+      username,
+      email,
+      password: pass,
+      recaptcha,
+      honeypot,
+    } = await request.json();
+    if (honeypot) {
+      console.log('no bots thank you!');
+      throw new Error('hubo un error al iniciar session');
+    }
     const secretKey = process?.env?.RECAPTCHA_SECRET_KEY;
     const formData = `secret=${secretKey}&response=${recaptcha}`;
     let response;
