@@ -6,18 +6,22 @@ import UnderConstruction from '@/components/hero/UnderConstruction';
 import EditorsPickProducts from '@/components/products/EditorsPickProducts';
 import ExploreCategoryComponent from '@/components/products/ExploreCategoryComponent';
 import TrendingNewProducts from '@/components/products/TrendingNewProducts';
+import { getHomeProductsData } from './_actions';
 
-export default function Home() {
+export default async function Home() {
+  const data = await getHomeProductsData();
+  const trendProducts = JSON.parse(data.trendingProducts);
+  const editorsProducts = JSON.parse(data.editorsProducts);
   return (
     <main className="flex min-h-screen flex-col items-center justify-center ">
-      <UnderConstruction />
-      {/* <MainHeroComponent />
+      {/* <UnderConstruction /> */}
+      <MainHeroComponent />
       <BonusHero />
-      <TrendingNewProducts />
+      {/* <TrendingNewProducts trendProducts={trendProducts} /> */}
       <HorizontalTextHero />
       <ExploreCategoryComponent />
       <MultiDivHero />
-      <EditorsPickProducts /> */}
+      <EditorsPickProducts editorsProducts={editorsProducts} />
     </main>
   );
 }

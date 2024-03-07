@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { FaPencilAlt } from 'react-icons/fa';
+import { FaPencilAlt, FaPrint } from 'react-icons/fa';
 import { formatDate, formatTime } from '@/backend/helpers';
 import { getTotalFromItems } from '@/backend/helpers';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
@@ -80,7 +80,7 @@ const POSOrders = ({ orders, filteredOrdersCount }) => {
                     href={`/puntodeventa/pedido/${order._id}`}
                     className="px-2 py-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
                   >
-                    <FaPencilAlt className="" />
+                    <FaPrint className="" />
                   </Link>
                 </div>
               </td>

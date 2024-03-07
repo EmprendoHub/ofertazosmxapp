@@ -1,9 +1,8 @@
-import React from 'react';
+import { getAllPOSProduct } from '@/app/_actions';
 import ServerPagination from '@/components/pagination/ServerPagination';
-import AdminProducts from '@/components/admin/AdminProducts';
-import { getAllProduct } from '@/app/_actions';
+import AllPOSProductsComp from '@/components/pos/AllPOSProductsComp';
 
-const AdminProductsPage = async ({ searchParams }) => {
+const POSProductsPage = async ({ searchParams }) => {
   const urlParams = {
     keyword: searchParams.keyword,
     page: searchParams.page,
@@ -12,9 +11,9 @@ const AdminProductsPage = async ({ searchParams }) => {
     Object.entries(urlParams).filter(([key, value]) => value !== undefined)
   );
   const searchQuery = new URLSearchParams(filteredUrlParams).toString();
-  const data = await getAllProduct(searchQuery);
+  const data = await getAllPOSProduct(searchQuery);
   const products = JSON.parse(data.products);
-
+  const filteredProductsCount = data.filteredProductsCount;
   // pagination
   let page = parseInt(searchParams.page, 10);
   page = !page || page < 1 ? 1 : page;
@@ -34,13 +33,11 @@ const AdminProductsPage = async ({ searchParams }) => {
       pageNumbers.push(i);
     }
   }
-
   return (
     <>
-      <AdminProducts
+      <AllPOSProductsComp
         products={products}
-        search={search}
-        filteredProductsCount={itemCount}
+        filteredProductsCount={filteredProductsCount}
       />
       <ServerPagination
         isPageOutOfRange={isPageOutOfRange}
@@ -54,4 +51,4 @@ const AdminProductsPage = async ({ searchParams }) => {
   );
 };
 
-export default AdminProductsPage;
+export default POSProductsPage;

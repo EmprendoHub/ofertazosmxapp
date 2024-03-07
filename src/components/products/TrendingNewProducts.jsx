@@ -4,12 +4,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import ProductCard from './ProductCard';
 
-const myLoader = ({ src, width, quality }) => {
-  return `https://minio.salvawebpro.com:9000/eleganza-products/new/${src}?w=${width}&q=${
-    quality || 75
-  }`;
-};
-
 function shuffleArray(array) {
   let i = array.length - 1;
   for (; i > 0; i--) {
@@ -21,13 +15,14 @@ function shuffleArray(array) {
   return array;
 }
 
-const TrendingNewProducts = () => {
+const TrendingNewProducts = ({ trendProducts }) => {
+  console.log(trendProducts);
   const cat_title = [
     { id: 1, category: 'Bolsas' },
     { id: 2, category: 'Prendas' },
     { id: 3, category: 'Accesorios' },
   ];
-  const [allProducts, setAllProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState(trendProducts);
   const [trendingProducts, setTrendingProducts] = useState([]);
   const [activeTab, setActiveTab] = useState('All');
 
@@ -47,38 +42,38 @@ const TrendingNewProducts = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchDetails = async () => {
-      try {
-        const URL_ALL = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/productstrend`;
-        const res_all = await fetch(URL_ALL, { cache: 'no-store' });
-        const data_trending = await res_all.json();
-        //let sliced_products = data_trending.products.slice(0, 50)
-        let sliced_products = data_trending.products.map((product) => {
-          return {
-            _id: product._id,
-            title: product.title,
-            description: product.description,
-            category: product.category,
-            brand: product.brand,
-            featured: product.featured,
-            price: product.price,
-            salesPrice: product.sale_price,
-            images: product.images,
-            sizes: product.sizes,
-            rating: product.rating,
-            quantity: product.quantity,
-            sku: product.sku,
-          };
-        });
-        setAllProducts(sliced_products);
-        setTrendingProducts(sliced_products);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchDetails();
-  }, []);
+  // useEffect(() => {
+  //   const fetchDetails = async () => {
+  //     try {
+  //       const URL_ALL = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/productstrend`;
+  //       const res_all = await fetch(URL_ALL, { cache: 'no-store' });
+  //       const data_trending = await res_all.json();
+  //       //let sliced_products = data_trending.products.slice(0, 50)
+  //       let sliced_products = data_trending.products.map((product) => {
+  //         return {
+  //           _id: product._id,
+  //           title: product.title,
+  //           description: product.description,
+  //           category: product.category,
+  //           brand: product.brand,
+  //           featured: product.featured,
+  //           price: product.price,
+  //           salesPrice: product.sale_price,
+  //           images: product.images,
+  //           sizes: product.sizes,
+  //           rating: product.rating,
+  //           quantity: product.quantity,
+  //           sku: product.sku,
+  //         };
+  //       });
+  //       setAllProducts(sliced_products);
+  //       setTrendingProducts(sliced_products);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   fetchDetails();
+  // }, []);
 
   return (
     <div className="mx-auto flex flex-col justify-center items-center px-40 mb-20">

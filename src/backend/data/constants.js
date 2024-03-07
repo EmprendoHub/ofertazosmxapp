@@ -66,6 +66,11 @@ export const POSNAV_ITEMS = [
     icon: <FaHome width="24" height="24" />,
   },
   {
+    title: 'Productos',
+    path: '/puntodeventa/productos',
+    icon: <FaHome width="24" height="24" />,
+  },
+  {
     title: 'Scanner',
     path: '/puntodeventa/qr/scanner',
     icon: <FaHome width="24" height="24" />,

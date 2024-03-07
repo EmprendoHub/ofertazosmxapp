@@ -255,7 +255,6 @@ export async function getPOSDashboard() {
     const session = await getServerSession(options);
     let orders;
     let products;
-    let clients;
 
     if (session) {
       if (session?.user?.role === 'sucursal') {
@@ -263,9 +262,6 @@ export async function getPOSDashboard() {
           .sort({ createdAt: -1 }) // Sort in descending order of creation date
           .limit(5);
         products = await Product.find({ published: { $ne: 'false' } })
-          .sort({ createdAt: -1 }) // Sort in descending order of creation date
-          .limit(5);
-        clients = await User.find({ role: 'cliente' })
           .sort({ createdAt: -1 }) // Sort in descending order of creation date
           .limit(5);
       }
@@ -277,23 +273,17 @@ export async function getPOSDashboard() {
     const totalProductCount = await Product.countDocuments({
       published: { $ne: 'false' },
     });
-    const totalClientCount = await User.countDocuments({ role: 'cliente' });
     const orderCountPreviousMonth = await getDocumentCountPreviousMonth(Order);
-    const clientCountPreviousMonth = await getClientCountPreviousMonth();
 
     orders = JSON.stringify(orders);
     products = JSON.stringify(products);
-    clients = JSON.stringify(clients);
 
     return {
       orders: orders,
       products: products,
-      clients: clients,
       totalOrderCount: totalOrderCount,
       orderCountPreviousMonth: orderCountPreviousMonth,
       totalProductCount: totalProductCount,
-      totalClientCount: totalClientCount,
-      clientCountPreviousMonth: clientCountPreviousMonth,
     };
   } catch (error) {
     console.log(error);
@@ -451,13 +441,16 @@ export async function updatePage(data) {
 }
 
 export async function getAllPost(searchQuery) {
+  const session = await getServerSession(options);
+
   try {
     await dbConnect();
-    const session = await getServerSession(options);
     let postQuery;
     if (session) {
       if (session?.user?.role === 'manager') {
-        postQuery = Post.find();
+        postQuery = Post.find({});
+      } else {
+        postQuery = Post.find({ published: true });
       }
     } else {
       postQuery = Post.find({ published: true });
@@ -496,7 +489,6 @@ export async function getAllPost(searchQuery) {
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     sortedPosts = JSON.stringify(sortedPosts);
-
     return {
       posts: sortedPosts,
       itemCount: itemCount,
@@ -665,6 +657,26 @@ export async function getOneProduct(slug, id) {
   }
 }
 
+export async function getHomeProductsData() {
+  const session = await getServerSession(options);
+  try {
+    await dbConnect();
+    // Extract tag values from post.tags array
+    let trendingProducts = await Product.find({}).limit(100);
+    let editorsProducts = await Product.find({}).limit(10);
+
+    trendingProducts = JSON.stringify(trendingProducts);
+    editorsProducts = JSON.stringify(editorsProducts);
+    return {
+      trendingProducts: trendingProducts,
+      editorsProducts: editorsProducts,
+    };
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
+
 export async function updateProductQuantity(variationId) {
   const session = await getServerSession(options);
 
@@ -735,6 +747,7 @@ export async function changeProductAvailability(productId) {
     throw Error(error);
   }
 }
+
 export async function getVariationStock(variationId) {
   const session = await getServerSession(options);
 
@@ -786,21 +799,52 @@ export async function getOnePOSProduct(variationId) {
   }
 }
 
-export async function getAllPOSProduct() {
+export async function getAllPOSProduct(searchQuery) {
   try {
     await dbConnect();
+    let productQuery;
     // Find the product that contains the variation with the specified variation ID
-    let products = await Product.find({
+    productQuery = Product.find({
       $and: [{ stock: { $gt: 0 } }, { availability: true }],
     });
 
-    if (products) {
-      products = JSON.stringify(products);
-      return { products: products };
-    } else {
-      console.log('Product not found');
-      throw Error('Product not found');
-    }
+    const searchParams = new URLSearchParams(searchQuery);
+    const resPerPage = Number(searchParams.get('perpage')) || 5;
+    // Extract page and per_page from request URL
+    const page = Number(searchParams.get('page')) || 1;
+    // total number of documents in database
+    const productsCount = await Product.countDocuments();
+    // Apply search Filters
+    const apiProductFilters = new APIFilters(productQuery, searchParams)
+      .searchAllFields()
+      .filter();
+
+    let productsData = await apiProductFilters.query;
+
+    const filteredProductsCount = productsData.length;
+
+    apiProductFilters.pagination(resPerPage, page);
+    productsData = await apiProductFilters.query.clone();
+
+    // If you want a new sorted array without modifying the original one, use slice
+    // const sortedObj1 = obj1
+    //   .slice()
+    //   .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+    // descending order
+    // descending order
+    let sortedProducts = productsData
+      .slice()
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    sortedProducts = JSON.stringify(sortedProducts);
+
+    return {
+      products: sortedProducts,
+      productsCount: productsCount,
+      filteredProductsCount: filteredProductsCount,
+      resPerPage: resPerPage,
+    };
   } catch (error) {
     console.log(error);
     throw Error(error);
@@ -813,7 +857,10 @@ export async function getAllProduct(searchQuery) {
     const session = await getServerSession(options);
     let productQuery;
     if (session) {
-      if (session?.user?.role === 'manager') {
+      if (
+        session?.user?.role === 'manager' ||
+        session?.user?.role === 'sucursal'
+      ) {
         productQuery = Product.find();
       }
     } else {

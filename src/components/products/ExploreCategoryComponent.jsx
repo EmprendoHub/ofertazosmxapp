@@ -5,7 +5,7 @@ import React from 'react';
 
 const ExploreCategoryComponent = () => {
   return (
-    <div className="px-40 py-20 maxsm:px-1 maxsm:pt-1 mb-20">
+    <div className="px-24 py-20 maxlg:px-1 maxmd:pt-1 mb-20">
       <div className="mx-auto">
         <SectionTitle
           className="pb-10 text-5xl maxmd:text-3xl text-center"
@@ -17,7 +17,7 @@ const ExploreCategoryComponent = () => {
           }
         />
       </div>
-      <div className="flex flex-row lg:flex-wrap items-center">
+      <div className="flex flex-row maxmd:flex-wrap items-center">
         <div className="flex flex-row maxsm:flex-col w-full">
           <Link
             href={`/tienda?keyword=Balenciaga`}
@@ -31,7 +31,7 @@ const ExploreCategoryComponent = () => {
                 alt="Explora Balenciaga category"
                 className="w-full min-h-[500px] max-h-[600px] object-cover "
               />
-              <span className="absolute z-50 bg-white text-black uppercase py-2 px-5 maxsm:px-2 maxsm:text-xs top-1/2 font-playfair-display tracking-wide">
+              <span className="absolute z-50 bg-white text-black uppercase py-2 px-5 maxsm:px-2 maxmd:text-xs top-1/2 font-playfair-display tracking-wide">
                 {'Explora Balenciaga'}
               </span>
             </div>
@@ -48,7 +48,7 @@ const ExploreCategoryComponent = () => {
                 alt="Explore Christian Dior category"
                 className="w-full min-h-[500px] max-h-[600px] object-cover "
               />
-              <span className="absolute z-50 bg-white text-black uppercase py-2 px-5 maxsm:px-2 maxsm:text-xs top-1/2 font-playfair-display tracking-wide">
+              <span className="absolute z-50 bg-white text-black uppercase py-2 px-5 maxsm:px-2 maxmd:text-xs top-1/2 font-playfair-display tracking-wide">
                 {'Explore Christian Dior'}
               </span>
             </div>
@@ -68,7 +68,7 @@ const ExploreCategoryComponent = () => {
                 alt="Explora Fendi category"
                 className="w-full min-h-[500px] max-h-[600px] object-cover "
               />
-              <span className="absolute z-50 bg-white text-black uppercase py-2 px-5 maxsm:px-2 maxsm:text-xs top-1/2 font-playfair-display tracking-wide">
+              <span className="absolute z-50 bg-white text-black uppercase py-2 px-5 maxsm:px-2 maxmd:text-xs top-1/2 font-playfair-display tracking-wide">
                 {'Explora Fendi'}
               </span>
             </div>
@@ -85,7 +85,7 @@ const ExploreCategoryComponent = () => {
                 alt="Explora Gucci category"
                 className="w-full min-h-[500px] max-h-[600px] object-cover "
               />
-              <span className="absolute z-50 bg-white text-black uppercase py-2 px-5 maxsm:px-2 maxsm:text-xs top-1/2 font-playfair-display tracking-wide">
+              <span className="absolute z-50 bg-white text-black uppercase py-2 px-5 maxsm:px-2 maxmd:text-xs top-1/2 font-playfair-display tracking-wide">
                 {'Explora Gucci'}
               </span>
             </div>

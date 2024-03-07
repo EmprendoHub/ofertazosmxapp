@@ -8,12 +8,12 @@ const MultiDivHero = () => {
     <div className="flex flex-col items-start justify-start">
       <div className="flex minmd:flex-row flex-col items-start justify-start max-w-full">
         <div className="relative minmd:min-w-[60vw] min-w-[100vw] maxsm:max-w-full min-h-[60vh] bg-gray-100 ">
-          <div className="mt-10 absolute z-10 text-black top-0 left-0 maxsm:left-9 w-full ">
+          <div className="mt-10 absolute z-10 text-black top-0 left-0 maxsm:left-9 w-full px-5">
             <motion.h2
               initial={{ x: 50, opacity: 0 }}
               whileInView={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.8 }}
-              className="text-5xl maxsm:text-2xl font-black font-EB_Garamond uppercase text-white drop-shadow-lg"
+              className="text-5xl maxmd:text-2xl font-black font-EB_Garamond uppercase text-white drop-shadow-lg"
             >
               {'Luce Espectacular'}
             </motion.h2>
@@ -21,7 +21,7 @@ const MultiDivHero = () => {
               initial={{ x: -50, opacity: 0 }}
               whileInView={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.8 }}
-              className=" minlg:text-[8rem] maxmd:text-[5rem] maxlg:text-[5rem] maxxsm:text-[1.5rem] text-[3.5rem]  drop-shadow-lg text-gray-100 uppercase pb-3 leading-none"
+              className=" minlg:text-[8rem] maxmd:text-[4rem] maxlg:text-[5rem] maxxsm:text-[1.5rem] text-[3.5rem]  drop-shadow-lg text-gray-100 uppercase pb-3 leading-none"
             >
               {'Fashion Moda'}
             </motion.h3>
@@ -67,7 +67,7 @@ const MultiDivHero = () => {
               width={1000}
               height={1000}
               alt="main image"
-              className=" grayscale object-cover max-h-[60vh] maxsm:min-h-[80vh] w-full"
+              className=" grayscale object-cover min-h-[60vh] w-full"
             />
           </motion.div>
         </div>

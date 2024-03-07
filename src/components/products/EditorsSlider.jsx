@@ -6,13 +6,14 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-const EditorsSlider = ({ allProducts }) => {
+const EditorsSlider = ({ editorsProducts }) => {
   const settings = {
     dots: true,
     lazyLoad: true,
     centerMode: true,
     infinite: true,
-    slidesToShow: 8,
+    initialSlide: 0,
+    slidesToShow: 6,
     slidesToScroll: 1,
     autoplay: true,
     speed: 1000,
@@ -45,7 +46,7 @@ const EditorsSlider = ({ allProducts }) => {
   return (
     <div className="relative">
       <Slider {...settings}>
-        {allProducts.slice(0, 12).map((product, index) => {
+        {editorsProducts.slice(0, 12).map((product, index) => {
           return <ProductCard item={product} key={index} />;
         })}
       </Slider>

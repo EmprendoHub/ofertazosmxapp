@@ -7,7 +7,6 @@ import Link from 'next/link';
 import { addToFavorites } from '@/redux/shoppingSlice';
 import { useDispatch } from 'react-redux';
 import { IoMdHeart } from 'react-icons/io';
-import { Bounce, toast } from 'react-toastify';
 import { calculatePercentage } from '@/backend/helpers';
 
 const ProductCard = ({ item }) => {

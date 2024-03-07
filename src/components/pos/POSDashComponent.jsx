@@ -2,46 +2,19 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import { MdAttachMoney } from 'react-icons/md';
-import { TbAffiliate } from 'react-icons/tb';
 import { IoArrowRedoSharp } from 'react-icons/io5';
-import {
-  HiAnnotation,
-  HiArrowNarrowUp,
-  HiDocumentText,
-  HiOutlineUserGroup,
-} from 'react-icons/hi';
+import { HiArrowNarrowUp, HiOutlineUserGroup } from 'react-icons/hi';
 
 const POSDashComponent = ({
-  clients,
   orders,
   products,
   orderCountPreviousMonth,
-  clientCountPreviousMonth,
   totalOrderCount,
   totalProductCount,
-  totalClientCount,
 }) => {
   return (
     <div className="p-3 md:mx-auto  text-slate-300">
       <div className="flex-wrap flex gap-4 justify-start">
-        <div className="flex flex-col p-3 dark:bg-slate-800 gap-4 w-72 maxmd:w-full rounded-md shadow-md">
-          <div className="flex justify-between">
-            <div className="">
-              <h3 className="text-gray-500 text-md uppercase">
-                Clientes Totales
-              </h3>
-              <p className="text-2xl  text-slate-300">{totalClientCount}</p>
-            </div>
-            <HiOutlineUserGroup className="bg-blue-600  text-white rounded-full text-5xl p-3 shadow-lg" />
-          </div>
-          <div className="flex  gap-2 text-sm">
-            <span className="text-green-500 flex items-center">
-              <HiArrowNarrowUp />
-              {clientCountPreviousMonth}
-            </span>
-            <div className="text-gray-500">Mes Anterior</div>
-          </div>
-        </div>
         <div className="flex flex-col p-3 dark:bg-slate-800 gap-4 w-72 maxmd:w-full rounded-md shadow-md">
           <div className="flex justify-between">
             <div className="">
@@ -64,47 +37,6 @@ const POSDashComponent = ({
       <div className="flex flex-wrap gap-4 py-3 mx-auto justify-start">
         <div className="flex flex-col w-72 maxmd:w-full shadow-md p-5 rounded-md dark:bg-gray-800">
           <div className="flex justify-between py-3 text-base font-black font-EB_Garamond">
-            <h1 className="text-center">Clientes Recientes</h1>
-            <button>
-              <Link href={'/admin/clientes'}>Ver Todos</Link>
-            </button>
-          </div>
-          <table>
-            <thead className=" text-slate-300">
-              <tr className="flex justify-between items-center">
-                <th>Img.</th>
-                <th>Nombre</th>
-                <th>...</th>
-              </tr>
-            </thead>
-            {clients &&
-              clients.map((client) => (
-                <tbody key={client._id} className="divide-y">
-                  <tr className="bg-white dark:border-gray-700 dark:bg-gray-800 flex justify-between items-center mb-2">
-                    <td>
-                      <Image
-                        src={client.avatar || '/images/avatar_placeholder.jpg'}
-                        alt="client"
-                        width={400}
-                        height={400}
-                        className="w-10 h-10 rounded-full bg-gray-500"
-                      />
-                    </td>
-                    <td className="capitalize text-slate-300">
-                      {client.name.substring(0, 14)}...
-                    </td>
-                    <td>
-                      <Link href={`/admin/cliente/${client._id}`}>
-                        <IoArrowRedoSharp className=" text-blue-500 " />
-                      </Link>
-                    </td>
-                  </tr>
-                </tbody>
-              ))}
-          </table>
-        </div>
-        <div className="flex flex-col w-72 maxmd:w-full shadow-md p-5 rounded-md dark:bg-gray-800">
-          <div className="flex justify-between py-3 text-base font-black font-EB_Garamond">
             <h1 className="text-center">Pedidos recientes</h1>
             <button>
               <Link href={'/puntodeventa/pedidos'}>Ver todos</Link>
@@ -125,7 +57,7 @@ const POSDashComponent = ({
                     <td>{order.orderId}</td>
                     <td>{order.orderStatus}</td>
                     <td>
-                      <Link href={`/admin/pedido/${order._id}`}>
+                      <Link href={`/puntodeventa/pedido/${order._id}`}>
                         <IoArrowRedoSharp className=" text-teal-600 " />
                       </Link>
                     </td>

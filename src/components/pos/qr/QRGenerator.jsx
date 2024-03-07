@@ -2,12 +2,24 @@
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import qrcode from 'qrcode';
+import { useSelector } from 'react-redux';
 
 const QRGenerator = ({ products }) => {
   const [imageQR, setImageQR] = useState([]);
+  const { qrListData } = useSelector((state) => state.compras);
   const print = () => window.print();
   useEffect(() => {
-    products.forEach(async (product) => {
+    let qrArray;
+    console.log(qrListData.length > 0);
+    if (qrListData.length > 0) {
+      qrArray = products.filter((product) =>
+        qrListData.some((obj) => obj.id === product._id)
+      );
+    } else {
+      qrArray = products;
+    }
+
+    qrArray.forEach(async (product) => {
       product.variations.forEach(async (variation) => {
         const id = variation._id;
         const image = await qrcode.toDataURL(id);

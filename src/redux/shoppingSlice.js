@@ -9,6 +9,7 @@ const initialState = {
   orderData: [],
   affiliateInfo: null,
   emailListData: [],
+  qrListData: [],
   loginAttempts: null,
 };
 
@@ -161,6 +162,28 @@ export const shoppingSlice = createSlice({
     resetEmailReceiver: (state) => {
       state.emailListData = [];
     },
+    saveQRToPrint: (state, action) => {
+      const existingEmail = state.qrListData.find(
+        (item) => item.id === action.payload.id
+      );
+      if (existingEmail) {
+        const productIdToRemove = action.payload.id;
+        state.qrListData = state.qrListData.filter(
+          (item) => item.id !== productIdToRemove
+        );
+      } else {
+        state.qrListData.push(action.payload);
+      }
+    },
+    removeQRToPrint: (state, action) => {
+      const productIdToRemove = action.payload;
+      state.qrListData = state.qrListData.filter(
+        (item) => item.id !== productIdToRemove
+      );
+    },
+    resetQRToPrint: (state) => {
+      state.qrListData = [];
+    },
   },
 });
 
@@ -191,6 +214,9 @@ export const {
   deleteFavorite,
   addToFavorites,
   increaseLoginAttempts,
+  saveQRToPrint,
+  removeQRToPrint,
+  resetQRToPrint,
 } = shoppingSlice.actions;
 
 export default shoppingSlice.reducer;

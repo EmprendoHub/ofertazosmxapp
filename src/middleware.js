@@ -109,15 +109,6 @@ export async function middleware(request) {
       console.error('Error creating referral event:', error);
     }
   }
-
-  if (
-    !token &&
-    (protectedPaths.includes(pathname) || pathname.includes('perfil'))
-  ) {
-    const signInUrl = new URL('/api/auth/signin', request.url);
-    signInUrl.searchParams.set('callbackUrl', pathname);
-    return NextResponse.redirect(signInUrl);
-  }
 }
 
 export const config = {

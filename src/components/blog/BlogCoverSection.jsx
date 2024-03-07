@@ -21,7 +21,7 @@ const BlogCoverSection = ({ blogs }) => {
           alt={blog?.mainTitle}
           fill
           className="w-full h-full object-center object-cover rounded-3xl -z-10"
-          sizes="100vw"
+          sizes="(max-width: 1080px) 100vw, (max-width: 1200px) 100vw, 33vw"
           priority
         />
 

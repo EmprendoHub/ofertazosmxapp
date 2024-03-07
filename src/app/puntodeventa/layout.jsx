@@ -1,4 +1,3 @@
-import HeaderMobile from '@/components/layout/AdminSidebar';
 import POSSidebar from '@/components/pos/POSSidebar';
 
 export default function UserLayout({ children }) {
@@ -14,7 +13,7 @@ export default function UserLayout({ children }) {
           </h1>
         </div>
       </section>
-      <section className="py-10 maxsm:py-2  print:p-0  bg-slate-100 text-black">
+      <section className=" maxsm:py-2  print:p-0  bg-slate-100 text-black">
         <div className=" mx-auto px-4 maxsm:px-1  print:m-0">
           <div className="flex flex-row maxmd:flex-col ">
             <main className="w-full px-4 maxsm:px-0 maxsm:mt-10 print:m-0">

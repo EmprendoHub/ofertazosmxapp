@@ -118,7 +118,7 @@ export const options = {
               email: user.email,
               name: user.name,
               verificationToken: verificationToken,
-              active: false,
+              active: true,
             });
 
             await newUser.save();

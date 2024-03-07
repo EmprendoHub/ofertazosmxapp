@@ -10,11 +10,11 @@ import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import { useState, useEffect } from 'react';
 import AuthContext from '@/context/AuthContext';
 import Image from 'next/image';
+import { IoQrCode } from 'react-icons/io5';
 
 const MiniMenuComponent = () => {
   const { data: session } = useSession();
   const { setUser } = useContext(AuthContext);
-
   useEffect(() => {
     if (session) {
       setUser(session?.user);
@@ -23,9 +23,8 @@ const MiniMenuComponent = () => {
 
   const isLoggedIn = Boolean(session?.user);
 
-  const { productsData, favoritesData, emailListData } = useSelector(
-    (state) => state.compras
-  );
+  const { productsData, favoritesData, emailListData, qrListData } =
+    useSelector((state) => state.compras);
 
   const [totalCartAmt, setTotalCartAmt] = useState(0);
 
@@ -107,15 +106,25 @@ const MiniMenuComponent = () => {
                 </span>
               </div>
             </Link>
-            {/* favorites Button */}
-            <Link href={'/perfil/favoritos'}>
-              <div className="  flex items-center justify-center  ease-in-out duration-300 cursor-pointer">
-                <IoMdHeart className="text-xl" />
-                <span className="bg-white text-black rounded-full font-bold text-xs relative  -top-2 flex items-center justify-center w-4 h-5 shadow-xl ">
-                  {favoritesData ? favoritesData?.length : 0}
-                </span>
-              </div>
-            </Link>
+            {session.user.role === 'sucursal' ? (
+              <Link href={'/puntodeventa/qr/generador'}>
+                <div className="  flex items-center justify-center  ease-in-out duration-300 cursor-pointer">
+                  <IoQrCode className="text-xl" />
+                  <span className="bg-white text-black rounded-full font-bold text-xs relative  -top-2 flex items-center justify-center w-4 h-5 shadow-xl ">
+                    {qrListData ? qrListData?.length : 0}
+                  </span>
+                </div>
+              </Link>
+            ) : (
+              <Link href={'/perfil/favoritos'}>
+                <div className="  flex items-center justify-center  ease-in-out duration-300 cursor-pointer">
+                  <IoMdHeart className="text-xl" />
+                  <span className="bg-white text-black rounded-full font-bold text-xs relative  -top-2 flex items-center justify-center w-4 h-5 shadow-xl ">
+                    {favoritesData ? favoritesData?.length : 0}
+                  </span>
+                </div>
+              </Link>
+            )}
           </div>
         ) : (
           ''

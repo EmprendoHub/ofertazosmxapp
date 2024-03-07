@@ -62,17 +62,20 @@ const HorizontalTextHero = () => {
       />
       {/* overlay */}
       <div className="min-h-[100%] absolute z-[1] min-w-[100%] top-0 left-0 bg-black opacity-30" />
-      <div className="slider-container-class z-[5] absolute top-[calc(95vh_-_300px)] p-5 ">
+      <div className="slider-container-class z-[5] absolute top-[calc(95vh_-_260px)] maxmd:top-[calc(95vh_-_150px)] p-5 ">
         <div
           ref={slider}
           className="slider font-EB_Garamond relative text-white flex whitespace-nowrap"
         >
-          <p ref={firstText} className="m-0 text-[200px]  ">
+          <p ref={firstText} className="m-0 text-[160px] maxmd:text-[80px]  ">
             <span className="mr-7">
               Explora para deslumbrar y transformar tu estilo -
             </span>
           </p>
-          <p ref={secondText} className="m-0  text-[200px] absolute left-full">
+          <p
+            ref={secondText}
+            className="m-0 text-[160px] maxmd:text-[80px] absolute left-full"
+          >
             <span className="mr-7">
               Explora para deslumbrar y transformar tu estilo -
             </span>

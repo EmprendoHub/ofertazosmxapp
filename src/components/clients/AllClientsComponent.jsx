@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { TiCancel } from 'react-icons/ti';
-import { FaPencilAlt, FaArrowDown } from 'react-icons/fa';
+import { FaPencilAlt } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import AdminClientSearch from '../layout/AdminClientSearch';
 import { useDispatch, useSelector } from 'react-redux';
