@@ -14,14 +14,14 @@ export default async function Home() {
   const editorsProducts = JSON.parse(data.editorsProducts);
   return (
     <main className="flex min-h-screen flex-col items-center justify-center ">
-      {/* <UnderConstruction /> */}
-      <MainHeroComponent />
-      <BonusHero />
+      <UnderConstruction />
+      {/* <MainHeroComponent />
+      <BonusHero /> */}
       {/* <TrendingNewProducts trendProducts={trendProducts} /> */}
-      <HorizontalTextHero />
+      {/* <HorizontalTextHero />
       <ExploreCategoryComponent />
       <MultiDivHero />
-      <EditorsPickProducts editorsProducts={editorsProducts} />
+      <EditorsPickProducts editorsProducts={editorsProducts} /> */}
     </main>
   );
 }
