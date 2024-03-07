@@ -1,6 +1,5 @@
-import AdminOneOrder from '@/components/admin/profile/AdminOneOrder';
 import { getOneOrder } from '@/app/_actions';
-import POSOneOrder from '@/components/pos/POSOneOrder';
+import POSReceiptOneOrder from '@/components/pos/POSReceiptOneOrder';
 
 const AdminOneOrderPage = async ({ params }) => {
   const data = await getOneOrder(params.id);
@@ -8,7 +7,7 @@ const AdminOneOrderPage = async ({ params }) => {
   const deliveryAddress = JSON.parse(data.deliveryAddress);
   return (
     <div className="m-2 ">
-      <POSOneOrder
+      <POSReceiptOneOrder
         order={order}
         id={params?.id}
         deliveryAddress={deliveryAddress}

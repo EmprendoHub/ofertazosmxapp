@@ -10,7 +10,6 @@ const QRGenerator = ({ products }) => {
   const print = () => window.print();
   useEffect(() => {
     let qrArray;
-    console.log(qrListData.length > 0);
     if (qrListData.length > 0) {
       qrArray = products.filter((product) =>
         qrListData.some((obj) => obj.id === product._id)
