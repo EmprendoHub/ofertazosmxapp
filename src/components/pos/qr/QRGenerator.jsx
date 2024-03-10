@@ -12,6 +12,7 @@ const QRGenerator = ({ products }) => {
 
   useEffect(() => {
     let qrArray;
+
     if (qrListData.length > 0) {
       qrArray = products.filter((product) =>
         qrListData.some((obj) => obj.id === product._id)
@@ -19,13 +20,13 @@ const QRGenerator = ({ products }) => {
     } else {
       qrArray = products;
     }
-
+    console.log(qrListData.length, qrArray);
     qrArray.forEach(async (product) => {
       product.variations.forEach(async (variation) => {
         const id = variation._id;
         const image = await qrcode.toDataURL(id);
-        if (variation.stock > 1) {
-          for (let i = 1; i < variation.stock; i++) {
+        if (variation.stock > 0) {
+          for (let i = 0; i < variation.stock; i++) {
             setImageQR((prevImageQrs) => {
               const newQr = {
                 id: id,
@@ -34,25 +35,12 @@ const QRGenerator = ({ products }) => {
                 size: variation.size,
                 color: variation.color,
                 stock: variation.stock,
-                amount: `${i}/${variation.stock}`,
+                amount: `${i + 1}/${variation.stock}`,
               };
               return [...prevImageQrs, newQr];
             });
           }
         }
-
-        setImageQR((prevImageQrs) => {
-          const newQr = {
-            id: id,
-            qr: image,
-            title: variation.title,
-            size: variation.size,
-            color: variation.color,
-            stock: variation.stock,
-            amount: `${variation.stock}/${variation.stock}`,
-          };
-          return [...prevImageQrs, newQr];
-        });
       });
     });
   }, []);

@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
+import { usePathname } from 'next/navigation';
 
 const POSCheckOutForm = () => {
   const { data: session } = useSession();
@@ -15,7 +16,7 @@ const POSCheckOutForm = () => {
     (acc, cartItem) => acc + cartItem.quantity * cartItem.price,
     0
   );
-
+  const pathname = usePathname();
   const shipAmount = 0;
   const layawayAmount = Number(amountTotal) * 0.3;
 
@@ -58,16 +59,26 @@ const POSCheckOutForm = () => {
 
         {isLoggedIn ? (
           <div className="flex flex-col items-center gap-1">
-            <Link
-              href="/puntodeventa/carrito/caja"
-              className="text-slate-100 text-center bg-green-600 border mt-4 py-3 px-6  hover:bg-slate-200 hover:border-slate-400 hover:border hover:text-black duration-300 ease-in-out cursor-pointer w-full"
-            >
-              PAGAR
-            </Link>
+            <div className="flex gap-5 w-full">
+              <Link
+                href={`${
+                  pathname.includes('admin')
+                    ? '/admin/pos/carrito/caja'
+                    : '/puntodeventa/carrito/caja'
+                }`}
+                className="text-slate-100 text-center bg-emerald-700 border mt-4 py-3 px-6  hover:bg-slate-200 hover:border-slate-400 hover:border hover:text-black duration-300 ease-in-out cursor-pointer min-w-full"
+              >
+                Continuar
+              </Link>
+            </div>
 
             <Link
-              href="/puntodeventa/qr/scanner"
-              className="px-4 mt-3 py-3 inline-block text-lg w-full text-center font-medium bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 text-black font-EB_Garamond"
+              href={`${
+                pathname.includes('admin')
+                  ? '/admin/pos/qr/scanner'
+                  : '/puntodeventa/qr/scanner'
+              }`}
+              className="px-4 mt-3 py-3 inline-block text-lg w-full text-center font-medium bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 text-white hover:text-black font-EB_Garamond duration-300 ease-in-out"
             >
               Escanear mas Productos
             </Link>

@@ -10,7 +10,7 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
 import { AiOutlineClose } from 'react-icons/ai';
 import { toast } from 'react-toastify';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import POSCheckOutForm from './POSCheckOutForm';
 
 const POSCart = () => {
@@ -18,6 +18,7 @@ const POSCart = () => {
   const { productsPOS } = useSelector((state) => state?.compras);
   const router = useRouter();
   const dispatch = useDispatch();
+
   // if (productsPOS?.length <= 0) {
   //   router.replace('/puntodeventa/qr');
   // }
@@ -27,7 +28,7 @@ const POSCart = () => {
       <section className="mt-5  bg-gray-100">
         <div className=" mx-auto px-4">
           <h2 className="text-3xl font-semibold mb-2 font-EB_Garamond">
-            {productsPOS?.length || 0} Artículos(s) en el Carrito
+            {productsPOS?.length || 0} Artículos(s) Escaneados
           </h2>
         </div>
       </section>

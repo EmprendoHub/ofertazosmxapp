@@ -11,19 +11,13 @@ import {
   TbMessage2Question,
   TbLayoutGridAdd,
 } from 'react-icons/tb';
+import { LiaCashRegisterSolid } from 'react-icons/lia';
 import { GiClothes } from 'react-icons/gi';
 
 export default function UserLayout({ children }) {
   const pathname = usePathname();
   return (
     <>
-      <section className="py-5 font-EB_Garamond bg-gray-200 print:hidden ">
-        <div className="flex flex-row gap-3 items-center  mx-auto px-10">
-          <h1 className="flex text-bold text-2xl  maxsm:text-lg text-black font-EB_Garamond">
-            Panel de Control
-          </h1>
-        </div>
-      </section>
       <div className="mx-auto">
         <div className="flex items-start">
           <Sidebar>
@@ -77,6 +71,12 @@ export default function UserLayout({ children }) {
             /> */}
 
             <hr className="my-3" />
+            <SideBarItem
+              icon={<LiaCashRegisterSolid size={20} />}
+              text={'Caja'}
+              active={pathname === 'admin/pos/carrito' ?? true}
+              url={'/admin/pos/carrito'}
+            />
 
             <SideBarItem
               icon={<TbScan size={20} />}
@@ -103,9 +103,7 @@ export default function UserLayout({ children }) {
               url={'/admin/config/contacto'}
             />
           </Sidebar>
-          <main className="w-full pr-4 ">
-            <article className="w-full mb-5 ">{children}</article>
-          </main>
+          <div className="relative w-full mr-4 mb-5 ">{children}</div>
         </div>
       </div>
     </>

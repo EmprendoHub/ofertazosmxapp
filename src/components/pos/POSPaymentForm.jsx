@@ -67,15 +67,15 @@ const POSPaymentForm = () => {
 
   //=============================== Stripe Payment ends here ============================
   return (
-    <section className="p-2 maxsm:py-7 bg-gray-100">
-      <div className=" max-w-screen-xl mx-auto bg-white flex flex-col justify-between p-2">
-        <h2 className="text-7xl font-EB_Garamond mb-4">Totales</h2>
+    <div className="max-w-full p-2 maxsm:py-7 bg-gray-100">
+      <div className=" mx-auto bg-white flex flex-col justify-between p-2">
+        <h2 className="text-5xl font-EB_Garamond mb-4">Totales</h2>
         {validationError?.title && (
           <p className="text-sm text-red-400">
             {validationError.title._errors.join(', ')}
           </p>
         )}
-        <ul className="mb-5">
+        <ul className="mb-5 max-w-full">
           <li className="flex justify-between text-gray-600  mb-2 text-2xl">
             <span>Sub-Total:</span>
             <span>
@@ -120,25 +120,18 @@ const POSPaymentForm = () => {
               onChange={(e) => handleAmountReceived(e.target.value)}
               className="text-7xl text-center outline-none"
             />
-            {/* <button
+            <button
               onClick={() => handleCheckout('layaway')}
-              className=" text-slate-100 bg-violet-950 mt-4 py-3 px-6 hover:bg-slate-200 hover:text-black duration-300 ease-in-out cursor-pointer w-full"
+              className="text-4xl text-slate-100 bg-violet-950 mt-4 py-3 px-6 hover:bg-slate-200 hover:text-black duration-300 ease-in-out cursor-pointer w-full"
             >
               Apartar Artículos{' '}
-            </button> */}
+            </button>
             <button
               onClick={() => handleCheckout('total')}
               className="bg-black w-full text-slate-100 mt-4 py-5 uppercase text-4xl px-6 hover:bg-slate-200 hover:text-black duration-300 ease-in-out cursor-pointer"
             >
               Pagar Total{' '}
             </button>
-
-            <Link
-              href="/puntodeventa/carrito"
-              className="w-full mt-4 text-center px-5 py-2 inline-block text-gray-90 bg-slate-300 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:text-black ease-in-out"
-            >
-              Regresar
-            </Link>
           </div>
         ) : (
           <div>
@@ -161,7 +154,7 @@ const POSPaymentForm = () => {
           </div>
         )}
       </div>
-    </section>
+    </div>
   );
 };
 
