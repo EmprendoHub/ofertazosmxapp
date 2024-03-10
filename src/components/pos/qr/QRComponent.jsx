@@ -1,10 +1,11 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { Html5QrcodeScanner } from 'html5-qrcode';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 const QRComponent = () => {
   const [scanResult, setScanResult] = useState(null);
+  const pathname = usePathname();
   const router = useRouter();
   useEffect(() => {
     const scanner = new Html5QrcodeScanner('reader', {
@@ -28,7 +29,11 @@ const QRComponent = () => {
 
   useEffect(() => {
     if (scanResult) {
-      router.push(`/puntodeventa/scan/${scanResult}`);
+      if (pathname.includes('admin')) {
+        router.push(`/admin/pos/scan/${scanResult}`);
+      } else {
+        router.push(`/puntodeventa/scan/${scanResult}`);
+      }
     }
   }, [scanResult]);
 

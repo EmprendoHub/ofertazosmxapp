@@ -1,0 +1,54 @@
+import { getAllPOSProduct } from '@/app/_actions';
+import ServerPagination from '@/components/pagination/ServerPagination';
+import AllPOSProductsComp from '@/components/pos/AllPOSProductsComp';
+
+const POSProductsPage = async ({ searchParams }) => {
+  const urlParams = {
+    keyword: searchParams.keyword,
+    page: searchParams.page,
+  };
+  const filteredUrlParams = Object.fromEntries(
+    Object.entries(urlParams).filter(([key, value]) => value !== undefined)
+  );
+  const searchQuery = new URLSearchParams(filteredUrlParams).toString();
+  const data = await getAllPOSProduct(searchQuery);
+  const products = JSON.parse(data.products);
+  const filteredProductsCount = data.filteredProductsCount;
+  // pagination
+  let page = parseInt(searchParams.page, 10);
+  page = !page || page < 1 ? 1 : page;
+  const perPage = 5;
+  const itemCount = data?.productsCount;
+  const totalPages = Math.ceil(data.filteredProductsCount / perPage);
+  const prevPage = page - 1 > 0 ? page - 1 : 1;
+  const nextPage = page + 1;
+  const isPageOutOfRange = page > totalPages;
+  const pageNumbers = [];
+  const offsetNumber = 1;
+  const search =
+    typeof searchParams.search === 'string' ? searchParams.search : undefined;
+
+  for (let i = page - offsetNumber; i <= page + offsetNumber; i++) {
+    if (i >= 1 && i <= totalPages) {
+      pageNumbers.push(i);
+    }
+  }
+  return (
+    <>
+      <AllPOSProductsComp
+        products={products}
+        filteredProductsCount={filteredProductsCount}
+      />
+      <ServerPagination
+        isPageOutOfRange={isPageOutOfRange}
+        page={page}
+        pageNumbers={pageNumbers}
+        prevPage={prevPage}
+        nextPage={nextPage}
+        totalPages={totalPages}
+      />
+    </>
+  );
+};
+
+export default POSProductsPage;

@@ -2,12 +2,14 @@
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import qrcode from 'qrcode';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { resetQRToPrint } from '@/redux/shoppingSlice';
 
 const QRGenerator = ({ products }) => {
   const [imageQR, setImageQR] = useState([]);
   const { qrListData } = useSelector((state) => state.compras);
-  const print = () => window.print();
+  const dispatch = useDispatch();
+
   useEffect(() => {
     let qrArray;
     if (qrListData.length > 0) {
@@ -55,6 +57,11 @@ const QRGenerator = ({ products }) => {
     });
   }, []);
 
+  const handlePrint = () => {
+    window.print();
+    dispatch(resetQRToPrint());
+  };
+
   return (
     <div className="container flex flex-col h-screen items-center justify-start mt-10 print:mt-0 print:mx-0 mx-auto">
       <div className=" flex flex-row w-full items-center justify-center print:hidden">
@@ -64,7 +71,7 @@ const QRGenerator = ({ products }) => {
       </div>
       <button
         className="bg-black text-white p-4 print:hidden mt-4"
-        onClick={print}
+        onClick={handlePrint}
       >
         Imprimir QR&apos;s
       </button>

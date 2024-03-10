@@ -1,6 +1,5 @@
 import DashComponent from '@/components/admin/dashboard/DashComponent';
 import { getDashboard } from '../_actions';
-import AdminProfile from '@/components/admin/profile/AdminProfile';
 
 const ProfilePage = async () => {
   const data = await getDashboard();
@@ -20,7 +19,6 @@ const ProfilePage = async () => {
   const totalPostCount = data?.totalPostCount;
   return (
     <>
-      <AdminProfile />
       <DashComponent
         clients={clients}
         affiliates={affiliates}

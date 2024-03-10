@@ -32,7 +32,7 @@ const verifyEmail = async (token) => {
 const SuccessPage = async ({ searchParams }) => {
   const token = searchParams?.token;
   const res = await verifyEmail(token);
-  const isVerified = res?.message === 'Usuario verificado';
+  const isVerified = res?.message === 'Email verificado';
   return (
     <>
       <div

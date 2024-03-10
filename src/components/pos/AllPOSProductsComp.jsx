@@ -6,9 +6,11 @@ import POSProductSearch from '../layout/POSProductSearch';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import { FaStar } from 'react-icons/fa6';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const { qrListData } = useSelector((state) => state.compras);
   const [selectedProducts, setSelectedProducts] = useState([]);
   useEffect(() => {
@@ -33,6 +35,10 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
     dispatch(saveQRToPrint(receiver));
   };
 
+  const handleGenerateQR = () => {
+    router.push('/admin/pos/qr/generador');
+  };
+
   return (
     <>
       <hr className="my-4" />
@@ -43,6 +49,9 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
           </h1>
           <POSProductSearch />
         </div>
+        <button className="bg-black text-white p-4" onClick={handleGenerateQR}>
+          Generar QRs
+        </button>
         <table className="w-full text-sm  text-left">
           <thead className="text-l text-gray-700 uppercase">
             <tr>
