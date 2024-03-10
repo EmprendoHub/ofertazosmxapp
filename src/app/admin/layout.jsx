@@ -16,6 +16,7 @@ import { GiClothes } from 'react-icons/gi';
 
 export default function UserLayout({ children }) {
   const pathname = usePathname();
+
   return (
     <>
       <div className="mx-auto">
@@ -38,24 +39,54 @@ export default function UserLayout({ children }) {
               text={'Publicaciones'}
               active={pathname === '/admin/blog' ?? true}
               url={'/admin/blog'}
+              alert
+              dropdownItems={[
+                {
+                  text: 'Todas',
+                  url: '/admin/blog',
+                  active: pathname === '/admin/blog' ?? true,
+                  icon: <CiGrid31 size={20} />,
+                },
+                {
+                  text: 'Nueva Publicación ',
+                  url: '/admin/blog/editor',
+                  active: pathname === '/admin/blog/editor' ?? true,
+                  icon: <MdOutlinePostAdd size={20} />,
+                },
+                // Add more dropdown items as needed
+              ]}
             />
-            <SideBarItem
+            {/* <SideBarItem
               icon={<MdOutlinePostAdd size={20} />}
               text={'Nueva Publicación '}
               active={pathname === '/admin/blog/editor' ?? true}
               url={'/admin/blog/editor'}
-            />
+            /> */}
             <SideBarItem
-              icon={<GiClothes size={20} />}
+              icon={<CiGrid31 size={20} />}
               text={'Productos'}
-              active={pathname === '/admin/productos' ?? true}
+              active={
+                pathname === '/admin/productos' ||
+                (pathname === '/admin/productos/nuevo/variaciones' && true)
+              }
               url={'/admin/productos'}
-            />
-            <SideBarItem
-              icon={<TbLayoutGridAdd size={20} />}
-              text={'Nuevo Producto'}
-              active={pathname === '/admin/productos/nuevo/variaciones' ?? true}
-              url={'/admin/productos/nuevo/variaciones'}
+              alert
+              dropdownItems={[
+                {
+                  text: 'Todos',
+                  url: '/admin/productos',
+                  active: pathname === '/admin/productos' ?? true,
+                  icon: <CiGrid31 size={20} />,
+                },
+                {
+                  text: 'Nuevo Producto',
+                  url: '/admin/productos/nuevo/variaciones',
+                  active:
+                    pathname === '/admin/productos/nuevo/variaciones' ?? true,
+                  icon: <TbLayoutGridAdd size={20} />,
+                },
+                // Add more dropdown items as needed
+              ]}
             />
             <SideBarItem
               icon={<PiUserListLight size={20} />}
@@ -70,26 +101,40 @@ export default function UserLayout({ children }) {
               url={'/admin/asociados'}
             /> */}
 
-            <hr className="my-3" />
+            <hr className="my-3 maxmd:my-1" />
             <SideBarItem
-              icon={<LiaCashRegisterSolid size={20} />}
-              text={'Caja'}
-              active={pathname === 'admin/pos/carrito' ?? true}
-              url={'/admin/pos/carrito'}
+              icon={<CiGrid31 size={20} />}
+              text={'POS'}
+              active={
+                pathname === '/admin/pos/productos' ||
+                pathname === '/admin/pos/qr/scanner' ||
+                (pathname === '/admin/pos/carrito' && true)
+              }
+              url={'/admin/pos/productos'}
+              alert
+              dropdownItems={[
+                {
+                  text: 'Caja',
+                  url: '/admin/pos/carrito',
+                  active: pathname === '/admin/pos/carrito' ?? true,
+                  icon: <LiaCashRegisterSolid size={20} />,
+                },
+                {
+                  text: 'Scanner',
+                  url: '/admin/pos/qr/scanner',
+                  active: pathname === '/admin/pos/qr/scanner' ?? true,
+                  icon: <TbScan size={20} />,
+                },
+                {
+                  text: 'Generar QRs`',
+                  url: '/admin/pos/productos',
+                  active: pathname === '/admin/pos/productos' ?? true,
+                  icon: <TbQrcode size={20} />,
+                },
+                // Add more dropdown items as needed
+              ]}
             />
 
-            <SideBarItem
-              icon={<TbScan size={20} />}
-              text={'Scanner'}
-              active={pathname === '/admin/pos/qr/scanner' ?? true}
-              url={'/admin/pos/qr/scanner'}
-            />
-            <SideBarItem
-              icon={<TbQrcode size={20} />}
-              text={`Generar QR's`}
-              active={pathname === '/admin/pos/productos' ?? true}
-              url={'/admin/pos/productos'}
-            />
             <SideBarItem
               icon={<TbMessage2Question size={20} />}
               text={'Editar Nosotros'}

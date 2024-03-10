@@ -38,9 +38,9 @@ const QRComponent = () => {
   }, [scanResult]);
 
   return (
-    <div className="container flex flex-col h-screen items-center justify-start mt-10  mx-auto">
+    <div className="container flex flex-col h-screen items-center justify-start mt-2  mx-auto">
       <div className=" flex flex-row w-full items-center justify-center">
-        <h2 className="p-8 bg-slate-300 text-slate-600 text-center w-full uppercase font-semibold tracking-wide text-2xl font-sans">
+        <h2 className=" text-slate-700 text-center w-full uppercase font-semibold tracking-wide text-2xl font-EB_Garamond">
           Scanner códigos QR
         </h2>
       </div>
@@ -56,7 +56,10 @@ const QRComponent = () => {
               >{`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/${scanResult}`}</a>
             </div>
           ) : (
-            <div id="reader" className="w-[500px] min-h-[500px]"></div>
+            <div
+              id="reader"
+              className="w-[500px] min-h-[500px] maxsm:w-[250px] maxsm:h-[250px]"
+            ></div>
           )}
           <div className="card-footer">
             <h4 className="text-xl"> Resultado Webcam:</h4>

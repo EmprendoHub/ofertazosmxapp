@@ -52,17 +52,18 @@ const QRGenerator = ({ products }) => {
 
   return (
     <div className="container flex flex-col h-screen items-center justify-start mt-10 print:mt-0 print:mx-0 mx-auto">
-      <div className=" flex flex-row w-full items-center justify-center print:hidden">
-        <h2 className="p-8 bg-slate-300 text-slate-600 text-center w-full uppercase font-semibold tracking-wide text-2xl font-sans">
+      <div className=" flex flex-row w-full items-center justify-start print:hidden">
+        <h2 className=" text-slate-700 text-center w-full uppercase font-semibold tracking-wide text-2xl font-EB_Garamond">
           Generador de códigos QR
         </h2>
+        <button
+          className="bg-black text-white p-4 print:hidden mt-4"
+          onClick={handlePrint}
+        >
+          Imprimir QR&apos;s
+        </button>
       </div>
-      <button
-        className="bg-black text-white p-4 print:hidden mt-4"
-        onClick={handlePrint}
-      >
-        Imprimir QR&apos;s
-      </button>
+
       <div className=" text-center mt-8 print:mt-0 w-full">
         <div className="card w-full">
           <hr className="border border-slate-300 my-3 print:hidden" />

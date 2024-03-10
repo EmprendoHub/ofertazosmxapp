@@ -87,7 +87,7 @@ const AllClientsComponent = ({ clients, filteredClientsCount }) => {
       <hr className="my-4" />
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <div className=" flex flex-row maxsm:flex-col maxsm:items-start items-center justify-between">
-          <h1 className="text-3xl my-5 ml-4 font-bold font-EB_Garamond">
+          <h1 className="text-2xl mb-5 ml-4 font-bold font-EB_Garamond w-full ">
             {`${filteredClientsCount} Clientes `}
           </h1>
           <AdminClientSearch />

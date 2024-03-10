@@ -37,7 +37,7 @@ const AdminPosts = ({ posts }) => {
 
       <div className="flex flex-row maxsm:flex-col justify-between items-center ">
         <table className="w-full text-sm text-left">
-          <thead className="text-l text-gray-700 uppercase">
+          <thead className="text-ll maxmd:xs text-gray-700 uppercase">
             <tr>
               <th scope="col" className="px-6 maxsm:px-0 py-3 maxmd:hidden">
                 Id
@@ -45,7 +45,10 @@ const AdminPosts = ({ posts }) => {
               <th scope="col" className="px-6 maxsm:px-0 py-3 maxsm:py-1">
                 Img
               </th>
-              <th scope="col" className="px-6 maxsm:px-0 py-3  maxsm:py-1">
+              <th
+                scope="col"
+                className="px-6 maxsm:px-0 py-3  maxsm:py-1 maxmd:hidden"
+              >
                 Catg.
               </th>
               <th scope="col" className="px-6 maxsm:px-0 py-3  maxsm:py-1">
@@ -80,7 +83,7 @@ const AdminPosts = ({ posts }) => {
                     </Link>
                   </span>
                 </td>
-                <td className="px-6 maxsm:px-0 py-2 ">
+                <td className="px-6 maxsm:px-0 py-2  maxmd:hidden">
                   <b>{post?.category.substring(0, 7)}...</b>
                 </td>
                 <td className={`px-6 maxsm:px-0 py-2 font-bold `}>

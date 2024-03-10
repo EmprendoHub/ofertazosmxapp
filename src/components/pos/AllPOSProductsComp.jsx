@@ -44,7 +44,7 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
       <hr className="my-4" />
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <div className=" flex flex-row maxsm:flex-col maxsm:items-start items-center justify-between">
-          <h1 className="text-3xl my-5 ml-4 font-bold font-EB_Garamond">
+          <h1 className="text-2xl mb-5 ml-1 font-bold font-EB_Garamond">
             {`${filteredProductsCount} Productos Con Existencias`}
           </h1>
           <POSProductSearch />
@@ -56,21 +56,21 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
           <thead className="text-l text-gray-700 uppercase">
             <tr>
               <th></th>
+
               <th scope="col" className="px-6 maxsm:px-0 py-3 maxmd:hidden">
                 SKU
+              </th>
+              <th scope="col" className="px-6 maxsm:px-0 py-3 maxsm:hidden">
+                Titulo
               </th>
               <th scope="col" className="px-6 maxsm:px-0 py-3 maxmd:hidden">
                 slug
               </th>
               <th scope="col" className="px-6 maxsm:px-0 py-3 ">
-                Img
-              </th>
-
-              <th scope="col" className="px-6 maxsm:px-0 py-3 ">
                 Precio
               </th>
-              <th scope="col" className="px-6 maxsm:px-0 py-3 maxsm:hidden">
-                Titulo
+              <th scope="col" className="px-6 maxsm:px-0 py-3 ">
+                Img
               </th>
               <th scope="col" className="px-1 py-3 ">
                 Exst.
@@ -98,8 +98,17 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
                 <td className="px-6 maxsm:px-2 py-2 maxmd:hidden">
                   {product._id.substring(0, 10)}...
                 </td>
+                <td className={`px-6 maxsm:px-0 py-2 font-bold maxsm:hidden`}>
+                  {product.title.substring(0, 15)}
+                </td>
                 <td className="px-6 maxsm:px-2 py-2 maxmd:hidden">
                   {product.slug.substring(0, 10)}...
+                </td>
+
+                <td className="px-6 maxsm:px-0 py-2 ">
+                  <b>
+                    <FormattedPrice amount={product?.variations[0].price} />
+                  </b>
                 </td>
                 <td className="px-6 maxsm:px-0 py-2 relative ">
                   <span className="relative flex items-center justify-center text-black w-12 h-12 maxsm:w-8 maxsm:h-8 shadow mt-2">
@@ -118,14 +127,6 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
                       ''
                     )}
                   </span>
-                </td>
-                <td className="px-6 maxsm:px-0 py-2 ">
-                  <b>
-                    <FormattedPrice amount={product?.variations[0].price} />
-                  </b>
-                </td>
-                <td className={`px-6 maxsm:px-0 py-2 font-bold maxsm:hidden`}>
-                  {product.title.substring(0, 15)}
                 </td>
                 <td className="px-1 py-2 ">{product.stock}</td>
               </tr>

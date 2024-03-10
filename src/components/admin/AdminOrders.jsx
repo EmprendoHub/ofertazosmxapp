@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { FaPencilAlt } from 'react-icons/fa';
+import { FaPencilAlt, FaEye } from 'react-icons/fa';
 import { formatDate, formatTime } from '@/backend/helpers';
 import { getTotalFromItems } from '@/backend/helpers';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
@@ -7,17 +7,17 @@ import AdminOrderSearch from '@/components/layout/AdminOrderSearch';
 
 const AdminOrders = ({ orders, filteredOrdersCount }) => {
   return (
-    <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <div className="relative overflow-x-auto shadow-md maxsm:rounded-lg">
       <div className=" flex flex-row maxsm:flex-col maxsm:items-start items-center justify-between">
         <h1 className="text-3xl w-full maxsm:text-xl my-5 maxsm:my-1 ml-4 maxsm:ml-0 font-bold font-EB_Garamond">
           {`${filteredOrdersCount} Pedidos `}
         </h1>
         <AdminOrderSearch />
       </div>
-      <table className="w-full text-sm maxsm:xs text-left">
+      <table className="w-full text-sm maxmd:text-xs text-left">
         <thead className=" text-gray-700 uppercase">
           <tr>
-            <th scope="col" className="px-6 maxsm:px-0 py-3">
+            <th scope="col" className="px-6 maxsm:px-1 py-3">
               No.
             </th>
             <th scope="col" className="px-6 py-3 maxmd:hidden">
@@ -80,7 +80,7 @@ const AdminOrders = ({ orders, filteredOrdersCount }) => {
                     href={`/admin/pedido/${order._id}`}
                     className="px-2 py-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
                   >
-                    <FaPencilAlt className="" />
+                    <FaEye className="" />
                   </Link>
                 </div>
               </td>
