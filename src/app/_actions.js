@@ -100,16 +100,34 @@ export async function payPOSDrawer(data) {
     await dbConnect();
     const userId = session?.user._id;
     items = JSON.parse(items);
-    const branchInfo = 'Sucursal Sahuayo';
+    const branchInfo = 'Sucursal';
     const ship_cost = 0;
     const date = cstDateTime();
-    const paymentInfo = {
-      id: 'paid',
-      status: 'paid',
-      amountPaid: amountReceived,
-      taxPaid: 0,
-      paymentIntent: 'paid',
-    };
+
+    let paymentInfo;
+    let layAwayIntent;
+    let currentOrderStatus;
+    if (payType === 'layaway') {
+      paymentInfo = {
+        id: 'partial',
+        status: 'unpaid',
+        amountPaid: amountReceived,
+        taxPaid: 0,
+        paymentIntent: 'partial',
+      };
+      currentOrderStatus = 'Apartado';
+      layAwayIntent = true;
+    } else {
+      paymentInfo = {
+        id: 'paid',
+        status: 'paid',
+        amountPaid: amountReceived,
+        taxPaid: 0,
+        paymentIntent: 'paid',
+      };
+      currentOrderStatus = 'Pagado';
+      layAwayIntent = false;
+    }
 
     const cartItems = [];
     await Promise.all(
@@ -147,6 +165,7 @@ export async function payPOSDrawer(data) {
         }
       })
     );
+
     let orderData = {
       user: userId,
       ship_cost,
@@ -154,14 +173,16 @@ export async function payPOSDrawer(data) {
       branch: branchInfo,
       paymentInfo,
       orderItems: cartItems,
-      orderStatus: 'Sucursal',
-      layaway: false,
+      orderStatus: currentOrderStatus,
+      layaway: layAwayIntent,
       affiliateId: '',
     };
 
     let newOrder = await new Order(orderData);
     await newOrder.save();
     newOrder = JSON.stringify(newOrder);
+
+    revalidatePath('/admin/pedidos');
 
     return { newOrder: newOrder };
   } catch (error) {

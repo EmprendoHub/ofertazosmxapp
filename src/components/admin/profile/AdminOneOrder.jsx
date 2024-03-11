@@ -205,7 +205,7 @@ const AdminOneOrder = ({ order, deliveryAddress, id }) => {
       </div>
       <div className="relative flex flex-row maxmd:flex-col items-center justify-start overflow-x-auto shadow-md sm:rounded-lg p-5 gap-12">
         <div className="w-1/3 maxmd:w-full">
-          <div className="container max-w-screen-xl mx-auto bg-white flex flex-col justify-between p-2">
+          <div className=" max-w-screen-xl mx-auto bg-white flex flex-col p-2">
             <h2 className="text-2xl">Totales</h2>
             {order?.orderStatus === 'Apartado' ? (
               <ul className="mb-5">

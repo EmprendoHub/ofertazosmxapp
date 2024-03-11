@@ -173,7 +173,7 @@ const OneOrder = ({ order, session, deliveryAddress }) => {
       {order?.orderStatus === 'Apartado' ? (
         <div className="relative flex fle-row maxmd:flex-col overflow-x-auto shadow-md sm:rounded-lg p-5">
           <div className="w-1/3 maxmd:w-full">
-            <div className="container max-w-screen-xl mx-auto bg-white flex flex-col justify-between p-2">
+            <div className=" max-w-screen-xl mx-auto bg-white flex flex-col p-2">
               <h2 className="text-2xl">Totales</h2>
               <ul className="mb-5">
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
@@ -245,7 +245,7 @@ const OneOrder = ({ order, session, deliveryAddress }) => {
       ) : (
         <div className="relative flex fle-row maxmd:flex-col overflow-x-auto shadow-md sm:rounded-lg p-5">
           <div className="w-1/3 maxmd:w-full">
-            <div className="container max-w-screen-xl mx-auto bg-white flex flex-col justify-between p-2">
+            <div className="container max-w-screen-xl mx-auto bg-white flex flex-col  p-2">
               <ul className="mb-5">
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
                   <span>Sub-Total:</span>

@@ -32,10 +32,20 @@ const POSPaymentForm = () => {
   //=============================== Drawer Payment starts here ============================
 
   const handleCheckout = async (payType) => {
-    if (!amountReceived || totalAmountCalc > amountReceived) {
-      toast.error('La cantidad que recibe es menor al total');
-      return;
+    if (payType === 'layaway') {
+      if (!amountReceived || layawayAmount > amountReceived) {
+        toast.error(
+          'La cantidad que recibe es menor al minino de 30% que se require para apartar este pedido'
+        );
+        return;
+      }
+    } else {
+      if (!amountReceived || totalAmountCalc > amountReceived) {
+        toast.error('La cantidad que recibe es menor al total');
+        return;
+      }
     }
+
     const formData = new FormData();
     const items = JSON.stringify(productsPOS);
     formData.append('items', items);
@@ -51,7 +61,7 @@ const POSPaymentForm = () => {
       dispatch(savePOSOrder({ order: order }));
       dispatch(resetPOSCart());
       setAmountReceived(0);
-      router.push('/puntodeventa/pedidos');
+      router.push('/admin/pedidos');
     }
   };
 
@@ -98,6 +108,18 @@ const POSPaymentForm = () => {
                 <p className=" font-medium  font-EB_Garamond">IVA</p>
                 <p>
                   <FormattedPrice amount={0} />
+                </p>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div className="border-b-[1px] border-b-slate-300 py-2">
+              <div className="flex items-center justify-between">
+                <p className=" font-medium  font-EB_Garamond">
+                  Apártalo por solo
+                </p>
+                <p>
+                  <FormattedPrice amount={layawayAmount} />
                 </p>
               </div>
             </div>

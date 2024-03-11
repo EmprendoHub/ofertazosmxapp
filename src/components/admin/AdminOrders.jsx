@@ -29,6 +29,9 @@ const AdminOrders = ({ orders, filteredOrdersCount }) => {
             <th scope="col" className="px-6 maxsm:px-0 py-3">
               Estado
             </th>
+            <th scope="col" className="px-6 maxsm:px-0 py-3">
+              Ubicación
+            </th>
             <th scope="col" className="px-6 py-3 maxsm:hidden">
               Fecha
             </th>
@@ -67,6 +70,15 @@ const AdminOrders = ({ orders, filteredOrdersCount }) => {
                 }`}
               >
                 {order.orderStatus}
+              </td>
+              <td
+                className={`px-6 maxsm:px-0 py-2 font-bold ${
+                  order.branch === 'Sahuayo'
+                    ? 'text-amber-700'
+                    : 'text-slate-600'
+                }`}
+              >
+                {order.branch}
               </td>
               <td className="px-6 py-2 maxsm:hidden">
                 {order?.createdAt &&

@@ -11,7 +11,7 @@ import {
   TbMessage2Question,
   TbLayoutGridAdd,
 } from 'react-icons/tb';
-import { LiaCashRegisterSolid } from 'react-icons/lia';
+import { LiaCashRegisterSolid, LiaStoreAltSolid } from 'react-icons/lia';
 import { GiClothes } from 'react-icons/gi';
 
 export default function UserLayout({ children }) {
@@ -108,11 +108,18 @@ export default function UserLayout({ children }) {
               active={
                 pathname === '/admin/pos/productos' ||
                 pathname === '/admin/pos/qr/scanner' ||
+                pathname === 'admin/pos/tienda' ||
                 (pathname === '/admin/pos/carrito' && true)
               }
               url={'/admin/pos/productos'}
               alert
               dropdownItems={[
+                {
+                  text: 'Tienda',
+                  url: '/admin/pos/tienda',
+                  active: pathname === '/admin/pos/tienda' ?? true,
+                  icon: <LiaStoreAltSolid size={20} />,
+                },
                 {
                   text: 'Caja',
                   url: '/admin/pos/carrito',

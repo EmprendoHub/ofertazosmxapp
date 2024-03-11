@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Html5QrcodeScanner } from 'html5-qrcode';
 import { usePathname, useRouter } from 'next/navigation';
 
-const QRComponent = () => {
+const QRScannerComponent = () => {
   const [scanResult, setScanResult] = useState(null);
   const pathname = usePathname();
   const router = useRouter();
@@ -71,4 +71,4 @@ const QRComponent = () => {
   );
 };
 
-export default QRComponent;
+export default QRScannerComponent;

@@ -26,7 +26,11 @@ const POSScannerComponent = ({ product, variation }) => {
         confirmButtonText: 'OK',
       }).then((result) => {
         if (result.isConfirmed) {
-          router.push('/puntodeventa/pedidos');
+          if (pathname.includes('admin')) {
+            router.push('/admin/pos/pedidos');
+          } else {
+            router.push('/puntodeventa/pedidos');
+          }
         }
       });
     }
