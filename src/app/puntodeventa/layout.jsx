@@ -30,96 +30,42 @@ export default function UserLayout({ children }) {
             active={pathname === '/puntodeventa/pedidos' ?? true}
             url={'/puntodeventa/pedidos'}
           />
-          <SideBarItem
-            icon={<CiGrid31 size={20} />}
-            text={'Publicaciones'}
-            active={pathname === '/puntodeventa/blog' ?? true}
-            url={'/puntodeventa/blog'}
-            alert
-            dropdownItems={[
-              {
-                text: 'Todas',
-                url: '/puntodeventa/blog',
-                active: pathname === '/puntodeventa/blog' ?? true,
-                icon: <CiGrid31 size={20} />,
-              },
-              {
-                text: 'Nueva Publicación ',
-                url: '/puntodeventa/blog/editor',
-                active: pathname === '/puntodeventa/blog/editor' ?? true,
-                icon: <MdOutlinePostAdd size={20} />,
-              },
-              // Add more dropdown items as needed
-            ]}
-          />
 
-          <SideBarItem
-            icon={<GiClothes size={20} />}
-            text={'Productos'}
-            active={
-              pathname === '/puntodeventa/productos' ||
-              (pathname === '/puntodeventa/productos/nuevo/variaciones' && true)
-            }
-            url={'/puntodeventa/productos'}
-            alert
-            dropdownItems={[
-              {
-                text: 'Todos',
-                url: '/puntodeventa/productos',
-                active: pathname === '/puntodeventa/productos' ?? true,
-                icon: <GiClothes size={20} />,
-              },
-              {
-                text: 'Nuevo Producto',
-                url: '/puntodeventa/productos/nuevo/variaciones',
-                active:
-                  pathname === '/puntodeventa/productos/nuevo/variaciones' ??
-                  true,
-                icon: <TbLayoutGridAdd size={20} />,
-              },
-              // Add more dropdown items as needed
-            ]}
-          />
-
-          <hr className="my-3 maxmd:my-1" />
           <SideBarItem
             icon={<LuReceipt size={20} />}
             text={'POS'}
             active={
-              pathname === '/puntodeventa/productos' ||
-              pathname === '/puntodeventa/qr/scanner' ||
-              pathname === 'puntodeventa/tienda' ||
+              pathname === '/puntodeventa/tienda' ||
+              (pathname === '/puntodeventa/tienda' && true)
+            }
+            url={'/puntodeventa/tienda'}
+          />
+          <SideBarItem
+            icon={<LiaCashRegisterSolid size={20} />}
+            text={'Caja'}
+            active={
+              pathname === '/puntodeventa/carrito' ||
               (pathname === '/puntodeventa/carrito' && true)
             }
+            url={'/puntodeventa/carrito'}
+          />
+          <SideBarItem
+            icon={<TbScan size={20} />}
+            text={'Scanner'}
+            active={
+              pathname === '/puntodeventa/qr/scanner' ||
+              (pathname === '/puntodeventa/qr/scanner' && true)
+            }
+            url={'/puntodeventa/qr/scanner'}
+          />
+          <SideBarItem
+            icon={<TbQrcode size={20} />}
+            text={'Generar QRs'}
+            active={
+              pathname === '/puntodeventa/productos' ||
+              (pathname === '/puntodeventa/productos' && true)
+            }
             url={'/puntodeventa/productos'}
-            alert
-            dropdownItems={[
-              {
-                text: 'Tienda',
-                url: '/puntodeventa/tienda',
-                active: pathname === '/puntodeventa/tienda' ?? true,
-                icon: <LiaStoreAltSolid size={20} />,
-              },
-              {
-                text: 'Caja',
-                url: '/puntodeventa/carrito',
-                active: pathname === '/puntodeventa/carrito' ?? true,
-                icon: <LiaCashRegisterSolid size={20} />,
-              },
-              {
-                text: 'Scanner',
-                url: '/puntodeventa/qr/scanner',
-                active: pathname === '/puntodeventa/qr/scanner' ?? true,
-                icon: <TbScan size={20} />,
-              },
-              {
-                text: 'Generar QRs`',
-                url: '/puntodeventa/productos',
-                active: pathname === '/puntodeventa/productos' ?? true,
-                icon: <TbQrcode size={20} />,
-              },
-              // Add more dropdown items as needed
-            ]}
           />
         </BranchSidebar>
         <div className="relative w-full mb-5 ">{children}</div>

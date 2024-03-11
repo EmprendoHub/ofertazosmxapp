@@ -47,7 +47,7 @@ const AdminOrders = ({ orders, filteredOrdersCount }) => {
                 Estado
               </th>
               <th scope="col" className="px-4 maxsm:px-0 py-3">
-                Ubicación
+                Ubic.
               </th>
               <th scope="col" className="px-4 py-3 maxsm:hidden">
                 Fecha
@@ -83,8 +83,8 @@ const AdminOrders = ({ orders, filteredOrdersCount }) => {
                       ? 'text-blue-700'
                       : order.orderStatus === 'Entregado'
                       ? 'text-green-700'
-                      : order.orderStatus === 'Sucursal'
-                      ? 'text-purple-950'
+                      : order.orderStatus === 'Pagado'
+                      ? 'text-green-800'
                       : 'text-slate-600'
                   }`}
                 >

@@ -1,17 +1,11 @@
-import StoreHeroComponent from '@/components/hero/StoreHeroComponent';
-import ListProducts from '@/components/products/ListProducts';
 import { getCookiesName } from '@/backend/helpers';
 import { cookies } from 'next/headers';
 import ServerPagination from '@/components/pagination/ServerPagination';
-import StoreMainHero from '@/components/store/StoreMainHero';
 import ListPOSProducts from '@/components/products/ListPOSProducts';
-import Search from '@/components/layout/Search';
-import POSSearch from '@/components/layout/POSearch';
 
 export const metadata = {
-  title: 'Tienda Shopout Mx',
-  description:
-    'Ven y explora nuestra tienda en linea y descubre modelos exclusivos de marcas de alta gama.',
+  title: 'POS Shopout Mx',
+  description: 'Punto de Venta Shopout Mx',
 };
 
 const getAllProducts = async (searchParams, currentCookies, perPage) => {

@@ -5,9 +5,16 @@ import { toast } from 'react-toastify';
 import { FaCircleCheck, FaCircleExclamation } from 'react-icons/fa6';
 import { resetPOSCart, savePOSOrder } from '@/redux/shoppingSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 const PayCartComp = ({ setShowModal, payType }) => {
+  const getPathname = usePathname();
+  let pathname;
+  if (getPathname.includes('admin')) {
+    pathname = 'admin';
+  } else if (getPathname.includes('puntodeventa')) {
+    pathname = 'puntodeventa';
+  }
   const dispatch = useDispatch();
   const router = useRouter();
   const [transactionNo, setTransactionNo] = useState('EFECTIVO');
@@ -71,7 +78,7 @@ const PayCartComp = ({ setShowModal, payType }) => {
       dispatch(savePOSOrder({ order: order }));
       dispatch(resetPOSCart());
       setAmountReceived(0);
-      router.push('/admin/pedidos');
+      router.push(`/${pathname}/pedidos`);
     }
   };
 

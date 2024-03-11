@@ -9,9 +9,16 @@ import { calculatePercentage } from '@/backend/helpers';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToPOSCart } from '@/redux/shoppingSlice';
 import { Bounce, toast } from 'react-toastify';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
-const POSProductDetails = ({ product, trendingProducts }) => {
+const POSProductDetails = ({ product }) => {
+  const getPathname = usePathname();
+  let pathname;
+  if (getPathname.includes('admin')) {
+    pathname = 'admin/pos';
+  } else if (getPathname.includes('puntodeventa')) {
+    pathname = 'puntodeventa';
+  }
   const dispatch = useDispatch();
   const { productsPOS } = useSelector((state) => state?.compras);
   const router = useRouter();
@@ -133,7 +140,7 @@ const POSProductDetails = ({ product, trendingProducts }) => {
         transition: Bounce,
       }
     );
-    router.push('/admin/pos/carrito');
+    router.push(`/${pathname}/carrito`);
   };
 
   const handleColorSelection = (e) => {
@@ -279,7 +286,7 @@ const POSProductDetails = ({ product, trendingProducts }) => {
                 {product?.stock <= 0 || alreadyCart ? (
                   ''
                 ) : (
-                  <>
+                  <div className="flex items-start justify-start">
                     {' '}
                     <motion.div
                       initial={{ y: 50, opacity: 0 }}
@@ -342,7 +349,7 @@ const POSProductDetails = ({ product, trendingProducts }) => {
                         </div>
                       )}
                     </motion.div>
-                  </>
+                  </div>
                 )}
 
                 <motion.div
@@ -358,7 +365,7 @@ const POSProductDetails = ({ product, trendingProducts }) => {
                     </span>
                   ) : alreadyCart ? (
                     <span className="  border-[1px] border-black text-sm py-1 px-3 rounded-sm bg-black text-slate-100">
-                      TODAS LAS EXISTENCIAS ESTÁN EN CARRITO
+                      TODAS LAS EXISTENCIAS ESTÁN SELECCIONADAS
                     </span>
                   ) : (
                     <motion.button

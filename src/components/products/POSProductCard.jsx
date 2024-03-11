@@ -5,8 +5,16 @@ import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { calculatePercentage } from '@/backend/helpers';
+import { usePathname } from 'next/navigation';
 
 const POSProductCard = ({ item }) => {
+  const getPathname = usePathname();
+  let pathname;
+  if (getPathname.includes('admin')) {
+    pathname = 'admin/pos';
+  } else if (getPathname.includes('puntodeventa')) {
+    pathname = 'puntodeventa';
+  }
   return (
     <motion.div
       initial={{ y: 30, opacity: 0 }}
@@ -14,7 +22,7 @@ const POSProductCard = ({ item }) => {
       transition={{ duration: 1.0 }}
       className="border-[1px] rounded-sm max-w-[350px] maxmd:max-w-[100%] overflow-hidden relative"
     >
-      <Link href={`/admin/pos/tienda/producto/${item.slug}`}>
+      <Link href={`/${pathname}/tienda/producto/${item.slug}`}>
         <div className="w-full h-[300px] group overflow-hidden relative">
           <Image
             src={item?.images[0].url}
