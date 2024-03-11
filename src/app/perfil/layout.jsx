@@ -3,20 +3,9 @@ import CustomerSidebar, {
   SideBarItem,
 } from '@/components/admin/CustomerSidebar';
 import { usePathname } from 'next/navigation';
-import { TbDeviceIpadDollar, TbQrcode, TbScan } from 'react-icons/tb';
-import { PiUserListLight } from 'react-icons/pi';
-import { CiGrid31 } from 'react-icons/ci';
+import { TbDeviceIpadDollar } from 'react-icons/tb';
 import { TfiDashboard } from 'react-icons/tfi';
-import {
-  MdOutlineAddHomeWork,
-  MdOutlineContactMail,
-  MdOutlinePostAdd,
-} from 'react-icons/md';
-import { LuReceipt } from 'react-icons/lu';
-import { TbMessage2Question, TbLayoutGridAdd } from 'react-icons/tb';
-import { LiaCashRegisterSolid, LiaStoreAltSolid } from 'react-icons/lia';
-import { GiClothes } from 'react-icons/gi';
-import Sidebar from '@/components/layout/Sidebar';
+import { MdOutlineAddHomeWork } from 'react-icons/md';
 import { FaHeart, FaRegAddressCard } from 'react-icons/fa6';
 import { FaUserEdit } from 'react-icons/fa';
 import { RiLockPasswordLine } from 'react-icons/ri';

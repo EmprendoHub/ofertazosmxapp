@@ -1,29 +1,129 @@
-import POSSidebar from '@/components/pos/POSSidebar';
+'use client';
+import BranchSidebar, { SideBarItem } from '@/components/pos/POSSidebar';
+import { usePathname } from 'next/navigation';
+import { TbDeviceIpadDollar, TbQrcode, TbScan } from 'react-icons/tb';
+import { PiUserListLight } from 'react-icons/pi';
+import { CiGrid31 } from 'react-icons/ci';
+import { TfiDashboard } from 'react-icons/tfi';
+import { MdOutlineContactMail, MdOutlinePostAdd } from 'react-icons/md';
+import { LuReceipt } from 'react-icons/lu';
+import { TbMessage2Question, TbLayoutGridAdd } from 'react-icons/tb';
+import { LiaCashRegisterSolid, LiaStoreAltSolid } from 'react-icons/lia';
+import { GiClothes } from 'react-icons/gi';
 
 export default function UserLayout({ children }) {
+  const pathname = usePathname();
+
   return (
-    <>
-      <section className="py-5 font-EB_Garamond bg-gray-200 print:hidden">
-        <div className="flex flex-row gap-3 items-center  mx-auto px-10">
-          <div className="relative flex ">
-            <POSSidebar />
-          </div>
-          <h1 className="flex text-bold text-2xl  maxsm:text-lg text-black font-EB_Garamond">
-            Panel de Control
-          </h1>
-        </div>
-      </section>
-      <section className=" maxsm:py-2  print:p-0  bg-slate-100 text-black">
-        <div className=" mx-auto px-4 maxsm:px-1  print:m-0">
-          <div className="flex flex-row maxmd:flex-col ">
-            <main className="w-full px-4 maxsm:px-0 print:m-0">
-              <article className="border border-gray-200 bg white shadow-md rounded mb-5 px-5 maxmd:px-3 print:p-0">
-                {children}
-              </article>
-            </main>
-          </div>
-        </div>
-      </section>
-    </>
+    <div className="max-w-full pr-2">
+      <div className="flex items-start w-full ">
+        <BranchSidebar>
+          <SideBarItem
+            icon={<TfiDashboard size={20} />}
+            text={'Tablero'}
+            active={pathname === '/puntodeventa' ?? true}
+            url={'/puntodeventa'}
+          />
+          <SideBarItem
+            icon={<TbDeviceIpadDollar size={20} />}
+            text={'Pedidos'}
+            active={pathname === '/puntodeventa/pedidos' ?? true}
+            url={'/puntodeventa/pedidos'}
+          />
+          <SideBarItem
+            icon={<CiGrid31 size={20} />}
+            text={'Publicaciones'}
+            active={pathname === '/puntodeventa/blog' ?? true}
+            url={'/puntodeventa/blog'}
+            alert
+            dropdownItems={[
+              {
+                text: 'Todas',
+                url: '/puntodeventa/blog',
+                active: pathname === '/puntodeventa/blog' ?? true,
+                icon: <CiGrid31 size={20} />,
+              },
+              {
+                text: 'Nueva Publicación ',
+                url: '/puntodeventa/blog/editor',
+                active: pathname === '/puntodeventa/blog/editor' ?? true,
+                icon: <MdOutlinePostAdd size={20} />,
+              },
+              // Add more dropdown items as needed
+            ]}
+          />
+
+          <SideBarItem
+            icon={<GiClothes size={20} />}
+            text={'Productos'}
+            active={
+              pathname === '/puntodeventa/productos' ||
+              (pathname === '/puntodeventa/productos/nuevo/variaciones' && true)
+            }
+            url={'/puntodeventa/productos'}
+            alert
+            dropdownItems={[
+              {
+                text: 'Todos',
+                url: '/puntodeventa/productos',
+                active: pathname === '/puntodeventa/productos' ?? true,
+                icon: <GiClothes size={20} />,
+              },
+              {
+                text: 'Nuevo Producto',
+                url: '/puntodeventa/productos/nuevo/variaciones',
+                active:
+                  pathname === '/puntodeventa/productos/nuevo/variaciones' ??
+                  true,
+                icon: <TbLayoutGridAdd size={20} />,
+              },
+              // Add more dropdown items as needed
+            ]}
+          />
+
+          <hr className="my-3 maxmd:my-1" />
+          <SideBarItem
+            icon={<LuReceipt size={20} />}
+            text={'POS'}
+            active={
+              pathname === '/puntodeventa/productos' ||
+              pathname === '/puntodeventa/qr/scanner' ||
+              pathname === 'puntodeventa/tienda' ||
+              (pathname === '/puntodeventa/carrito' && true)
+            }
+            url={'/puntodeventa/productos'}
+            alert
+            dropdownItems={[
+              {
+                text: 'Tienda',
+                url: '/puntodeventa/tienda',
+                active: pathname === '/puntodeventa/tienda' ?? true,
+                icon: <LiaStoreAltSolid size={20} />,
+              },
+              {
+                text: 'Caja',
+                url: '/puntodeventa/carrito',
+                active: pathname === '/puntodeventa/carrito' ?? true,
+                icon: <LiaCashRegisterSolid size={20} />,
+              },
+              {
+                text: 'Scanner',
+                url: '/puntodeventa/qr/scanner',
+                active: pathname === '/puntodeventa/qr/scanner' ?? true,
+                icon: <TbScan size={20} />,
+              },
+              {
+                text: 'Generar QRs`',
+                url: '/puntodeventa/productos',
+                active: pathname === '/puntodeventa/productos' ?? true,
+                icon: <TbQrcode size={20} />,
+              },
+              // Add more dropdown items as needed
+            ]}
+          />
+        </BranchSidebar>
+        <div className="relative w-full mb-5 ">{children}</div>
+      </div>
+    </div>
   );
 }

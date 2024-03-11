@@ -8,6 +8,7 @@ import AdminOrderSearch from '@/components/layout/AdminOrderSearch';
 import { TfiMoney } from 'react-icons/tfi';
 import { useState } from 'react';
 import Modal from '../modals/Modal';
+import { FaPrint } from 'react-icons/fa6';
 
 const AdminOrders = ({ orders, filteredOrdersCount }) => {
   const [showModal, setShowModal] = useState(false);
@@ -111,6 +112,12 @@ const AdminOrders = ({ orders, filteredOrdersCount }) => {
                       className="px-2 py-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
                     >
                       <FaEye className="" />
+                    </Link>
+                    <Link
+                      href={`/admin/recibo/${order._id}`}
+                      className="px-2 py-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
+                    >
+                      <FaPrint className="" />
                     </Link>
                     {order?.paymentInfo?.amountPaid >=
                       getTotalFromItems(order.orderItems) ===

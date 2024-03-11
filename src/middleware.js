@@ -80,6 +80,10 @@ export async function middleware(request) {
       signInUrl = new URL('/admin', request.url);
       return NextResponse.redirect(signInUrl);
     }
+    if (token?.user?.role === 'sucursal') {
+      signInUrl = new URL('/puntodeventa', request.url);
+      return NextResponse.redirect(signInUrl);
+    }
   }
   // Check if 'alink' is present in the URL search parameters
   const affParam = request.nextUrl.searchParams.get('alink');

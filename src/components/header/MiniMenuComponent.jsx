@@ -70,6 +70,26 @@ const MiniMenuComponent = () => {
               )}
             </Link>
           </>
+        ) : session?.user?.role === 'sucursal' ? (
+          <>
+            <Link href={'/puntodeventa'}>
+              {session?.user?.image ? (
+                <Image
+                  className="w-8 h-8 rounded-full "
+                  src={
+                    session?.user?.image ? session?.user?.image : '/next.svg'
+                  }
+                  alt={session?.user?.name ? session?.user?.name : 'avatar'}
+                  width={50}
+                  height={50}
+                />
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center uppercase text-xl font-EB_Garamond">
+                  {session?.user?.email.substring(0, 1)}
+                </div>
+              )}
+            </Link>
+          </>
         ) : (
           <>
             <Link href={'/perfil'}>
@@ -93,7 +113,9 @@ const MiniMenuComponent = () => {
         )}
 
         {/* Cart Button */}
-        {isLoggedIn && session?.user.role != 'manager' ? (
+        {isLoggedIn &&
+        session?.user.role != 'manager' &&
+        session?.user?.role != 'sucursal' ? (
           <div className="flex items-center gap-x-3">
             <Link href={'/carrito'}>
               <div className="bg-gray-100 rounded-full text-slate-800  flex items-center justify-center  cursor-pointer">
@@ -103,30 +125,29 @@ const MiniMenuComponent = () => {
                 </span>
               </div>
             </Link>
-            {session.user.role === 'sucursal' ? (
-              <Link href={'/puntodeventa/qr/generador'}>
-                <div className="  flex items-center justify-center  ease-in-out duration-300 cursor-pointer">
-                  <IoQrCode className="text-xl" />
-                  <span className="bg-white text-black rounded-full font-bold text-xs relative  -top-2 flex items-center justify-center w-4 h-5 shadow-xl ">
-                    {qrListData ? qrListData?.length : 0}
-                  </span>
-                </div>
-              </Link>
-            ) : (
-              <Link href={'/perfil/favoritos'}>
-                <div className="  flex items-center justify-center  ease-in-out duration-300 cursor-pointer">
-                  <IoMdHeart className="text-xl" />
-                  <span className="bg-white text-black rounded-full font-bold text-xs relative  -top-2 flex items-center justify-center w-4 h-5 shadow-xl ">
-                    {favoritesData ? favoritesData?.length : 0}
-                  </span>
-                </div>
-              </Link>
-            )}
           </div>
         ) : (
           ''
         )}
-
+        {isLoggedIn && session.user.role === 'sucursal' ? (
+          <Link href={'/puntodeventa/qr/generador'}>
+            <div className="  flex items-center justify-center  ease-in-out duration-300 cursor-pointer">
+              <IoQrCode className="text-xl" />
+              <span className="bg-white text-black rounded-full font-bold text-xs relative  -top-2 flex items-center justify-center w-4 h-5 shadow-xl ">
+                {qrListData ? qrListData?.length : 0}
+              </span>
+            </div>
+          </Link>
+        ) : (
+          <Link href={'/perfil/favoritos'}>
+            <div className="  flex items-center justify-center  ease-in-out duration-300 cursor-pointer">
+              <IoMdHeart className="text-xl" />
+              <span className="bg-white text-black rounded-full font-bold text-xs relative  -top-2 flex items-center justify-center w-4 h-5 shadow-xl ">
+                {favoritesData ? favoritesData?.length : 0}
+              </span>
+            </div>
+          </Link>
+        )}
         {/*  Emails Button */}
         {isLoggedIn && session?.user.role === 'manager' ? (
           <Link href={'/admin/correos'}>

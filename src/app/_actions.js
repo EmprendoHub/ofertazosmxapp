@@ -1060,7 +1060,10 @@ export async function getAllClient(searchQuery) {
     let clientQuery;
 
     if (session) {
-      if (session?.user?.role === 'manager') {
+      if (
+        session?.user?.role === 'manager' ||
+        session?.user?.role === 'sucursal'
+      ) {
         clientQuery = User.find({ role: 'cliente' });
       }
     }

@@ -6,11 +6,12 @@ import POSProductSearch from '../layout/POSProductSearch';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import { FaStar } from 'react-icons/fa6';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const pathname = usePathname();
   const { qrListData } = useSelector((state) => state.compras);
   const [selectedProducts, setSelectedProducts] = useState([]);
   useEffect(() => {
@@ -36,7 +37,11 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
   };
 
   const handleGenerateQR = () => {
-    router.push('/admin/pos/qr/generador');
+    if (pathname.includes('admin')) {
+      router.push('/admin/pos/qr/generador');
+    } else {
+      router.push('/puntodeventa/qr/generador');
+    }
   };
 
   return (
