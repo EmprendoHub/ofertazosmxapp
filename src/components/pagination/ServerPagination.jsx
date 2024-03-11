@@ -59,7 +59,7 @@ const ServerPagination = ({
               <Link
                 href={`?page=${nextPage}`}
                 aria-label="Next Page"
-                className="bg-black w-10 h-10 flex justify-center items-center disabled:bg-slate-300 text-white p-2  rounded-full text-xl maxmd:text-xs"
+                className="bg-black w-8 h-8 flex justify-center items-center disabled:bg-slate-300 text-white p-2  rounded-full text-xl maxmd:text-xs"
               >
                 <FiChevronRight />
               </Link>

@@ -45,7 +45,7 @@ const AdminOrdersPage = async ({ searchParams }) => {
             {page === 1 ? (
               <div
                 aria-disabled="true"
-                className="opacity-60 bg-black w-10 h-10 flex justify-center items-center disabled:bg-slate-300 text-white p-2  rounded-full text-xl maxmd:text-md"
+                className="opacity-60 bg-black w-8 h-8 flex justify-center items-center disabled:bg-slate-300 text-white p-2  rounded-full text-xl maxmd:text-md"
               >
                 <FiChevronLeft />
               </div>
@@ -53,7 +53,7 @@ const AdminOrdersPage = async ({ searchParams }) => {
               <Link
                 href={`?page=${prevPage}`}
                 aria-label="Previous Page"
-                className="bg-black w-10 h-10 flex justify-center items-center disabled:bg-slate-300 text-white p-2  rounded-full text-xl maxmd:text-md"
+                className="bg-black w-8 h-8 flex justify-center items-center disabled:bg-slate-300 text-white p-2  rounded-full text-xl maxmd:text-md"
               >
                 <FiChevronLeft />
               </Link>
@@ -64,8 +64,8 @@ const AdminOrdersPage = async ({ searchParams }) => {
                 key={index}
                 className={
                   page === pageNumber
-                    ? 'bg-black fw-bold px-2 w-10 h-10 flex justify-center items-center text-white rounded-full'
-                    : 'hover:bg-black px-1 rounded-full w-10 h-10 flex justify-center items-center hover:text-white'
+                    ? 'bg-black fw-bold px-2 w-8 h-8 flex justify-center items-center text-white rounded-full'
+                    : 'hover:bg-black px-1 rounded-full w-8 h-8 flex justify-center items-center hover:text-white'
                 }
                 href={`?page=${pageNumber}`}
               >
@@ -75,7 +75,7 @@ const AdminOrdersPage = async ({ searchParams }) => {
 
             {page === totalPages ? (
               <div
-                className="opacity-60 bg-black w-10 h-10 flex justify-center items-center disabled:bg-slate-300 text-white p-2  rounded-full text-xl maxmd:text-md"
+                className="opacity-60 bg-black w-8 h-8 flex justify-center items-center disabled:bg-slate-300 text-white p-2  rounded-full text-xl maxmd:text-md"
                 aria-disabled="true"
               >
                 <FiChevronRight />
@@ -84,7 +84,7 @@ const AdminOrdersPage = async ({ searchParams }) => {
               <Link
                 href={`?page=${nextPage}`}
                 aria-label="Next Page"
-                className="bg-black w-10 h-10 flex justify-center items-center disabled:bg-slate-300 text-white p-2  rounded-full text-xl maxmd:text-md"
+                className="bg-black w-8 h-8 flex justify-center items-center disabled:bg-slate-300 text-white p-2  rounded-full text-xl maxmd:text-md"
               >
                 <FiChevronRight />
               </Link>
