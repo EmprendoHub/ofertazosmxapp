@@ -16,7 +16,7 @@ const backdropVariants = {
   duration: { duration: 1.5 },
 };
 
-const Sidebar = ({ children }) => {
+const CustomerSidebar = ({ children }) => {
   const [expandSidebar, setExpandSidebar] = useState(true);
   const { user } = useContext(AuthContext);
   return (
@@ -95,7 +95,7 @@ const Sidebar = ({ children }) => {
   );
 };
 
-export default Sidebar;
+export default CustomerSidebar;
 
 export function SideBarItem({ icon, text, active, alert, url, dropdownItems }) {
   const { expandSidebar } = useContext(SidebarContext);

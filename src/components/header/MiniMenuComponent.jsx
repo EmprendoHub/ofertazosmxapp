@@ -96,12 +96,9 @@ const MiniMenuComponent = () => {
         {isLoggedIn && session?.user.role != 'manager' ? (
           <div className="flex items-center gap-x-3">
             <Link href={'/carrito'}>
-              <div className="bg-gray-100 hover:bg-slate-100 rounded-full text-slate-800 hover:text-black flex items-center justify-center gap-x-1 px-1 py-1.5 border-[1px]  border-gray-100 hover:border-slate-600 ease-in-out duration-300 cursor-pointer">
+              <div className="bg-gray-100 rounded-full text-slate-800  flex items-center justify-center  cursor-pointer">
                 <IoMdCart className="text-xl" />
-                <p className="text-sm maxsm:hidden">
-                  <FormattedPrice amount={totalCartAmt ? totalCartAmt : 0} />
-                </p>
-                <span className="bg-white text-black rounded-full font-bold text-xs relative -right-2 -top-2 flex items-center justify-center w-4 h-5 shadow-xl ">
+                <span className="bg-white text-black rounded-full font-bold text-xs relative  -top-2 flex items-center justify-center w-4 h-5 shadow-xl ">
                   {productsData ? productsData?.length : 0}
                 </span>
               </div>

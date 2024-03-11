@@ -1,27 +1,94 @@
+'use client';
+import CustomerSidebar, {
+  SideBarItem,
+} from '@/components/admin/CustomerSidebar';
+import { usePathname } from 'next/navigation';
+import { TbDeviceIpadDollar, TbQrcode, TbScan } from 'react-icons/tb';
+import { PiUserListLight } from 'react-icons/pi';
+import { CiGrid31 } from 'react-icons/ci';
+import { TfiDashboard } from 'react-icons/tfi';
+import {
+  MdOutlineAddHomeWork,
+  MdOutlineContactMail,
+  MdOutlinePostAdd,
+} from 'react-icons/md';
+import { LuReceipt } from 'react-icons/lu';
+import { TbMessage2Question, TbLayoutGridAdd } from 'react-icons/tb';
+import { LiaCashRegisterSolid, LiaStoreAltSolid } from 'react-icons/lia';
+import { GiClothes } from 'react-icons/gi';
 import Sidebar from '@/components/layout/Sidebar';
+import { FaHeart, FaRegAddressCard } from 'react-icons/fa6';
+import { FaUserEdit } from 'react-icons/fa';
+import { RiLockPasswordLine } from 'react-icons/ri';
 
-export default async function UserLayout({ children }) {
+export default function UserLayout({ children }) {
+  const pathname = usePathname();
+
   return (
-    <>
-      <section className="py-5 sm:py-7 bg-gray-200">
-        <div className="container  mx-auto px-4">
-          <h1 className="text-bold text-2xl text-black  font-EB_Garamond">
-            Panel de Control
-          </h1>
-        </div>
-      </section>
-      <section className="py-10  maxsm:py-2  bg-slate-100 text-black">
-        <div className="container mx-auto px-4">
-          <div className="flex maxmd:flex-col flex-row ">
-            <Sidebar />
-            <main className="w-4/5 maxmd:w-full px-4">
-              <article className="border border-gray-200 bg white shadow-md rounded mb-5 ">
-                {children}
-              </article>
-            </main>
-          </div>
-        </div>
-      </section>
-    </>
+    <div className="max-w-full pr-2">
+      <div className="flex items-start w-full ">
+        <CustomerSidebar>
+          <SideBarItem
+            icon={<TfiDashboard size={20} />}
+            text={'Tablero'}
+            active={pathname === '/admin' ?? true}
+            url={'/perfil'}
+          />
+          <SideBarItem
+            icon={<TbDeviceIpadDollar size={20} />}
+            text={'Pedidos'}
+            active={pathname === '/perfil/pedidos' ?? true}
+            url={'/perfil/pedidos'}
+          />
+          <SideBarItem
+            icon={<FaHeart size={20} />}
+            text={'Favoritos'}
+            active={pathname === '/perfil/favoritos' ?? true}
+            url={'/perfil/favoritos'}
+          />
+          <SideBarItem
+            icon={<FaRegAddressCard size={20} />}
+            text={'Direcciones'}
+            active={
+              pathname === '/perfil/direcciones' ||
+              (pathname === '/perfil/direcciones/nueva' && true)
+            }
+            url={'/perfil/direcciones'}
+            alert
+            dropdownItems={[
+              {
+                text: 'Todas',
+                url: '/perfil/direcciones',
+                active: pathname === '/perfil/direcciones' ?? true,
+                icon: <FaRegAddressCard size={20} />,
+              },
+              {
+                text: 'Nueva Dirección',
+                url: '/perfil/direcciones/nueva',
+                active: pathname === '/perfil/direcciones/nueva' ?? true,
+                icon: <MdOutlineAddHomeWork size={20} />,
+              },
+              // Add more dropdown items as needed
+            ]}
+          />
+
+          <hr className="my-3 maxmd:my-1" />
+
+          <SideBarItem
+            icon={<FaUserEdit size={20} />}
+            text={'Actualizar Perfil'}
+            active={pathname === '/perfil/actualizar' ?? true}
+            url={'/perfil/actualizar'}
+          />
+          <SideBarItem
+            icon={<RiLockPasswordLine size={20} />}
+            text={'Actualizar Contraseña'}
+            active={pathname === '/perfil/actualizar_contrasena' ?? true}
+            url={'/perfil/actualizar_contrasena'}
+          />
+        </CustomerSidebar>
+        <div className="relative w-full mb-5 ">{children}</div>
+      </div>
+    </div>
   );
 }

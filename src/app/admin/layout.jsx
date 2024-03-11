@@ -1,5 +1,5 @@
 'use client';
-import Sidebar, { SideBarItem } from '@/components/admin/Sidebar';
+import AdminSidebar, { SideBarItem } from '@/components/admin/AdminSidebar';
 import { usePathname } from 'next/navigation';
 import { TbDeviceIpadDollar, TbQrcode, TbScan } from 'react-icons/tb';
 import { PiUserListLight } from 'react-icons/pi';
@@ -21,7 +21,7 @@ export default function UserLayout({ children }) {
   return (
     <div className="max-w-full pr-2">
       <div className="flex items-start w-full ">
-        <Sidebar>
+        <AdminSidebar>
           <SideBarItem
             icon={<TfiDashboard size={20} />}
             text={'Tablero'}
@@ -149,7 +149,7 @@ export default function UserLayout({ children }) {
             active={pathname === '/admin/config/contacto' ?? true}
             url={'/admin/config/contacto'}
           />
-        </Sidebar>
+        </AdminSidebar>
         <div className="relative w-full mb-5 ">{children}</div>
       </div>
     </div>
