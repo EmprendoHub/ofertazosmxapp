@@ -33,22 +33,22 @@ const AdminOrders = ({ orders, filteredOrdersCount }) => {
         <table className="w-full text-sm maxmd:text-xs text-left">
           <thead className=" text-gray-700 uppercase">
             <tr>
-              <th scope="col" className="px-6 maxsm:px-1 py-3">
+              <th scope="col" className="px-4 maxsm:px-1 py-3">
                 No.
               </th>
-              <th scope="col" className="px-6 py-3 maxmd:hidden">
+              <th scope="col" className="px-4 py-3 maxmd:hidden">
                 Total
               </th>
-              <th scope="col" className="px-6 maxsm:px-0 py-3">
+              <th scope="col" className="px-4 maxsm:px-0 py-3">
                 Pagado
               </th>
-              <th scope="col" className="px-6 maxsm:px-0 py-3">
+              <th scope="col" className="px-4 maxsm:px-0 py-3">
                 Estado
               </th>
-              <th scope="col" className="px-6 maxsm:px-0 py-3">
+              <th scope="col" className="px-4 maxsm:px-0 py-3">
                 Ubicación
               </th>
-              <th scope="col" className="px-6 py-3 maxsm:hidden">
+              <th scope="col" className="px-4 py-3 maxsm:hidden">
                 Fecha
               </th>
               <th scope="col" className="w-5 px-1 py-3 text-center">
@@ -59,23 +59,23 @@ const AdminOrders = ({ orders, filteredOrdersCount }) => {
           <tbody>
             {orders?.map((order, index) => (
               <tr className="bg-white" key={index}>
-                <td className="px-6 maxsm:px-2 py-2">
+                <td className="px-4 maxsm:px-2 py-2">
                   <Link key={index} href={`/admin/pedido/${order._id}`}>
                     {order.orderId}
                   </Link>
                 </td>
-                <td className="px-6 py-2 maxmd:hidden">
+                <td className="px-4 py-2 maxmd:hidden">
                   <FormattedPrice
                     amount={getTotalFromItems(order.orderItems)}
                   />
                 </td>
-                <td className="px-6 maxsm:px-0 py-2 ">
+                <td className="px-4 maxsm:px-0 py-2 ">
                   <b>
                     <FormattedPrice amount={order?.paymentInfo?.amountPaid} />
                   </b>
                 </td>
                 <td
-                  className={`px-6 maxsm:px-0 py-2 font-bold ${
+                  className={`px-4 maxsm:px-0 py-2 font-bold ${
                     order.orderStatus === 'Apartado'
                       ? 'text-amber-700'
                       : order.orderStatus === 'En Camino'
@@ -90,7 +90,7 @@ const AdminOrders = ({ orders, filteredOrdersCount }) => {
                   {order.orderStatus}
                 </td>
                 <td
-                  className={`px-6 maxsm:px-0 py-2 font-bold ${
+                  className={`px-4 maxsm:px-0 py-2 font-bold ${
                     order.branch === 'Sahuayo'
                       ? 'text-amber-700'
                       : 'text-slate-600'
@@ -98,7 +98,7 @@ const AdminOrders = ({ orders, filteredOrdersCount }) => {
                 >
                   {order.branch}
                 </td>
-                <td className="px-6 py-2 maxsm:hidden">
+                <td className="px-4 py-2 maxsm:hidden">
                   {order?.createdAt &&
                     `${formatDate(
                       order?.createdAt.substring(0, 24)

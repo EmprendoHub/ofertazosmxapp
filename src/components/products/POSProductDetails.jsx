@@ -177,7 +177,7 @@ const POSProductDetails = ({ product, trendingProducts }) => {
     <div className="container-class maxsm:py-8 h-full">
       <main className="bg-gray-100 flex min-h-screen flex-col items-center justify-between">
         <div className="w-full mx-auto wrapper-class gap-3 bg-slate-100 text-black bg-opacity-80 rounded-lg">
-          <div className="flex flex-row maxsm:flex-col items-start justify-start gap-x-5 px-20 py-8 maxmd:py-4  maxmd:px-3">
+          <div className="flex flex-row maxsm:flex-col items-start justify-start gap-x-3 px-3 py-8 maxmd:py-4 ">
             <div className="image-class w-1/2 maxsm:w-full flex flex-col items-center justify-center ">
               <motion.div
                 initial={{ x: -50, opacity: 0 }}

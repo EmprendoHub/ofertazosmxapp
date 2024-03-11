@@ -52,10 +52,10 @@ export const POST = async (request) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
   try {
-    const urlData = await request.url.split('?');
-    const isLayaway = urlData[1] === 'layaway';
     const reqBody = await request.json();
-    const { items, email, user, shipping, affiliateInfo } = await reqBody;
+    const { items, email, user, shipping, affiliateInfo, payType } =
+      await reqBody;
+    const isLayaway = payType === 'layaway';
     let affiliate;
     if (affiliateInfo) {
       const affiliateLink = await ReferralLink.findOne({ _id: affiliateInfo });
@@ -144,7 +144,7 @@ export const POST = async (request) => {
         createdAt: date,
         shippingInfo: shipping,
         paymentInfo,
-        branch: 'shopout.com.mx',
+        branch: 'WWW',
         orderItems: order_items,
         orderStatus: 'Pendiente',
         layaway: true,
@@ -157,7 +157,7 @@ export const POST = async (request) => {
         createdAt: date,
         shippingInfo: shipping,
         paymentInfo,
-        branch: 'shopout.com.mx',
+        branch: 'WWW',
         orderItems: order_items,
         orderStatus: 'Pendiente',
         layaway: false,

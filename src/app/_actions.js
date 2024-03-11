@@ -621,7 +621,6 @@ export async function updateOneOrder(data) {
     let { transactionNo, paidOn, amount, orderId } = Object.fromEntries(data);
     let newOrderStatus;
     let newOrderPaymentStatus;
-    console.log(transactionNo, amount, orderId);
     // Define the model name with the suffix appended with the lottery ID
     await dbConnect();
     // Retrieve the dynamically created Ticket model
@@ -645,7 +644,6 @@ export async function updateOneOrder(data) {
         $inc: { 'paymentInfo.amountPaid': Number(amount) },
       }
     );
-    console.log(updatedOrder);
     revalidatePath(`/admin/pedidos`);
   } catch (error) {
     console.log(error);

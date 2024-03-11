@@ -41,11 +41,9 @@ const PayOrderComp = ({ setShowModal, orderId, isPaid }) => {
     }
   };
 
-  const orderStatuses = ['Pagado', 'Apartado'];
-
   return (
     <div className="flex flex-col w-full h-full items-center justify-center">
-      <div className="w-1/4 maxmd:w-5/6 bg-white pl-4">
+      <div className="w-1/2 maxmd:w-5/6 bg-white pl-4">
         <section className=" p-6 w-full">
           <h1 className="text-xl maxmd:text-5xl font-semibold text-black mb-8 font-EB_Garamond">
             Recibir Pago

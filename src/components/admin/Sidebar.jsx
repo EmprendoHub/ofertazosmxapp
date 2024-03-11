@@ -48,7 +48,7 @@ const Sidebar = ({ children }) => {
           <ul className="flex-1 ">{children}</ul>
         </SidebarContext.Provider>
         {/* user avatar */}
-        <div className="border-t flex p-3 ">
+        <div className="border-t flex p-1 ">
           <Image
             alt={user?.name ? user?.name : 'avatar'}
             src={user?.image ? user?.image : '/images/avatar_placeholder.jpg'}
@@ -58,20 +58,35 @@ const Sidebar = ({ children }) => {
           />
 
           <div
-            className={`flex justify-between items-center overflow-hidden transition-all ease-in-out  ${
-              expandSidebar ? 'w-36 ml-3 maxmd:w-36 maxmd:ml-1' : 'w-0'
+            className={`flex items-center overflow-hidden transition-all ease-in-out  ${
+              expandSidebar ? 'w-full ml-3 maxmd:ml-1' : 'w-0'
             }`}
           >
-            <div className="leading-4">
-              <h4 className="font-semibold"> {user?.name}</h4>
-              <span className="text-xs text-gray-600">{user?.email}</span>
-            </div>
-            {/* <FiMoreVertical size={20} /> */}
-            <div
-              className="block px-3 py-2 text-red-800 hover:bg-red-100 hover:text-white-500 rounded-md cursor-pointer"
-              onClick={() => signOut()}
-            >
-              <FiLogOut />
+            <div className="leading-4 w-full">
+              <div className="flex items-center">
+                <h4 className="font-semibold text-xs leading-4 text-wrap w-2/3 ">
+                  {' '}
+                  {user?.name}
+                </h4>
+                <div
+                  className=" text-red-800 hover:bg-red-100 hover:text-white-500 rounded-md cursor-pointer"
+                  onClick={() => signOut()}
+                >
+                  <div
+                    className={`${
+                      expandSidebar ? 'group absolute w-32' : 'w-0'
+                    }`}
+                  >
+                    <FiLogOut />
+                    <span className="absolute -top-10 scale-0 transition-all rounded bg-black p-2 text-xs text-white group-hover:scale-100 z-50">
+                      Cerrar Session!
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <span className="text-xs text-gray-600">
+                {user?.email.substring(0, 15)}...
+              </span>
             </div>
           </div>
         </div>

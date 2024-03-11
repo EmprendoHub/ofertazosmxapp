@@ -83,7 +83,6 @@ const TiendaPage = async ({ searchParams }) => {
   return (
     <div className="flex flex-col items-center justify-center gap-5">
       {/* <StoreHeroComponent /> */}
-      <POSSearch />
       <ListPOSProducts
         products={products}
         allBrands={allBrands}
