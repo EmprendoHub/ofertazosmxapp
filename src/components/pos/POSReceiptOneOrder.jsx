@@ -37,32 +37,16 @@ const POSReceiptOneOrder = ({ order }) => {
       ref={ref}
       className="main-receipt w-[300px] maxmd:w-full min-h-full mx-auto relative bg-white px-2"
     >
-      <h2
-        className={`text-5xl absolute z-40 -rotate-12 top-1/2 left-10 mb-8 ml-4 font-bold uppercase ${
-          order?.paymentInfo?.status === 'paid'
-            ? 'text-green-900 opacity-30'
-            : ''
-        }`}
-      >
-        {order?.paymentInfo?.amountPaid >= getTotal(order?.orderItems)
-          ? 'PAGADO'
-          : 'PENDIENTE'}
-      </h2>
       <div className="flex flex-row justify-between items-center">
         <div className=" relative flex flex-col items-center justify-center max-w-fit">
           <h1 className="flex font-black font-EB_Garamond text-[1.5rem] maxmd:text-[1rem] leading-none">
             SHOPOUT
           </h1>
-          <div className="flex flex-row items-center justify-center text-[12px]">
-            <div>----</div>
-            <p className="leading-none font-EB_Garamond">MX</p>
-            <div>----</div>
-          </div>
         </div>
 
         <div className="relative overflow-x-auto maxsm:rounded-lg maxsm:p-1">
           <div className=" flex flex-col  items-end justify-start gap-x-1 overflow-hidden  ">
-            <h2 className="text-lg font-bold text-slate-700 items-center">
+            <h2 className="text-md font-bold text-slate-700 items-center">
               RECIBO #{order?.orderId}
             </h2>
             <div className="text-xs text-slate-600 tracking-widest pb-1 border-b-2 border-slate-300">
