@@ -192,7 +192,7 @@ const DashComponent = ({
             <div className="flex justify-between py-3 text-base font-black font-EB_Garamond">
               <h1>Productos Recientes</h1>
               <button>
-                <Link href={'/admin/asociados'}>Ver Todos</Link>
+                <Link href={'/admin/productos'}>Ver Todos</Link>
               </button>
             </div>
             <table>
