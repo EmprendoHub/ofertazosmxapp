@@ -1,15 +1,13 @@
 'use client';
-import Link from 'next/link';
-import { FaEye } from 'react-icons/fa';
-import { formatDate, formatTime } from '@/backend/helpers';
-import { getTotalFromItems } from '@/backend/helpers';
+import { formatDate, formatTime, getTotalFromItems } from '@/backend/helpers';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
-import AdminOrderSearch from '@/components/layout/AdminOrderSearch';
-import { TfiMoney } from 'react-icons/tfi';
+import Link from 'next/link';
 import { useState } from 'react';
+import { FaEye } from 'react-icons/fa6';
+import { TfiMoney } from 'react-icons/tfi';
 import Modal from '../modals/Modal';
 
-const AdminOrders = ({ orders, filteredOrdersCount }) => {
+const AdminUserOrders = ({ orders, filteredOrdersCount, client }) => {
   const [showModal, setShowModal] = useState(false);
   const [usedOrderId, setUsedOrderId] = useState('');
   const updateOrderStatus = async (orderId) => {
@@ -23,35 +21,34 @@ const AdminOrders = ({ orders, filteredOrdersCount }) => {
         setShowModal={setShowModal}
         orderId={usedOrderId}
       />
-      <div className="relative overflow-x-auto shadow-md maxsm:rounded-lg">
-        <div className=" flex flex-row maxsm:flex-col maxsm:items-start items-center justify-between">
-          <h1 className="text-3xl w-full maxsm:text-xl my-5 maxsm:my-1 ml-4 maxsm:ml-0 font-bold font-EB_Garamond">
-            {`${filteredOrdersCount} Pedidos `}
-          </h1>
-          <AdminOrderSearch />
-        </div>
-        <table className="w-full text-sm maxmd:text-xs text-left">
-          <thead className=" text-gray-700 uppercase">
+      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <h1 className="text-3xl my-5 ml-4 font-bold font-EB_Garamond">
+          {`${filteredOrdersCount}
+        Pedidos para ${client.name}`}
+        </h1>
+
+        <table className="w-full text-sm text-left">
+          <thead className="text-l text-gray-700 uppercase">
             <tr>
               <th scope="col" className="px-6 maxsm:px-1 py-3">
                 No.
               </th>
-              <th scope="col" className="px-6 py-3 maxmd:hidden">
+              <th scope="col" className="px-6 maxsm:px-1 maxsm:hidden py-3">
                 Total
               </th>
-              <th scope="col" className="px-6 maxsm:px-0 py-3">
+              <th scope="col" className="px-6 maxsm:px-1 py-3">
                 Pagado
               </th>
-              <th scope="col" className="px-6 maxsm:px-0 py-3">
+              <th scope="col" className="px-6 maxsm:px-1 py-3">
                 Estado
               </th>
               <th scope="col" className="px-6 maxsm:px-0 py-3">
                 Ubicación
               </th>
-              <th scope="col" className="px-6 py-3 maxsm:hidden">
+              <th scope="col" className="px-6 maxsm:px-1  maxsm:hidden py-3">
                 Fecha
               </th>
-              <th scope="col" className="w-5 px-1 py-3 text-center">
+              <th scope="col" className="px-2 maxsm:px-1 py-3 text-center">
                 ...
               </th>
             </tr>
@@ -59,31 +56,32 @@ const AdminOrders = ({ orders, filteredOrdersCount }) => {
           <tbody>
             {orders?.map((order, index) => (
               <tr className="bg-white" key={index}>
-                <td className="px-6 maxsm:px-2 py-2">
-                  <Link key={index} href={`/admin/pedido/${order._id}`}>
+                <td className="px-6 maxsm:px-1 py-2">
+                  <Link
+                    href={`/admin/pedido/${order._id}`}
+                    className="px-2 py-2 inline-block text-black shadow-sm border border-gray-200 rounded-md bg-gray-100 cursor-pointer mr-2"
+                  >
                     {order.orderId}
                   </Link>
                 </td>
-                <td className="px-6 py-2 maxmd:hidden">
+                <td className="px-6 maxsm:px-1  maxsm:hidden py-2">
                   <FormattedPrice
                     amount={getTotalFromItems(order.orderItems)}
                   />
                 </td>
-                <td className="px-6 maxsm:px-0 py-2 ">
+                <td className="px-6 maxsm:px-1 py-2 ">
                   <b>
                     <FormattedPrice amount={order?.paymentInfo?.amountPaid} />
                   </b>
                 </td>
                 <td
-                  className={`px-6 maxsm:px-0 py-2 font-bold ${
+                  className={`px-6 maxsm:px-1 py-2 font-bold ${
                     order.orderStatus === 'Apartado'
                       ? 'text-amber-700'
                       : order.orderStatus === 'En Camino'
                       ? 'text-blue-700'
                       : order.orderStatus === 'Entregado'
                       ? 'text-green-700'
-                      : order.orderStatus === 'Sucursal'
-                      ? 'text-purple-950'
                       : 'text-slate-600'
                   }`}
                 >
@@ -98,13 +96,13 @@ const AdminOrders = ({ orders, filteredOrdersCount }) => {
                 >
                   {order.branch}
                 </td>
-                <td className="px-6 py-2 maxsm:hidden">
+                <td className="px-6 maxsm:px-1  maxsm:hidden py-2">
                   {order?.createdAt &&
                     `${formatDate(
                       order?.createdAt.substring(0, 24)
                     )} a las ${formatTime(order?.createdAt)}`}
                 </td>
-                <td className="px-1 py-2">
+                <td className="px-2 maxsm:px-1 py-2">
                   <div className="flex items-center">
                     <Link
                       href={`/admin/pedido/${order._id}`}
@@ -147,4 +145,4 @@ const AdminOrders = ({ orders, filteredOrdersCount }) => {
   );
 };
 
-export default AdminOrders;
+export default AdminUserOrders;

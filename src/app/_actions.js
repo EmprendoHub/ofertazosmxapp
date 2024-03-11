@@ -24,7 +24,11 @@ import Affiliate from '@/backend/models/Affiliate';
 import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
 import axios from 'axios';
-import { cstDateTime, generateUrlSafeTitle } from '@/backend/helpers';
+import {
+  cstDateTime,
+  generateUrlSafeTitle,
+  getTotalFromItems,
+} from '@/backend/helpers';
 import Order from '@/backend/models/Order';
 import APIPostsFilters from '@/lib/APIPostsFilters';
 import APIFilters from '@/lib/APIFilters';
@@ -239,6 +243,9 @@ export async function getDashboard() {
     const affiliateCountPreviousMonth = await getDocumentCountPreviousMonth(
       Affiliate
     );
+    const productsCountPreviousMonth = await getDocumentCountPreviousMonth(
+      Product
+    );
     const postCountPreviousMonth = await getDocumentCountPreviousMonth(Post);
     const clientCountPreviousMonth = await getClientCountPreviousMonth();
 
@@ -259,6 +266,7 @@ export async function getDashboard() {
       totalAffiliateCount: totalAffiliateCount,
       affiliateCountPreviousMonth: affiliateCountPreviousMonth,
       totalProductCount: totalProductCount,
+      productsCountPreviousMonth: productsCountPreviousMonth,
       totalClientCount: totalClientCount,
       clientCountPreviousMonth: clientCountPreviousMonth,
       totalPostCount: totalPostCount,
@@ -562,7 +570,7 @@ export async function getAllOrder(searchQuery) {
     }
 
     const searchParams = new URLSearchParams(searchQuery);
-    const resPerPage = Number(searchParams.get('perpage')) || 5;
+    const resPerPage = Number(searchParams.get('perpage')) || 10;
     // Extract page and per_page from request URL
     const page = Number(searchParams.get('page')) || 1;
     // Apply descending order based on a specific field (e.g., createdAt)
@@ -602,6 +610,43 @@ export async function getAllOrder(searchQuery) {
       itemCount: itemCount,
       resPerPage: resPerPage,
     };
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
+
+export async function updateOneOrder(data) {
+  try {
+    let { transactionNo, paidOn, amount, orderId } = Object.fromEntries(data);
+    let newOrderStatus;
+    let newOrderPaymentStatus;
+    console.log(transactionNo, amount, orderId);
+    // Define the model name with the suffix appended with the lottery ID
+    await dbConnect();
+    // Retrieve the dynamically created Ticket model
+    const order = await Order.findOne({ _id: orderId });
+    // Calculate total amount based on items
+
+    const orderTotal = await getTotalFromItems(order?.orderItems);
+    if (order.paymentInfo.amountPaid + Number(amount) >= orderTotal) {
+      newOrderStatus = 'Entregado';
+      newOrderPaymentStatus = 'Pagado';
+    } else {
+      newOrderStatus = 'Apartado';
+      newOrderPaymentStatus = 'Pendiente';
+    }
+    console.log(newOrderStatus);
+    const updatedOrder = await Order.updateOne(
+      { _id: orderId },
+      {
+        orderStatus: newOrderStatus,
+        'paymentInfo.status': newOrderPaymentStatus,
+        $inc: { 'paymentInfo.amountPaid': Number(amount) },
+      }
+    );
+    console.log(updatedOrder);
+    revalidatePath(`/admin/pedidos`);
   } catch (error) {
     console.log(error);
     throw Error(error);

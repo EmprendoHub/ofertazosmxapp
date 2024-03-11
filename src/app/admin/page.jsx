@@ -15,8 +15,10 @@ const ProfilePage = async () => {
   const totalOrderCount = data?.totalOrderCount;
   const totalAffiliateCount = data?.totalAffiliateCount;
   const totalProductCount = data?.totalProductCount;
+  const productsCountPreviousMonth = data?.productsCountPreviousMonth;
   const totalClientCount = data?.totalClientCount;
   const totalPostCount = data?.totalPostCount;
+
   return (
     <>
       <DashComponent
@@ -34,6 +36,7 @@ const ProfilePage = async () => {
         totalProductCount={totalProductCount}
         totalClientCount={totalClientCount}
         totalPostCount={totalPostCount}
+        productsCountPreviousMonth={productsCountPreviousMonth}
       />
     </>
   );

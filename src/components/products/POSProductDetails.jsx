@@ -13,7 +13,7 @@ import { useRouter } from 'next/navigation';
 
 const POSProductDetails = ({ product, trendingProducts }) => {
   const dispatch = useDispatch();
-  const { productsData } = useSelector((state) => state?.compras);
+  const { productsPOS } = useSelector((state) => state?.compras);
   const router = useRouter();
   const [images, setImages] = useState(product?.images);
   const slideRef = useRef(null);
@@ -39,15 +39,14 @@ const POSProductDetails = ({ product, trendingProducts }) => {
 
   useEffect(() => {
     // Find matches based on _id property
-    const existingProduct = productsData.find((item1) =>
+    const existingProduct = productsPOS.find((item1) =>
       product.variations.some((item2) => item1._id === item2._id)
     );
-    console.log(existingProduct);
 
     if (existingProduct?.quantity >= product.stock) {
       setAlreadyCart(true);
     }
-  }, [productsData]);
+  }, [productsPOS]);
 
   const appendClone = () => {
     const lists = slideRef.current.querySelectorAll('.item');

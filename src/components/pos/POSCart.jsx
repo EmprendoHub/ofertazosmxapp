@@ -40,11 +40,11 @@ const POSCart = () => {
               <main className="w-full">
                 <article className="border border-gray-200  shadow-sm rounded p-3 lg:p-5"></article>
                 {/* Items */}
-                <article className="border border-gray-200  shadow-sm rounded mb-5 p-3 lg:p-5">
+                <article className="border border-gray-200 shadow-sm rounded mb-5 p-3 lg:p-5">
                   {productsPOS?.length > 0 &&
                     productsPOS?.map((cartItem, index) => (
                       <div key={index}>
-                        <div className="flex flex-wrap lg:flex-row gap-5  mb-4 items-center">
+                        <div className="flex flex-row maxmd:flex-wrap gap-5  mb-4 items-center">
                           <div className="w-full">
                             <figure className="flex gap-3 leading-5">
                               <div>

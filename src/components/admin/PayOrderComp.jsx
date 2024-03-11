@@ -1,0 +1,108 @@
+'use client';
+import React, { useState } from 'react';
+import { toast } from 'react-toastify';
+import { FaCircleCheck, FaCircleExclamation } from 'react-icons/fa6';
+import { updateOneOrder } from '@/app/_actions';
+
+const PayOrderComp = ({ setShowModal, orderId, isPaid }) => {
+  const [transactionNo, setTransactionNo] = useState('');
+  const [amount, setAmount] = useState(0);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (amount === '') {
+      toast.error('Por favor agrega la cantidad del pedido para continuar.');
+      return;
+    }
+
+    if (transactionNo === '') {
+      toast.error('Por favor agregar una referencia de pago para continuar.');
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.set('transactionNo', transactionNo);
+      formData.set('paidOn', new Date());
+      formData.set('amount', amount);
+      formData.set('orderId', orderId);
+      try {
+        const res = await updateOneOrder(formData);
+        console.log(res, 'res');
+        setShowModal(false);
+      } catch (error) {
+        toast.error(
+          'Error actualizando el pedido. Por favor Intenta de nuevo.'
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const orderStatuses = ['Pagado', 'Apartado'];
+
+  return (
+    <div className="flex flex-col w-full h-full items-center justify-center">
+      <div className="w-1/4 maxmd:w-5/6 bg-white pl-4">
+        <section className=" p-6 w-full">
+          <h1 className="text-xl maxmd:text-5xl font-semibold text-black mb-8 font-EB_Garamond">
+            Recibir Pago
+          </h1>
+
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col items-start gap-5 justify-start w-full "
+          >
+            <div className="flex-col flex justify-start px-2 gap-y-5 w-full">
+              <div className="gap-y-5 flex-col flex px-2 w-full">
+                <div className="mb-4">
+                  <label className="block mb-1"> Numero de Transacción </label>
+                  <input
+                    type="text"
+                    className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
+                    placeholder="Nombre de Sorteo"
+                    value={transactionNo}
+                    onChange={(e) => setTransactionNo(e.target.value)}
+                    name="transactionNo"
+                  />
+                </div>
+              </div>
+              <div className="gap-y-5 flex-col flex px-2 w-full">
+                <div className="mb-4">
+                  <label className="block mb-1"> Cantidad </label>
+                  <input
+                    type="text"
+                    className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
+                    placeholder="0.00"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    name="amount"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-row items-center justify-between w-full gap-2">
+              <div
+                onClick={() => setShowModal(false)}
+                className="my-2 px-4 py-2 text-center text-white bg-red-700 border border-transparent rounded-md hover:bg-red-800 w-full flex flex-row items-center justify-center gap-1 cursor-pointer"
+              >
+                <FaCircleExclamation className="text-xl" />
+                Cancelar
+              </div>
+              <button
+                type="submit"
+                className="my-2 px-4 py-2 text-center text-white bg-emerald-700 border border-transparent rounded-md hover:bg-emerald-900 w-full flex flex-row items-center justify-center gap-1"
+              >
+                <FaCircleCheck className="text-xl" /> Aceptar
+              </button>
+            </div>
+          </form>
+        </section>
+      </div>
+    </div>
+  );
+};
+
+export default PayOrderComp;

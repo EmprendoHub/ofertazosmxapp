@@ -6,6 +6,7 @@ import { PiUserListLight } from 'react-icons/pi';
 import { CiGrid31 } from 'react-icons/ci';
 import { TfiDashboard } from 'react-icons/tfi';
 import { MdOutlineContactMail, MdOutlinePostAdd } from 'react-icons/md';
+import { LuReceipt } from 'react-icons/lu';
 import {
   TbAffiliate,
   TbMessage2Question,
@@ -56,14 +57,9 @@ export default function UserLayout({ children }) {
                 // Add more dropdown items as needed
               ]}
             />
-            {/* <SideBarItem
-              icon={<MdOutlinePostAdd size={20} />}
-              text={'Nueva Publicación '}
-              active={pathname === '/admin/blog/editor' ?? true}
-              url={'/admin/blog/editor'}
-            /> */}
+
             <SideBarItem
-              icon={<CiGrid31 size={20} />}
+              icon={<GiClothes size={20} />}
               text={'Productos'}
               active={
                 pathname === '/admin/productos' ||
@@ -76,7 +72,7 @@ export default function UserLayout({ children }) {
                   text: 'Todos',
                   url: '/admin/productos',
                   active: pathname === '/admin/productos' ?? true,
-                  icon: <CiGrid31 size={20} />,
+                  icon: <GiClothes size={20} />,
                 },
                 {
                   text: 'Nuevo Producto',
@@ -103,7 +99,7 @@ export default function UserLayout({ children }) {
 
             <hr className="my-3 maxmd:my-1" />
             <SideBarItem
-              icon={<CiGrid31 size={20} />}
+              icon={<LuReceipt size={20} />}
               text={'POS'}
               active={
                 pathname === '/admin/pos/productos' ||

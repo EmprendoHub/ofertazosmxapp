@@ -20,7 +20,7 @@ const ServerPagination = ({
             {page === 1 ? (
               <div
                 aria-disabled="true"
-                className="opacity-60 bg-black w-10 h-10 flex justify-center items-center disabled:bg-slate-300 text-white p-2  rounded-full text-xl"
+                className="opacity-60 bg-black w-10 h-10 flex justify-center items-center disabled:bg-slate-300 text-white p-2  rounded-full text-xl maxmd:text-md"
               >
                 <FiChevronLeft />
               </div>
@@ -28,7 +28,7 @@ const ServerPagination = ({
               <Link
                 href={`?page=${prevPage}`}
                 aria-label="Previous Page"
-                className="bg-black w-10 h-10 flex justify-center items-center disabled:bg-slate-300 text-white p-2  rounded-full text-xl"
+                className="bg-black w-10 h-10 flex justify-center items-center disabled:bg-slate-300 text-white p-2  rounded-full text-xl maxmd:text-md"
               >
                 <FiChevronLeft />
               </Link>
@@ -50,7 +50,7 @@ const ServerPagination = ({
 
             {page === totalPages ? (
               <div
-                className="opacity-60 bg-black w-10 h-10 flex justify-center items-center disabled:bg-slate-300 text-white p-2  rounded-full text-xl"
+                className="opacity-60 bg-black w-10 h-10 flex justify-center items-center disabled:bg-slate-300 text-white p-2  rounded-full text-xl maxmd:text-md"
                 aria-disabled="true"
               >
                 <FiChevronRight />
@@ -59,7 +59,7 @@ const ServerPagination = ({
               <Link
                 href={`?page=${nextPage}`}
                 aria-label="Next Page"
-                className="bg-black w-10 h-10 flex justify-center items-center disabled:bg-slate-300 text-white p-2  rounded-full text-xl"
+                className="bg-black w-10 h-10 flex justify-center items-center disabled:bg-slate-300 text-white p-2  rounded-full text-xl maxmd:text-md"
               >
                 <FiChevronRight />
               </Link>

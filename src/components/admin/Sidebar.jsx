@@ -7,15 +7,21 @@ import { FiMoreVertical, FiLogOut } from 'react-icons/fi';
 import { signOut } from 'next-auth/react';
 import AuthContext from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const SidebarContext = createContext();
+const backdropVariants = {
+  animate: { opacity: 1, scale: 1 },
+  initial: { opacity: 0, scale: 0.5 },
+  duration: { duration: 1.5 },
+};
 
 const Sidebar = ({ children }) => {
   const [expandSidebar, setExpandSidebar] = useState(true);
   const { user } = useContext(AuthContext);
   return (
     <aside className="h-screen print:hidden ">
-      <nav className="h-full flex flex-col bg-white border-r shadow-sm">
+      <nav className="h-full flex flex-col bg-white border-r border-r-slate-300 shadow-sm">
         <div className="p-4 maxmd:p-2 pb-2 flex justify-between maxmd:justify-center items-center">
           <Image
             alt="image"
@@ -92,7 +98,7 @@ export function SideBarItem({ icon, text, active, alert, url, dropdownItems }) {
 
   return (
     <li
-      className={`relative flex items-center py-2 px-3 maxmd:pr-1 my-1 font-medium rounded-md cursor-pointer gap-x-1 transition-colors group ${
+      className={`relative flex flex-col items-center py-2 px-3 maxmd:pr-1 my-1 font-medium rounded-md cursor-pointer gap-x-1 transition-colors group ${
         active
           ? 'bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800'
           : 'hover:bg-indigo-50 text-gray-600'
@@ -120,14 +126,19 @@ export function SideBarItem({ icon, text, active, alert, url, dropdownItems }) {
 
       {/* Render dropdown items if dropdown is open */}
       {dropdownOpen && dropdownItems && (
-        <ul className="absolute z-[666] top-full left-0 mt-1 w-full bg-white shadow-md rounded-md">
+        <motion.ul
+          variants={backdropVariants}
+          initial="initial"
+          animate="animate"
+          className="relative flex flex-col mt-1 w-full bg-white"
+        >
           {dropdownItems.map((item, index) => (
             <Link href={item.url} key={index}>
               <li
-                className={`py-2 px-3 hover:bg-gray-100 cursor-pointer flex items-center ${
+                className={`py-2 px-3 cursor-pointer flex items-center rounded-md ${
                   item.active
                     ? 'bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800'
-                    : 'hover:bg-indigo-50 text-gray-600'
+                    : 'hover:bg-indigo-50 text-gray-600 bg-opacity-0'
                 }`}
               >
                 {item.icon && item.icon}
@@ -146,7 +157,7 @@ export function SideBarItem({ icon, text, active, alert, url, dropdownItems }) {
               </li>
             </Link>
           ))}
-        </ul>
+        </motion.ul>
       )}
 
       {!expandSidebar && (

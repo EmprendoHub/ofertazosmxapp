@@ -15,7 +15,6 @@ const OrderSchema = new mongoose.Schema({
   },
   ship_cost: {
     type: Number,
-    default: 200,
   },
   orderItems: [
     {

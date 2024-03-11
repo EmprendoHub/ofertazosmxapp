@@ -1,5 +1,5 @@
 import { getAllUserOrder } from '@/app/_actions';
-import ViewUserOrders from '@/components/orders/ViewUserOrders';
+import AdminUserOrders from '@/components/admin/AdminUserOrders';
 import ServerPagination from '@/components/pagination/ServerPagination';
 import Profile from '@/components/user/profile/Profile';
 import UserProfile from '@/components/user/profile/UserProfile';
@@ -35,8 +35,7 @@ const ClientDetailsPage = async ({ searchParams, params }) => {
 
   return (
     <>
-      <UserProfile user={client} />
-      <ViewUserOrders
+      <AdminUserOrders
         orders={orders}
         client={client}
         filteredOrdersCount={filteredOrdersCount}
