@@ -44,14 +44,12 @@ const POSReceiptOneOrder = ({ order }) => {
           </h1>
         </div>
 
-        <div className="relative overflow-x-auto maxsm:rounded-lg maxsm:p-1">
-          <div className=" flex flex-col  items-end justify-start gap-x-1 overflow-hidden  ">
-            <h2 className="text-md font-bold text-slate-700 items-center">
-              RECIBO #{order?.orderId}
-            </h2>
-            <div className="text-xs text-slate-600 tracking-widest pb-1 border-b-2 border-slate-300">
-              {order?.branch}
-            </div>
+        <div className=" flex flex-col  items-end justify-end gap-x-1 overflow-hidden  ">
+          <h2 className="text-md font-bold text-slate-700 items-center">
+            #{order?.orderId}
+          </h2>
+          <div className="text-xs text-slate-600 tracking-widest pb-1 border-b-2 border-slate-300">
+            {order?.branch}
           </div>
         </div>
       </div>

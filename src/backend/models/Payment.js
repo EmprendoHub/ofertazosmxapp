@@ -9,21 +9,11 @@ const PaymentSchema = new mongoose.Schema({
     require: true,
     type: Number,
   },
+  confirmation: {
+    type: String,
+  },
   method: {
-    name: {
-      type: String,
-    },
-    _id: {
-      type: String,
-      require: true,
-    },
-    type: {
-      type: String,
-      require: true,
-    },
-    confirmation: {
-      type: String,
-    },
+    type: String,
   },
   pay_date: {
     type: Date,

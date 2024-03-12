@@ -36,7 +36,6 @@ import APIOrderFilters from '@/lib/APIOrderFilters';
 import APIClientFilters from '@/lib/APIClientFilters';
 import APIAffiliateFilters from '@/lib/APIAffiliateFilters';
 import Page from '@/backend/models/Page';
-import mongoose from 'mongoose';
 
 // Function to get the document count for all from the previous month
 const getDocumentCountPreviousMonth = async (model) => {
@@ -637,13 +636,7 @@ export async function getAllPost(searchQuery) {
     // Pagination filter
     apiPostFilters.pagination(resPerPage, page);
     postsData = await apiPostFilters.query.clone();
-    // If you want a new sorted array without modifying the original one, use slice
-    // const sortedObj1 = obj1
-    //   .slice()
-    //   .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
 
-    // descending order
-    // descending order
     let sortedPosts = postsData
       .slice()
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -661,8 +654,6 @@ export async function getAllPost(searchQuery) {
 }
 
 export async function getOneOrder(id) {
-  const session = await getServerSession(options);
-
   try {
     await dbConnect();
 
@@ -717,21 +708,6 @@ export async function getAllOrder(searchQuery) {
     const itemCount = ordersData.length;
     apiOrderFilters.pagination(resPerPage, page);
     ordersData = await apiOrderFilters.query.clone();
-
-    // await Promise.all(
-    //   ordersData.map(async (order) => {
-    //     let shippingInfo = await Address.findOne({
-    //       _id: order.shippingInfo,
-    //     });
-    //     let user = await User.findOne({ _id: order.user });
-    //     order.shippingInfo = shippingInfo;
-    //     order.user = user;
-    //   })
-    // );
-
-    // ordersData = await ordersData
-    //   .slice()
-    //   .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     let orders = JSON.stringify(ordersData);
 
@@ -825,7 +801,6 @@ export async function getAllPOSOrder(searchQuery) {
 }
 
 export async function getOneProduct(slug, id) {
-  const session = await getServerSession(options);
   try {
     await dbConnect();
     let product;
@@ -850,7 +825,6 @@ export async function getOneProduct(slug, id) {
 }
 
 export async function getHomeProductsData() {
-  const session = await getServerSession(options);
   try {
     await dbConnect();
     // Extract tag values from post.tags array
@@ -870,8 +844,6 @@ export async function getHomeProductsData() {
 }
 
 export async function updateProductQuantity(variationId) {
-  const session = await getServerSession(options);
-
   try {
     await dbConnect();
     // Find the product that contains the variation with the specified variation ID
@@ -897,8 +869,6 @@ export async function updateProductQuantity(variationId) {
 }
 
 export async function changeProductStatus(productId) {
-  const session = await getServerSession(options);
-
   try {
     await dbConnect();
     // Find the product that contains the variation with the specified variation ID
@@ -918,22 +888,35 @@ export async function changeProductStatus(productId) {
   }
 }
 
-export async function changeProductAvailability(productId) {
-  const session = await getServerSession(options);
-
+export async function changeProductAvailability(productId, location) {
   try {
     await dbConnect();
     // Find the product that contains the variation with the specified variation ID
     let product = await Product.findOne({ _id: productId });
-
-    if (product.availability === true) {
-      product.availability = false; // Remove from physical branch
-    } else {
-      product.availability = true; // Add to physical branch
+    if (location === 'Instagram') {
+      if (product.availability.instagram === true) {
+        product.availability.instagram = false; // Remove from physical branch
+      } else {
+        product.availability.instagram = true; // Add to physical branch
+      }
+    } else if (location === 'Branch') {
+      if (product.availability.branch === true) {
+        product.availability.branch = false; // Remove from physical branch
+      } else {
+        product.availability.branch = true; // Add to physical branch
+      }
+    } else if (location === 'Online') {
+      if (product.availability.online === true) {
+        product.availability.online = false; // Remove from physical branch
+      } else {
+        product.availability.online = true; // Add to physical branch
+      }
     }
     // Save the product to persist the changes
     await product.save();
     revalidatePath('/admin/productos');
+    revalidatePath('/admin/pos/tienda');
+    revalidatePath('/puntodeventa/tienda');
   } catch (error) {
     console.log(error);
     throw Error(error);
@@ -941,8 +924,6 @@ export async function changeProductAvailability(productId) {
 }
 
 export async function getVariationStock(variationId) {
-  const session = await getServerSession(options);
-
   try {
     await dbConnect();
     // Find the product that contains the variation with the specified variation ID
@@ -965,8 +946,6 @@ export async function getVariationStock(variationId) {
 }
 
 export async function getOnePOSProduct(variationId) {
-  const session = await getServerSession(options);
-
   try {
     await dbConnect();
     // Find the product that contains the variation with the specified variation ID
@@ -997,11 +976,11 @@ export async function getAllPOSProduct(searchQuery) {
     let productQuery;
     // Find the product that contains the variation with the specified variation ID
     productQuery = Product.find({
-      $and: [{ stock: { $gt: 0 } }, { availability: true }],
+      $and: [{ stock: { $gt: 0 } }, { 'availability.branch': true }],
     });
 
     const searchParams = new URLSearchParams(searchQuery);
-    const resPerPage = Number(searchParams.get('perpage')) || 5;
+    const resPerPage = Number(searchParams.get('perpage')) || 10;
     // Extract page and per_page from request URL
     const page = Number(searchParams.get('page')) || 1;
     // total number of documents in database
@@ -1018,19 +997,12 @@ export async function getAllPOSProduct(searchQuery) {
     apiProductFilters.pagination(resPerPage, page);
     productsData = await apiProductFilters.query.clone();
 
-    // If you want a new sorted array without modifying the original one, use slice
-    // const sortedObj1 = obj1
-    //   .slice()
-    //   .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-
-    // descending order
     // descending order
     let sortedProducts = productsData
       .slice()
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     sortedProducts = JSON.stringify(sortedProducts);
-
     return {
       products: sortedProducts,
       productsCount: productsCount,
@@ -1110,8 +1082,6 @@ export async function getAllProduct(searchQuery) {
 }
 
 export async function getAllUserOrder(searchQuery, id) {
-  const session = await getServerSession(options);
-
   try {
     await dbConnect();
     const session = await getServerSession(options);
@@ -1241,8 +1211,6 @@ export async function getAllClient(searchQuery) {
 }
 
 export async function changeClientStatus(_id) {
-  const session = await getServerSession(options);
-
   try {
     await dbConnect();
     const client = await User.findOne({ _id: _id });
@@ -1491,7 +1459,6 @@ export async function getAllAffiliateOrder(searchQuery, id) {
 }
 
 export async function updateAffiliate(_id) {
-  const session = await getServerSession(options);
   //check for errors
   await dbConnect();
   try {
@@ -1793,6 +1760,9 @@ export async function addVariationProduct(data) {
     category,
     tags,
     featured,
+    branchAvailability,
+    instagramAvailability,
+    onlineAvailability,
     mainImage,
     brand,
     gender,
@@ -1867,12 +1837,19 @@ export async function addVariationProduct(data) {
       },
     };
   }
+  const availability = {
+    instagram: instagramAvailability,
+    branch: branchAvailability,
+    online: onlineAvailability,
+  };
+
   const { error } = await Product.create({
     type: 'variation',
     title,
     slug,
     description,
     featured,
+    availability,
     brand,
     gender,
     category,
@@ -1886,6 +1863,7 @@ export async function addVariationProduct(data) {
     createdAt,
     user,
   });
+  console.log(error);
   if (error) throw Error(error);
   revalidatePath('/admin/productos');
   revalidatePath('/tienda');
@@ -1901,6 +1879,9 @@ export async function updateVariationProduct(data) {
     category,
     tags,
     featured,
+    branchAvailability,
+    instagramAvailability,
+    onlineAvailability,
     mainImage,
     brand,
     gender,
@@ -1976,6 +1957,11 @@ export async function updateVariationProduct(data) {
       },
     };
   }
+  const availability = {
+    instagram: instagramAvailability,
+    branch: branchAvailability,
+    online: onlineAvailability,
+  };
   const { error } = await Product.updateOne(
     { _id },
     {
@@ -1984,6 +1970,7 @@ export async function updateVariationProduct(data) {
       slug,
       description,
       featured,
+      availability,
       brand,
       gender,
       category,

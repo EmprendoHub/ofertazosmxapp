@@ -1,7 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import './productstyles.css';
-import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import { IoMdCart } from 'react-icons/io';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import { motion } from 'framer-motion';
@@ -12,6 +11,9 @@ import { Bounce, toast } from 'react-toastify';
 import { usePathname, useRouter } from 'next/navigation';
 
 const POSProductDetails = ({ product }) => {
+  const initialSizes = product?.variations
+    .filter((variation) => variation.color === product?.variations[0].color)
+    .map((variation) => variation.size);
   const getPathname = usePathname();
   let pathname;
   if (getPathname.includes('admin')) {
@@ -24,7 +26,7 @@ const POSProductDetails = ({ product }) => {
   const router = useRouter();
   const [images, setImages] = useState(product?.images);
   const slideRef = useRef(null);
-  const [sizes, setSizes] = useState([product?.variations[0].size]);
+  const [sizes, setSizes] = useState(initialSizes);
   const [colors, setColors] = useState(product?.colors);
   const [alreadyCart, setAlreadyCart] = useState(false);
   const [color, setColor] = useState(product?.variations[0].color);
@@ -39,12 +41,6 @@ const POSProductDetails = ({ product }) => {
   });
 
   useEffect(() => {
-    if (slideRef.current) {
-      appendClone();
-    }
-  }, [images]);
-
-  useEffect(() => {
     // Find matches based on _id property
     const existingProduct = productsPOS.find((item1) =>
       product.variations.some((item2) => item1._id === item2._id)
@@ -54,59 +50,6 @@ const POSProductDetails = ({ product }) => {
       setAlreadyCart(true);
     }
   }, [productsPOS]);
-
-  const appendClone = () => {
-    const lists = slideRef.current.querySelectorAll('.item');
-    const lastItem = lists[lists.length - 1];
-
-    slideRef.current.prepend(lastItem);
-    if (lists.length > 1) {
-      slideRef.current.prepend(lastItem.cloneNode(true));
-      slideRef.current.removeChild(lists[lists.length - 1]);
-    }
-  };
-
-  const moveNext = () => {
-    const lists = slideRef.current.querySelectorAll('.item');
-    const lastItem = lists[lists.length - 1];
-
-    // Clone the last item
-    const clonedItem = lastItem.cloneNode(true);
-
-    // Add click event to the cloned item
-    clonedItem.addEventListener('click', () =>
-      clickImage(clonedItem.getAttribute('data-image-id'))
-    );
-
-    // Prepend the cloned item
-    slideRef.current.prepend(clonedItem);
-
-    if (lists.length > 1) {
-      // Remove the last original item
-      slideRef.current.removeChild(lists[lists.length - 1]);
-    }
-  };
-
-  const movePrev = () => {
-    const lists = slideRef.current.querySelectorAll('.item');
-    const firstItem = lists[0];
-
-    // Clone the first item
-    const clonedItem = firstItem.cloneNode(true);
-
-    // Add click event to the cloned item
-    clonedItem.addEventListener('click', () =>
-      clickImage(clonedItem.getAttribute('data-image-id'))
-    );
-
-    // Append the cloned item
-    slideRef.current.appendChild(clonedItem);
-
-    if (lists.length > 1) {
-      // Remove the first original item
-      slideRef.current.removeChild(firstItem);
-    }
-  };
 
   const clickImage = (imageId) => {
     const lists = slideRef.current.children;
@@ -147,17 +90,28 @@ const POSProductDetails = ({ product }) => {
     e.preventDefault();
     const valueToCheck = e.target.value;
     setColor(valueToCheck);
-    const pickedColorVariation = product.variations.find(
+    const pickedVariationByColor = product.variations.find(
       (variation) => variation.color === valueToCheck
     );
-    setSize(pickedColorVariation.size);
-    setVariation(pickedColorVariation);
+
+    setSize(pickedVariationByColor.size);
+    setVariation(pickedVariationByColor);
+    const newImage = [
+      { url: pickedVariationByColor.image, _id: pickedVariationByColor._id },
+    ];
+    // Check if the new image's _id already exists in the array
+    // const existingIndex = images.findIndex(
+    //   (image) => image._id === newImage._id
+    // );
+
+    setImages(newImage);
 
     const pickedVariation = product.variations.find(
       (variation) =>
         variation.color === valueToCheck &&
-        variation.size === pickedColorVariation.size
+        variation.size === pickedVariationByColor.size
     );
+
     const currentSizes = [];
     product?.variations.forEach((variation) => {
       const exists = variation.color === valueToCheck;
@@ -183,7 +137,7 @@ const POSProductDetails = ({ product }) => {
   return (
     <div className="container-class maxsm:py-8 h-full">
       <main className="bg-gray-100 flex min-h-screen flex-col items-center justify-between">
-        <div className="w-full mx-auto wrapper-class gap-3 bg-slate-100 text-black bg-opacity-80 rounded-lg">
+        <div className="w-full mx-auto wrapper-class gap-3 text-black  rounded-lg">
           <div className="flex flex-row maxsm:flex-col items-start justify-start gap-x-3 px-3 py-8 maxmd:py-4 ">
             <div className="image-class w-1/2 maxsm:w-full flex flex-col items-center justify-center ">
               <motion.div
@@ -192,37 +146,23 @@ const POSProductDetails = ({ product }) => {
                 transition={{ duration: 0.7 }}
                 className="p-2 w-full relative"
               >
-                <h2 className="hidden maxsm:block text-5xl font-semibold font-EB_Garamond mb-5">
-                  BRAND
-                </h2>
-                <div className="container body  " ref={slideRef}>
+                <div className="container  " ref={slideRef}>
                   {images.map((image, index) => (
                     <div
                       key={image._id}
                       data-image-id={image._id}
                       onClick={() => clickImage(image._id)}
-                      className={`item cursor-pointer ${
-                        index === 0 && 'active'
-                      }`}
+                      className={`item ${index === 0 && 'active'}`}
                       style={{
                         backgroundImage: `url('${image.url}')`,
                       }}
                     ></div>
                   ))}
                 </div>
-
-                <div className="buttons left-[10%] maxsm:left-[20%]">
-                  <button id="prev" onClick={movePrev}>
-                    <FaAngleLeft />
-                  </button>
-                  <button id="next" onClick={moveNext}>
-                    <FaAngleRight />
-                  </button>
-                </div>
               </motion.div>
             </div>
-            <div className="description-class w-1/2 maxsm:w-full h-full ">
-              <div className="flex flex-col items-start justify-start pt-10 maxsm:pt-2 gap-y-5 w-[90%] maxmd:w-full p-5 pb-10">
+            <div className="description-class w-1/2 maxsm:w-full h-full">
+              <div className="flex flex-col items-start justify-start pt-1 maxsm:pt-2 gap-y-5 w-[90%] maxmd:w-full p-5 pb-10">
                 <motion.div
                   initial={{ x: 50, opacity: 0 }}
                   whileInView={{ x: 0, opacity: 1 }}
@@ -286,7 +226,7 @@ const POSProductDetails = ({ product }) => {
                 {product?.stock <= 0 || alreadyCart ? (
                   ''
                 ) : (
-                  <div className="flex items-start justify-start">
+                  <div className="flex items-start gap-4">
                     {' '}
                     <motion.div
                       initial={{ y: 50, opacity: 0 }}
@@ -304,7 +244,7 @@ const POSProductDetails = ({ product }) => {
                               value={c.value}
                               key={index}
                               onClick={handleColorSelection}
-                              className={`flex cursor-pointer p-3  text-white ${
+                              className={`flex cursor-pointer p-3 rounded-lg text-white ${
                                 color === c.value ? 'bg-black' : 'bg-slate-500'
                               }`}
                             >
@@ -330,7 +270,7 @@ const POSProductDetails = ({ product }) => {
                               key={index}
                               onClick={handleSizeSelection}
                               value={s}
-                              className={`rounded-full border border-slate-400 flex items-center justify-center px-2 py-1 ${
+                              className={`rounded-lg border border-slate-400 flex items-center justify-center px-2 py-1 ${
                                 size === s
                                   ? ' bg-black text-white'
                                   : 'border-slate-400'

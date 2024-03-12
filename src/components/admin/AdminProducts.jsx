@@ -1,13 +1,20 @@
 'use client';
 import Link from 'next/link';
 import Image from 'next/image';
-import { FaTrash, FaPencilAlt, FaStar } from 'react-icons/fa';
+import {
+  FaTrash,
+  FaPencilAlt,
+  FaStar,
+  FaInstagramSquare,
+} from 'react-icons/fa';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import Swal from 'sweetalert2';
 import SearchProducts from '@/app/admin/productos/search';
 import { changeProductAvailability, changeProductStatus } from '@/app/_actions';
 import { TiCancel } from 'react-icons/ti';
 import { FaShop } from 'react-icons/fa6';
+import { MdOutlineWeb } from 'react-icons/md';
+import { TbWorldWww } from 'react-icons/tb';
 
 const AdminProducts = ({ products, filteredProductsCount, search }) => {
   const deleteHandler = (product_id) => {
@@ -78,7 +85,8 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
     });
   };
 
-  const deactivateBranchHandler = (product_id, active) => {
+  const deactivateOnlineHandler = (product_id, active) => {
+    const location = 'Online';
     let title;
     let text;
     let confirmBtn;
@@ -121,10 +129,107 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
           text: successText,
           icon: icon,
         });
-        changeProductAvailability(product_id);
+        changeProductAvailability(product_id, location);
       }
     });
   };
+
+  const deactivateBranchHandler = (product_id, active) => {
+    const location = 'Branch';
+    let title;
+    let text;
+    let confirmBtn;
+    let successTitle;
+    let successText;
+    let icon;
+    let confirmBtnColor;
+    if (active === true) {
+      icon = 'warning';
+      title = 'Estas seguro(a)?';
+      text =
+        '¡Estas a punto de desactivar a este producto de la sucursal física y quedara sin acceso!';
+      confirmBtn = '¡Sí, desactivar producto!';
+      confirmBtnColor = '#CE7E00';
+      successTitle = 'Desactivar!';
+      successText = 'El producto ha sido desactivado.';
+    } else {
+      icon = 'success';
+      title = 'Estas seguro(a)?';
+      text =
+        '¡Estas a punto de reactivar a este producto a la sucursal física!';
+      confirmBtn = '¡Sí, reactivar producto!';
+      confirmBtnColor = '#228B22';
+      successTitle = 'Reactivado!';
+      successText = 'El producto ha sido reactivado.';
+    }
+    Swal.fire({
+      title: title,
+      text: text,
+      icon: icon,
+      showCancelButton: true,
+      confirmButtonColor: confirmBtnColor,
+      cancelButtonColor: '#000',
+      confirmButtonText: confirmBtn,
+      cancelButtonText: 'No, cancelar!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: successTitle,
+          text: successText,
+          icon: icon,
+        });
+        changeProductAvailability(product_id, location);
+      }
+    });
+  };
+
+  const deactivateInstagramHandler = (product_id, active) => {
+    const location = 'Instagram';
+    let title;
+    let text;
+    let confirmBtn;
+    let successTitle;
+    let successText;
+    let icon;
+    let confirmBtnColor;
+    if (active === true) {
+      icon = 'warning';
+      title = 'Estas seguro(a)?';
+      text = '¡Estas a punto de desactivar a este producto en Instagram!';
+      confirmBtn = '¡Sí, desactivar producto!';
+      confirmBtnColor = '#CE7E00';
+      successTitle = 'Desactivar!';
+      successText = 'El producto ha sido desactivado en Instagram.';
+    } else {
+      icon = 'success';
+      title = 'Estas seguro(a)?';
+      text = '¡Estas a punto de reactivar a este producto en Instagram!';
+      confirmBtn = '¡Sí, reactivar producto en Instagram!';
+      confirmBtnColor = '#228B22';
+      successTitle = 'Reactivado!';
+      successText = 'El producto ha sido reactivado en Instagram.';
+    }
+    Swal.fire({
+      title: title,
+      text: text,
+      icon: icon,
+      showCancelButton: true,
+      confirmButtonColor: confirmBtnColor,
+      cancelButtonColor: '#000',
+      confirmButtonText: confirmBtn,
+      cancelButtonText: 'No, cancelar!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: successTitle,
+          text: successText,
+          icon: icon,
+        });
+        changeProductAvailability(product_id, location);
+      }
+    });
+  };
+
   return (
     <>
       <hr className="my-4 maxsm:my-1" />
@@ -227,12 +332,19 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                   </Link>
                   <button
                     onClick={() =>
-                      deactivateHandler(product._id, product?.active)
+                      deactivateOnlineHandler(product._id, product?.active)
                     }
-                    className="p-2 inline-block text-white hover:text-black bg-slate-600 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
+                    className="p-2 inline-block text-white hover:text-black bg-slate-300 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
                   >
-                    <TiCancel className="maxsm:text-[10px]" />
+                    <TbWorldWww
+                      className={` ${
+                        product?.availability.online === true
+                          ? 'text-green-800 maxsm:text-[10px]'
+                          : 'text-slate-400 maxsm:text-[10px]'
+                      }`}
+                    />
                   </button>
+
                   <button
                     onClick={() =>
                       deactivateBranchHandler(product._id, product?.active)
@@ -241,8 +353,22 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                   >
                     <FaShop
                       className={` ${
-                        product?.availability === true
-                          ? 'text-green-600 maxsm:text-[10px]'
+                        product?.availability.branch === true
+                          ? 'text-green-800 maxsm:text-[10px]'
+                          : 'text-slate-400 maxsm:text-[10px]'
+                      }`}
+                    />
+                  </button>
+                  <button
+                    onClick={() =>
+                      deactivateInstagramHandler(product._id, product?.active)
+                    }
+                    className="p-2 inline-block text-white hover:text-black bg-slate-300 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
+                  >
+                    <FaInstagramSquare
+                      className={` ${
+                        product?.availability.instagram === true
+                          ? 'bg-gradient-to-tr from-amber-700 to-pink-600 maxsm:text-[10px]'
                           : 'text-slate-400 maxsm:text-[10px]'
                       }`}
                     />

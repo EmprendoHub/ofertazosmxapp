@@ -7,6 +7,7 @@ import StoreMainHero from '@/components/store/StoreMainHero';
 import ListPOSProducts from '@/components/products/ListPOSProducts';
 import Search from '@/components/layout/Search';
 import POSSearch from '@/components/layout/POSearch';
+import { getAllPOSProduct } from '@/app/_actions';
 
 export const metadata = {
   title: 'Tienda Shopout Mx',
@@ -55,8 +56,8 @@ const TiendaPage = async ({ searchParams }) => {
   const currentCookies = `${cookieName}=${nextAuthSessionToken}`;
 
   const per_page = 10;
-  const data = await getAllProducts(searchParams, currentCookies, per_page);
 
+  const data = await getAllPOSProduct(searchParams);
   //pagination
   let page = parseInt(searchParams.page, 10);
   page = !page || page < 1 ? 1 : page;
@@ -68,9 +69,7 @@ const TiendaPage = async ({ searchParams }) => {
   const isPageOutOfRange = page > totalPages;
   const pageNumbers = [];
   const offsetNumber = 1;
-  const products = data?.products.products;
-  const allBrands = data?.allBrands;
-  const allCategories = data?.allCategories;
+  const products = JSON.parse(data?.products);
   const filteredProductsCount = data?.filteredProductsCount;
   const search =
     typeof searchParams.search === 'string' ? searchParams.search : undefined;
@@ -85,8 +84,6 @@ const TiendaPage = async ({ searchParams }) => {
       {/* <StoreHeroComponent /> */}
       <ListPOSProducts
         products={products}
-        allBrands={allBrands}
-        allCategories={allCategories}
         filteredProductsCount={filteredProductsCount}
       />
       <ServerPagination

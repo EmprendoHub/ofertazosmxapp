@@ -106,8 +106,18 @@ const ProductSchema = new mongoose.Schema({
     type: String,
   },
   availability: {
-    type: Boolean,
-    default: true,
+    instagram: {
+      type: Boolean,
+      default: false,
+    },
+    branch: {
+      type: Boolean,
+      default: false,
+    },
+    online: {
+      type: Boolean,
+      default: false,
+    },
   },
   stock: {
     require: true,

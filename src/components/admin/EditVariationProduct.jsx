@@ -29,6 +29,15 @@ const EditVariationProduct = ({ product }) => {
   const [tags, setTags] = useState(product?.tags);
   const [gender, setGender] = useState(product?.gender);
   const [featured, setFeatured] = useState(product?.featured);
+  const [branchAvailability, setBranchAvailability] = useState(
+    product?.availability?.branch
+  );
+  const [instagramAvailability, setInstagramAvailability] = useState(
+    product?.availability?.instagram
+  );
+  const [onlineAvailability, setOnlineAvailability] = useState(
+    product?.availability?.online
+  );
   const [updatedAt, setUpdatedAt] = useState(
     cstDateTimeClient().toLocaleString()
   );
@@ -253,6 +262,9 @@ const EditVariationProduct = ({ product }) => {
     formData.append('description', description);
     formData.append('category', category);
     formData.append('featured', featured);
+    formData.append('branchAvailability', branchAvailability);
+    formData.append('instagramAvailability', instagramAvailability);
+    formData.append('onlineAvailability', onlineAvailability);
     formData.append('brand', brand);
     formData.append('gender', gender);
     formData.append('mainImage', mainImage);
@@ -360,9 +372,9 @@ const EditVariationProduct = ({ product }) => {
               Actualizar Producto Con Variaciones
             </h1>
 
-            <div className="mb-4 w-full">
-              <label className="block mb-1 font-EB_Garamond">Destacado</label>
+            <div className="mb-4 w-full flex flex-row gap-4 items-center uppercase">
               <div className="relative">
+                <label className="block mb-1 font-EB_Garamond">Destacado</label>
                 <select
                   className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
                   name="featured"
@@ -380,6 +392,93 @@ const EditVariationProduct = ({ product }) => {
                     {validationError.featured._errors.join(', ')}
                   </p>
                 )}
+                <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
+                  <svg
+                    width="22"
+                    height="22"
+                    className="fill-current"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M7 10l5 5 5-5H7z"></path>
+                  </svg>
+                </i>
+              </div>
+              <div className="relative">
+                <label className="block mb-1 font-EB_Garamond">instagram</label>
+                <select
+                  className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                  name="instagramAvailability"
+                  onChange={(e) => setInstagramAvailability(e.target.value)}
+                  value={instagramAvailability}
+                >
+                  {[
+                    { value: false, name: 'No' },
+                    { value: true, name: 'Si' },
+                  ].map((opt) => (
+                    <option key={opt} value={opt.value}>
+                      {opt.name}
+                    </option>
+                  ))}
+                </select>
+
+                <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
+                  <svg
+                    width="22"
+                    height="22"
+                    className="fill-current"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M7 10l5 5 5-5H7z"></path>
+                  </svg>
+                </i>
+              </div>
+              <div className="relative">
+                <label className="block mb-1 font-EB_Garamond">sucursal</label>
+                <select
+                  className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                  name="branchAvailability"
+                  onChange={(e) => setBranchAvailability(e.target.value)}
+                  value={branchAvailability}
+                >
+                  {[
+                    { value: false, name: 'No' },
+                    { value: true, name: 'Si' },
+                  ].map((opt) => (
+                    <option key={opt} value={opt.value}>
+                      {opt.name}
+                    </option>
+                  ))}
+                </select>
+
+                <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
+                  <svg
+                    width="22"
+                    height="22"
+                    className="fill-current"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M7 10l5 5 5-5H7z"></path>
+                  </svg>
+                </i>
+              </div>
+              <div className="relative">
+                <label className="block mb-1 font-EB_Garamond">www</label>
+                <select
+                  className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                  name="onlineAvailability"
+                  onChange={(e) => setOnlineAvailability(e.target.value)}
+                  value={onlineAvailability}
+                >
+                  {[
+                    { value: false, name: 'No' },
+                    { value: true, name: 'Si' },
+                  ].map((opt) => (
+                    <option key={opt} value={opt.value}>
+                      {opt.name}
+                    </option>
+                  ))}
+                </select>
+
                 <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
                   <svg
                     width="22"

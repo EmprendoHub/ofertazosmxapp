@@ -6,7 +6,7 @@ import 'react-datetime-picker/dist/DateTimePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';
 import { cstDateTimeClient } from '@/backend/helpers';
-import { addProduct, addVariationProduct } from '@/app/_actions';
+import { addVariationProduct } from '@/app/_actions';
 import { useRouter } from 'next/navigation';
 import {
   set_colors,
@@ -24,6 +24,9 @@ const NewVariationProduct = () => {
   const formRef = useRef();
   const [title, setTitle] = useState('');
   const [brand, setBrand] = useState('');
+  const [branchAvailability, setBranchAvailability] = useState(false);
+  const [instagramAvailability, setInstagramAvailability] = useState(false);
+  const [onlineAvailability, setOnlineAvailability] = useState(true);
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('Moda');
   const [tags, setTags] = useState([]);
@@ -233,7 +236,6 @@ const NewVariationProduct = () => {
       return;
     }
     if (!variations[0].cost) {
-      console.log(variations[0].cost);
       const noCostError = {
         cost: { _errors: ['Se requiere un costo de producto '] },
       };
@@ -241,7 +243,6 @@ const NewVariationProduct = () => {
       return;
     }
     if (!variations[0].price) {
-      console.log(variations[0].price);
       const noPriceError = {
         price: { _errors: ['Se requiere un precio de producto '] },
       };
@@ -268,6 +269,9 @@ const NewVariationProduct = () => {
     formData.append('description', description);
     formData.append('category', category);
     formData.append('featured', featured);
+    formData.append('branchAvailability', branchAvailability);
+    formData.append('instagramAvailability', instagramAvailability);
+    formData.append('onlineAvailability', onlineAvailability);
     formData.append('brand', brand);
     formData.append('gender', gender);
     formData.append('mainImage', mainImage);
@@ -301,16 +305,8 @@ const NewVariationProduct = () => {
     }
   };
 
-  const handleAddSizeField = (selectedOption) => {
-    setSizes(selectedOption);
-  };
-
   const handleAddTagField = (option) => {
     setTags(option);
-  };
-
-  const handleAddColorField = (option) => {
-    setColors(option);
   };
 
   function onChangeDate(date) {
@@ -343,13 +339,13 @@ const NewVariationProduct = () => {
       >
         <section className="w-full ">
           <div className="flex flex-row maxmd:flex-col items-center justify-between">
-            <h1 className="w-full text-2xl font-semibold text-black mb-8 font-EB_Garamond">
+            <h1 className="w-full text-xl font-semibold text-black mb-8 font-EB_Garamond">
               Nuevo Producto Con Variaciones
             </h1>
 
-            <div className="mb-4 w-full">
-              <label className="block mb-1 font-EB_Garamond">Destacado</label>
+            <div className="mb-4 w-full flex flex-row gap-4 items-center uppercase">
               <div className="relative">
+                <label className="block mb-1 font-EB_Garamond">destacado</label>
                 <select
                   className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
                   name="featured"
@@ -367,6 +363,93 @@ const NewVariationProduct = () => {
                     {validationError.featured._errors.join(', ')}
                   </p>
                 )}
+                <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
+                  <svg
+                    width="22"
+                    height="22"
+                    className="fill-current"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M7 10l5 5 5-5H7z"></path>
+                  </svg>
+                </i>
+              </div>
+              <div className="relative">
+                <label className="block mb-1 font-EB_Garamond">instagram</label>
+                <select
+                  className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                  name="instagramAvailability"
+                  onChange={(e) => setInstagramAvailability(e.target.value)}
+                  value={instagramAvailability}
+                >
+                  {[
+                    { value: false, name: 'No' },
+                    { value: true, name: 'Si' },
+                  ].map((opt) => (
+                    <option key={opt} value={opt.value}>
+                      {opt.name}
+                    </option>
+                  ))}
+                </select>
+
+                <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
+                  <svg
+                    width="22"
+                    height="22"
+                    className="fill-current"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M7 10l5 5 5-5H7z"></path>
+                  </svg>
+                </i>
+              </div>
+              <div className="relative">
+                <label className="block mb-1 font-EB_Garamond">sucursal</label>
+                <select
+                  className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                  name="branchAvailability"
+                  onChange={(e) => setBranchAvailability(e.target.value)}
+                  value={branchAvailability}
+                >
+                  {[
+                    { value: false, name: 'No' },
+                    { value: true, name: 'Si' },
+                  ].map((opt) => (
+                    <option key={opt} value={opt.value}>
+                      {opt.name}
+                    </option>
+                  ))}
+                </select>
+
+                <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
+                  <svg
+                    width="22"
+                    height="22"
+                    className="fill-current"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M7 10l5 5 5-5H7z"></path>
+                  </svg>
+                </i>
+              </div>
+              <div className="relative">
+                <label className="block mb-1 font-EB_Garamond">www</label>
+                <select
+                  className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                  name="onlineAvailability"
+                  onChange={(e) => setOnlineAvailability(e.target.value)}
+                  value={onlineAvailability}
+                >
+                  {[
+                    { value: false, name: 'No' },
+                    { value: true, name: 'Si' },
+                  ].map((opt) => (
+                    <option key={opt} value={opt.value}>
+                      {opt.name}
+                    </option>
+                  ))}
+                </select>
+
                 <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
                   <svg
                     width="22"

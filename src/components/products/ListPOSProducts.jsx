@@ -3,7 +3,7 @@ import POSSearch from '../layout/POSearch';
 import POSProductCard from './POSProductCard';
 
 const ListPOSProducts = ({ products }) => {
-  const filteredProducts = products.filter((product) => product.stock > 0);
+  const filteredProducts = products?.filter((product) => product.stock > 0);
   return (
     <section className="py-4 mx-auto maxlg:px-2 flex flex-col justify-center items-center">
       <div>
