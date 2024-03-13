@@ -52,7 +52,6 @@ const NewProduct = () => {
   const [colorSelection, setColorSelection] = useState(set_colors);
   const [validationError, setValidationError] = useState(null);
 
-  console.log(tags);
   // functions
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
     if (acceptedFiles?.length) {
