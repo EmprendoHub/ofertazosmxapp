@@ -44,6 +44,7 @@ const NewVariationProduct = () => {
   const [mainImage, setMainImage] = useState(
     '/images/product-placeholder-minimalist.jpg'
   );
+
   const [mainVariation, setMainVariation] = useState(
     '/images/product-placeholder-minimalist.jpg'
   );
@@ -58,6 +59,7 @@ const NewVariationProduct = () => {
       image: '/images/product-placeholder-minimalist.jpg',
     },
   ]);
+
   const addVariation = () => {
     setVariations((prevVariations) => [
       ...prevVariations,
@@ -120,7 +122,7 @@ const NewVariationProduct = () => {
 
   // generate a pre-signed URL for use in uploading that file:
   async function retrieveNewURL(file, cb) {
-    const endpoint = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/minio/`;
+    const endpoint = `/api/minio/`;
     fetch(endpoint, {
       method: 'PUT',
       headers: {

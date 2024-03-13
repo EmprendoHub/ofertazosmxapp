@@ -10,7 +10,6 @@ const POSResultScanner = ({ product, variation }) => {
           </h2>
         </div>
       </section>
-
       <section className="pb-10 bg-gray-100">
         <div className="container  mx-auto bg-white p-5">
           <div className="flex flex-col md:flex-row gap-4">
