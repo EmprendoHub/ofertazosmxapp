@@ -124,6 +124,7 @@ const NewVariationProduct = () => {
     fetch(endpoint, {
       method: 'PUT',
       headers: {
+        'Access-Control-Allow-Origin': '*',
         Name: file.name,
       },
     })
@@ -140,6 +141,9 @@ const NewVariationProduct = () => {
   // to upload this file to S3 at `https://minio.salvawebpro.com:9000` using the URL:
   async function uploadVariationFile(file, url, index) {
     fetch(url, {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
       method: 'PUT',
       body: file,
     })
@@ -639,7 +643,7 @@ const NewVariationProduct = () => {
                 </label>
                 <div className="relative">
                   <select
-                    className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                    className="block appearance-none border border-gray-400 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
                     name="category"
                     onChange={(e) => handleCategoryChange(e.target.value)}
                   >
