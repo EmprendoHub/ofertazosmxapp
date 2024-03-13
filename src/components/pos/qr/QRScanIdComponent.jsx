@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Html5QrcodeScanner } from 'html5-qrcode';
 import { usePathname, useRouter } from 'next/navigation';
 
-const QRScannerComponent = () => {
+const QRScanIdComponent = () => {
   const [scanResult, setScanResult] = useState(null);
   const pathname = usePathname();
   const router = useRouter();
@@ -13,7 +13,7 @@ const QRScannerComponent = () => {
         width: 500,
         height: 500,
       },
-      fps: 5,
+      fps: 10,
     });
 
     scanner.render(success, error);
@@ -32,9 +32,9 @@ const QRScannerComponent = () => {
   useEffect(() => {
     if (scanResult) {
       if (pathname.includes('admin')) {
-        router.push(`/admin/pos/scan/${scanResult}`);
+        router.push(`/admin/pos/scanid/${scanResult}`);
       } else {
-        router.push(`/puntodeventa/scan/${scanResult}`);
+        router.push(`/puntodeventa/scanid/${scanResult}`);
       }
     }
   }, [scanResult]);
@@ -73,4 +73,4 @@ const QRScannerComponent = () => {
   );
 };
 
-export default QRScannerComponent;
+export default QRScanIdComponent;

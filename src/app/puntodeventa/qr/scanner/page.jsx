@@ -1,4 +1,4 @@
-import QRComponent from '@/components/pos/qr/QRComponent';
+import QRComponent from '@/components/pos/qr/QRScannerComponent';
 import React, { forwardRef } from 'react';
 
 const QRPage = () => {

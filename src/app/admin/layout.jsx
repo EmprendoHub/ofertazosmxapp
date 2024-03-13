@@ -128,6 +128,12 @@ export default function UserLayout({ children }) {
                 icon: <TbScan size={20} />,
               },
               {
+                text: 'Scanner ID',
+                url: '/admin/pos/qr/idscanner',
+                active: pathname === '/admin/pos/qr/idscanner' ?? true,
+                icon: <TbScan size={20} />,
+              },
+              {
                 text: 'Generar QRs`',
                 url: '/admin/pos/productos',
                 active: pathname === '/admin/pos/productos' ?? true,
