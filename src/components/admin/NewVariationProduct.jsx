@@ -118,6 +118,25 @@ const NewVariationProduct = () => {
     });
   };
 
+  // generate a pre-signed URL for use in uploading that file:
+  async function retrieveNewURL(file, cb) {
+    const endpoint = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/minio`;
+    fetch(endpoint, {
+      method: 'PUT',
+      headers: {
+        Name: file.name,
+      },
+    })
+      .then((response) => {
+        response.text().then((url) => {
+          cb(file, url);
+        });
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }
+
   // to upload this file to S3 at `https://minio.salvawebpro.com:9000` using the URL:
   async function uploadVariationFile(file, url, index) {
     fetch(url, {
@@ -154,25 +173,6 @@ const NewVariationProduct = () => {
       }
     }
   };
-
-  // generate a pre-signed URL for use in uploading that file:
-  async function retrieveNewURL(file, cb) {
-    const endpoint = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/minio`;
-    fetch(endpoint, {
-      method: 'PUT',
-      headers: {
-        Name: file.name,
-      },
-    })
-      .then((response) => {
-        response.text().then((url) => {
-          cb(file, url);
-        });
-      })
-      .catch((e) => {
-        console.error(e);
-      });
-  }
 
   // to upload this file to S3 at `https://minio.salvawebpro.com:9000` using the URL:
   async function uploadFile(file, url, section) {
@@ -362,9 +362,12 @@ const NewVariationProduct = () => {
                   onChange={(e) => setFeatured(e.target.value)}
                   value={featured}
                 >
-                  {['No', 'Si'].map((opt) => (
-                    <option key={opt} value={opt}>
-                      {opt}
+                  {[
+                    { value: false, name: 'No', uniqueKey: 'featuredNO' },
+                    { value: true, name: 'Si', uniqueKey: 'featuredYES' },
+                  ].map((opt, index) => (
+                    <option key={opt.uniqueKey} value={opt.value}>
+                      {opt.name}
                     </option>
                   ))}
                 </select>
@@ -393,10 +396,18 @@ const NewVariationProduct = () => {
                   value={instagramAvailability}
                 >
                   {[
-                    { value: false, name: 'No' },
-                    { value: true, name: 'Si' },
+                    {
+                      value: false,
+                      name: 'No',
+                      uniqueKey: 'instagramNO',
+                    },
+                    {
+                      value: true,
+                      name: 'Si',
+                      uniqueKey: 'instagramYes',
+                    },
                   ].map((opt) => (
-                    <option key={opt} value={opt.value}>
+                    <option key={opt.uniqueKey} value={opt.value}>
                       {opt.name}
                     </option>
                   ))}
@@ -422,10 +433,18 @@ const NewVariationProduct = () => {
                   value={branchAvailability}
                 >
                   {[
-                    { value: false, name: 'No' },
-                    { value: true, name: 'Si' },
+                    {
+                      value: false,
+                      name: 'No',
+                      uniqueKey: 'branchNo',
+                    },
+                    {
+                      value: true,
+                      name: 'Si',
+                      uniqueKey: 'branchYes',
+                    },
                   ].map((opt) => (
-                    <option key={opt} value={opt.value}>
+                    <option key={opt.uniqueKey} value={opt.value}>
                       {opt.name}
                     </option>
                   ))}
@@ -451,10 +470,18 @@ const NewVariationProduct = () => {
                   value={onlineAvailability}
                 >
                   {[
-                    { value: false, name: 'No' },
-                    { value: true, name: 'Si' },
+                    {
+                      value: false,
+                      name: 'No',
+                      uniqueKey: 'onlineNo',
+                    },
+                    {
+                      value: true,
+                      name: 'Si',
+                      uniqueKey: 'onlineYes',
+                    },
                   ].map((opt) => (
-                    <option key={opt} value={opt.value}>
+                    <option key={opt.uniqueKey} value={opt.value}>
                       {opt.name}
                     </option>
                   ))}
