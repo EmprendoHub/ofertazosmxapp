@@ -68,8 +68,8 @@ const QRGenerator = ({ products }) => {
         </h2>
         <div onClick={() => dispatch(resetQRToPrint())}>
           <ReactToPrint
-            bodyClass="print-agreement"
-            pageStyle="@page { size: 2.5in 1.5in }"
+            bodyClass="print-qrs"
+            pageStyle="@page { size: 2in 1in }"
             documentTitle={`QR codes`}
             content={() => ref.current}
             trigger={() => (
@@ -91,15 +91,15 @@ const QRGenerator = ({ products }) => {
           <div className="card-body w-full relative flex flex-wrap text-sm ">
             {imageQR.length > 0 &&
               imageQR.map((item, index) => (
-                <div key={index} className="flex flex-row items-center">
+                <div key={index} className="flex flex-col items-center">
                   <Image
                     src={item.qr}
                     alt="qr code"
-                    width={150}
-                    height={150}
+                    width={75}
+                    height={75}
                     className="mx-auto text-center h-auto p-0"
                   />
-                  <p className="break-words w-[80%] mx-auto text-sm ">
+                  <p className="text-xs ">
                     <FormattedPrice amount={item?.price} />
                   </p>
                 </div>
