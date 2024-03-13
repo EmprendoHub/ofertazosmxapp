@@ -144,7 +144,7 @@ const NewVariationProduct = () => {
       headers: {
         'Access-Control-Allow-Origin': '*',
       },
-      method: 'POST',
+      method: 'PUT',
       body: file,
     })
       .then(() => {
@@ -181,7 +181,10 @@ const NewVariationProduct = () => {
   // to upload this file to S3 at `https://minio.salvawebpro.com:9000` using the URL:
   async function uploadFile(file, url, section) {
     fetch(url, {
-      method: 'POST',
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
+      method: 'PUT',
       body: file,
     })
       .then(() => {
