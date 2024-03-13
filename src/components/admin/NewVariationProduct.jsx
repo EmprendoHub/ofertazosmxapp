@@ -144,7 +144,7 @@ const NewVariationProduct = () => {
       headers: {
         'Access-Control-Allow-Origin': '*',
       },
-      method: 'PUT',
+      method: 'POST',
       body: file,
     })
       .then(() => {
