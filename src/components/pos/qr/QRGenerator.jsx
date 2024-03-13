@@ -36,7 +36,6 @@ const QRGenerator = ({ products }) => {
 
         // Remove 'MX' from the formatted amount
         const price = formattedAmount?.replace('MX', '').trim();
-        console.log(price);
         const text = id + '-' + product.title + '-' + price.toString();
         const image = await qrcode.toDataURL(text);
         if (variation.stock > 0) {

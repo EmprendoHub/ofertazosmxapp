@@ -956,6 +956,15 @@ export async function getOnePOSProduct(variationId) {
       let variation = product.variations.find(
         (variation) => variation._id.toString() === variationId
       );
+
+      // Add product name and brand to the variation
+      let { title, brand } = product;
+      variation = {
+        ...variation.toObject(), // Convert Mongoose document to plain object
+        title: title,
+        brand: brand,
+      };
+
       // convert to string
       product = JSON.stringify(product);
       variation = JSON.stringify(variation);

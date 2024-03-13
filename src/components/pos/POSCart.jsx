@@ -9,19 +9,11 @@ import {
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
 import { AiOutlineClose } from 'react-icons/ai';
-import { toast } from 'react-toastify';
-import { usePathname, useRouter } from 'next/navigation';
 import POSCheckOutForm from './POSCheckOutForm';
 
 const POSCart = () => {
-  //import CartContext and assign to addItemToCart
   const { productsPOS } = useSelector((state) => state?.compras);
-  const router = useRouter();
   const dispatch = useDispatch();
-
-  // if (productsPOS?.length <= 0) {
-  //   router.replace('/puntodeventa/qr');
-  // }
 
   return (
     <div className="w-full">
