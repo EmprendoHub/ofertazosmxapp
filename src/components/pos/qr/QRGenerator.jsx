@@ -17,7 +17,6 @@ const QRGenerator = ({ products }) => {
 
   useEffect(() => {
     let qrArray;
-
     if (qrListData.length > 0) {
       qrArray = products.filter((product) =>
         qrListData.some((obj) => obj.id === product._id)
@@ -26,18 +25,27 @@ const QRGenerator = ({ products }) => {
       qrArray = products;
     }
 
-    console.log(qrListData.length, qrArray);
     qrArray.forEach(async (product) => {
       product.variations.forEach(async (variation) => {
         const id = variation._id;
-        const image = await qrcode.toDataURL(id);
+        const formattedAmount = variation.price?.toLocaleString('en-US', {
+          style: 'currency',
+          currency: 'MXN',
+          maximumFractionDigits: 2,
+        });
+
+        // Remove 'MX' from the formatted amount
+        const price = formattedAmount?.replace('MX', '').trim();
+        console.log(price);
+        const text = id + '-' + product.title + '-' + price.toString();
+        const image = await qrcode.toDataURL(text);
         if (variation.stock > 0) {
           for (let i = 0; i < variation.stock; i++) {
             setImageQR((prevImageQrs) => {
               const newQr = {
                 id: id,
                 qr: image,
-                title: variation.title,
+                title: product.title,
                 size: variation.size,
                 color: variation.color,
                 stock: variation.stock,
@@ -51,11 +59,6 @@ const QRGenerator = ({ products }) => {
       });
     });
   }, []);
-
-  const handlePrint = () => {
-    window.print();
-    dispatch(resetQRToPrint());
-  };
 
   return (
     <div

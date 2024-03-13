@@ -60,7 +60,6 @@ const POSCart = () => {
                               <figcaption className="ml-3">
                                 <p>{cartItem?.title}</p>
                                 <p className="mt-1 text-gray-400">
-                                  {' '}
                                   Marca: {cartItem?.brand}
                                 </p>
                               </figcaption>

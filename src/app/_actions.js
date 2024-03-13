@@ -970,7 +970,7 @@ export async function getOnePOSProduct(variationId) {
   }
 }
 
-export async function getAllPOSProduct(searchQuery) {
+export async function getAllPOSProductOld(searchQuery) {
   try {
     await dbConnect();
     let productQuery;
@@ -1008,6 +1008,24 @@ export async function getAllPOSProduct(searchQuery) {
       productsCount: productsCount,
       filteredProductsCount: filteredProductsCount,
       resPerPage: resPerPage,
+    };
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
+
+export async function getAllPOSProduct(searchQuery) {
+  try {
+    await dbConnect();
+    // Find the product that contains the variation with the specified variation ID
+    let products = await Product.find({
+      $and: [{ stock: { $gt: 0 } }, { 'availability.branch': true }],
+    });
+
+    products = JSON.stringify(products);
+    return {
+      products: products,
     };
   } catch (error) {
     console.log(error);

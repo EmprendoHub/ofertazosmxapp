@@ -19,7 +19,9 @@ const QRScannerComponent = () => {
     scanner.render(success, error);
 
     function success(result) {
-      setScanResult(result);
+      const parts = result.split('-');
+      const variationId = parts[0];
+      setScanResult(variationId);
       scanner.clear();
     }
     function error(err) {
