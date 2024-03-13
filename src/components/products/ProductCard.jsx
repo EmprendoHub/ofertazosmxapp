@@ -23,7 +23,7 @@ const ProductCard = ({ item }) => {
           <Image
             src={item?.images[0].url}
             alt="product image"
-            className="grayscale hover:grayscale-0 ease-in-out duration-500 w-full h-full object-cover group-hover:scale-110 rounded-t-sm"
+            className=" ease-in-out duration-500 w-full h-full object-cover group-hover:scale-110 rounded-t-sm"
             width={350}
             height={350}
           />

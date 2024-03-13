@@ -51,13 +51,13 @@ const TiendaPage = async ({ searchParams }) => {
   nextAuthSessionToken = nextAuthSessionToken?.value;
   const currentCookies = `${cookieName}=${nextAuthSessionToken}`;
 
-  const per_page = 10;
+  const per_page = 15;
   const data = await getAllProducts(searchParams, currentCookies, per_page);
 
   //pagination
-  let page = parseInt(searchParams.page, 10);
+  let page = parseInt(searchParams.page, 15);
   page = !page || page < 1 ? 1 : page;
-  const perPage = 10;
+  const perPage = 15;
   const itemCount = data?.productsCount;
   const totalPages = Math.ceil(data.filteredProductsCount / perPage);
   const prevPage = page - 1 > 0 ? page - 1 : 1;

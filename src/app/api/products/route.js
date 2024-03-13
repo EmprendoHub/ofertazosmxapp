@@ -18,7 +18,7 @@ export const GET = async (request, res) => {
     let productQuery;
     productQuery = Product.find();
 
-    const resPerPage = Number(request.headers.get('perpage')) || 5;
+    const resPerPage = Number(request.headers.get('perpage')) || 15;
     // Extract page and per_page from request URL
     const page = Number(request.nextUrl.searchParams.get('page')) || 1;
     // total number of documents in database
