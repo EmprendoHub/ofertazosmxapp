@@ -12,7 +12,7 @@ const ListPOSProducts = ({ products }) => {
 
       <div className=" mx-auto flex justify-center items-center w-full">
         <div className="w-full justify-center items-center gap-x-5">
-          <main className=" flex flex-row flex-wrap items-center w-full pl-5">
+          <main className=" flex flex-row gap-4 flex-wrap items-center w-full pl-5">
             {filteredProducts?.map((product, index) => (
               <POSProductCard item={product} key={index} />
             ))}

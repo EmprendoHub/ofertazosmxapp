@@ -55,8 +55,10 @@ const UpdateProductDetails = ({ product }) => {
     'Verde',
     'Amarillo',
     'Multicolor',
+    'Lila',
   ];
   const available_sizes_prendas = [
+    { value: 'XCH', label: 'XCH' },
     { value: 'CH', label: 'CH' },
     { value: 'M', label: 'M' },
     { value: 'G', label: 'G' },

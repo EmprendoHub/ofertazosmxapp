@@ -1,19 +1,12 @@
 'use client';
 import Link from 'next/link';
 import Image from 'next/image';
-import {
-  FaTrash,
-  FaPencilAlt,
-  FaStar,
-  FaInstagramSquare,
-} from 'react-icons/fa';
+import { FaPencilAlt, FaStar, FaInstagramSquare } from 'react-icons/fa';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import Swal from 'sweetalert2';
 import SearchProducts from '@/app/admin/productos/search';
 import { changeProductAvailability, changeProductStatus } from '@/app/_actions';
-import { TiCancel } from 'react-icons/ti';
 import { FaShop } from 'react-icons/fa6';
-import { MdOutlineWeb } from 'react-icons/md';
 import { TbWorldWww } from 'react-icons/tb';
 
 const AdminProducts = ({ products, filteredProductsCount, search }) => {
@@ -33,52 +26,6 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
           title: 'Desactivado!',
           text: 'Tu producto ha sido Desactivado.',
           icon: 'success',
-        });
-        changeProductStatus(product_id);
-      }
-    });
-  };
-  const deactivateHandler = (product_id, active) => {
-    let title;
-    let text;
-    let confirmBtn;
-    let successTitle;
-    let successText;
-    let icon;
-    let confirmBtnColor;
-    if (active === true) {
-      icon = 'warning';
-      title = 'Estas seguro(a)?';
-      text =
-        '¡Estas a punto de desactivar a este producto y quedara sin acceso!';
-      confirmBtn = '¡Sí, desactivar producto!';
-      confirmBtnColor = '#CE7E00';
-      successTitle = 'Desactivar!';
-      successText = 'El producto ha sido desactivado.';
-    } else {
-      icon = 'success';
-      title = 'Estas seguro(a)?';
-      text = '¡Estas a punto de reactivar a este producto!';
-      confirmBtn = '¡Sí, reactivar producto!';
-      confirmBtnColor = '#228B22';
-      successTitle = 'Reactivado!';
-      successText = 'El producto ha sido reactivado.';
-    }
-    Swal.fire({
-      title: title,
-      text: text,
-      icon: icon,
-      showCancelButton: true,
-      confirmButtonColor: confirmBtnColor,
-      cancelButtonColor: '#000',
-      confirmButtonText: confirmBtn,
-      cancelButtonText: 'No, cancelar!',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: successTitle,
-          text: successText,
-          icon: icon,
         });
         changeProductStatus(product_id);
       }
@@ -233,10 +180,10 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
   return (
     <>
       <hr className="my-4 maxsm:my-1" />
-      <div className="relative overflow-x-auto min-h-full shadow-md sm:rounded-lg">
+      <div className="relative min-h-full shadow-md sm:rounded-lg">
         <div className=" flex flex-row  maxsm:items-start items-center justify-between">
           {' '}
-          <h1 className="text-3xl maxsm:text-base my-5 maxsm:my-1 ml-4 maxsm:ml-0 font-bold font-EB_Garamond w-1/2">
+          <h1 className="text-3xl maxsm:text-base mb-2 maxsm:mb-1 ml-4 maxsm:ml-0 font-bold font-EB_Garamond w-1/2">
             {`${filteredProductsCount} Productos `}
           </h1>
           <SearchProducts search={search} />
@@ -278,7 +225,7 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                 }`}
                 key={index}
               >
-                <td className="px-6 maxsm:px-2 py-2 maxmd:hidden">
+                <td className="px-2 py-0 maxmd:hidden">
                   <Link
                     key={index}
                     href={`/admin/productos/variacion/${product.slug}`}
@@ -286,7 +233,7 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                     {product._id.substring(0, 10)}...
                   </Link>
                 </td>
-                <td className="px-6 maxsm:px-2 py-2 maxmd:hidden">
+                <td className="px-6 maxsm:px-2 py-0 maxmd:hidden">
                   <Link
                     key={index}
                     href={`/admin/productos/variacion/${product.slug}`}
@@ -294,7 +241,7 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                     {product.slug.substring(0, 10)}...
                   </Link>
                 </td>
-                <td className="px-6 maxsm:px-0 py-2 relative ">
+                <td className="px-6 maxsm:px-0 py-0 relative ">
                   <span className="relative flex items-center justify-center text-black w-12 h-12 maxsm:w-8 maxsm:h-8 shadow mt-2">
                     <Link href={`/admin/productos/variacion/${product.slug}`}>
                       <Image
@@ -314,16 +261,16 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                     )}
                   </span>
                 </td>
-                <td className="px-6 maxsm:px-0 py-2 ">
+                <td className="px-6 maxsm:px-0 py-0 ">
                   <b>
                     <FormattedPrice amount={product?.variations[0].price} />
                   </b>
                 </td>
-                <td className={`px-6 maxsm:px-0 py-2 font-bold maxsm:hidden`}>
+                <td className={`px-6 maxsm:px-0 py-0 font-bold maxsm:hidden`}>
                   {product.title.substring(0, 15)}
                 </td>
-                <td className="px-1 py-2 ">{product.stock}</td>
-                <td className="px-1 py-2 flex flex-row items-center gap-x-1">
+                <td className="px-1 py-0 ">{product.stock}</td>
+                <td className="px-1 py-0 flex flex-row items-center gap-x-1">
                   <Link
                     href={`/admin/productos/variacion/${product.slug}`}
                     className="p-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "

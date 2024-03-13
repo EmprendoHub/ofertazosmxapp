@@ -1,12 +1,5 @@
-import StoreHeroComponent from '@/components/hero/StoreHeroComponent';
-import ListProducts from '@/components/products/ListProducts';
-import { getCookiesName } from '@/backend/helpers';
-import { cookies } from 'next/headers';
 import ServerPagination from '@/components/pagination/ServerPagination';
-import StoreMainHero from '@/components/store/StoreMainHero';
 import ListPOSProducts from '@/components/products/ListPOSProducts';
-import Search from '@/components/layout/Search';
-import POSSearch from '@/components/layout/POSearch';
 import { getAllPOSProduct } from '@/app/_actions';
 
 export const metadata = {
@@ -15,54 +8,12 @@ export const metadata = {
     'Ven y explora nuestra tienda en linea y descubre modelos exclusivos de marcas de alta gama.',
 };
 
-const getAllProducts = async (searchParams, currentCookies, perPage) => {
-  try {
-    const urlParams = {
-      keyword: searchParams.keyword,
-      page: searchParams.page,
-      category: searchParams.category,
-      brand: searchParams.brand,
-      'rating[gte]': searchParams.rating,
-      'price[lte]': searchParams.max,
-      'price[gte]': searchParams.min,
-    };
-    // Filter out undefined values
-    const filteredUrlParams = Object.fromEntries(
-      Object.entries(urlParams).filter(([key, value]) => value !== undefined)
-    );
-
-    const searchQuery = new URLSearchParams(filteredUrlParams).toString();
-    const URL = `${process.env.NEXTAUTH_URL}/api/products?${searchQuery}`;
-    const res = await fetch(URL, {
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        Cookie: currentCookies,
-        perPage: perPage,
-      },
-    });
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 const TiendaPage = async ({ searchParams }) => {
-  const nextCookies = cookies();
-  const cookieName = getCookiesName();
-  let nextAuthSessionToken = nextCookies.get(cookieName);
-  nextAuthSessionToken = nextAuthSessionToken?.value;
-  const currentCookies = `${cookieName}=${nextAuthSessionToken}`;
-
-  const per_page = 10;
-
   const data = await getAllPOSProduct(searchParams);
   //pagination
   let page = parseInt(searchParams.page, 10);
   page = !page || page < 1 ? 1 : page;
   const perPage = 10;
-  const itemCount = data?.productsCount;
   const totalPages = Math.ceil(data.filteredProductsCount / perPage);
   const prevPage = page - 1 > 0 ? page - 1 : 1;
   const nextPage = page + 1;
@@ -71,8 +22,6 @@ const TiendaPage = async ({ searchParams }) => {
   const offsetNumber = 1;
   const products = JSON.parse(data?.products);
   const filteredProductsCount = data?.filteredProductsCount;
-  const search =
-    typeof searchParams.search === 'string' ? searchParams.search : undefined;
   for (let i = page - offsetNumber; i <= page + offsetNumber; i++) {
     if (i >= 1 && i <= totalPages) {
       pageNumbers.push(i);
@@ -81,7 +30,6 @@ const TiendaPage = async ({ searchParams }) => {
 
   return (
     <div className="flex flex-col items-center justify-center gap-5">
-      {/* <StoreHeroComponent /> */}
       <ListPOSProducts
         products={products}
         filteredProductsCount={filteredProductsCount}

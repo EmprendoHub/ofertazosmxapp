@@ -90,19 +90,6 @@ const POSProductCard = ({ item }) => {
             ''
           )}
         </div>
-        <div className="">
-          <p className="text-xs text-black">Resérvalo por solo: </p>
-          <p className="font-semibold text-black tracking-wider">
-            <FormattedPrice
-              amount={
-                item?.variations[0].price > 0
-                  ? item?.variations[0].price * 0.3
-                  : item?.sale_price ?? item?.sale_price * 0.3
-              }
-            />
-            {item?.sale_price > 0 ? '(30%)' : ''}
-          </p>
-        </div>
       </div>
     </motion.div>
   );

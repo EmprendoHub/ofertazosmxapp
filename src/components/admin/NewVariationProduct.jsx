@@ -64,10 +64,10 @@ const NewVariationProduct = () => {
       {
         size: '',
         color: '',
-        price: 0,
-        cost: 0,
+        price: prevVariations[0].price,
+        cost: prevVariations[0].cost,
         stock: 1,
-        image: '/images/product-placeholder-minimalist.jpg',
+        image: prevVariations[0].image,
       },
     ]);
   };
@@ -188,6 +188,16 @@ const NewVariationProduct = () => {
         const newUrl = url.split('?');
         if (section === 'selectorMain') {
           setMainImage(newUrl[0]);
+          setVariations([
+            {
+              size: '',
+              color: '',
+              price: 0,
+              cost: 0,
+              stock: 1,
+              image: `${newUrl[0]}`,
+            },
+          ]);
         }
         if (section === 'selectorVarOne') {
           setMainVariation(newUrl[0]);

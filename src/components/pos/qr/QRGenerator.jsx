@@ -78,12 +78,8 @@ const QRGenerator = ({ products }) => {
                     height={150}
                     className="mx-auto text-center h-auto p-0"
                   />
-
-                  <p className="break-words w-[80%] mx-auto text-sm">
-                    {item.title.substring(0, 13)}...
-                  </p>
                   <p className="break-words w-[80%] mx-auto text-sm ">
-                    {item.amount} - {item.size} / {item.color}
+                    {item?.amount} - {item?.size} / {item?.color}
                   </p>
                 </div>
               ))}

@@ -1032,7 +1032,7 @@ export async function getAllProduct(searchQuery) {
     }
 
     const searchParams = new URLSearchParams(searchQuery);
-    const resPerPage = Number(searchParams.get('perpage')) || 5;
+    const resPerPage = Number(searchParams.get('perpage')) || 10;
     // Extract page and per_page from request URL
     const page = Number(searchParams.get('page')) || 1;
     // total number of documents in database
