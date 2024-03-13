@@ -181,7 +181,7 @@ const NewVariationProduct = () => {
   // to upload this file to S3 at `https://minio.salvawebpro.com:9000` using the URL:
   async function uploadFile(file, url, section) {
     fetch(url, {
-      method: 'PUT',
+      method: 'POST',
       body: file,
     })
       .then(() => {
