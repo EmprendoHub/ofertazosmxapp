@@ -82,6 +82,7 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
   };
 
   const deactivateBranchHandler = (product_id, active) => {
+    console.log(active, 'active');
     const location = 'Branch';
     let title;
     let text;
@@ -182,7 +183,6 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
       <hr className="my-4 maxsm:my-1" />
       <div className="relative min-h-full shadow-md sm:rounded-lg">
         <div className=" flex flex-row  maxsm:items-start items-center justify-between">
-          {' '}
           <h1 className="text-3xl maxsm:text-base mb-2 maxsm:mb-1 ml-4 maxsm:ml-0 font-bold font-EB_Garamond w-1/2">
             {`${filteredProductsCount} Productos `}
           </h1>
@@ -223,21 +223,15 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                     ? 'bg-slate-100'
                     : 'bg-slate-200 text-slate-400'
                 }`}
-                key={index}
+                key={product?._id}
               >
                 <td className="px-2 py-0 maxmd:hidden">
-                  <Link
-                    key={index}
-                    href={`/admin/productos/variacion/${product.slug}`}
-                  >
+                  <Link href={`/admin/productos/variacion/${product.slug}`}>
                     {product._id.substring(0, 10)}...
                   </Link>
                 </td>
                 <td className="px-6 maxsm:px-2 py-0 maxmd:hidden">
-                  <Link
-                    key={index}
-                    href={`/admin/productos/variacion/${product.slug}`}
-                  >
+                  <Link href={`/admin/productos/variacion/${product.slug}`}>
                     {product.slug.substring(0, 10)}...
                   </Link>
                 </td>
@@ -279,7 +273,10 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                   </Link>
                   <button
                     onClick={() =>
-                      deactivateOnlineHandler(product._id, product?.active)
+                      deactivateOnlineHandler(
+                        product._id,
+                        product?.availability.online
+                      )
                     }
                     className="p-2 inline-block text-white hover:text-black bg-slate-300 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
                   >
@@ -294,7 +291,10 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
 
                   <button
                     onClick={() =>
-                      deactivateBranchHandler(product._id, product?.active)
+                      deactivateBranchHandler(
+                        product?._id,
+                        product?.availability.branch
+                      )
                     }
                     className="p-2 inline-block text-white hover:text-black bg-slate-300 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
                   >
@@ -308,7 +308,10 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                   </button>
                   <button
                     onClick={() =>
-                      deactivateInstagramHandler(product._id, product?.active)
+                      deactivateInstagramHandler(
+                        product._id,
+                        product?.availability?.instagram
+                      )
                     }
                     className="p-2 inline-block text-white hover:text-black bg-slate-300 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
                   >
