@@ -32,6 +32,7 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
     const receiver = {
       id: product?._id,
       name: product?.name,
+      price: product?.variations[0].price,
     };
     dispatch(saveQRToPrint(receiver));
   };
