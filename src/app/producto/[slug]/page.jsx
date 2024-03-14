@@ -9,12 +9,11 @@ export async function generateMetadata({ params }, parent) {
 
   // optionally access and extend (rather than replace) parent metadata
   const previousImages = (await parent).openGraph?.images || [];
-
   return {
     title: product.title,
     description: product.description,
     openGraph: {
-      images: [`${product.variations[0].image.url}`, ...previousImages],
+      images: [`${product.variations[0].image}`, ...previousImages],
     },
   };
 }
