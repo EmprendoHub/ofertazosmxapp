@@ -16,6 +16,7 @@ export const set_colors = [
   { value: 'Cafe', label: 'Cafe', hex: '#8B4513' },
   { value: 'Beige', label: 'Beige', hex: '#DCDCC6' },
   { value: 'Blanco', label: 'Blanco', hex: '#FFFFFF' },
+  { value: 'Blanco-Dorado', label: 'Blanco-Dorado', hex: '#FFFFFF' },
   { value: 'Azul', label: 'Azul', hex: '#3737a3' },
   { value: 'Azul Cielo', label: 'Azul Cielo', hex: '#87CEEB' },
   { value: 'Azul Marino', label: 'Azul Marino', hex: '#19284c' },
