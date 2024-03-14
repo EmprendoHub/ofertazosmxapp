@@ -1,33 +1,42 @@
 'use client';
 import Link from 'next/link';
 import Image from 'next/image';
-import { FaPencilAlt, FaStar, FaInstagramSquare } from 'react-icons/fa';
+import {
+  FaPencilAlt,
+  FaStar,
+  FaInstagramSquare,
+  FaExclamationCircle,
+} from 'react-icons/fa';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import Swal from 'sweetalert2';
 import SearchProducts from '@/app/admin/productos/search';
-import { changeProductAvailability, changeProductStatus } from '@/app/_actions';
+import { changeProductAvailability, deleteOneProduct } from '@/app/_actions';
 import { FaShop } from 'react-icons/fa6';
 import { TbWorldWww } from 'react-icons/tb';
 
 const AdminProducts = ({ products, filteredProductsCount, search }) => {
   const deleteHandler = (product_id) => {
     Swal.fire({
-      title: 'Estas seguro(a)?',
-      text: '¡No podrás revertir esta acción!',
-      icon: 'warning',
+      title: '¿Estas seguro(a) que quieres eliminar a este producto?',
+      text: '¡Esta acción es permanente y no se podrá revertir!',
+      icon: 'error',
+      iconColor: '#fafafa',
+      background: '#d33',
+      color: '#fafafa',
+      focusCancel: true,
       showCancelButton: true,
-      confirmButtonColor: '#d33',
+      confirmButtonColor: '#4E0000',
       cancelButtonColor: '#000',
-      confirmButtonText: '¡Sí, desactivar!',
+      confirmButtonText: '¡Sí, Eliminar!',
       cancelButtonText: 'No, cancelar!',
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
-          title: 'Desactivado!',
-          text: 'Tu producto ha sido Desactivado.',
+          title: 'Eliminado!',
+          text: 'Tu producto ha sido Eliminado.',
           icon: 'success',
         });
-        changeProductStatus(product_id);
+        deleteOneProduct(product_id);
       }
     });
   };
@@ -253,6 +262,7 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                   >
                     <FaPencilAlt className="maxsm:text-[10px]" />
                   </Link>
+
                   <button
                     onClick={() =>
                       deactivateOnlineHandler(
@@ -303,6 +313,14 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                           ? 'bg-gradient-to-tr from-amber-700 to-pink-600 maxsm:text-[10px]'
                           : 'text-slate-400 maxsm:text-[10px]'
                       }`}
+                    />
+                  </button>
+                  <button
+                    onClick={() => deleteHandler(product._id)}
+                    className="p-2 inline-block text-white hover:text-black bg-slate-300 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
+                  >
+                    <FaExclamationCircle
+                      className={`text-red-800 maxsm:text-[10px]`}
                     />
                   </button>
                 </td>

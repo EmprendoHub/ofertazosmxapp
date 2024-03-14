@@ -888,6 +888,19 @@ export async function changeProductStatus(productId) {
   }
 }
 
+export async function deleteOneProduct(productId) {
+  try {
+    await dbConnect();
+    // Find the product that contains the variation with the specified variation ID
+    await Product.findOneAndDelete({ _id: productId });
+
+    revalidatePath('/admin/productos');
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
+
 export async function changeProductAvailability(productId, location) {
   try {
     await dbConnect();
