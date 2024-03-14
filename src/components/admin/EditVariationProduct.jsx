@@ -149,12 +149,9 @@ const EditVariationProduct = ({ product }) => {
   }
 
   async function uploadVariationFile(blobData, url, index) {
-    const formData = new FormData();
-    formData.append('file', blobData);
-
     fetch(url, {
       method: 'PUT',
-      body: formData,
+      body: blobData,
     })
       .then(() => {
         const newUrl = url.split('?');

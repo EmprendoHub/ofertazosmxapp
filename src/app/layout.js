@@ -9,6 +9,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { getServerSession } from 'next-auth';
 import { options } from './api/auth/[...nextauth]/options';
 import CookieConsentComp from '@/components/cookies/CookieConsent';
+import { getCookiesName } from '@/backend/helpers';
+import { cookies } from 'next/headers';
 
 export const metadata = {
   title: 'Shopout Mx',
@@ -17,11 +19,16 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
   const session = await getServerSession(options);
+  //set cookies
+  const nextCookies = cookies();
+  const cookieName = getCookiesName();
+  const nextAuthSessionToken = nextCookies.get(cookieName);
+  const cookie = `${cookieName}=${nextAuthSessionToken?.value}`;
   return (
     <html lang="en">
       <body className={`overflow-x-hidden max-w-full`}>
         <CustomSessionProvider>
-          <HeaderComponent />
+          <HeaderComponent cookie={cookie} />
           {children}
           {/* <FooterComponent /> */}
         </CustomSessionProvider>

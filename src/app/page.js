@@ -7,7 +7,6 @@ import EditorsPickProducts from '@/components/products/EditorsPickProducts';
 import ExploreCategoryComponent from '@/components/products/ExploreCategoryComponent';
 import TrendingNewProducts from '@/components/products/TrendingNewProducts';
 import { getHomeProductsData } from './_actions';
-import SubscribeComponent from '@/components/user/SubscribeComponent';
 
 export default async function Home() {
   const data = await getHomeProductsData();

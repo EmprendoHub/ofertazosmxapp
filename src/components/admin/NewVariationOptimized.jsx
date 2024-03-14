@@ -112,14 +112,23 @@ const NewVariationOptimized = () => {
 
   // handle image variations change
 
-  const handleImageChange = async (index, newImage) => {
-    // Retrieve a URL from our server.
-    await retrieveNewURL(newImage, (file, url) => {
-      const parsed = JSON.parse(url);
-      url = parsed.url;
-      // Compress and optimize the image before upload
-      compressAndOptimizeImage(file, url, index);
-    });
+  const handleVariationImageChange = async (e, index) => {
+    // Get selected files from the input element.
+    let files = e?.target.files;
+    console.log(files[0], ' files Variation');
+    if (files) {
+      for (var i = 0; i < files?.length; i++) {
+        var file = files[i];
+        // Retrieve a URL from our server.
+        retrieveNewURL(file, (file, url) => {
+          const parsed = JSON.parse(url);
+          url = parsed.url;
+          console.log(url, 'url Variation');
+          // Compress and optimize the image before upload
+          compressAndOptimizeImage(file, url, index);
+        });
+      }
+    }
   };
 
   async function compressAndOptimizeImage(file, url, index) {
@@ -157,12 +166,9 @@ const NewVariationOptimized = () => {
   }
 
   async function uploadVariationFile(blobData, url, index) {
-    const formData = new FormData();
-    formData.append('file', blobData);
-
     fetch(url, {
       method: 'PUT',
-      body: formData,
+      body: blobData,
     })
       .then(() => {
         const newUrl = url.split('?');
@@ -209,6 +215,7 @@ const NewVariationOptimized = () => {
         retrieveNewURL(file, (file, url) => {
           const parsed = JSON.parse(url);
           url = parsed.url;
+          console.log(url, 'Main image Variation');
           // Compress and optimize the image before upload
           compressAndOptimizeMainImage(file, url, section);
         });
@@ -253,9 +260,6 @@ const NewVariationOptimized = () => {
   // to upload this file to S3 at `https://minio.salvawebpro.com:9000` using the URL:
   async function uploadFile(blobData, url, section) {
     fetch(url, {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
       method: 'PUT',
       body: blobData,
     })
@@ -923,7 +927,7 @@ const NewVariationOptimized = () => {
                       type="file"
                       accept=".png, .jpg, .jpeg, .webp"
                       hidden
-                      onChange={(e) => handleImageChange(0, e.target.files[0])}
+                      onChange={(e) => handleVariationImageChange(e, 0)}
                     />
 
                     {validationError?.mainImage && (
@@ -1062,7 +1066,7 @@ const NewVariationOptimized = () => {
                         accept=".png, .jpg, .jpeg, .webp"
                         hidden
                         onChange={(e) =>
-                          handleImageChange(index + 1, e.target.files[0])
+                          handleVariationImageChange(e, index + 1)
                         }
                       />
 
