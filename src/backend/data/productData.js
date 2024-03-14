@@ -10,6 +10,8 @@ export const set_colors = [
   { value: '', label: '', hex: '' },
   { value: 'Negro', label: 'Negro', hex: '#000000' },
   { value: 'Negro-Blanco', label: 'Negro-Blanco', hex: '#000000' },
+  { value: 'Negro-Dorado', label: 'Negro-Dorado', hex: '#daaf37' },
+  { value: 'Negro-Plateado', label: 'Negro-Plateado', hex: '#c0c0c0' },
   { value: 'Rojo', label: 'Rojo', hex: '#c92222' },
   { value: 'Cafe', label: 'Cafe', hex: '#8B4513' },
   { value: 'Beige', label: 'Beige', hex: '#DCDCC6' },
