@@ -1,8 +1,10 @@
 export const blog_categories = [
   { value: '', label: '' },
-  { value: 'Moda', label: 'Moda' },
-  { value: 'Estilo', label: 'Estilo' },
   { value: 'Deportivo', label: 'Deportivo' },
+  { value: 'Estilo', label: 'Estilo' },
+  { value: 'Esenciales', label: 'Esenciales' },
+  { value: 'Moda', label: 'Moda' },
+  { value: 'Salud', label: 'Salud' },
   { value: 'Tendencias', label: 'Tendencias' },
 ];
 

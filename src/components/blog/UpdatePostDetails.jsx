@@ -19,7 +19,13 @@ const UpdatePostDetails = ({ post }) => {
   const imageRef = useRef(null);
   const router = useRouter();
 
-  const available_categories = ['Moda', 'Estilo', 'Tendencias'];
+  const available_categories = [
+    'Moda',
+    'Estilo',
+    'Tendencias',
+    'Esenciales',
+    'Salud',
+  ];
 
   const { updatePost } = useContext(AuthContext);
   const [inputImageFields, setInputImageFields] = useState(post?.images);

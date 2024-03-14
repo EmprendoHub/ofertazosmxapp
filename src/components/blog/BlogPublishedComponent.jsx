@@ -9,7 +9,13 @@ import { useRouter } from 'next/navigation';
 const BlogPublishedComponent = ({ post }) => {
   const router = useRouter();
   const formRef = useRef();
-  const available_categories = ['Moda', 'Estilo', 'Tendencias'];
+  const available_categories = [
+    'Moda',
+    'Estilo',
+    'Tendencias',
+    'Esenciales',
+    'Salud',
+  ];
   const [category, setCategory] = useState(post?.category);
   // Main section
   const [mainTitle, setMainTitle] = useState(post?.mainTitle);

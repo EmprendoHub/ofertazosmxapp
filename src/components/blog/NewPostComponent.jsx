@@ -12,7 +12,13 @@ const NewPostComponent = () => {
   const formRef = useRef();
   const [files, setFiles] = useState([]);
   const [rejected, setRejected] = useState([]);
-  const available_categories = ['Moda', 'Estilo', 'Tendencias'];
+  const available_categories = [
+    'Moda',
+    'Estilo',
+    'Tendencias',
+    'Esenciales',
+    'Salud',
+  ];
   const [title, setTitle] = useState('');
   const [summary, setSummary] = useState('');
   const [content, setContent] = useState('');
