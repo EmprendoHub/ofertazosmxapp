@@ -24,7 +24,7 @@ const POSProductsPage = async ({ searchParams }) => {
   const nextPage = page + 1;
   const isPageOutOfRange = page > totalPages;
   const pageNumbers = [];
-  const offsetNumber = 1;
+  const offsetNumber = 3;
   const search =
     typeof searchParams.search === 'string' ? searchParams.search : undefined;
 

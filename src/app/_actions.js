@@ -1028,13 +1028,28 @@ export async function getAllPOSProduct(searchQuery) {
   try {
     await dbConnect();
     // Find the product that contains the variation with the specified variation ID
-    let products = await Product.find({
+    let productQuery = Product.find({
       $and: [{ stock: { $gt: 0 } }, { 'availability.branch': true }],
     });
+    const searchParams = new URLSearchParams(searchQuery);
+    const resPerPage = Number(searchParams.get('perpage')) || 10;
+    // Extract page and per_page from request URL
+    const page = Number(searchParams.get('page')) || 1;
+    productQuery = productQuery.sort({ createdAt: -1 });
+    // Apply search Filters
+    const apiProductFilters = new APIFilters(productQuery, searchParams)
+      .searchAllFields()
+      .filter();
 
-    products = JSON.stringify(products);
+    let productsData = await apiProductFilters.query;
+
+    const filteredProductsCount = productsData.length;
+    apiProductFilters.pagination(resPerPage, page);
+    productsData = await apiProductFilters.query.clone();
+    let products = JSON.stringify(productsData);
     return {
       products: products,
+      filteredProductsCount: filteredProductsCount,
     };
   } catch (error) {
     console.log(error);

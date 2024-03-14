@@ -14,6 +14,8 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
   const pathname = usePathname();
   const { qrListData } = useSelector((state) => state.compras);
   const [selectedProducts, setSelectedProducts] = useState([]);
+  const [selectAll, setSelectAll] = useState(false); // New state to track select all checkbox
+
   useEffect(() => {
     // Map through qrListData and extract only the ids
     const qrIds = qrListData.map((data) => data.id);
@@ -45,6 +47,25 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
     }
   };
 
+  const handleSelectAll = () => {
+    setSelectAll(!selectAll);
+    setSelectedProducts(
+      selectedProducts.map((product) => {
+        dispatch(
+          saveQRToPrint({
+            id: product._id,
+            name: product.name,
+            price: product.variations[0].price,
+          })
+        );
+        return {
+          ...product,
+          isSelected: !selectAll,
+        };
+      })
+    );
+  };
+
   return (
     <>
       <hr className="my-4" />
@@ -61,8 +82,13 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
         <table className="w-full text-sm  text-left">
           <thead className="text-l text-gray-700 uppercase">
             <tr>
-              <th></th>
-
+              <th>
+                <input
+                  type="checkbox"
+                  checked={selectAll}
+                  onChange={handleSelectAll}
+                />
+              </th>
               <th scope="col" className="px-6 maxsm:px-0 py-3 maxmd:hidden">
                 SKU
               </th>
@@ -101,22 +127,22 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
                     onChange={() => handleCheckBox(product)}
                   />
                 </td>
-                <td className="px-6 maxsm:px-2 py-2 maxmd:hidden">
+                <td className="px-6 maxsm:px-2 py-0 maxmd:hidden">
                   {product._id.substring(0, 10)}...
                 </td>
-                <td className={`px-6 maxsm:px-0 py-2 font-bold maxsm:hidden`}>
+                <td className={`px-6 maxsm:px-0 py-0 font-bold maxsm:hidden`}>
                   {product.title.substring(0, 15)}
                 </td>
-                <td className="px-6 maxsm:px-2 py-2 maxmd:hidden">
+                <td className="px-6 maxsm:px-2 py-0 maxmd:hidden">
                   {product.slug.substring(0, 10)}...
                 </td>
 
-                <td className="px-6 maxsm:px-0 py-2 ">
+                <td className="px-6 maxsm:px-0 py-0 ">
                   <b>
                     <FormattedPrice amount={product?.variations[0].price} />
                   </b>
                 </td>
-                <td className="px-6 maxsm:px-0 py-2 relative ">
+                <td className="px-6 maxsm:px-0 py-0 relative ">
                   <span className="relative flex items-center justify-center text-black w-12 h-12 maxsm:w-8 maxsm:h-8 shadow mt-2">
                     <Image
                       src={product?.images[0].url}
@@ -134,7 +160,7 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
                     )}
                   </span>
                 </td>
-                <td className="px-1 py-2 ">{product.stock}</td>
+                <td className="px-1 py-0 ">{product.stock}</td>
               </tr>
             ))}
           </tbody>
