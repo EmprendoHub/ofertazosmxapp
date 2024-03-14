@@ -4,7 +4,7 @@ import React from 'react';
 
 const StoreMainHero = () => {
   return (
-    <section className="container flex flex-col items-center justify-center min-h-[400px] maxsm:h-full">
+    <section className="container flex flex-col items-center justify-center min-h-[400px] maxsm:h-full mt-20">
       <div className="relative flex flex-row maxsm:flex-col items-center w-full bg-slate-300 h-[400px] maxsm:h-full">
         <div className="relative flex flex-row maxsm:flex-col maxsm:w-full  w-3/4 bg-gray-200 h-full">
           <div className="p-10 flex flex-col items-start justify-end h-[400px] maxsm:h-full maxsm:w-full w-6/12 oferta">

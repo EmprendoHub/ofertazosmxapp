@@ -1,5 +1,6 @@
 import ProductComponent from '@/components/products/ProductComponent';
 import { getOneProduct } from '@/app/_actions';
+import ProductDetailsComponent from '@/components/products/ProductDetailsComponent';
 
 export async function generateMetadata({ params }, parent) {
   // fetch data
@@ -24,7 +25,10 @@ const ProductDetailsPage = async ({ params }) => {
   const trendingProducts = JSON.parse(data?.trendingProducts);
   return (
     <>
-      <ProductComponent product={product} trendingProducts={trendingProducts} />
+      <ProductDetailsComponent
+        product={product}
+        trendingProducts={trendingProducts}
+      />
     </>
   );
 };

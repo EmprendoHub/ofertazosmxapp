@@ -83,7 +83,7 @@ const AllFiltersComponent = ({
             <AiOutlineClose />
           </div>
         </div>
-        <div className=" mb-2  w-full text-center px-4 py-2 inline-block text-lg text-gray-200 bg-black shadow-sm border border-gray-200 rounded-md ">
+        <div className=" mb-2  w-full text-start px-4 py-2 inline-block text-2xl text-gray-800  shadow-sm border border-gray-200 rounded-md font-EB_Garamond ">
           Filtrar por
         </div>
         {/* Search Filter */}
@@ -91,8 +91,8 @@ const AllFiltersComponent = ({
         <Search />
         {/* Price Filter */}
 
-        <div className="flex flex-col px-6 py-4 border border-gray-200 bg-white rounded shadow-sm">
-          <h3 className="font-semibold mb-2 text-black">Precio ($)</h3>
+        <div className="flex flex-col w-[95%] py-4 border border-gray-200 bg-white rounded shadow-sm">
+          <h3 className=" mb-2 text-black">Precio ($)</h3>
 
           <div className="grid maxsm:grid-cols-3 gap-x-2 text-black">
             <div className="mb-4">

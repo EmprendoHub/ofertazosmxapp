@@ -26,7 +26,7 @@ const FilterMenuComponent = ({
       className={`${styles.menu} bg-transparent`}
     >
       <div
-        className={`${styles.body} min-w-[300px]  overflow-y-auto px-5 py-10`}
+        className={`${styles.body} max-w-[350px]  overflow-y-auto px-5 py-10`}
       >
         <AllFiltersComponent
           allBrands={allBrands}

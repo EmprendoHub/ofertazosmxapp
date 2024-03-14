@@ -1,21 +1,19 @@
-import Link from 'next/link';
 import Image from 'next/image';
 
-const WhiteLogoNoLink = ({ className }) => {
+const DarkModeLogo = ({ className }) => {
   return (
-    <div
-      className={`${className} p-3 hover:scale-75 ease-in-out duration-300 pl-5 relative flex flex-col items-center justify-center max-w-fit`}
-    >
-      <h1 className="flex font-black font-EB_Garamond text-[1.5rem] leading-none">
-        SHOPOUT
-      </h1>
-      <div className="flex flex-row items-center justify-center ">
-        <div className="text-xs">--------</div>
-        <p className="text-[1rem] leading-none font-EB_Garamond"> MX </p>
-        <div className="text-xs">--------</div>
+    <div className="p-3 maxsm:p-1 pl-5 relative flex flex-col items-center justify-center max-w-full mx-auto">
+      <div className=" flex justify-between maxmd:justify-center items-center">
+        <Image
+          alt="image"
+          src={'/images/Main_shopout_logo.webp'}
+          width={500}
+          height={500}
+          className={`overflow-hidden transition-all ease-in-out w-36 h-auto`}
+        />
       </div>
     </div>
   );
 };
 
-export default WhiteLogoNoLink;
+export default DarkModeLogo;

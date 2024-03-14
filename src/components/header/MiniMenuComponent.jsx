@@ -39,7 +39,7 @@ const MiniMenuComponent = () => {
 
   return (
     <div className="self-stretch flex flex-row px-1 box-border items-center justify-start  mx-auto relative">
-      <nav className=" m-0 flex-1  flex flex-row pr-5 items-center  justify-end gap-x-7 font-poppins text-sm tracking-widest">
+      <nav className=" m-0 flex-1  flex flex-row pr-5 items-center  justify-end gap-x-3 font-poppins text-sm tracking-widest">
         {/* Login/Register */}
         {!session && (
           <Link

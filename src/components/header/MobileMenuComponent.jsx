@@ -1,24 +1,24 @@
-"use client";
-import React, { useState } from "react";
+'use client';
+import React, { useState } from 'react';
 import {
   AiOutlineMenu,
   AiOutlineClose,
   AiOutlineLogout,
   AiOutlineLogin,
-} from "react-icons/ai";
-import { AnimatePresence, motion } from "framer-motion";
-import Link from "next/link";
-import WhiteLogoComponent from "../logos/WhiteLogoComponent";
-import { BsFacebook, BsInstagram } from "react-icons/bs";
-import { signOut, useSession } from "next-auth/react";
-import MiniMenuComponent from "./MiniMenuComponent";
+} from 'react-icons/ai';
+import { AnimatePresence, motion } from 'framer-motion';
+import Link from 'next/link';
+import { BsFacebook, BsInstagram } from 'react-icons/bs';
+import { signOut, useSession } from 'next-auth/react';
+import MiniMenuComponent from './MiniMenuComponent';
+import DarkModeLogo from '../logos/WhiteLogoNoLink';
 
 const navLinks = [
-  { title: "Inicio", url: "/" },
-  { title: "Blog", url: "/blog" },
-  { title: "Nosotros", url: "/nosotros" },
-  { title: "Contacto", url: "/contacto" },
-  { title: "Tienda", url: "/tienda" },
+  { title: 'Inicio', url: '/' },
+  { title: 'Blog', url: '/blog' },
+  { title: 'Nosotros', url: '/nosotros' },
+  { title: 'Contacto', url: '/contacto' },
+  { title: 'Tienda', url: '/tienda' },
 ];
 
 const MobileMenuComponent = () => {
@@ -67,15 +67,15 @@ const MobileMenuComponent = () => {
 
   return (
     <>
-      <nav className='flex flex-row items-center justify-center gap-x-8'>
+      <nav className="flex flex-row items-center justify-center gap-x-8">
         <MiniMenuComponent />
         {/*Mobile Navigation*/}
         <div
           onClick={toggleMobileMenu}
-          className='relative flex flex-row  items-center justify-end right-8 gap-x-2 text-white cursor-pointer text-sm'
+          className="relative flex flex-row  items-center justify-end right-8 gap-x-2 text-white cursor-pointer text-sm"
         >
-          <div className='p-2 bg-white drop-shadow-md text-black rounded-full hover:rotate-180 ease-linear duration-300'>
-            <AiOutlineMenu className='text-xl ' />
+          <div className="p-2 bg-white drop-shadow-md text-black rounded-full hover:rotate-180 ease-linear duration-300">
+            <AiOutlineMenu className="text-xl " />
           </div>
         </div>
       </nav>
@@ -83,35 +83,33 @@ const MobileMenuComponent = () => {
         {open && (
           <motion.div
             variants={menuVariants}
-            initial='initial'
-            animate='animate'
-            exit='exit'
-            className=' fixed left-0 top-0 w-full min-h-screen bg-black text-white px-10 pt-2  origin-top'
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            className=" fixed left-0 top-0 w-full min-h-screen bg-black text-white px-10 pt-2  origin-top"
           >
-            <div className='flex h-full flex-col'>
-              <div className='flex relative  min-h-full justify-between items-center pb-5'>
-                <WhiteLogoComponent
-                  className={"ml-5 mt-4 w-[200px] sm:w-[120px]"}
-                />
+            <div className="flex h-full flex-col">
+              <div className="flex relative  min-h-full justify-between items-center pb-5">
+                <DarkModeLogo className={'ml-5 mt-4 w-[200px] sm:w-[120px]'} />
                 <p
                   onClick={toggleMobileMenu}
-                  className='cursor-pointer text-md text-white'
+                  className="cursor-pointer text-md text-white"
                 >
                   <AiOutlineClose />
                 </p>
               </div>
               <motion.div
                 variants={containerVariants}
-                initial='initial'
-                animate='open'
-                exit='initial'
-                className='flex flex-col h-[50vh] justify-between font-poppins tracking-wider items-center gap-4'
+                initial="initial"
+                animate="open"
+                exit="initial"
+                className="flex flex-col h-[50vh] justify-between font-poppins tracking-wider items-center gap-4"
               >
                 {navLinks?.map((link, index) => {
                   return (
                     <div
                       key={index}
-                      className='overflow-hidden font-EB_Garamond'
+                      className="overflow-hidden font-EB_Garamond"
                     >
                       <MobileNavLink
                         title={link.title}
@@ -127,49 +125,49 @@ const MobileMenuComponent = () => {
             {isLoggedIn ? (
               <div
                 onClick={() => signOut()}
-                className='pt-10 cursor-pointer flex justify-center items-center gap-x-1 '
+                className="pt-10 cursor-pointer flex justify-center items-center gap-x-1 "
               >
                 Cerrar Session
-                <AiOutlineLogout className='text-2xl flex' />
+                <AiOutlineLogout className="text-2xl flex" />
                 {/* <p className='text-sm font-semibold'>Logout</p> */}
               </div>
             ) : (
               <Link
-                href={"/iniciar"}
+                href={'/iniciar'}
                 onClick={() => setOpen((prevOpen) => !prevOpen)}
-                className='pt-10 cursor-pointer flex justify-center items-center gap-x-1'
+                className="pt-10 cursor-pointer flex justify-center items-center gap-x-1"
               >
                 Iniciar Session
-                <AiOutlineLogin className='text-xl text-white hover:scale-110 ease-in-out duration-300' />
+                <AiOutlineLogin className="text-xl text-white hover:scale-110 ease-in-out duration-300" />
               </Link>
             )}
             {/* Contact Links */}
-            <div className='flex fle-row items-center justify-center gap-x-4 pt-10'>
+            <div className="flex fle-row items-center justify-center gap-x-4 pt-10">
               <Link
-                href={"tel:3535323421"}
-                className='maxmd:hidden flex flex-row justify-between items-center gap-x-2 cursor-pointer'
+                href={'tel:3535323421'}
+                className="maxmd:hidden flex flex-row justify-between items-center gap-x-2 cursor-pointer"
               >
-                <span className='text-base'>353-532-3421</span>
+                <span className="text-base">353-532-3421</span>
               </Link>
-              <div className='flex items-center gap-x-4'>
+              <div className="flex items-center gap-x-4">
                 <motion.a
                   whileHover={{ scale: 1.3 }}
                   whileTap={{ scale: 0.9 }}
-                  href='https://www.instagram.com/shopoutmx/'
-                  target='_blank'
+                  href="https://www.instagram.com/shopoutmx/"
+                  target="_blank"
                 >
-                  <span className='socialLink'>
-                    <BsInstagram className='text-2xl sm:text-base' />
+                  <span className="socialLink">
+                    <BsInstagram className="text-2xl sm:text-base" />
                   </span>
                 </motion.a>
                 <motion.a
                   whileHover={{ scale: 1.3 }}
                   whileTap={{ scale: 0.9 }}
-                  href='https://www.facebook.com/shopoutmx/'
-                  target='_blank'
+                  href="https://www.facebook.com/shopoutmx/"
+                  target="_blank"
                 >
-                  <span className='socialLink'>
-                    <BsFacebook className='text-2xl sm:text-base' />
+                  <span className="socialLink">
+                    <BsFacebook className="text-2xl sm:text-base" />
                   </span>
                 </motion.a>
               </div>
@@ -185,7 +183,7 @@ export default MobileMenuComponent;
 
 const mobileNavLinksVariants = {
   initial: {
-    y: "30vh",
+    y: '30vh',
     transition: {
       duration: 0.5,
       ease: [0.37, 0, 0.63, 1],
@@ -204,9 +202,9 @@ const MobileNavLink = ({ title, href, toggleMobileMenu }) => {
   return (
     <motion.div
       variants={mobileNavLinksVariants}
-      className='text-2xl uppercase '
+      className="text-2xl uppercase "
     >
-      <Link href={href} onClick={toggleMobileMenu} className='p-6'>
+      <Link href={href} onClick={toggleMobileMenu} className="p-6">
         {title}
       </Link>
     </motion.div>

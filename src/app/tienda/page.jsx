@@ -64,7 +64,7 @@ const TiendaPage = async ({ searchParams }) => {
   const nextPage = page + 1;
   const isPageOutOfRange = page > totalPages;
   const pageNumbers = [];
-  const offsetNumber = 1;
+  const offsetNumber = 2;
   const products = data?.products.products;
   const allBrands = data?.allBrands;
   const allCategories = data?.allCategories;
@@ -79,7 +79,6 @@ const TiendaPage = async ({ searchParams }) => {
 
   return (
     <div className="flex flex-col items-center justify-center gap-5">
-      {/* <StoreHeroComponent /> */}
       <StoreMainHero />
       <ListProducts
         products={products}

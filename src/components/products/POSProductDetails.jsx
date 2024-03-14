@@ -99,10 +99,6 @@ const POSProductDetails = ({ product }) => {
     const newImage = [
       { url: pickedVariationByColor.image, _id: pickedVariationByColor._id },
     ];
-    // Check if the new image's _id already exists in the array
-    // const existingIndex = images.findIndex(
-    //   (image) => image._id === newImage._id
-    // );
 
     setImages(newImage);
 
