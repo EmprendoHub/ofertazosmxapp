@@ -9,6 +9,7 @@ export const blog_categories = [
 export const set_colors = [
   { value: '', label: '', hex: '' },
   { value: 'Negro', label: 'Negro', hex: '#000000' },
+  { value: 'Negro-Blanco', label: 'Negro-Blanco', hex: '#000000' },
   { value: 'Rojo', label: 'Rojo', hex: '#c92222' },
   { value: 'Cafe', label: 'Cafe', hex: '#8B4513' },
   { value: 'Beige', label: 'Beige', hex: '#DCDCC6' },
@@ -33,6 +34,7 @@ export const set_colors = [
   { value: 'Violeta', label: 'Violeta', hex: '#a65ba6' },
   { value: 'Lila', label: 'Lila', hex: '#EE82EE' },
   { value: 'Verde Oliva', label: 'Verde Oliva', hex: '#9B933B' },
+  { value: 'Transparente', label: 'Transparente', hex: '#FFFFFF00' },
 ];
 
 export const sizes_prendas = [
