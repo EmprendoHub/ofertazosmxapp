@@ -8,6 +8,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { getServerSession } from 'next-auth';
 import { options } from './api/auth/[...nextauth]/options';
+import CookieConsentComp from '@/components/cookies/CookieConsent';
 
 export const metadata = {
   title: 'Shopout Mx',
@@ -26,6 +27,7 @@ export default async function RootLayout({ children }) {
         </CustomSessionProvider>
         <BackToTopButton />
         {session && session?.user?.role === 'manager' ? '' : <WhatsAppButton />}
+        <CookieConsentComp />
         <ToastContainer position="top-left" autoClose={1000} />
       </body>
     </html>

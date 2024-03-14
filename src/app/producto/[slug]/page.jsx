@@ -1,4 +1,3 @@
-import ProductComponent from '@/components/products/ProductComponent';
 import { getOneProduct } from '@/app/_actions';
 import ProductDetailsComponent from '@/components/products/ProductDetailsComponent';
 
