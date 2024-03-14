@@ -1,9 +1,11 @@
-import { getAllPOSProduct } from '@/app/_actions';
+import { getAllPOSProduct, getAllPOSProductNoFilter } from '@/app/_actions';
 import QRGenerator from '@/components/pos/qr/QRGenerator';
 
 const QRPage = async () => {
-  const data = await getAllPOSProduct();
+  const data = await getAllPOSProductNoFilter();
   const products = JSON.parse(data.products);
+  const filteredProductsCount = data.filteredProductsCount;
+  console.log(filteredProductsCount);
   return <QRGenerator products={products} />;
 };
 

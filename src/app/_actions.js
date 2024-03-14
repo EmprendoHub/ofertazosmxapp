@@ -1057,6 +1057,27 @@ export async function getAllPOSProduct(searchQuery) {
   }
 }
 
+export async function getAllPOSProductNoFilter(searchQuery) {
+  try {
+    await dbConnect();
+    // Find the product that contains the variation with the specified variation ID
+    let productsData = await Product.find({
+      $and: [{ stock: { $gt: 0 } }, { 'availability.branch': true }],
+    });
+
+    const filteredProductsCount = productsData.length;
+    let products = JSON.stringify(productsData);
+
+    return {
+      products: products,
+      filteredProductsCount: filteredProductsCount,
+    };
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
+
 export async function getAllProduct(searchQuery) {
   try {
     await dbConnect();
