@@ -114,7 +114,13 @@ const UpdatePostDetails = ({ post }) => {
       setSizeSelection(available_sizes_shoes_men);
     }
 
-    if (e === 'Prendas' || e === 'Bolsas' || e === 'Accesorios') {
+    if (
+      e === 'Prendas' ||
+      e === 'Bolsas' ||
+      e === 'Accesorios' ||
+      e === 'Belleza' ||
+      e === 'Joyeria'
+    ) {
       setSizeSelection(available_sizes_prendas);
     }
   };
@@ -130,7 +136,9 @@ const UpdatePostDetails = ({ post }) => {
     if (
       category === 'Prendas' ||
       category === 'Bolsas' ||
-      category === 'Accesorios'
+      category === 'Accesorios' ||
+      category === 'Belleza' ||
+      category === 'Joyeria'
     ) {
       setSizeSelection(available_sizes_prendas);
     }

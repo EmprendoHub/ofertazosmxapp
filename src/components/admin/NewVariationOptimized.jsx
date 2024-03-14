@@ -393,7 +393,13 @@ const NewVariationOptimized = () => {
       setSizeSelection(sizes_shoes_men);
     }
 
-    if (e === 'Prendas' || e === 'Bolsas' || e === 'Accesorios') {
+    if (
+      e === 'Prendas' ||
+      e === 'Bolsas' ||
+      e === 'Accesorios' ||
+      e === 'Belleza' ||
+      e === 'Joyeria'
+    ) {
       setSizeSelection(sizes_prendas);
     }
   };
@@ -417,7 +423,9 @@ const NewVariationOptimized = () => {
     if (
       category === 'Prendas' ||
       category === 'Bolsas' ||
-      category === 'Accesorios'
+      category === 'Accesorios' ||
+      category === 'Belleza' ||
+      category === 'Joyeria'
     ) {
       setSizeSelection(sizes_prendas);
     }

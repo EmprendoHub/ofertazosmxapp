@@ -71,9 +71,11 @@ export const sizes_shoes_woman = [
 
 export const product_categories = [
   { es: '', en: '' },
+  { es: 'Accesorios', en: 'Accessories' },
+  { es: 'Belleza', en: 'Beauty' },
   { es: 'Bolsas', en: 'Bags' },
   { es: 'Calzado', en: 'Footwear' },
-  { es: 'Accesorios', en: 'Accessories' },
+  { es: 'Joyeria', en: 'Jewelry' },
   { es: 'Prendas', en: 'Clothes' },
 ];
 export const genders = [

@@ -369,7 +369,13 @@ const EditVariationProduct = ({ product }) => {
       setSizeSelection(sizes_shoes_men);
     }
 
-    if (e === 'Prendas' || e === 'Bolsas' || e === 'Accesorios') {
+    if (
+      e === 'Prendas' ||
+      e === 'Bolsas' ||
+      e === 'Accesorios' ||
+      e === 'Belleza' ||
+      e === 'Joyeria'
+    ) {
       setSizeSelection(sizes_prendas);
     }
   };
@@ -393,7 +399,9 @@ const EditVariationProduct = ({ product }) => {
     if (
       category === 'Prendas' ||
       category === 'Bolsas' ||
-      category === 'Accesorios'
+      category === 'Accesorios' ||
+      category === 'Belleza' ||
+      category === 'Joyeria'
     ) {
       setSizeSelection(sizes_prendas);
     }
@@ -411,7 +419,9 @@ const EditVariationProduct = ({ product }) => {
     if (
       category === 'Prendas' ||
       category === 'Bolsas' ||
-      category === 'Accesorios'
+      category === 'Accesorios' ||
+      category === 'Belleza' ||
+      category === 'Joyeria'
     ) {
       setSizeSelection(sizes_prendas);
     }
@@ -427,7 +437,9 @@ const EditVariationProduct = ({ product }) => {
     if (
       product?.category === 'Prendas' ||
       product?.category === 'Bolsas' ||
-      product?.category === 'Accesorios'
+      product?.category === 'Accesorios' ||
+      product?.category === 'Belleza' ||
+      product?.category === 'Joyeria'
     ) {
       setSizeSelection(sizes_prendas);
     }

@@ -21,6 +21,8 @@ const TrendingNewProducts = ({ trendProducts }) => {
     { id: 1, category: 'Bolsas' },
     { id: 2, category: 'Prendas' },
     { id: 3, category: 'Accesorios' },
+    { id: 4, category: 'Belleza' },
+    { id: 5, category: 'Joyeria' },
   ];
   const [allProducts, setAllProducts] = useState(trendProducts);
   const [trendingProducts, setTrendingProducts] = useState([]);
