@@ -13,8 +13,8 @@ const AdminProductsPage = async ({ searchParams }) => {
   );
   const searchQuery = new URLSearchParams(filteredUrlParams).toString();
   const data = await getAllProduct(searchQuery);
-  const products = JSON.parse(data.products);
 
+  const products = JSON.parse(data.products);
   // pagination
   let page = parseInt(searchParams.page, 10);
   page = !page || page < 1 ? 1 : page;

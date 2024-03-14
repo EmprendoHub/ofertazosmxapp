@@ -1062,6 +1062,7 @@ export async function getAllProduct(searchQuery) {
     const resPerPage = Number(searchParams.get('perpage')) || 10;
     // Extract page and per_page from request URL
     const page = Number(searchParams.get('page')) || 1;
+    productQuery = productQuery.sort({ createdAt: -1 });
     // total number of documents in database
     const productsCount = await Product.countDocuments();
     // Extract all possible categories
@@ -1079,19 +1080,7 @@ export async function getAllProduct(searchQuery) {
 
     apiProductFilters.pagination(resPerPage, page);
     productsData = await apiProductFilters.query.clone();
-
-    // If you want a new sorted array without modifying the original one, use slice
-    // const sortedObj1 = obj1
-    //   .slice()
-    //   .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-
-    // descending order
-    // descending order
-    let sortedProducts = productsData
-      .slice()
-      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
-    sortedProducts = JSON.stringify(sortedProducts);
+    let sortedProducts = JSON.stringify(productsData);
     allCategories = JSON.stringify(allCategories);
     allBrands = JSON.stringify(allBrands);
 
