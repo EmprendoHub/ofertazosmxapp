@@ -1,12 +1,12 @@
 'use client';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import DateTimePicker from 'react-datetime-picker';
 import 'react-datetime-picker/dist/DateTimePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';
 import { cstDateTimeClient } from '@/backend/helpers';
-import { updateVariationProduct } from '@/app/_actions';
+import { addVariationProduct } from '@/app/_actions';
 import { useRouter } from 'next/navigation';
 import {
   set_colors,
@@ -19,39 +19,46 @@ import {
 } from '@/backend/data/productData';
 import MultiselectTagComponent from '../forms/MultiselectTagComponent';
 
-const EditVariationProduct = ({ product }) => {
+const NewVariationOptimized = () => {
   const router = useRouter();
   const formRef = useRef();
-  const [title, setTitle] = useState(product?.title);
-  const [brand, setBrand] = useState(product?.brand);
-  const [description, setDescription] = useState(product?.description);
-  const [category, setCategory] = useState(product?.category);
-  const [tags, setTags] = useState(product?.tags);
-  const [gender, setGender] = useState(product?.gender);
-  const [featured, setFeatured] = useState(product?.featured);
-  const [branchAvailability, setBranchAvailability] = useState(
-    product?.availability?.branch
-  );
-  const [instagramAvailability, setInstagramAvailability] = useState(
-    product?.availability?.instagram
-  );
-  const [onlineAvailability, setOnlineAvailability] = useState(
-    product?.availability?.online
-  );
-  const [updatedAt, setUpdatedAt] = useState(
+  const [title, setTitle] = useState('');
+  const [brand, setBrand] = useState('');
+  const [branchAvailability, setBranchAvailability] = useState(false);
+  const [instagramAvailability, setInstagramAvailability] = useState(false);
+  const [onlineAvailability, setOnlineAvailability] = useState(true);
+  const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('Moda');
+  const [tags, setTags] = useState([]);
+  const [gender, setGender] = useState('Damas');
+  const [featured, setFeatured] = useState('No');
+  const [createdAt, setCreatedAt] = useState(
     cstDateTimeClient().toLocaleString()
   );
-  const [salePrice, setSalePrice] = useState(product?.sale_price);
-  const [salePriceEndDate, setSalePriceEndDate] = useState(
-    product?.sale_price_end_date || ''
-  );
+  const [salePrice, setSalePrice] = useState(0);
+  const [salePriceEndDate, setSalePriceEndDate] = useState('');
   const [sizeSelection, setSizeSelection] = useState(sizes_prendas);
   const [tagSelection, setTagSelection] = useState(blog_categories);
   const [validationError, setValidationError] = useState(null);
 
-  const [mainImage, setMainImage] = useState(product?.images[0].url);
+  const [mainImage, setMainImage] = useState(
+    '/images/product-placeholder-minimalist.jpg'
+  );
 
-  const [variations, setVariations] = useState(product?.variations);
+  const [mainVariation, setMainVariation] = useState(
+    '/images/product-placeholder-minimalist.jpg'
+  );
+
+  const [variations, setVariations] = useState([
+    {
+      size: '',
+      color: '',
+      price: 0,
+      cost: 0,
+      stock: 1,
+      image: '/images/product-placeholder-minimalist.jpg',
+    },
+  ]);
 
   const addVariation = () => {
     setVariations((prevVariations) => [
@@ -104,6 +111,7 @@ const EditVariationProduct = ({ product }) => {
   };
 
   // handle image variations change
+
   const handleImageChange = async (index, newImage) => {
     // Retrieve a URL from our server.
     await retrieveNewURL(newImage, (file, url) => {
@@ -259,6 +267,19 @@ const EditVariationProduct = ({ product }) => {
         const newUrl = url.split('?');
         if (section === 'selectorMain') {
           setMainImage(newUrl[0]);
+          setVariations([
+            {
+              size: '',
+              color: '',
+              price: 0,
+              cost: 0,
+              stock: 1,
+              image: `${newUrl[0]}`,
+            },
+          ]);
+        }
+        if (section === 'selectorVarOne') {
+          setMainVariation(newUrl[0]);
         }
       })
       .catch((e) => {
@@ -304,7 +325,6 @@ const EditVariationProduct = ({ product }) => {
       return;
     }
     if (!variations[0].cost) {
-      console.log(variations[0].cost);
       const noCostError = {
         cost: { _errors: ['Se requiere un costo de producto '] },
       };
@@ -312,7 +332,6 @@ const EditVariationProduct = ({ product }) => {
       return;
     }
     if (!variations[0].price) {
-      console.log(variations[0].price);
       const noPriceError = {
         price: { _errors: ['Se requiere un precio de producto '] },
       };
@@ -349,11 +368,10 @@ const EditVariationProduct = ({ product }) => {
     formData.append('tags', JSON.stringify(tags));
     formData.append('salePrice', Number(salePrice));
     formData.append('salePriceEndDate', salePriceEndDate);
-    formData.append('updatedAt', updatedAt);
-    formData.append('_id', product?._id);
+    formData.append('createdAt', createdAt);
     // write to database using server actions
 
-    const result = await updateVariationProduct(formData);
+    const result = await addVariationProduct(formData);
     if (result?.error) {
       setValidationError(result.error);
     } else {
@@ -363,7 +381,6 @@ const EditVariationProduct = ({ product }) => {
       router.push('/admin/productos');
     }
   }
-
   const handleCategoryChange = async (e) => {
     setCategory(e);
     if (e === 'Calzado' && gender == 'Damas') {
@@ -402,40 +419,6 @@ const EditVariationProduct = ({ product }) => {
     }
   };
 
-  useEffect(() => {
-    // handle Gender Change
-    setGender(product?.gender);
-    if (category === 'Calzado' && product?.gender == 'Damas') {
-      setSizeSelection(sizes_shoes_woman);
-    } else {
-      setSizeSelection(sizes_shoes_men);
-    }
-
-    if (
-      category === 'Prendas' ||
-      category === 'Bolsas' ||
-      category === 'Accesorios'
-    ) {
-      setSizeSelection(sizes_prendas);
-    }
-
-    // set catergory change
-    setCategory(product?.category);
-    if (product?.category === 'Calzado' && gender == 'Damas') {
-      setSizeSelection(sizes_shoes_woman);
-    } else {
-      setSizeSelection(sizes_shoes_men);
-    }
-
-    if (
-      product?.category === 'Prendas' ||
-      product?.category === 'Bolsas' ||
-      product?.category === 'Accesorios'
-    ) {
-      setSizeSelection(sizes_prendas);
-    }
-  }, []);
-
   return (
     <main className="w-full p-4 maxsm:p-2 bg-slate-200">
       <form
@@ -445,13 +428,13 @@ const EditVariationProduct = ({ product }) => {
       >
         <section className="w-full ">
           <div className="flex flex-row maxmd:flex-col items-center justify-between">
-            <h1 className="w-full text-2xl font-semibold text-black mb-8 font-EB_Garamond">
-              Actualizar Producto Con Variaciones
+            <h1 className="w-full text-xl font-semibold text-black mb-8 font-EB_Garamond">
+              Nuevo Producto Con Variaciones
             </h1>
 
             <div className="mb-4 w-full flex flex-row gap-4 items-center uppercase">
               <div className="relative">
-                <label className="block mb-1 font-EB_Garamond">Destacado</label>
+                <label className="block mb-1 font-EB_Garamond">destacado</label>
                 <select
                   className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
                   name="featured"
@@ -462,7 +445,7 @@ const EditVariationProduct = ({ product }) => {
                     { value: false, name: 'No', uniqueKey: 'featuredNO' },
                     { value: true, name: 'Si', uniqueKey: 'featuredYES' },
                   ].map((opt) => (
-                    <option key={opt.uniqueKey} value={opt}>
+                    <option key={opt.uniqueKey} value={opt.value}>
                       {opt.name}
                     </option>
                   ))}
@@ -601,7 +584,7 @@ const EditVariationProduct = ({ product }) => {
             <div className="gap-y-1 flex-col flex px-2 w-full">
               {/* Section 1 - Title, Image */}
               <label className="block  font-EB_Garamond">
-                Imagen principal del Producto
+                Imagen principal
               </label>
               <div className="relative aspect-video hover:opacity-80 bg-white border-4 border-gray-300">
                 <label htmlFor="selectorMain" className="cursor-pointer">
@@ -632,9 +615,7 @@ const EditVariationProduct = ({ product }) => {
 
             <div className="w-full flex-col flex justify-start px-2 gap-y-5">
               <div className="mb-4">
-                <label className="block mb-1  font-EB_Garamond">
-                  Titulo del Producto
-                </label>
+                <label className="block mb-1  font-EB_Garamond"> Titulo</label>
                 <input
                   type="text"
                   className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
@@ -669,10 +650,7 @@ const EditVariationProduct = ({ product }) => {
                 )}
               </div>
               <div className="mb-4">
-                <label className="block mb-1  font-EB_Garamond">
-                  {' '}
-                  Marca del Producto
-                </label>
+                <label className="block mb-1  font-EB_Garamond"> Marca</label>
                 <input
                   type="text"
                   className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
@@ -691,7 +669,6 @@ const EditVariationProduct = ({ product }) => {
                 <label className="block mb-1 font-EB_Garamond"> Género </label>
                 <div className="relative">
                   <select
-                    value={gender}
                     className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
                     name="gender"
                     onChange={(e) => handleGenderChange(e.target.value)}
@@ -724,7 +701,6 @@ const EditVariationProduct = ({ product }) => {
                 <label className="block mb-1 font-EB_Garamond">Etiquetas</label>
                 <div className="relative">
                   <MultiselectTagComponent
-                    values={tags}
                     options={tagSelection}
                     handleAddTagField={handleAddTagField}
                   />
@@ -736,11 +712,13 @@ const EditVariationProduct = ({ product }) => {
                 </div>
               </div>
               <div className="mb-4 w-full">
-                <label className="block mb-1 font-EB_Garamond">Categoría</label>
+                <label className="block mb-1 font-EB_Garamond">
+                  {' '}
+                  Categoría{' '}
+                </label>
                 <div className="relative">
                   <select
-                    value={category}
-                    className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                    className="block appearance-none border border-gray-400 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
                     name="category"
                     onChange={(e) => handleCategoryChange(e.target.value)}
                   >
@@ -822,7 +800,6 @@ const EditVariationProduct = ({ product }) => {
                 <label className="block mb-1 font-EB_Garamond"> Talla </label>
                 <div className="relative">
                   <select
-                    value={variations[0].size}
                     onChange={(e) => handleSizeChange(0, e.target.value)}
                     className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
                   >
@@ -843,7 +820,6 @@ const EditVariationProduct = ({ product }) => {
                 <label className="block mb-1 font-EB_Garamond"> Color </label>
                 <div className="relative">
                   <select
-                    value={variations[0].color}
                     onChange={(e) => handleColorChange(0, e.target.value)}
                     className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
                   >
@@ -975,7 +951,6 @@ const EditVariationProduct = ({ product }) => {
                   <label className="block mb-1 font-EB_Garamond"> Talla </label>
                   <div className="relative">
                     <select
-                      value={variation.size}
                       onChange={(e) =>
                         handleSizeChange(index + 1, e.target.value)
                       }
@@ -999,7 +974,6 @@ const EditVariationProduct = ({ product }) => {
                   <label className="block mb-1 font-EB_Garamond"> Color </label>
                   <div className="relative">
                     <select
-                      value={variation.color}
                       onChange={(e) =>
                         handleColorChange(index + 1, e.target.value)
                       }
@@ -1108,7 +1082,7 @@ const EditVariationProduct = ({ product }) => {
             type="submit"
             className="my-2 px-4 py-2 text-center inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 w-full"
           >
-            Actualizar Producto
+            Guardar Producto
           </button>
         </section>
       </form>
@@ -1116,4 +1090,4 @@ const EditVariationProduct = ({ product }) => {
   );
 };
 
-export default EditVariationProduct;
+export default NewVariationOptimized;
