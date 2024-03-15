@@ -5,7 +5,6 @@ import Product from '@/backend/models/Product';
 import ReferralEvent from '@/backend/models/ReferralEvent';
 import ReferralLink from '@/backend/models/ReferralLink';
 import dbConnect from '@/lib/db';
-import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
@@ -36,6 +35,8 @@ export async function POST(req, res) {
 
       const paymentIntent = await stripe?.paymentIntents.retrieve(payIntentId);
 
+      console.log('paymentIntent', paymentIntent);
+
       const currentOrder = await Order.findOne({
         _id: session?.metadata?.order,
       });
@@ -61,11 +62,21 @@ export async function POST(req, res) {
         }
       });
 
+      let newPaymentTransaction;
+      let paymentTransactionData;
       let newPaymentAmount;
       if (session.payment_status === 'unpaid') {
         newPaymentAmount = 0;
       } else {
         newPaymentAmount = session.amount_total / 100;
+        paymentTransactionData = {
+          type: 'online',
+          amount: newPaymentAmount,
+          pay_date: new Date(),
+          method: shipping,
+          order: currentOrder?._id,
+          user: currentOrder?.user,
+        };
       }
 
       let payAmount = currentOrder.paymentInfo.amountPaid + newPaymentAmount;
