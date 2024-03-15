@@ -44,7 +44,7 @@ const QRScannerComponent = () => {
     <div className="container flex flex-col h-screen items-center justify-start mt-2  mx-auto">
       <div className=" flex flex-row w-full items-center justify-center">
         <h2 className=" text-slate-700 text-center w-full uppercase font-semibold tracking-wide text-2xl font-EB_Garamond">
-          Scanner códigos QR
+          Scanner
         </h2>
       </div>
 
