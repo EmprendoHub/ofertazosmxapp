@@ -73,10 +73,11 @@ export async function POST(req, res) {
           type: 'online',
           amount: newPaymentAmount,
           pay_date: new Date(),
-          method: shipping,
+          method: paymentIntent.payment_method_types[0],
           order: currentOrder?._id,
           user: currentOrder?.user,
         };
+        console.log('paymentTransactionData', paymentTransactionData);
       }
 
       let payAmount = currentOrder.paymentInfo.amountPaid + newPaymentAmount;
