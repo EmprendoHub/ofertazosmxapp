@@ -63,13 +63,12 @@ export async function POST(req, res) {
         }
       });
 
-      let paymentTransactionData;
       let newPaymentAmount;
       if (session.payment_status === 'unpaid') {
         newPaymentAmount = 0;
       } else {
         newPaymentAmount = session.amount_total / 100;
-        paymentTransactionData = {
+        let paymentTransactionData = {
           type: 'online',
           paymentIntent: paymentIntent.id,
           amount: newPaymentAmount,
@@ -78,7 +77,11 @@ export async function POST(req, res) {
           order: currentOrder?._id,
           user: currentOrder?.user,
         };
-        console.log('paymentTransactionData', paymentTransactionData);
+        const newPaymentTransaction = await new Payment.create(
+          paymentTransactionData
+        );
+        await newPaymentTransaction.save();
+        console.log('newPaymentTransaction', newPaymentTransaction);
       }
 
       let payAmount = currentOrder.paymentInfo.amountPaid + newPaymentAmount;
@@ -146,11 +149,7 @@ export async function POST(req, res) {
       }
 
       currentOrder.paymentInfo.amountPaid = payAmount;
-      if (paymentTransactionData) {
-        const newPaymentTransaction = await new Payment.create(
-          paymentTransactionData
-        );
-      }
+
       await currentOrder.save();
       return NextResponse.json(
         {
