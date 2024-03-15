@@ -159,6 +159,7 @@ export async function POST(req, res) {
       );
     }
   } catch (error) {
+    console.log(error);
     return NextResponse.json(
       {
         error: 'Error al Pagar el pedido con stripe Pedido',
