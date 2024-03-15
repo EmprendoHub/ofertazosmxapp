@@ -61,7 +61,7 @@ const POSProductCard = ({ item }) => {
       </Link>
       <div className=" px-4 py-4 flex flex-col bg-gray-100 rounded-b-sm">
         <div className="flex items-center justify-between gap-x-1">
-          <p className="text-black tracking-widest font-EB_Garamond text-xl">
+          <p className="text-black tracking-widest text-lg">
             {item?.title.substring(0, 15) + '...'}
           </p>
         </div>
@@ -81,7 +81,7 @@ const POSProductCard = ({ item }) => {
           {item?.sale_price ? (
             <div>
               <div className="flex items-center gap-x-2">
-                <p className="line-through text-sm text-black font-bodyFont">
+                <p className="line-through text-sm text-black ">
                   <FormattedPrice amount={item?.variations[0].price} />
                 </p>
               </div>
