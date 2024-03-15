@@ -77,11 +77,16 @@ export async function POST(req, res) {
           order: currentOrder?._id,
           user: currentOrder?.user,
         };
-        const newPaymentTransaction = await new Payment.create(
-          paymentTransactionData
-        );
-        await newPaymentTransaction.save();
-        console.log('newPaymentTransaction', newPaymentTransaction);
+        console.log('paymentTransactionData', paymentTransactionData);
+        try {
+          const newPaymentTransaction = await new Payment.create(
+            paymentTransactionData
+          );
+
+          await newPaymentTransaction.save();
+        } catch (error) {
+          console.log('deberror', error);
+        }
       }
 
       let payAmount = currentOrder.paymentInfo.amountPaid + newPaymentAmount;
