@@ -79,7 +79,7 @@ export async function POST(req, res) {
         };
         console.log('paymentTransactionData', paymentTransactionData);
         try {
-          const newPaymentTransaction = await new Payment.create(
+          const newPaymentTransaction = await new Payment(
             paymentTransactionData
           );
 
