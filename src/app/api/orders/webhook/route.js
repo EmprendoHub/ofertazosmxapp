@@ -1,6 +1,7 @@
 import { cstDateTime } from '@/backend/helpers';
 import Affiliate from '@/backend/models/Affiliate';
 import Order from '@/backend/models/Order';
+import Payment from '@/backend/models/Payment';
 import Product from '@/backend/models/Product';
 import ReferralEvent from '@/backend/models/ReferralEvent';
 import ReferralLink from '@/backend/models/ReferralLink';
@@ -62,7 +63,6 @@ export async function POST(req, res) {
         }
       });
 
-      let newPaymentTransaction;
       let paymentTransactionData;
       let newPaymentAmount;
       if (session.payment_status === 'unpaid') {
@@ -71,8 +71,9 @@ export async function POST(req, res) {
         newPaymentAmount = session.amount_total / 100;
         paymentTransactionData = {
           type: 'online',
+          paymentIntent: paymentIntent.id,
           amount: newPaymentAmount,
-          pay_date: new Date(),
+          pay_date: new Date(paymentIntent.created * 1000),
           method: paymentIntent.payment_method_types[0],
           order: currentOrder?._id,
           user: currentOrder?.user,
@@ -145,7 +146,11 @@ export async function POST(req, res) {
       }
 
       currentOrder.paymentInfo.amountPaid = payAmount;
-
+      if (paymentTransactionData) {
+        const newPaymentTransaction = await new Payment.create(
+          paymentTransactionData
+        );
+      }
       await currentOrder.save();
       return NextResponse.json(
         {
