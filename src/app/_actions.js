@@ -833,7 +833,7 @@ export async function getOneOrder(id) {
 
     let order = await Order.findOne({ _id: id });
     let deliveryAddress = await Address.findOne(order.shippingInfo);
-    let orderPayments = await Payment.find(order.order);
+    let orderPayments = await Payment.find({ order: order._id });
 
     // convert to string
     order = JSON.stringify(order);

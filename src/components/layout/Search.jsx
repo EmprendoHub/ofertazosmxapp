@@ -2,12 +2,12 @@
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
-const Search = () => {
+const Search = ({ SetIsActive }) => {
   const [keyword, setKeyword] = useState('');
   const router = useRouter();
   const submitHandler = (e) => {
     e.preventDefault();
-
+    SetIsActive(false);
     if (keyword) {
       router.push(`/tienda/?keyword=${keyword}`);
     } else {

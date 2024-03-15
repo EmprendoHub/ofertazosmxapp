@@ -37,6 +37,10 @@ export async function POST(req, res) {
       const paymentIntent = await stripe?.paymentIntents.retrieve(payIntentId);
 
       console.log('paymentIntent', paymentIntent);
+      console.log(
+        'paymentIntent.payment_method_options.customer_balance.bank_transfer',
+        paymentIntent.payment_method_options.customer_balance.bank_transfer
+      );
 
       const currentOrder = await Order.findOne({
         _id: session?.metadata?.order,
@@ -64,6 +68,10 @@ export async function POST(req, res) {
       });
 
       let newPaymentAmount;
+      let payReference;
+      // if (paymentIntent.payment_method_types === 'customer_balance') {
+      //   payReference = paymentIntent.payment_method_options.customer_balance.bank_transfer
+      // }
       if (session.payment_status === 'unpaid') {
         newPaymentAmount = 0;
       } else {
@@ -72,6 +80,7 @@ export async function POST(req, res) {
           type: 'online',
           paymentIntent: paymentIntent.id,
           amount: newPaymentAmount,
+          reference: '',
           pay_date: new Date(paymentIntent.created * 1000),
           method: paymentIntent.payment_method_types[0],
           order: currentOrder?._id,

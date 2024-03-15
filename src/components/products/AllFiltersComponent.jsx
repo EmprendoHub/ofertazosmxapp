@@ -88,7 +88,7 @@ const AllFiltersComponent = ({
         </div>
         {/* Search Filter */}
 
-        <Search />
+        <Search SetIsActive={SetIsActive} />
         {/* Price Filter */}
 
         <div className="flex flex-col w-[95%] py-4 border border-gray-200 bg-white rounded shadow-sm">

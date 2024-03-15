@@ -155,7 +155,7 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments }) => {
           <div>{order?.branch}</div>
         )}
       </div>
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg p-5">
+      <div className="relative overflow-x-auto shadow-md sm:rounded-lg px-5">
         <table className="w-full text-sm text-left">
           <thead className="text-l text-gray-700 uppercase">
             <tr>
@@ -204,7 +204,7 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments }) => {
           </tbody>
         </table>
       </div>
-      <div className="relative flex flex-row maxmd:flex-col items-center justify-start overflow-x-auto shadow-md sm:rounded-lg p-5 gap-12">
+      <div className="relative flex flex-row maxmd:flex-col-reverse items-start justify-start overflow-x-auto shadow-md sm:rounded-lg p-5 gap-12">
         <div className="w-1/3 maxmd:w-full">
           <div className=" max-w-screen-xl mx-auto bg-white flex flex-col p-2">
             <h2 className="text-2xl">Totales</h2>
@@ -283,30 +283,40 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments }) => {
           </div>
         </div>
         {order?.orderStatus ? (
-          <div className="relative overflow-x-auto shadow-md sm:rounded-lg p-5">
+          <div className="relative overflow-x-auto shadow-md sm:rounded-lg p-3 w-full">
+            <h2 className="text-2xl">Pagos</h2>
             <table className="w-full text-sm text-left">
               <thead className="text-l text-gray-700 uppercase">
-                <tr>
-                  <th scope="col" className="px-2 maxsm:px-0 py-3">
+                <tr className="flex flex-row justify-between ">
+                  <th scope="col" className="px-2 maxsm:px-0 py-3  w-full">
                     Fecha
                   </th>
-                  <th scope="col" className="px-2 maxsm:px-0 py-3">
+                  <th scope="col" className="px-2 maxsm:px-0 py-3  w-full">
                     Método
                   </th>
-                  <th scope="col" className="px-2 maxsm:px-0 py-3">
+                  <th scope="col" className="px-2 maxsm:px-0 py-3  w-full">
                     Cant.
                   </th>
                 </tr>
               </thead>
               <tbody>
                 {orderPayments?.map((payment) => (
-                  <tr className="bg-white" key={payment?.paymentIntent}>
-                    <td className="px-2 maxsm:px-0 py-2">
+                  <tr
+                    className="bg-white flex flex-row justify-between "
+                    key={payment?.paymentIntent}
+                  >
+                    <td className="px-2 maxsm:px-0 py-2 w-full">
                       {formatDate(payment?.pay_date)}
                       {formatTime(payment?.pay_date)}
                     </td>
-                    <td className="px-2 maxsm:px-0 py-2">{payment?.method}</td>
-                    <td className="px-2 maxsm:px-0 py-2">
+                    <td className="px-2 maxsm:px-0 py-2  w-full uppercase text-xs">
+                      {payment?.method === 'card'
+                        ? 'tarjeta'
+                        : payment?.method === 'customer_balance'
+                        ? 'transferencia'
+                        : `${payment?.method}`}
+                    </td>
+                    <td className="px-2 maxsm:px-0 py-2  w-full font-bold">
                       <FormattedPrice amount={payment?.amount || 0} />
                     </td>
                   </tr>
