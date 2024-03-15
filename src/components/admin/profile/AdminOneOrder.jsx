@@ -5,8 +5,9 @@ import Image from 'next/image';
 import AuthContext from '@/context/AuthContext';
 import { toast } from 'react-toastify';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
+import { formatDate, formatTime } from '@/backend/helpers';
 
-const AdminOneOrder = ({ order, deliveryAddress, id }) => {
+const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments }) => {
   const { updateOrder } = useContext(AuthContext);
   const [orderStatus, setOrderStatus] = useState('pendiente');
   const [currentOrderStatus, setCurrentOrderStatus] = useState(
@@ -281,14 +282,37 @@ const AdminOneOrder = ({ order, deliveryAddress, id }) => {
             )}
           </div>
         </div>
-        {order?.orderStatus === 'Apartado' ? (
-          <div className="w-2/3 maxmd:w-full">
-            <hr />{' '}
-          </div>
-        ) : order?.orderStatus === 'Sucursal' ? (
-          <div className="w-2/3 maxmd:w-full">
-            <hr />
-            {'Compra en sucursal'}
+        {order?.orderStatus ? (
+          <div className="relative overflow-x-auto shadow-md sm:rounded-lg p-5">
+            <table className="w-full text-sm text-left">
+              <thead className="text-l text-gray-700 uppercase">
+                <tr>
+                  <th scope="col" className="px-2 maxsm:px-0 py-3">
+                    Fecha
+                  </th>
+                  <th scope="col" className="px-2 maxsm:px-0 py-3">
+                    Método
+                  </th>
+                  <th scope="col" className="px-2 maxsm:px-0 py-3">
+                    Cant.
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {orderPayments?.map((payment) => (
+                  <tr className="bg-white" key={payment?.paymentIntent}>
+                    <td className="px-2 maxsm:px-0 py-2">
+                      {formatDate(payment?.pay_date)}
+                      {formatTime(payment?.pay_date)}
+                    </td>
+                    <td className="px-2 maxsm:px-0 py-2">{payment?.method}</td>
+                    <td className="px-2 maxsm:px-0 py-2">
+                      <FormattedPrice amount={payment?.amount || 0} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         ) : (
           <div className="w-2/3 maxmd:w-full">
