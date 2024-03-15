@@ -3,6 +3,7 @@ import Affiliate from '@/backend/models/Affiliate';
 import Order from '@/backend/models/Order';
 import Product from '@/backend/models/Product';
 import ReferralLink from '@/backend/models/ReferralLink';
+import mongoose from 'mongoose';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
@@ -50,16 +51,21 @@ const calculateTotalAmount = (items) => {
 
 export const POST = async (request) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+  const mongoSession = await mongoose.startSession();
+  const reqBody = await request.json();
+  const { items, email, user, shipping, affiliateInfo, payType } =
+    await reqBody;
+  const isLayaway = payType === 'layaway';
 
   try {
-    const reqBody = await request.json();
-    const { items, email, user, shipping, affiliateInfo, payType } =
-      await reqBody;
-    const isLayaway = payType === 'layaway';
+    mongoSession.startTransaction();
+
     let affiliate;
     if (affiliateInfo) {
       const affiliateLink = await ReferralLink.findOne({ _id: affiliateInfo });
-      affiliate = await Affiliate.findOne(affiliateLink.affiliateId);
+      affiliate = await Affiliate.findOne({
+        _id: affiliateLink.affiliateId,
+      }).lean();
     }
 
     const existingCustomers = await stripe.customers.list({
@@ -164,94 +170,92 @@ export const POST = async (request) => {
         affiliateId: affiliate?._id.toString() || '',
       };
     }
-    //await Order.create(orderData);
-    const newOrder = await new Order(orderData);
+    const newOrder = await new Order(orderData).save({ session: mongoSession });
 
-    try {
-      if (isLayaway) {
-        session = await stripe.checkout.sessions.create({
-          payment_method_types: pay_method_options,
-          mode: 'payment',
-          customer: customerId,
-          payment_method_options: {
-            oxxo: {
-              expires_after_days: 2,
+    // Intentionally cause an error by attempting to insert a document with missing required fields
+    //await new Customer({}).save({ session: mongoSession });
+
+    if (isLayaway) {
+      session = await stripe.checkout.sessions.create({
+        payment_method_types: pay_method_options,
+        mode: 'payment',
+        customer: customerId,
+        payment_method_options: {
+          oxxo: {
+            expires_after_days: 2,
+          },
+          customer_balance: {
+            funding_type: 'bank_transfer',
+            bank_transfer: {
+              type: 'mx_bank_transfer',
             },
-            customer_balance: {
-              funding_type: 'bank_transfer',
-              bank_transfer: {
-                type: 'mx_bank_transfer',
+          },
+        },
+        locale: 'es-419',
+        client_reference_id: user?._id,
+        success_url: `${process.env.NEXTAUTH_URL}/perfil/pedidos?pedido_exitoso=true`,
+        cancel_url: `${
+          process.env.NEXTAUTH_URL
+        }/cancelado?id=${newOrder._id.toString()}`,
+        metadata: {
+          shippingInfo,
+          layaway: isLayaway,
+          order: newOrder._id.toString(),
+          referralID: affiliateInfo,
+        },
+        line_items: [
+          {
+            price_data: {
+              currency: 'mxn',
+              unit_amount: installmentAmount * 100, // Convert to cents
+              product_data: {
+                name: 'Pago Inicial de Apartado',
+                description: `Pago inicial para apartado de pedido #${newOrder.orderId}`,
               },
             },
+            quantity: 1,
           },
-          locale: 'es-419',
-          client_reference_id: user?._id,
-          success_url: `${process.env.NEXTAUTH_URL}/perfil/pedidos?pedido_exitoso=true`,
-          cancel_url: `${
-            process.env.NEXTAUTH_URL
-          }/cancelado?id=${newOrder._id.toString()}`,
-          metadata: {
-            shippingInfo,
-            layaway: isLayaway,
-            order: newOrder._id.toString(),
-            referralID: affiliateInfo,
+        ],
+      });
+    } else {
+      session = await stripe.checkout.sessions.create({
+        payment_method_types: pay_method_options,
+        mode: 'payment',
+        customer: customerId,
+        payment_method_options: {
+          oxxo: {
+            expires_after_days: 2,
           },
-          line_items: [
-            {
-              price_data: {
-                currency: 'mxn',
-                unit_amount: installmentAmount * 100, // Convert to cents
-                product_data: {
-                  name: 'Pago Inicial de Apartado',
-                  description: `Pago inicial para apartado de pedido #${newOrder.orderId}`,
-                },
-              },
-              quantity: 1,
-            },
-          ],
-        });
-      } else {
-        session = await stripe.checkout.sessions.create({
-          payment_method_types: pay_method_options,
-          mode: 'payment',
-          customer: customerId,
-          payment_method_options: {
-            oxxo: {
-              expires_after_days: 2,
-            },
-            customer_balance: {
-              funding_type: 'bank_transfer',
-              bank_transfer: {
-                type: 'mx_bank_transfer',
-              },
+          customer_balance: {
+            funding_type: 'bank_transfer',
+            bank_transfer: {
+              type: 'mx_bank_transfer',
             },
           },
-          locale: 'es-419',
-          success_url: `${process.env.NEXTAUTH_URL}/perfil/pedidos?pedido_exitoso=true`,
-          cancel_url: `${
-            process.env.NEXTAUTH_URL
-          }/cancelado?id=${newOrder._id.toString()}`,
-          client_reference_id: user?._id,
-          metadata: {
-            shippingInfo,
-            layaway: isLayaway,
-            order: newOrder._id.toString(),
-            referralID: affiliateInfo,
+        },
+        locale: 'es-419',
+        success_url: `${process.env.NEXTAUTH_URL}/perfil/pedidos?pedido_exitoso=true`,
+        cancel_url: `${
+          process.env.NEXTAUTH_URL
+        }/cancelado?id=${newOrder._id.toString()}`,
+        client_reference_id: user?._id,
+        metadata: {
+          shippingInfo,
+          layaway: isLayaway,
+          order: newOrder._id.toString(),
+          referralID: affiliateInfo,
+        },
+        shipping_options: [
+          {
+            shipping_rate: 'shr_1OW9lzF1B19DqtcQpzK984xg',
           },
-          shipping_options: [
-            {
-              shipping_rate: 'shr_1OW9lzF1B19DqtcQpzK984xg',
-            },
-          ],
-          line_items,
-        });
-      }
-    } catch (error) {
-      console.log(error);
-      return NextResponse.json({ error: error.message }, { status: 500 });
+        ],
+        line_items,
+      });
     }
 
-    await newOrder.save();
+    await mongoSession.commitTransaction();
+    mongoSession.endSession();
 
     return NextResponse.json({
       message: 'Connection is active',
@@ -260,6 +264,8 @@ export const POST = async (request) => {
       url: session.url,
     });
   } catch (error) {
+    await mongoSession.abortTransaction();
+    mongoSession.endSession();
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 };

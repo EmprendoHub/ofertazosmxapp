@@ -11,15 +11,15 @@ export const metadata = {
 const TiendaPage = async ({ searchParams }) => {
   const data = await getAllPOSProduct(searchParams);
   //pagination
-  let page = parseInt(searchParams.page, 10);
+  let page = parseInt(searchParams.page, 20);
   page = !page || page < 1 ? 1 : page;
-  const perPage = 10;
+  const perPage = 20;
   const totalPages = Math.ceil(data.filteredProductsCount / perPage);
   const prevPage = page - 1 > 0 ? page - 1 : 1;
   const nextPage = page + 1;
   const isPageOutOfRange = page > totalPages;
   const pageNumbers = [];
-  const offsetNumber = 1;
+  const offsetNumber = 3;
   const products = JSON.parse(data?.products);
   const filteredProductsCount = data?.filteredProductsCount;
   for (let i = page - offsetNumber; i <= page + offsetNumber; i++) {

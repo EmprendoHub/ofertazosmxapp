@@ -23,11 +23,11 @@ const POSProductCard = ({ item }) => {
       className="border-[1px] rounded-sm max-w-[350px] maxmd:max-w-[100%] overflow-hidden relative"
     >
       <Link href={`/${pathname}/tienda/producto/${item.slug}`}>
-        <div className="w-full h-[300px] group overflow-hidden relative">
+        <div className="w-[300px] h-[300px] group overflow-hidden relative">
           <Image
             src={item?.images[0].url}
             alt="product image"
-            className="grayscale hover:grayscale-0 ease-in-out duration-500 w-full h-full object-cover group-hover:scale-110 rounded-t-sm"
+            className=" ease-in-out duration-500 w-full h-full object-cover group-hover:scale-110 rounded-t-sm"
             width={350}
             height={350}
           />

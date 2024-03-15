@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Html5QrcodeScanner } from 'html5-qrcode';
 import { usePathname, useRouter } from 'next/navigation';
+import './qrstyles.css';
 
 const QRScannerComponent = () => {
   const [scanResult, setScanResult] = useState(null);
@@ -63,10 +64,6 @@ const QRScannerComponent = () => {
               className="w-[500px] min-h-[500px] maxsm:w-[250px] maxsm:h-[250px]"
             ></div>
           )}
-          <div className="card-footer">
-            <h4 className="text-xl"> Resultado Webcam:</h4>
-            <p>{scanResult}</p>
-          </div>
         </div>
       </div>
     </div>
