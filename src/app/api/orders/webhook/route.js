@@ -36,8 +36,6 @@ export async function POST(req, res) {
 
       const paymentIntent = await stripe?.paymentIntents.retrieve(payIntentId);
 
-      console.log('paymentIntent', paymentIntent);
-
       const currentOrder = await Order.findOne({
         _id: session?.metadata?.order,
       });
@@ -78,7 +76,8 @@ export async function POST(req, res) {
       } else if (paymentIntent.payment_method_types[0] === 'oxxo') {
         payReference = paymentIntent.next_action.oxxo_display_details.number;
       } else if (paymentIntent.payment_method_types[0] === 'card') {
-        console.log(' CARD PAYMENT');
+        payReference =
+          paymentMethod.card.brand + `****${paymentMethod.card.last4}`;
       }
 
       if (session.payment_status === 'unpaid') {
