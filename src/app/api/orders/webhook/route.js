@@ -69,9 +69,11 @@ export async function POST(req, res) {
 
       let newPaymentAmount;
       let payReference;
-      // if (paymentIntent.payment_method_types === 'customer_balance') {
-      //   payReference = paymentIntent.payment_method_options.customer_balance.bank_transfer
-      // }
+      if (paymentIntent.payment_method_types === 'customer_balance') {
+        payReference =
+          paymentIntent.next_action.display_bank_transfer_instructions
+            .reference;
+      }
       if (session.payment_status === 'unpaid') {
         newPaymentAmount = 0;
       } else {
@@ -80,7 +82,7 @@ export async function POST(req, res) {
           type: 'online',
           paymentIntent: paymentIntent.id,
           amount: newPaymentAmount,
-          reference: '',
+          reference: payReference,
           pay_date: new Date(paymentIntent.created * 1000),
           method: paymentIntent.payment_method_types[0],
           order: currentOrder?._id,
