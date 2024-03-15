@@ -37,10 +37,6 @@ export async function POST(req, res) {
       const paymentIntent = await stripe?.paymentIntents.retrieve(payIntentId);
 
       console.log('paymentIntent', paymentIntent);
-      console.log(
-        'paymentIntent.payment_method_options.customer_balance.bank_transfer',
-        paymentIntent.payment_method_options.customer_balance.bank_transfer
-      );
 
       const currentOrder = await Order.findOne({
         _id: session?.metadata?.order,
@@ -67,13 +63,24 @@ export async function POST(req, res) {
         }
       });
 
+      const paymentMethod = await stripe.paymentMethods.retrieve(
+        paymentIntent.payment_method
+      );
+
+      console.log('paymentMethod call', paymentMethod);
+
       let newPaymentAmount;
       let payReference;
-      if (paymentIntent.payment_method_types === 'customer_balance') {
+      if (paymentIntent.payment_method_types[0] === 'customer_balance') {
         payReference =
           paymentIntent.next_action.display_bank_transfer_instructions
             .reference;
+      } else if (paymentIntent.payment_method_types[0] === 'oxxo') {
+        payReference = paymentIntent.next_action.oxxo_display_details.number;
+      } else if (paymentIntent.payment_method_types[0] === 'card') {
+        console.log(' CARD PAYMENT');
       }
+
       if (session.payment_status === 'unpaid') {
         newPaymentAmount = 0;
       } else {
