@@ -36,6 +36,7 @@ import APIOrderFilters from '@/lib/APIOrderFilters';
 import APIClientFilters from '@/lib/APIClientFilters';
 import APIAffiliateFilters from '@/lib/APIAffiliateFilters';
 import Page from '@/backend/models/Page';
+import Payment from '@/backend/models/Payment';
 
 // Function to get the document count for all from the previous month
 const getDocumentCountPreviousMonth = async (model) => {
