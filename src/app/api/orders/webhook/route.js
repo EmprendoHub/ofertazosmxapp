@@ -64,8 +64,9 @@ export async function POST(req, res) {
       const paymentMethod = await stripe.paymentMethods.retrieve(
         paymentIntent.payment_method
       );
-
+      console.log('paymentIntent call', paymentIntent);
       console.log('paymentMethod call', paymentMethod);
+      console.log('paymentIntent.next_action', paymentIntent.next_action);
 
       let newPaymentAmount;
       let payReference;

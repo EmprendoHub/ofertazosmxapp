@@ -295,6 +295,9 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments }) => {
                     Método
                   </th>
                   <th scope="col" className="px-2 maxsm:px-0 py-3  w-full">
+                    Ref
+                  </th>
+                  <th scope="col" className="px-2 maxsm:px-0 py-3  w-full">
                     Cant.
                   </th>
                 </tr>
@@ -315,6 +318,9 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments }) => {
                         : payment?.method === 'customer_balance'
                         ? 'transferencia'
                         : `${payment?.method}`}
+                    </td>
+                    <td className="px-2 maxsm:px-0 py-2  w-full uppercase text-xs">
+                      {payment?.reference}
                     </td>
                     <td className="px-2 maxsm:px-0 py-2  w-full font-bold">
                       <FormattedPrice amount={payment?.amount || 0} />
