@@ -42,6 +42,7 @@ export const set_colors = [
   { value: 'Verde Claro', label: 'Verde Claro', hex: '#BDECB6' },
   { value: 'Verde Oliva', label: 'Verde Oliva', hex: '#9B933B' },
   { value: 'Violeta', label: 'Violeta', hex: '#a65ba6' },
+  { value: 'Vino', label: 'Violeta', hex: '#5E2129' },
 ];
 
 export const sizes_prendas = [
