@@ -111,7 +111,7 @@ export async function POST(request, res) {
 
       // Save the Product to the database
       await newProduct.save();
-
+      console.log(newProduct);
       const response = NextResponse.json({
         message: 'Producto creado exitosamente',
         success: true,
