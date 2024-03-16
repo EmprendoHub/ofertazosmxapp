@@ -465,6 +465,7 @@ const EditVariationProduct = ({ product }) => {
                   <select
                     className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
                     name="featured"
+                    htmlFor="featured"
                     onChange={(e) => setFeatured(e.target.value)}
                     value={featured}
                   >
@@ -500,6 +501,7 @@ const EditVariationProduct = ({ product }) => {
                   <select
                     className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
                     name="instagramAvailability"
+                    htmlFor="instagramAvailability"
                     onChange={(e) => setInstagramAvailability(e.target.value)}
                     value={instagramAvailability}
                   >
@@ -539,6 +541,7 @@ const EditVariationProduct = ({ product }) => {
                   <select
                     className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
                     name="branchAvailability"
+                    htmlFor="branchAvailability"
                     onChange={(e) => setBranchAvailability(e.target.value)}
                     value={branchAvailability}
                   >
@@ -576,6 +579,7 @@ const EditVariationProduct = ({ product }) => {
                   <select
                     className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
                     name="onlineAvailability"
+                    htmlFor="onlineAvailability"
                     onChange={(e) => setOnlineAvailability(e.target.value)}
                     value={onlineAvailability}
                   >
@@ -656,6 +660,7 @@ const EditVariationProduct = ({ product }) => {
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     name="title"
+                    htmlFor="title"
                   />
                   {validationError?.title && (
                     <p className="text-sm text-red-400">
@@ -675,6 +680,7 @@ const EditVariationProduct = ({ product }) => {
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     name="description"
+                    htmlFor="description"
                   ></textarea>
                   {validationError?.description && (
                     <p className="text-sm text-red-400">
@@ -694,6 +700,7 @@ const EditVariationProduct = ({ product }) => {
                     value={brand}
                     onChange={(e) => setBrand(e.target.value)}
                     name="brand"
+                    htmlFor="brand"
                   />
                   {validationError?.brand && (
                     <p className="text-sm text-red-400">
@@ -711,6 +718,7 @@ const EditVariationProduct = ({ product }) => {
                       value={gender}
                       className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
                       name="gender"
+                      htmlFor="gender"
                       onChange={(e) => handleGenderChange(e.target.value)}
                     >
                       {genders?.map((gender) => (
@@ -763,6 +771,7 @@ const EditVariationProduct = ({ product }) => {
                       value={category}
                       className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
                       name="category"
+                      htmlFor="category"
                       onChange={(e) => handleCategoryChange(e.target.value)}
                     >
                       {product_categories.map((category) => (
@@ -804,6 +813,7 @@ const EditVariationProduct = ({ product }) => {
                           value={salePrice}
                           onChange={(e) => setSalePrice(e.target.value)}
                           name="salePrice"
+                          htmlFor="salePrice"
                         />
                         {validationError?.salePrice && (
                           <p className="text-sm text-red-400">
@@ -844,6 +854,8 @@ const EditVariationProduct = ({ product }) => {
                   <div className="relative">
                     <select
                       value={variations[0].size}
+                      name="size"
+                      htmlFor="size"
                       onChange={(e) => handleSizeChange(0, e.target.value)}
                       className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
                     >
@@ -865,6 +877,8 @@ const EditVariationProduct = ({ product }) => {
                   <div className="relative">
                     <select
                       value={variations[0].color}
+                      name="color"
+                      htmlFor="color"
                       onChange={(e) => handleColorChange(0, e.target.value)}
                       className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
                     >
@@ -893,6 +907,7 @@ const EditVariationProduct = ({ product }) => {
                         value={variations[0].price}
                         onChange={(e) => handlePriceChange(0, e.target.value)}
                         name="price"
+                        htmlFor="price"
                       />
                       {validationError?.price && (
                         <p className="text-sm text-red-400">
@@ -914,6 +929,7 @@ const EditVariationProduct = ({ product }) => {
                         value={variations[0].cost}
                         onChange={(e) => handleCostChange(0, e.target.value)}
                         name="cost"
+                        htmlFor="cost"
                       />
                       {validationError?.cost && (
                         <p className="text-sm text-red-400">
@@ -938,6 +954,7 @@ const EditVariationProduct = ({ product }) => {
                         value={variations[0].stock}
                         onChange={(e) => handleStockChange(0, e.target.value)}
                         name="stock"
+                        htmlFor="stock"
                       />
                       {validationError?.stock && (
                         <p className="text-sm text-red-400">
@@ -1002,6 +1019,8 @@ const EditVariationProduct = ({ product }) => {
                     <div className="relative">
                       <select
                         value={variation.size}
+                        name={`size-${index + 1}`}
+                        htmlFor={`size-${index + 1}`}
                         onChange={(e) =>
                           handleSizeChange(index + 1, e.target.value)
                         }
@@ -1029,6 +1048,8 @@ const EditVariationProduct = ({ product }) => {
                     <div className="relative">
                       <select
                         value={variation.color}
+                        name={`color-${index + 1}`}
+                        htmlFor={`color-${index + 1}`}
                         onChange={(e) =>
                           handleColorChange(index + 1, e.target.value)
                         }
@@ -1056,6 +1077,8 @@ const EditVariationProduct = ({ product }) => {
                         type="number"
                         min="0"
                         value={variation.price}
+                        name={`price-${index + 1}`}
+                        htmlFor={`price-${index + 1}`}
                         onChange={(e) =>
                           handlePriceChange(index + 1, e.target.value)
                         }
@@ -1073,6 +1096,8 @@ const EditVariationProduct = ({ product }) => {
                         type="number"
                         min="0"
                         value={variation.cost}
+                        name={`cost-${index + 1}`}
+                        htmlFor={`cost-${index + 1}`}
                         onChange={(e) =>
                           handleCostChange(index + 1, e.target.value)
                         }
@@ -1090,6 +1115,8 @@ const EditVariationProduct = ({ product }) => {
                         type="number"
                         min="0"
                         value={variation.stock}
+                        name={`stock-${index + 1}`}
+                        htmlFor={`stock-${index + 1}`}
                         onChange={(e) =>
                           handleStockChange(index + 1, e.target.value)
                         }
