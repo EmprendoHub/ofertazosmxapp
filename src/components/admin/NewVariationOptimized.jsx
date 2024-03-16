@@ -292,7 +292,8 @@ const NewVariationOptimized = () => {
       });
   }
 
-  async function action() {
+  async function hanldeFormSubmit(e) {
+    e.preventDefault();
     if (
       !mainImage ||
       mainImage === '/images/product-placeholder-minimalist.jpg'
@@ -377,6 +378,21 @@ const NewVariationOptimized = () => {
     // write to database using server actions
 
     const result = await addVariationProduct(formData);
+    // const URL = `/api/newproduct`;
+    // const result = await fetch(
+    //   URL,
+    //   {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       Cookie: currentCookies,
+    //       Id: `${id}`,
+    //     },
+    //     body: formData,
+    //   },
+    //   { next: { revalidate: 120 } }
+    // );
+    // const data = await res.json();
     if (result?.error) {
       setValidationError(result.error);
     } else {
@@ -435,10 +451,7 @@ const NewVariationOptimized = () => {
   return (
     <main className="w-full p-4 maxsm:p-2 bg-slate-200">
       {!isSending ? (
-        <form
-          action={action}
-          className="flex flex-col items-start gap-5 justify-start w-full"
-        >
+        <form className="flex flex-col items-start gap-5 justify-start w-full">
           <section className="w-full ">
             <div className="flex flex-row maxmd:flex-col items-center justify-between">
               <h1 className="w-full text-xl font-semibold text-black mb-8 font-EB_Garamond">
@@ -1117,7 +1130,7 @@ const NewVariationOptimized = () => {
             ))}
 
             <button
-              type="submit"
+              onClick={hanldeFormSubmit}
               className="my-2 px-4 py-2 text-center inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 w-full"
             >
               Guardar Producto

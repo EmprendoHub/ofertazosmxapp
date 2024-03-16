@@ -21,7 +21,6 @@ import MultiselectTagComponent from '../forms/MultiselectTagComponent';
 
 const EditVariationProduct = ({ product }) => {
   const router = useRouter();
-  const formRef = useRef();
   const [title, setTitle] = useState(product?.title);
   const [isSending, setIsSending] = useState(false);
   const [brand, setBrand] = useState(product?.brand);
@@ -264,7 +263,8 @@ const EditVariationProduct = ({ product }) => {
       });
   }
 
-  async function action() {
+  async function hanldeFormSubmit(e) {
+    e.preventDefault();
     if (
       !mainImage ||
       mainImage === '/images/product-placeholder-minimalist.jpg'
@@ -450,10 +450,7 @@ const EditVariationProduct = ({ product }) => {
   return (
     <main className="w-full p-4 maxsm:p-2 bg-slate-200">
       {!isSending ? (
-        <form
-          action={action}
-          className="flex flex-col items-start gap-5 justify-start w-full"
-        >
+        <form className="flex flex-col items-start gap-5 justify-start w-full">
           <section className="w-full ">
             <div className="flex flex-row maxmd:flex-col items-center justify-between">
               <h1 className="w-full text-2xl font-semibold text-black mb-8 font-EB_Garamond">
@@ -1142,7 +1139,7 @@ const EditVariationProduct = ({ product }) => {
             ))}
 
             <button
-              type="submit"
+              onClick={hanldeFormSubmit}
               className="my-2 px-4 py-2 text-center inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 w-full"
             >
               Actualizar Producto
