@@ -64,7 +64,9 @@ export const sizes_shoes_men = [
 export const sizes_shoes_woman = [
   { value: '', label: '' },
   { value: '22', label: '22' },
+  { value: '22.5', label: '22.5' },
   { value: '23', label: '23' },
+  { value: '23.5', label: '23.5' },
   { value: '24', label: '24' },
   { value: '24.5', label: '24.5' },
   { value: '25', label: '25' },
@@ -72,6 +74,7 @@ export const sizes_shoes_woman = [
   { value: '26', label: '26' },
   { value: '26.5', label: '26.5' },
   { value: '27', label: '27' },
+  { value: '27.5', label: '27.5' },
   { value: '28', label: '28' },
 ];
 
