@@ -5,6 +5,7 @@ import { getToken } from 'next-auth/jwt';
 import { join } from 'path';
 import { writeFile } from 'fs/promises';
 import { mc } from '@/lib/minio';
+import { generateUrlSafeTitle } from '@/backend/helpers';
 
 export async function POST(req, res) {
   const token = await getToken({ req: req });
@@ -120,117 +121,123 @@ export async function POST(req, res) {
   }
 }
 
-export async function PUT(req, res) {
-  const token = await getToken({ req: req });
+export async function PUT(request, res) {
+  const token = await getToken({ req: request });
+
   if (token) {
     try {
-      await dbConnect();
-      const { payload } = await req.json();
+      const payload = await request.formData();
       let {
         title,
         description,
         category,
+        tags,
         featured,
-        cost,
-        price,
-        sizes,
-        images,
+        branchAvailability,
+        instagramAvailability,
+        onlineAvailability,
+        mainImage,
         brand,
         gender,
+        variations,
         salePrice,
         salePriceEndDate,
-        stock,
+        updatedAt,
         _id,
-      } = payload;
+      } = Object.fromEntries(payload);
 
-      // Parse images as JSON
-      images = JSON.parse(images);
-      sizes = JSON.parse(sizes);
-      stock = Number(stock);
-      cost = Number(cost);
-      price = Number(price);
-      const oid = _id;
+      const user = { _id: token?.user?._id };
+
+      // Parse variations JSON string with reviver function to convert numeric strings to numbers
+      let colors = [];
+      variations = JSON.parse(variations, (key, value) => {
+        if (key === 'color') {
+          const color = {
+            value: value,
+            label: value,
+          };
+          //check array of object to see if values exists
+          const exists = colors.some(
+            (c) => c.value === value || c.label === value
+          );
+          if (!exists) {
+            colors.push(color); // add to colors array
+          }
+        }
+        // Check if the value is a string and represents a number
+        if (!isNaN(value) && value !== '' && !Array.isArray(value)) {
+          if (key != 'size') {
+            return Number(value); // Convert the string to a number
+          }
+        }
+        return value; // Return unchanged for other types of values
+      });
+
+      tags = JSON.parse(tags);
       const sale_price = Number(salePrice);
       const sale_price_end_date = salePriceEndDate;
-      const user = { _id: token?._id };
+      const images = [{ url: mainImage }];
 
-      // set image urls
-      const savedProductImages = [];
-      const savedProductMinioBucketImages = [];
-      const savedProductColors = [];
-      images?.map(async (image) => {
-        let image_url;
-        let p_images;
-        let tempColor;
-        if (image.i_file) {
-          image_url = image.i_file;
-          p_images = {
-            url: `https://minio.salvawebpro.com:9000/shopout/products/${image_url}`,
-            color: image.i_color,
-          };
-          let minio_image = {
-            i_filePreview: image.url,
-            i_file: image.i_file,
-          };
-          savedProductMinioBucketImages.push(minio_image);
-          savedProductImages.push(p_images);
-          tempColor = { value: image.i_color, hex: '#001001' };
-          savedProductColors.push(tempColor);
-        } else {
-          p_images = {
-            url: image.url,
-            color: image.color,
-          };
-          savedProductImages.push(p_images);
-          tempColor = { value: image.i_color, hex: '#001001' };
-          savedProductColors.push(tempColor);
+      // calculate product stock
+      const stock = variations.reduce(
+        (total, variation) => total + variation.stock,
+        0
+      );
+
+      updatedAt = new Date(updatedAt);
+
+      await dbConnect();
+      const slug = generateUrlSafeTitle(title);
+      const slugExists = await Product.findOne({
+        slug: slug,
+        _id: { $ne: _id },
+      });
+      if (slugExists) {
+        return {
+          error: {
+            title: { _errors: ['Este Titulo de producto ya esta en uso'] },
+          },
+        };
+      }
+
+      const availability = {
+        instagram: instagramAvailability,
+        branch: branchAvailability,
+        online: onlineAvailability,
+      };
+
+      // Update a Product in the database
+      await Product.updateOne(
+        { _id },
+        {
+          type: 'variation',
+          title,
+          slug,
+          description,
+          featured,
+          availability,
+          brand,
+          gender,
+          category,
+          tags,
+          images,
+          colors,
+          variations,
+          stock,
+          sale_price,
+          sale_price_end_date,
+          updatedAt,
+          user,
         }
-      });
-      const colors = savedProductColors;
-      images = savedProductImages;
-      // Create a new Product in the database
-
-      const updateProduct = await Product.findOne({ _id: oid });
-
-      updateProduct.title = title;
-      updateProduct.description = description;
-      updateProduct.brand = brand;
-      updateProduct.gender = gender;
-      updateProduct.featured = featured;
-      updateProduct.category = category;
-      updateProduct.colors = colors;
-      updateProduct.sizes = sizes;
-      updateProduct.images = images;
-      updateProduct.stock = stock;
-      updateProduct.price = price;
-      updateProduct.sale_price = sale_price;
-      updateProduct.sale_price_end_date = sale_price_end_date;
-      updateProduct.cost = cost;
-      updateProduct.user = user;
-
-      // Save the Product to the database
-      const savedProduct = await updateProduct.save();
-
-      // upload images to bucket
-      savedProductMinioBucketImages?.map(async (image) => {
-        // Remove the data URI prefix (e.g., "data:image/jpeg;base64,")
-        const base64Image = image.i_filePreview?.split(';base64,').pop();
-        // Create a buffer from the base64 string
-        const buffer = Buffer.from(base64Image, 'base64');
-        const path = join('/', 'tmp', image.i_file);
-        await writeFile(path, buffer);
-        const fileName = '/products/' + String(image.i_file);
-
-        await uploadToBucket('shopout', fileName, path);
-      });
+      );
       const response = NextResponse.json({
         message: 'Producto actualizado exitosamente',
         success: true,
-        product: savedProduct,
       });
 
       return response;
     } catch (error) {
+      console.log(error, 'intentional errir');
       return NextResponse.json(
         {
           error: 'Error al crear Producto',

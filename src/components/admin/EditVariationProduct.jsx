@@ -19,7 +19,7 @@ import {
 } from '@/backend/data/productData';
 import MultiselectTagComponent from '../forms/MultiselectTagComponent';
 
-const EditVariationProduct = ({ product }) => {
+const EditVariationProduct = ({ product, currentCookies }) => {
   const router = useRouter();
   const [title, setTitle] = useState(product?.title);
   const [isSending, setIsSending] = useState(false);
@@ -351,7 +351,16 @@ const EditVariationProduct = ({ product }) => {
     formData.append('_id', product?._id);
     // write to database using server actions
 
-    const result = await updateVariationProduct(formData);
+    // const result = await updateVariationProduct(formData);
+    const endpoint = `/api/newproduct`;
+    const result = await fetch(endpoint, {
+      method: 'PUT',
+      headers: {
+        Cookie: currentCookies,
+      },
+      body: formData,
+    });
+
     if (result?.error) {
       setValidationError(result.error);
     } else {
@@ -1174,7 +1183,7 @@ const EditVariationProduct = ({ product }) => {
       ) : (
         <section className="w-full min-h-screen">
           <div className="flex flex-row maxmd:flex-col items-center justify-between min-h-full">
-            {'Actualizando producto...'}
+            <h2>Actualizando producto...</h2>
           </div>
         </section>
       )}
