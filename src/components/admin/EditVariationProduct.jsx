@@ -23,6 +23,7 @@ const EditVariationProduct = ({ product }) => {
   const router = useRouter();
   const formRef = useRef();
   const [title, setTitle] = useState(product?.title);
+  const [isSending, setIsSending] = useState(false);
   const [brand, setBrand] = useState(product?.brand);
   const [description, setDescription] = useState(product?.description);
   const [category, setCategory] = useState(product?.category);
@@ -356,7 +357,8 @@ const EditVariationProduct = ({ product }) => {
     } else {
       setValidationError(null);
       //reset the form
-      formRef.current.reset();
+      setIsSending(true);
+      //formRef.current.reset();
       router.push('/admin/productos');
     }
   }
@@ -447,273 +449,40 @@ const EditVariationProduct = ({ product }) => {
 
   return (
     <main className="w-full p-4 maxsm:p-2 bg-slate-200">
-      <form
-        action={action}
-        ref={formRef}
-        className="flex flex-col items-start gap-5 justify-start w-full"
-      >
-        <section className="w-full ">
-          <div className="flex flex-row maxmd:flex-col items-center justify-between">
-            <h1 className="w-full text-2xl font-semibold text-black mb-8 font-EB_Garamond">
-              Actualizar Producto Con Variaciones
-            </h1>
+      {!isSending ? (
+        <form
+          action={action}
+          className="flex flex-col items-start gap-5 justify-start w-full"
+        >
+          <section className="w-full ">
+            <div className="flex flex-row maxmd:flex-col items-center justify-between">
+              <h1 className="w-full text-2xl font-semibold text-black mb-8 font-EB_Garamond">
+                Actualizar Producto Con Variaciones
+              </h1>
 
-            <div className="mb-4 w-full flex flex-row gap-4 items-center uppercase">
-              <div className="relative">
-                <label className="block mb-1 font-EB_Garamond">Destacado</label>
-                <select
-                  className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
-                  name="featured"
-                  onChange={(e) => setFeatured(e.target.value)}
-                  value={featured}
-                >
-                  {[
-                    { value: false, name: 'No', uniqueKey: 'featuredNO' },
-                    { value: true, name: 'Si', uniqueKey: 'featuredYES' },
-                  ].map((opt) => (
-                    <option key={opt.uniqueKey} value={opt}>
-                      {opt.name}
-                    </option>
-                  ))}
-                </select>
-                {validationError?.featured && (
-                  <p className="text-sm text-red-400">
-                    {validationError.featured._errors.join(', ')}
-                  </p>
-                )}
-                <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
-                  <svg
-                    width="22"
-                    height="22"
-                    className="fill-current"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M7 10l5 5 5-5H7z"></path>
-                  </svg>
-                </i>
-              </div>
-              <div className="relative">
-                <label className="block mb-1 font-EB_Garamond">instagram</label>
-                <select
-                  className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
-                  name="instagramAvailability"
-                  onChange={(e) => setInstagramAvailability(e.target.value)}
-                  value={instagramAvailability}
-                >
-                  {[
-                    {
-                      value: false,
-                      name: 'No',
-                      uniqueKey: 'instagramNO',
-                    },
-                    {
-                      value: true,
-                      name: 'Si',
-                      uniqueKey: 'instagramYes',
-                    },
-                  ].map((opt) => (
-                    <option key={opt.uniqueKey} value={opt.value}>
-                      {opt.name}
-                    </option>
-                  ))}
-                </select>
-
-                <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
-                  <svg
-                    width="22"
-                    height="22"
-                    className="fill-current"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M7 10l5 5 5-5H7z"></path>
-                  </svg>
-                </i>
-              </div>
-              <div className="relative">
-                <label className="block mb-1 font-EB_Garamond">sucursal</label>
-                <select
-                  className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
-                  name="branchAvailability"
-                  onChange={(e) => setBranchAvailability(e.target.value)}
-                  value={branchAvailability}
-                >
-                  {[
-                    {
-                      value: false,
-                      name: 'No',
-                      uniqueKey: 'branchNo',
-                    },
-                    {
-                      value: true,
-                      name: 'Si',
-                      uniqueKey: 'branchYes',
-                    },
-                  ].map((opt) => (
-                    <option key={opt.uniqueKey} value={opt.value}>
-                      {opt.name}
-                    </option>
-                  ))}
-                </select>
-
-                <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
-                  <svg
-                    width="22"
-                    height="22"
-                    className="fill-current"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M7 10l5 5 5-5H7z"></path>
-                  </svg>
-                </i>
-              </div>
-              <div className="relative">
-                <label className="block mb-1 font-EB_Garamond">www</label>
-                <select
-                  className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
-                  name="onlineAvailability"
-                  onChange={(e) => setOnlineAvailability(e.target.value)}
-                  value={onlineAvailability}
-                >
-                  {[
-                    {
-                      value: false,
-                      name: 'No',
-                      uniqueKey: 'onlineNo',
-                    },
-                    {
-                      value: true,
-                      name: 'Si',
-                      uniqueKey: 'onlineYes',
-                    },
-                  ].map((opt) => (
-                    <option key={opt.uniqueKey} value={opt.value}>
-                      {opt.name}
-                    </option>
-                  ))}
-                </select>
-
-                <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
-                  <svg
-                    width="22"
-                    height="22"
-                    className="fill-current"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M7 10l5 5 5-5H7z"></path>
-                  </svg>
-                </i>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-row maxmd:flex-col items-start gap-5 justify-between w-full">
-            <div className="gap-y-1 flex-col flex px-2 w-full">
-              {/* Section 1 - Title, Image */}
-              <label className="block  font-EB_Garamond">
-                Imagen principal del Producto
-              </label>
-              <div className="relative aspect-video hover:opacity-80 bg-white border-4 border-gray-300">
-                <label htmlFor="selectorMain" className="cursor-pointer">
-                  <Image
-                    id="blogImage"
-                    alt="blogBanner"
-                    src={mainImage}
-                    width={1280}
-                    height={1280}
-                    className="w-full h-full object-cover z-20"
-                  />
-                  <input
-                    id="selectorMain"
-                    type="file"
-                    accept=".png, .jpg, .jpeg, .webp"
-                    hidden
-                    onChange={upload}
-                  />
-
-                  {validationError?.mainImage && (
-                    <p className="text-sm text-red-400">
-                      {validationError.mainImage._errors.join(', ')}
-                    </p>
-                  )}
-                </label>
-              </div>
-            </div>
-
-            <div className="w-full flex-col flex justify-start px-2 gap-y-5">
-              <div className="mb-4">
-                <label className="block mb-1  font-EB_Garamond">
-                  Titulo del Producto
-                </label>
-                <input
-                  type="text"
-                  className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
-                  placeholder="Nombre de Producto"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  name="title"
-                />
-                {validationError?.title && (
-                  <p className="text-sm text-red-400">
-                    {validationError.title._errors.join(', ')}
-                  </p>
-                )}
-              </div>
-              <div className="mb-4">
-                <label className="block mb-1  font-EB_Garamond">
-                  {' '}
-                  Description Corta
-                </label>
-                <textarea
-                  rows="2"
-                  className="appearance-none border  bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
-                  placeholder="Descripción del Producto"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  name="description"
-                ></textarea>
-                {validationError?.description && (
-                  <p className="text-sm text-red-400">
-                    {validationError.description._errors.join(', ')}
-                  </p>
-                )}
-              </div>
-              <div className="mb-4">
-                <label className="block mb-1  font-EB_Garamond">
-                  {' '}
-                  Marca del Producto
-                </label>
-                <input
-                  type="text"
-                  className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
-                  placeholder="Marca del Producto"
-                  value={brand}
-                  onChange={(e) => setBrand(e.target.value)}
-                  name="brand"
-                />
-                {validationError?.brand && (
-                  <p className="text-sm text-red-400">
-                    {validationError.brand._errors.join(', ')}
-                  </p>
-                )}
-              </div>
-              <div className="mb-4 w-full">
-                <label className="block mb-1 font-EB_Garamond"> Género </label>
+              <div className="mb-4 w-full flex flex-row gap-4 items-center uppercase">
                 <div className="relative">
+                  <label className="block mb-1 font-EB_Garamond">
+                    Destacado
+                  </label>
                   <select
-                    value={gender}
                     className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
-                    name="gender"
-                    onChange={(e) => handleGenderChange(e.target.value)}
+                    name="featured"
+                    onChange={(e) => setFeatured(e.target.value)}
+                    value={featured}
                   >
-                    {genders?.map((gender) => (
-                      <option key={gender.es} value={gender.es}>
-                        {gender.es}
+                    {[
+                      { value: false, name: 'No', uniqueKey: 'featuredNO' },
+                      { value: true, name: 'Si', uniqueKey: 'featuredYES' },
+                    ].map((opt) => (
+                      <option key={opt.uniqueKey} value={opt}>
+                        {opt.name}
                       </option>
                     ))}
                   </select>
-                  {validationError?.gender && (
+                  {validationError?.featured && (
                     <p className="text-sm text-red-400">
-                      {validationError.gender._errors.join(', ')}
+                      {validationError.featured._errors.join(', ')}
                     </p>
                   )}
                   <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
@@ -727,43 +496,110 @@ const EditVariationProduct = ({ product }) => {
                     </svg>
                   </i>
                 </div>
-              </div>
-
-              <div className="mb-4 w-full">
-                <label className="block mb-1 font-EB_Garamond">Etiquetas</label>
                 <div className="relative">
-                  <MultiselectTagComponent
-                    values={tags}
-                    options={tagSelection}
-                    handleAddTagField={handleAddTagField}
-                  />
-                  {validationError?.tags && (
-                    <p className="text-sm text-red-400">
-                      {validationError.tags._errors.join(', ')}
-                    </p>
-                  )}
-                </div>
-              </div>
-              <div className="mb-4 w-full">
-                <label className="block mb-1 font-EB_Garamond">Categoría</label>
-                <div className="relative">
+                  <label className="block mb-1 font-EB_Garamond">
+                    instagram
+                  </label>
                   <select
-                    value={category}
                     className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
-                    name="category"
-                    onChange={(e) => handleCategoryChange(e.target.value)}
+                    name="instagramAvailability"
+                    onChange={(e) => setInstagramAvailability(e.target.value)}
+                    value={instagramAvailability}
                   >
-                    {product_categories.map((category) => (
-                      <option key={category.es} value={category.es}>
-                        {category.es}
+                    {[
+                      {
+                        value: false,
+                        name: 'No',
+                        uniqueKey: 'instagramNO',
+                      },
+                      {
+                        value: true,
+                        name: 'Si',
+                        uniqueKey: 'instagramYes',
+                      },
+                    ].map((opt) => (
+                      <option key={opt.uniqueKey} value={opt.value}>
+                        {opt.name}
                       </option>
                     ))}
                   </select>
-                  {validationError?.category && (
-                    <p className="text-sm text-red-400">
-                      {validationError.category._errors.join(', ')}
-                    </p>
-                  )}
+
+                  <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
+                    <svg
+                      width="22"
+                      height="22"
+                      className="fill-current"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M7 10l5 5 5-5H7z"></path>
+                    </svg>
+                  </i>
+                </div>
+                <div className="relative">
+                  <label className="block mb-1 font-EB_Garamond">
+                    sucursal
+                  </label>
+                  <select
+                    className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                    name="branchAvailability"
+                    onChange={(e) => setBranchAvailability(e.target.value)}
+                    value={branchAvailability}
+                  >
+                    {[
+                      {
+                        value: false,
+                        name: 'No',
+                        uniqueKey: 'branchNo',
+                      },
+                      {
+                        value: true,
+                        name: 'Si',
+                        uniqueKey: 'branchYes',
+                      },
+                    ].map((opt) => (
+                      <option key={opt.uniqueKey} value={opt.value}>
+                        {opt.name}
+                      </option>
+                    ))}
+                  </select>
+
+                  <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
+                    <svg
+                      width="22"
+                      height="22"
+                      className="fill-current"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M7 10l5 5 5-5H7z"></path>
+                    </svg>
+                  </i>
+                </div>
+                <div className="relative">
+                  <label className="block mb-1 font-EB_Garamond">www</label>
+                  <select
+                    className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                    name="onlineAvailability"
+                    onChange={(e) => setOnlineAvailability(e.target.value)}
+                    value={onlineAvailability}
+                  >
+                    {[
+                      {
+                        value: false,
+                        name: 'No',
+                        uniqueKey: 'onlineNo',
+                      },
+                      {
+                        value: true,
+                        name: 'Si',
+                        uniqueKey: 'onlineYes',
+                      },
+                    ].map((opt) => (
+                      <option key={opt.uniqueKey} value={opt.value}>
+                        {opt.name}
+                      </option>
+                    ))}
+                  </select>
+
                   <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
                     <svg
                       width="22"
@@ -776,187 +612,30 @@ const EditVariationProduct = ({ product }) => {
                   </i>
                 </div>
               </div>
-
-              <div className="mb-4 w-full flex gap-5 flex-row items-center justify-center">
-                <div className="flex w-full flex-col">
-                  <label className="block mb-1 font-EB_Garamond">
-                    Precio de Oferta
-                  </label>
-                  <div className="relative">
-                    <div className="col-span-2">
-                      <input
-                        type="number"
-                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3focus:outline-none focus:border-gray-400 w-full"
-                        placeholder="0.00"
-                        min="0"
-                        value={salePrice}
-                        onChange={(e) => setSalePrice(e.target.value)}
-                        name="salePrice"
-                      />
-                      {validationError?.salePrice && (
-                        <p className="text-sm text-red-400">
-                          {validationError.salePrice._errors.join(', ')}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                <div className="mb-4 w-full h-full">
-                  <label className="block mb-1 font-EB_Garamond">
-                    Fecha de Fin de Oferta
-                  </label>
-                  <div className="flex flex-row items-center gap-x-3"></div>
-                  <DateTimePicker
-                    onChange={onChangeDate}
-                    value={salePriceEndDate}
-                    locale={'es-MX'}
-                    minDate={cstDateTimeClient()}
-                    className={'h-full'}
-                  />
-                </div>
-              </div>
             </div>
-          </div>
-          <div className="w-[300px]">
-            <div
-              onClick={addVariation}
-              className="my-2 px-4 py-2 text-center inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 w-full cursor-pointer"
-            >
-              Agregar Variación +
-            </div>
-          </div>
-          <div className="w-full main-variation">
-            <div className="flex flex-row maxsm:flex-col items-center gap-5">
-              <div className="mb-4 w-full">
-                <label className="block mb-1 font-EB_Garamond"> Talla </label>
-                <div className="relative">
-                  <select
-                    value={variations[0].size}
-                    onChange={(e) => handleSizeChange(0, e.target.value)}
-                    className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
-                  >
-                    {sizeSelection.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.value}
-                      </option>
-                    ))}
-                  </select>
-                  {validationError?.sizes && (
-                    <p className="text-sm text-red-400">
-                      {validationError.sizes._errors.join(', ')}
-                    </p>
-                  )}
-                </div>
-              </div>
-              <div className="mb-4 w-full">
-                <label className="block mb-1 font-EB_Garamond"> Color </label>
-                <div className="relative">
-                  <select
-                    value={variations[0].color}
-                    onChange={(e) => handleColorChange(0, e.target.value)}
-                    className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
-                  >
-                    {set_colors.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.value}
-                      </option>
-                    ))}
-                  </select>
-                  {validationError?.colors && (
-                    <p className="text-sm text-red-400">
-                      {validationError.colors._errors.join(', ')}
-                    </p>
-                  )}
-                </div>
-              </div>
-              <div className="mb-4 w-full">
-                <label className="block mb-1  font-EB_Garamond">Precio</label>
-                <div className="relative">
-                  <div className="col-span-2">
-                    <input
-                      type="number"
-                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3focus:outline-none focus:border-gray-400 w-full"
-                      placeholder="0.00"
-                      min="1"
-                      value={variations[0].price}
-                      onChange={(e) => handlePriceChange(0, e.target.value)}
-                      name="price"
-                    />
-                    {validationError?.price && (
-                      <p className="text-sm text-red-400">
-                        {validationError.price._errors.join(', ')}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </div>
-              <div className="mb-4 w-full">
-                <label className="block mb-1 font-EB_Garamond"> Costo </label>
-                <div className="relative">
-                  <div className="col-span-2">
-                    <input
-                      type="number"
-                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3focus:outline-none focus:border-gray-400 w-full"
-                      placeholder="0.00"
-                      min="1"
-                      value={variations[0].cost}
-                      onChange={(e) => handleCostChange(0, e.target.value)}
-                      name="cost"
-                    />
-                    {validationError?.cost && (
-                      <p className="text-sm text-red-400">
-                        {validationError.cost._errors.join(', ')}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </div>
-              <div className="mb-4 w-full">
-                <label className="block mb-1 font-EB_Garamond">
-                  {' '}
-                  Existencias{' '}
-                </label>
-                <div className="relative">
-                  <div className="col-span-2">
-                    <input
-                      type="number"
-                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
-                      placeholder="1"
-                      min="1"
-                      value={variations[0].stock}
-                      onChange={(e) => handleStockChange(0, e.target.value)}
-                      name="stock"
-                    />
-                    {validationError?.stock && (
-                      <p className="text-sm text-red-400">
-                        {validationError.stock._errors.join(', ')}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </div>
 
-              <div className="mb-4 w-full flex-col flex">
+            <div className="flex flex-row maxmd:flex-col items-start gap-5 justify-between w-full">
+              <div className="gap-y-1 flex-col flex px-2 w-full">
                 {/* Section 1 - Title, Image */}
                 <label className="block  font-EB_Garamond">
-                  Imagen de Variación # 1
+                  Imagen principal del Producto
                 </label>
                 <div className="relative aspect-video hover:opacity-80 bg-white border-4 border-gray-300">
-                  <label htmlFor="selectorVarOne" className="cursor-pointer">
+                  <label htmlFor="selectorMain" className="cursor-pointer">
                     <Image
-                      id="MainVariation"
-                      alt="Main Variation"
-                      src={variations[0].image}
-                      width={500}
-                      height={500}
-                      className="w-full h-40 object-cover z-20"
+                      id="blogImage"
+                      alt="blogBanner"
+                      src={mainImage}
+                      width={1280}
+                      height={1280}
+                      className="w-full h-full object-cover z-20"
                     />
                     <input
-                      id="selectorVarOne"
+                      id="selectorMain"
                       type="file"
                       accept=".png, .jpg, .jpeg, .webp"
                       hidden
-                      onChange={(e) => handleImageChange(0, e.target.files[0])}
+                      onChange={upload}
                     />
 
                     {validationError?.mainImage && (
@@ -967,27 +646,208 @@ const EditVariationProduct = ({ product }) => {
                   </label>
                 </div>
               </div>
-            </div>
-          </div>
 
-          {/* Render additional variations */}
-          {variations.slice(1).map((variation, index) => (
-            <div key={index + 1} className={`w-full variation-${index + 1}`}>
-              <div className="relative flex flex-row maxsm:flex-col items-center gap-5">
-                <div
-                  onClick={() => removeVariation(index + 1)}
-                  className="absolute top-0 left-0 p-1 bg-red-500 text-white rounded-tr-md cursor-pointer"
-                >
-                  X
+              <div className="w-full flex-col flex justify-start px-2 gap-y-5">
+                <div className="mb-4">
+                  <label className="block mb-1  font-EB_Garamond">
+                    Titulo del Producto
+                  </label>
+                  <input
+                    type="text"
+                    className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
+                    placeholder="Nombre de Producto"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    name="title"
+                  />
+                  {validationError?.title && (
+                    <p className="text-sm text-red-400">
+                      {validationError.title._errors.join(', ')}
+                    </p>
+                  )}
                 </div>
+                <div className="mb-4">
+                  <label className="block mb-1  font-EB_Garamond">
+                    {' '}
+                    Description Corta
+                  </label>
+                  <textarea
+                    rows="2"
+                    className="appearance-none border  bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
+                    placeholder="Descripción del Producto"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    name="description"
+                  ></textarea>
+                  {validationError?.description && (
+                    <p className="text-sm text-red-400">
+                      {validationError.description._errors.join(', ')}
+                    </p>
+                  )}
+                </div>
+                <div className="mb-4">
+                  <label className="block mb-1  font-EB_Garamond">
+                    {' '}
+                    Marca del Producto
+                  </label>
+                  <input
+                    type="text"
+                    className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
+                    placeholder="Marca del Producto"
+                    value={brand}
+                    onChange={(e) => setBrand(e.target.value)}
+                    name="brand"
+                  />
+                  {validationError?.brand && (
+                    <p className="text-sm text-red-400">
+                      {validationError.brand._errors.join(', ')}
+                    </p>
+                  )}
+                </div>
+                <div className="mb-4 w-full">
+                  <label className="block mb-1 font-EB_Garamond">
+                    {' '}
+                    Género{' '}
+                  </label>
+                  <div className="relative">
+                    <select
+                      value={gender}
+                      className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                      name="gender"
+                      onChange={(e) => handleGenderChange(e.target.value)}
+                    >
+                      {genders?.map((gender) => (
+                        <option key={gender.es} value={gender.es}>
+                          {gender.es}
+                        </option>
+                      ))}
+                    </select>
+                    {validationError?.gender && (
+                      <p className="text-sm text-red-400">
+                        {validationError.gender._errors.join(', ')}
+                      </p>
+                    )}
+                    <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
+                      <svg
+                        width="22"
+                        height="22"
+                        className="fill-current"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M7 10l5 5 5-5H7z"></path>
+                      </svg>
+                    </i>
+                  </div>
+                </div>
+
+                <div className="mb-4 w-full">
+                  <label className="block mb-1 font-EB_Garamond">
+                    Etiquetas
+                  </label>
+                  <div className="relative">
+                    <MultiselectTagComponent
+                      values={tags}
+                      options={tagSelection}
+                      handleAddTagField={handleAddTagField}
+                    />
+                    {validationError?.tags && (
+                      <p className="text-sm text-red-400">
+                        {validationError.tags._errors.join(', ')}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div className="mb-4 w-full">
+                  <label className="block mb-1 font-EB_Garamond">
+                    Categoría
+                  </label>
+                  <div className="relative">
+                    <select
+                      value={category}
+                      className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                      name="category"
+                      onChange={(e) => handleCategoryChange(e.target.value)}
+                    >
+                      {product_categories.map((category) => (
+                        <option key={category.es} value={category.es}>
+                          {category.es}
+                        </option>
+                      ))}
+                    </select>
+                    {validationError?.category && (
+                      <p className="text-sm text-red-400">
+                        {validationError.category._errors.join(', ')}
+                      </p>
+                    )}
+                    <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
+                      <svg
+                        width="22"
+                        height="22"
+                        className="fill-current"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M7 10l5 5 5-5H7z"></path>
+                      </svg>
+                    </i>
+                  </div>
+                </div>
+
+                <div className="mb-4 w-full flex gap-5 flex-row items-center justify-center">
+                  <div className="flex w-full flex-col">
+                    <label className="block mb-1 font-EB_Garamond">
+                      Precio de Oferta
+                    </label>
+                    <div className="relative">
+                      <div className="col-span-2">
+                        <input
+                          type="number"
+                          className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3focus:outline-none focus:border-gray-400 w-full"
+                          placeholder="0.00"
+                          min="0"
+                          value={salePrice}
+                          onChange={(e) => setSalePrice(e.target.value)}
+                          name="salePrice"
+                        />
+                        {validationError?.salePrice && (
+                          <p className="text-sm text-red-400">
+                            {validationError.salePrice._errors.join(', ')}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mb-4 w-full h-full">
+                    <label className="block mb-1 font-EB_Garamond">
+                      Fecha de Fin de Oferta
+                    </label>
+                    <div className="flex flex-row items-center gap-x-3"></div>
+                    <DateTimePicker
+                      onChange={onChangeDate}
+                      value={salePriceEndDate}
+                      locale={'es-MX'}
+                      minDate={cstDateTimeClient()}
+                      className={'h-full'}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="w-[300px]">
+              <div
+                onClick={addVariation}
+                className="my-2 px-4 py-2 text-center inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 w-full cursor-pointer"
+              >
+                Agregar Variación +
+              </div>
+            </div>
+            <div className="w-full main-variation">
+              <div className="flex flex-row maxsm:flex-col items-center gap-5">
                 <div className="mb-4 w-full">
                   <label className="block mb-1 font-EB_Garamond"> Talla </label>
                   <div className="relative">
                     <select
-                      value={variation.size}
-                      onChange={(e) =>
-                        handleSizeChange(index + 1, e.target.value)
-                      }
+                      value={variations[0].size}
+                      onChange={(e) => handleSizeChange(0, e.target.value)}
                       className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
                     >
                       {sizeSelection.map((option) => (
@@ -996,7 +856,6 @@ const EditVariationProduct = ({ product }) => {
                         </option>
                       ))}
                     </select>
-
                     {validationError?.sizes && (
                       <p className="text-sm text-red-400">
                         {validationError.sizes._errors.join(', ')}
@@ -1008,10 +867,8 @@ const EditVariationProduct = ({ product }) => {
                   <label className="block mb-1 font-EB_Garamond"> Color </label>
                   <div className="relative">
                     <select
-                      value={variation.color}
-                      onChange={(e) =>
-                        handleColorChange(index + 1, e.target.value)
-                      }
+                      value={variations[0].color}
+                      onChange={(e) => handleColorChange(0, e.target.value)}
                       className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
                     >
                       {set_colors.map((option) => (
@@ -1028,31 +885,45 @@ const EditVariationProduct = ({ product }) => {
                   </div>
                 </div>
                 <div className="mb-4 w-full">
-                  <label className="block mb-1 font-EB_Garamond">Precio</label>
+                  <label className="block mb-1  font-EB_Garamond">Precio</label>
                   <div className="relative">
-                    <input
-                      type="number"
-                      min="0"
-                      value={variation.price}
-                      onChange={(e) =>
-                        handlePriceChange(index + 1, e.target.value)
-                      }
-                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
-                    />
+                    <div className="col-span-2">
+                      <input
+                        type="number"
+                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3focus:outline-none focus:border-gray-400 w-full"
+                        placeholder="0.00"
+                        min="1"
+                        value={variations[0].price}
+                        onChange={(e) => handlePriceChange(0, e.target.value)}
+                        name="price"
+                      />
+                      {validationError?.price && (
+                        <p className="text-sm text-red-400">
+                          {validationError.price._errors.join(', ')}
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
                 <div className="mb-4 w-full">
                   <label className="block mb-1 font-EB_Garamond"> Costo </label>
                   <div className="relative">
-                    <input
-                      type="number"
-                      min="0"
-                      value={variation.cost}
-                      onChange={(e) =>
-                        handleCostChange(index + 1, e.target.value)
-                      }
-                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
-                    />
+                    <div className="col-span-2">
+                      <input
+                        type="number"
+                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3focus:outline-none focus:border-gray-400 w-full"
+                        placeholder="0.00"
+                        min="1"
+                        value={variations[0].cost}
+                        onChange={(e) => handleCostChange(0, e.target.value)}
+                        name="cost"
+                      />
+                      {validationError?.cost && (
+                        <p className="text-sm text-red-400">
+                          {validationError.cost._errors.join(', ')}
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
                 <div className="mb-4 w-full">
@@ -1061,43 +932,47 @@ const EditVariationProduct = ({ product }) => {
                     Existencias{' '}
                   </label>
                   <div className="relative">
-                    <input
-                      type="number"
-                      min="0"
-                      value={variation.stock}
-                      onChange={(e) =>
-                        handleStockChange(index + 1, e.target.value)
-                      }
-                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
-                    />
+                    <div className="col-span-2">
+                      <input
+                        type="number"
+                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                        placeholder="1"
+                        min="1"
+                        value={variations[0].stock}
+                        onChange={(e) => handleStockChange(0, e.target.value)}
+                        name="stock"
+                      />
+                      {validationError?.stock && (
+                        <p className="text-sm text-red-400">
+                          {validationError.stock._errors.join(', ')}
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
 
                 <div className="mb-4 w-full flex-col flex">
                   {/* Section 1 - Title, Image */}
                   <label className="block  font-EB_Garamond">
-                    Imagen de Variación # {index + 2}
+                    Imagen de Variación # 1
                   </label>
                   <div className="relative aspect-video hover:opacity-80 bg-white border-4 border-gray-300">
-                    <label
-                      htmlFor={`selector${index + 1}`}
-                      className="cursor-pointer"
-                    >
+                    <label htmlFor="selectorVarOne" className="cursor-pointer">
                       <Image
-                        id={`variation-${index + 1}`}
-                        alt={`image variation-${index + 1}`}
-                        src={variation.image}
+                        id="MainVariation"
+                        alt="Main Variation"
+                        src={variations[0].image}
                         width={500}
                         height={500}
                         className="w-full h-40 object-cover z-20"
                       />
                       <input
-                        id={`selector${index + 1}`}
+                        id="selectorVarOne"
                         type="file"
                         accept=".png, .jpg, .jpeg, .webp"
                         hidden
                         onChange={(e) =>
-                          handleImageChange(index + 1, e.target.files[0])
+                          handleImageChange(0, e.target.files[0])
                         }
                       />
 
@@ -1111,16 +986,172 @@ const EditVariationProduct = ({ product }) => {
                 </div>
               </div>
             </div>
-          ))}
 
-          <button
-            type="submit"
-            className="my-2 px-4 py-2 text-center inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 w-full"
-          >
-            Actualizar Producto
-          </button>
-        </section>
-      </form>
+            {/* Render additional variations */}
+            {variations.slice(1).map((variation, index) => (
+              <div key={index + 1} className={`w-full variation-${index + 1}`}>
+                <div className="relative flex flex-row maxsm:flex-col items-center gap-5">
+                  <div
+                    onClick={() => removeVariation(index + 1)}
+                    className="absolute top-0 left-0 p-1 bg-red-500 text-white rounded-tr-md cursor-pointer"
+                  >
+                    X
+                  </div>
+                  <div className="mb-4 w-full">
+                    <label className="block mb-1 font-EB_Garamond">
+                      {' '}
+                      Talla{' '}
+                    </label>
+                    <div className="relative">
+                      <select
+                        value={variation.size}
+                        onChange={(e) =>
+                          handleSizeChange(index + 1, e.target.value)
+                        }
+                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                      >
+                        {sizeSelection.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.value}
+                          </option>
+                        ))}
+                      </select>
+
+                      {validationError?.sizes && (
+                        <p className="text-sm text-red-400">
+                          {validationError.sizes._errors.join(', ')}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="mb-4 w-full">
+                    <label className="block mb-1 font-EB_Garamond">
+                      {' '}
+                      Color{' '}
+                    </label>
+                    <div className="relative">
+                      <select
+                        value={variation.color}
+                        onChange={(e) =>
+                          handleColorChange(index + 1, e.target.value)
+                        }
+                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                      >
+                        {set_colors.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.value}
+                          </option>
+                        ))}
+                      </select>
+                      {validationError?.colors && (
+                        <p className="text-sm text-red-400">
+                          {validationError.colors._errors.join(', ')}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="mb-4 w-full">
+                    <label className="block mb-1 font-EB_Garamond">
+                      Precio
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="number"
+                        min="0"
+                        value={variation.price}
+                        onChange={(e) =>
+                          handlePriceChange(index + 1, e.target.value)
+                        }
+                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                      />
+                    </div>
+                  </div>
+                  <div className="mb-4 w-full">
+                    <label className="block mb-1 font-EB_Garamond">
+                      {' '}
+                      Costo{' '}
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="number"
+                        min="0"
+                        value={variation.cost}
+                        onChange={(e) =>
+                          handleCostChange(index + 1, e.target.value)
+                        }
+                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                      />
+                    </div>
+                  </div>
+                  <div className="mb-4 w-full">
+                    <label className="block mb-1 font-EB_Garamond">
+                      {' '}
+                      Existencias{' '}
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="number"
+                        min="0"
+                        value={variation.stock}
+                        onChange={(e) =>
+                          handleStockChange(index + 1, e.target.value)
+                        }
+                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mb-4 w-full flex-col flex">
+                    {/* Section 1 - Title, Image */}
+                    <label className="block  font-EB_Garamond">
+                      Imagen de Variación # {index + 2}
+                    </label>
+                    <div className="relative aspect-video hover:opacity-80 bg-white border-4 border-gray-300">
+                      <label
+                        htmlFor={`selector${index + 1}`}
+                        className="cursor-pointer"
+                      >
+                        <Image
+                          id={`variation-${index + 1}`}
+                          alt={`image variation-${index + 1}`}
+                          src={variation.image}
+                          width={500}
+                          height={500}
+                          className="w-full h-40 object-cover z-20"
+                        />
+                        <input
+                          id={`selector${index + 1}`}
+                          type="file"
+                          accept=".png, .jpg, .jpeg, .webp"
+                          hidden
+                          onChange={(e) =>
+                            handleImageChange(index + 1, e.target.files[0])
+                          }
+                        />
+
+                        {validationError?.mainImage && (
+                          <p className="text-sm text-red-400">
+                            {validationError.mainImage._errors.join(', ')}
+                          </p>
+                        )}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            <button
+              type="submit"
+              className="my-2 px-4 py-2 text-center inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 w-full"
+            >
+              Actualizar Producto
+            </button>
+          </section>
+        </form>
+      ) : (
+        'Actualizando producto...'
+      )}
     </main>
   );
 };
