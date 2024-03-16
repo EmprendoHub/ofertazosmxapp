@@ -1,9 +1,9 @@
-import { getOneProduct } from '@/app/_actions';
+import { getOneProduct, getOneProductWithTrending } from '@/app/_actions';
 import ProductDetailsComponent from '@/components/products/ProductDetailsComponent';
 
 export async function generateMetadata({ params }, parent) {
   // fetch data
-  const data = await getOneProduct(params.slug);
+  const data = await getOneProduct(params.slug, false);
   const product = JSON.parse(data.product);
 
   // optionally access and extend (rather than replace) parent metadata
@@ -18,7 +18,7 @@ export async function generateMetadata({ params }, parent) {
 }
 
 const ProductDetailsPage = async ({ params }) => {
-  const data = await getOneProduct(params.slug);
+  const data = await getOneProductWithTrending(params.slug, false);
   const product = JSON.parse(data.product);
   const trendingProducts = JSON.parse(data?.trendingProducts);
   return (

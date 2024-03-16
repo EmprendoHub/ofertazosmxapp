@@ -21,7 +21,6 @@ import MultiselectTagComponent from '../forms/MultiselectTagComponent';
 
 const NewVariationOptimized = () => {
   const router = useRouter();
-  const formRef = useRef();
   const [title, setTitle] = useState('');
   const [isSending, setIsSending] = useState(false);
   const [brand, setBrand] = useState('');
@@ -1138,7 +1137,7 @@ const NewVariationOptimized = () => {
           </section>
         </form>
       ) : (
-        <section className="w-full ">
+        <section className="w-full min-h-screen">
           <div className="flex flex-row maxmd:flex-col items-center justify-between">
             {'Creando Producto...'}
           </div>

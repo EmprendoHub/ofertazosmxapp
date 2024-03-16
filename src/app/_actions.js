@@ -989,6 +989,26 @@ export async function getOneProduct(slug, id) {
     } else {
       product = await Product.findOne({ slug: slug });
     }
+
+    // convert to string
+    product = JSON.stringify(product);
+    return { product: product };
+    // return { product };
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
+
+export async function getOneProductWithTrending(slug, id) {
+  try {
+    await dbConnect();
+    let product;
+    if (id) {
+      product = await Product.findOne({ _id: id });
+    } else {
+      product = await Product.findOne({ slug: slug });
+    }
     let trendingProducts = await Product.find({
       category: product.category,
       _id: { $ne: product._id },
@@ -2170,7 +2190,6 @@ export async function updateVariationProduct(data) {
     0
   );
   updatedAt = new Date(updatedAt);
-
   // validate form data
   const result = VariationUpdateProductEntrySchema.safeParse({
     title: title,
@@ -2190,6 +2209,7 @@ export async function updateVariationProduct(data) {
   if (zodError) {
     return { error: zodError.format() };
   }
+
   // Create a new Product in the database
   await dbConnect();
 
@@ -2207,6 +2227,7 @@ export async function updateVariationProduct(data) {
     branch: branchAvailability,
     online: onlineAvailability,
   };
+
   const { error } = await Product.updateOne(
     { _id },
     {

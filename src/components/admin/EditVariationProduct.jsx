@@ -428,8 +428,6 @@ const EditVariationProduct = ({ product }) => {
       setSizeSelection(sizes_prendas);
     }
 
-    // set catergory change
-    setCategory(product?.category);
     if (product?.category === 'Calzado' && gender == 'Damas') {
       setSizeSelection(sizes_shoes_woman);
     } else {
@@ -1167,14 +1165,18 @@ const EditVariationProduct = ({ product }) => {
 
             <div
               onClick={hanldeFormSubmit}
-              className="my-2 px-4 py-2 text-center inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 w-full"
+              className="my-2 cursor-pointer px-4 py-2 text-center inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 w-full"
             >
               Actualizar Producto
             </div>
           </section>
         </div>
       ) : (
-        'Actualizando producto...'
+        <section className="w-full min-h-screen">
+          <div className="flex flex-row maxmd:flex-col items-center justify-between min-h-full">
+            {'Actualizando producto...'}
+          </div>
+        </section>
       )}
     </main>
   );
