@@ -461,6 +461,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
                   <select
                     className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
                     name="featured"
+                    htmlFor="featured"
                     onChange={(e) => setFeatured(e.target.value)}
                     value={featured}
                   >
@@ -496,6 +497,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
                   <select
                     className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
                     name="instagramAvailability"
+                    htmlFor="instagramAvailability"
                     onChange={(e) => setInstagramAvailability(e.target.value)}
                     value={instagramAvailability}
                   >
@@ -535,6 +537,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
                   <select
                     className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
                     name="branchAvailability"
+                    htmlFor="branchAvailability"
                     onChange={(e) => setBranchAvailability(e.target.value)}
                     value={branchAvailability}
                   >
@@ -572,6 +575,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
                   <select
                     className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
                     name="onlineAvailability"
+                    htmlFor="onlineAvailability"
                     onChange={(e) => setOnlineAvailability(e.target.value)}
                     value={onlineAvailability}
                   >
@@ -653,6 +657,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     name="title"
+                    htmlFor="title"
                   />
                   {validationError?.title && (
                     <p className="text-sm text-red-400">
@@ -672,6 +677,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     name="description"
+                    htmlFor="description"
                   ></textarea>
                   {validationError?.description && (
                     <p className="text-sm text-red-400">
@@ -688,6 +694,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
                     value={brand}
                     onChange={(e) => setBrand(e.target.value)}
                     name="brand"
+                    htmlFor="brand"
                   />
                   {validationError?.brand && (
                     <p className="text-sm text-red-400">
@@ -704,6 +711,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
                     <select
                       className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
                       name="gender"
+                      htmlFor="gender"
                       onChange={(e) => handleGenderChange(e.target.value)}
                     >
                       {genders?.map((gender) => (
@@ -755,6 +763,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
                     <select
                       className="block appearance-none border border-gray-400 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
                       name="category"
+                      htmlFor="category"
                       onChange={(e) => handleCategoryChange(e.target.value)}
                     >
                       {product_categories.map((category) => (
@@ -796,6 +805,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
                           value={salePrice}
                           onChange={(e) => setSalePrice(e.target.value)}
                           name="salePrice"
+                          htmlFor="salePrice"
                         />
                         {validationError?.salePrice && (
                           <p className="text-sm text-red-400">
@@ -836,6 +846,8 @@ const NewVariationOptimized = ({ currentCookies }) => {
                   <div className="relative">
                     <select
                       onChange={(e) => handleSizeChange(0, e.target.value)}
+                      name="size"
+                      htmlFor="size"
                       className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
                     >
                       {sizeSelection.map((option) => (
@@ -855,6 +867,8 @@ const NewVariationOptimized = ({ currentCookies }) => {
                   <label className="block mb-1 font-EB_Garamond"> Color </label>
                   <div className="relative">
                     <select
+                      name="color"
+                      htmlFor="color"
                       onChange={(e) => handleColorChange(0, e.target.value)}
                       className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
                     >
@@ -883,6 +897,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
                         value={variations[0].price}
                         onChange={(e) => handlePriceChange(0, e.target.value)}
                         name="price"
+                        htmlFor="price"
                       />
                       {validationError?.price && (
                         <p className="text-sm text-red-400">
@@ -904,6 +919,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
                         value={variations[0].cost}
                         onChange={(e) => handleCostChange(0, e.target.value)}
                         name="cost"
+                        htmlFor="cost"
                       />
                       {validationError?.cost && (
                         <p className="text-sm text-red-400">
@@ -928,6 +944,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
                         value={variations[0].stock}
                         onChange={(e) => handleStockChange(0, e.target.value)}
                         name="stock"
+                        htmlFor="stock"
                       />
                       {validationError?.stock && (
                         <p className="text-sm text-red-400">
@@ -989,6 +1006,8 @@ const NewVariationOptimized = ({ currentCookies }) => {
                     </label>
                     <div className="relative">
                       <select
+                        name={`size-${index + 1}`}
+                        htmlFor={`size-${index + 1}`}
                         onChange={(e) =>
                           handleSizeChange(index + 1, e.target.value)
                         }
@@ -1015,6 +1034,8 @@ const NewVariationOptimized = ({ currentCookies }) => {
                     </label>
                     <div className="relative">
                       <select
+                        name={`color-${index + 1}`}
+                        htmlFor={`color-${index + 1}`}
                         onChange={(e) =>
                           handleColorChange(index + 1, e.target.value)
                         }
@@ -1039,6 +1060,8 @@ const NewVariationOptimized = ({ currentCookies }) => {
                     </label>
                     <div className="relative">
                       <input
+                        name={`price-${index + 1}`}
+                        htmlFor={`price-${index + 1}`}
                         type="number"
                         min="0"
                         value={variation.price}
@@ -1056,6 +1079,8 @@ const NewVariationOptimized = ({ currentCookies }) => {
                     </label>
                     <div className="relative">
                       <input
+                        name={`cost-${index + 1}`}
+                        htmlFor={`cost-${index + 1}`}
                         type="number"
                         min="0"
                         value={variation.cost}
@@ -1073,6 +1098,8 @@ const NewVariationOptimized = ({ currentCookies }) => {
                     </label>
                     <div className="relative">
                       <input
+                        name={`stock-${index + 1}`}
+                        htmlFor={`stock-${index + 1}`}
                         type="number"
                         min="0"
                         value={variation.stock}
@@ -1124,12 +1151,12 @@ const NewVariationOptimized = ({ currentCookies }) => {
               </div>
             ))}
 
-            <button
+            <div
               onClick={hanldeFormSubmit}
-              className="my-2 px-4 py-2 text-center inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 w-full"
+              className="my-2 cursor-pointer px-4 py-2 text-center inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 w-full"
             >
               Guardar Producto
-            </button>
+            </div>
           </section>
         </div>
       ) : (
