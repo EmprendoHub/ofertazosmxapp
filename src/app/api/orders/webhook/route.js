@@ -66,14 +66,11 @@ export async function POST(req, res) {
       );
       console.log('paymentIntent call', paymentIntent);
       console.log('paymentMethod call', paymentMethod);
-      console.log('paymentIntent.next_action', paymentIntent.next_action);
 
       let newPaymentAmount;
       let payReference;
       if (paymentIntent.payment_method_types[0] === 'customer_balance') {
-        payReference =
-          paymentIntent.next_action.display_bank_transfer_instructions
-            .reference;
+        payReference = 'transfer';
       } else if (paymentIntent.payment_method_types[0] === 'oxxo') {
         payReference = paymentIntent.next_action.oxxo_display_details.number;
       } else if (paymentIntent.payment_method_types[0] === 'card') {

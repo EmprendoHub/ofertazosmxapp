@@ -70,6 +70,7 @@ export const sizes_shoes_woman = [
   { value: '25', label: '25' },
   { value: '25.5', label: '25.5' },
   { value: '26', label: '26' },
+  { value: '26.5', label: '26.5' },
   { value: '27', label: '27' },
   { value: '28', label: '28' },
 ];
