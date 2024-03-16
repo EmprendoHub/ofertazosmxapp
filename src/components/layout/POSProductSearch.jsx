@@ -1,17 +1,26 @@
 'use client';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 const POSProductSearch = () => {
   const [keyword, setKeyword] = useState('');
   const router = useRouter();
+  const pathname = usePathname();
   const submitHandler = (e) => {
     e.preventDefault();
 
     if (keyword) {
-      router.push(`/puntodeventa/productos/?keyword=${keyword}`);
+      if (pathname.includes('admin')) {
+        router.push(`/admin/pos/productos/?keyword=${keyword}`);
+      } else {
+        router.push(`/puntodeventa/productos/?keyword=${keyword}`);
+      }
     } else {
-      router.push('/puntodeventa/productos');
+      if (pathname.includes('admin')) {
+        router.push('/admin/pos/productos');
+      } else {
+        router.push('/puntodeventa/productos');
+      }
     }
   };
   return (

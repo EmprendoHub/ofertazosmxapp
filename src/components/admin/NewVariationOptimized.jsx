@@ -1125,7 +1125,11 @@ const NewVariationOptimized = () => {
           </section>
         </form>
       ) : (
-        'Creando Producto...'
+        <section className="w-full ">
+          <div className="flex flex-row maxmd:flex-col items-center justify-between">
+            {'Creando Producto...'}
+          </div>
+        </section>
       )}
     </main>
   );

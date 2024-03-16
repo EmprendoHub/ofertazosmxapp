@@ -5,7 +5,6 @@ const QRPage = async () => {
   const data = await getAllPOSProductNoFilter();
   const products = JSON.parse(data.products);
   const filteredProductsCount = data.filteredProductsCount;
-  console.log(filteredProductsCount);
   return <QRGenerator products={products} />;
 };
 
