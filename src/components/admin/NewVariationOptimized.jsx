@@ -6,7 +6,7 @@ import 'react-datetime-picker/dist/DateTimePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';
 import { cstDateTimeClient } from '@/backend/helpers';
-import { addVariationProduct } from '@/app/_actions';
+import { addVariationProduct, updateRevalidateProduct } from '@/app/_actions';
 import { useRouter } from 'next/navigation';
 import {
   set_colors,
@@ -18,8 +18,9 @@ import {
   blog_categories,
 } from '@/backend/data/productData';
 import MultiselectTagComponent from '../forms/MultiselectTagComponent';
+import { revalidatePath } from 'next/cache';
 
-const NewVariationOptimized = () => {
+const NewVariationOptimized = ({ currentCookies }) => {
   const router = useRouter();
   const [title, setTitle] = useState('');
   const [isSending, setIsSending] = useState(false);
@@ -376,28 +377,23 @@ const NewVariationOptimized = () => {
     formData.append('createdAt', createdAt);
     // write to database using server actions
 
-    const result = await addVariationProduct(formData);
-    // const URL = `/api/newproduct`;
-    // const result = await fetch(
-    //   URL,
-    //   {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       Cookie: currentCookies,
-    //       Id: `${id}`,
-    //     },
-    //     body: formData,
-    //   },
-    //   { next: { revalidate: 120 } }
-    // );
-    // const data = await res.json();
+    //const result = await addVariationProduct(formData);
+    // const result = await updateVariationProduct(formData);
+    const endpoint = `/api/newproduct`;
+    const result = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        Cookie: currentCookies,
+      },
+      body: formData,
+    });
     if (result?.error) {
       setValidationError(result.error);
     } else {
       setValidationError(null);
       //reset the form
       setIsSending(true);
+      await updateRevalidateProduct();
       router.push('/admin/productos');
     }
   }

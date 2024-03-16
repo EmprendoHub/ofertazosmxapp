@@ -134,7 +134,7 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
                   {product.title.substring(0, 15)}
                 </td>
                 <td className="px-6 maxsm:px-2 py-0 maxmd:hidden">
-                  {product.slug.substring(0, 10)}...
+                  {product?.slug?.substring(0, 10)}...
                 </td>
 
                 <td className="px-6 maxsm:px-0 py-0 ">

@@ -6,7 +6,10 @@ import 'react-datetime-picker/dist/DateTimePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';
 import { cstDateTimeClient } from '@/backend/helpers';
-import { updateVariationProduct } from '@/app/_actions';
+import {
+  updateRevalidateProduct,
+  updateVariationProduct,
+} from '@/app/_actions';
 import { useRouter } from 'next/navigation';
 import {
   set_colors,
@@ -18,6 +21,7 @@ import {
   blog_categories,
 } from '@/backend/data/productData';
 import MultiselectTagComponent from '../forms/MultiselectTagComponent';
+import { revalidatePath } from 'next/cache';
 
 const EditVariationProduct = ({ product, currentCookies }) => {
   const router = useRouter();
@@ -368,6 +372,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
       //reset the form
       setIsSending(true);
       //formRef.current.reset();
+      await updateRevalidateProduct();
       router.push('/admin/productos');
     }
   }
@@ -1011,7 +1016,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
             {/* Render additional variations */}
             {variations.slice(1).map((variation, index) => (
               <div key={index + 1} className={`w-full variation-${index + 1}`}>
-                <div className="relative flex flex-row maxsm:flex-col items-center gap-5">
+                <div className="relative flex flex-wrap flex-row maxsm:flex-col items-center gap-5">
                   <div
                     onClick={() => removeVariation(index + 1)}
                     className="absolute top-0 left-0 p-1 bg-red-500 text-white rounded-tr-md cursor-pointer"

@@ -217,20 +217,20 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                 key={product?._id}
               >
                 <td className="px-2 py-0 maxmd:hidden">
-                  <Link href={`/admin/productos/variacion/${product.slug}`}>
-                    {product._id.substring(0, 10)}...
+                  <Link href={`/admin/productos/variacion/${product?.slug}`}>
+                    {product?._id.substring(0, 10)}...
                   </Link>
                 </td>
                 <td className="px-6 maxsm:px-2 py-0 maxmd:hidden">
-                  <Link href={`/admin/productos/variacion/${product.slug}`}>
-                    {product.slug.substring(0, 10)}...
+                  <Link href={`/admin/productos/variacion/${product?.slug}`}>
+                    {product?.slug?.substring(0, 10)}...
                   </Link>
                 </td>
                 <td className="px-6 maxsm:px-0 py-0 relative ">
                   <span className="relative flex items-center justify-center text-black w-12 h-12 maxsm:w-8 maxsm:h-8 shadow mt-2">
-                    <Link href={`/admin/productos/variacion/${product.slug}`}>
+                    <Link href={`/admin/productos/variacion/${product?.slug}`}>
                       <Image
-                        src={product?.images[0].url}
+                        src={product?.images[0]?.url}
                         alt="Title"
                         width={100}
                         height={100}
@@ -248,16 +248,16 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                 </td>
                 <td className="px-6 maxsm:px-0 py-0 ">
                   <b>
-                    <FormattedPrice amount={product?.variations[0].price} />
+                    <FormattedPrice amount={product?.variations[0]?.price} />
                   </b>
                 </td>
                 <td className={`px-6 maxsm:px-0 py-0 font-bold maxsm:hidden`}>
-                  {product.title.substring(0, 15)}
+                  {product?.title?.substring(0, 15)}
                 </td>
-                <td className="px-1 py-0 ">{product.stock}</td>
+                <td className="px-1 py-0 ">{product?.stock}</td>
                 <td className="px-1 py-0 flex flex-row items-center gap-x-1">
                   <Link
-                    href={`/admin/productos/variacion/${product.slug}`}
+                    href={`/admin/productos/variacion/${product?.slug}`}
                     className="p-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
                   >
                     <FaPencilAlt className="maxsm:text-[10px]" />
@@ -266,15 +266,15 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                   <button
                     onClick={() =>
                       deactivateOnlineHandler(
-                        product._id,
-                        product?.availability.online
+                        product?._id,
+                        product?.availability?.online
                       )
                     }
                     className="p-2 inline-block text-white hover:text-black bg-slate-300 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
                   >
                     <TbWorldWww
                       className={` ${
-                        product?.availability.online === true
+                        product?.availability?.online === true
                           ? 'text-green-800 maxsm:text-[10px]'
                           : 'text-slate-400 maxsm:text-[10px]'
                       }`}
@@ -285,14 +285,14 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                     onClick={() =>
                       deactivateBranchHandler(
                         product?._id,
-                        product?.availability.branch
+                        product?.availability?.branch
                       )
                     }
                     className="p-2 inline-block text-white hover:text-black bg-slate-300 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
                   >
                     <FaShop
                       className={` ${
-                        product?.availability.branch === true
+                        product?.availability?.branch === true
                           ? 'text-green-800 maxsm:text-[10px]'
                           : 'text-slate-400 maxsm:text-[10px]'
                       }`}
@@ -301,7 +301,7 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                   <button
                     onClick={() =>
                       deactivateInstagramHandler(
-                        product._id,
+                        product?._id,
                         product?.availability?.instagram
                       )
                     }
@@ -316,7 +316,7 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                     />
                   </button>
                   <button
-                    onClick={() => deleteHandler(product._id)}
+                    onClick={() => deleteHandler(product?._id)}
                     className="p-2 inline-block text-white hover:text-black bg-slate-300 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
                   >
                     <FaExclamationCircle

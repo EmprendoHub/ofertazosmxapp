@@ -1332,7 +1332,7 @@ export async function getAllProduct(searchQuery) {
     let sortedProducts = JSON.stringify(productsData);
     allCategories = JSON.stringify(allCategories);
     allBrands = JSON.stringify(allBrands);
-
+    revalidatePath('/admin/productos/');
     return {
       products: sortedProducts,
       productsCount: productsCount,
@@ -2252,6 +2252,11 @@ export async function updateVariationProduct(data) {
     }
   );
   if (error) throw Error(error);
+  revalidatePath('/admin/productos');
+  revalidatePath('/tienda');
+}
+
+export async function updateRevalidateProduct() {
   revalidatePath('/admin/productos');
   revalidatePath('/tienda');
 }
