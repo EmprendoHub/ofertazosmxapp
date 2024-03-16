@@ -68,6 +68,7 @@ export async function POST(request, res) {
       );
 
       createdAt = new Date(createdAt);
+      console.log(createdAt, 'createdAt');
 
       await dbConnect();
       const slug = generateUrlSafeTitle(title);
