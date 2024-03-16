@@ -67,7 +67,7 @@ export async function POST(request, res) {
         0
       );
 
-      createdAt = new Date(createdAt);
+      //createdAt = new Date(createdAt);
       console.log(createdAt, 'createdAt');
 
       await dbConnect();
