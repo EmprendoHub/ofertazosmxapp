@@ -446,7 +446,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
   return (
     <main className="w-full p-4 maxsm:p-2 bg-slate-200">
       {!isSending ? (
-        <form className="flex flex-col items-start gap-5 justify-start w-full">
+        <div className="flex flex-col items-start gap-5 justify-start w-full">
           <section className="w-full ">
             <div className="flex flex-row maxmd:flex-col items-center justify-between">
               <h1 className="w-full text-xl font-semibold text-black mb-8 font-EB_Garamond">
@@ -1131,7 +1131,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
               Guardar Producto
             </button>
           </section>
-        </form>
+        </div>
       ) : (
         <section className="w-full min-h-screen">
           <div className="flex flex-row maxmd:flex-col items-center justify-between">
