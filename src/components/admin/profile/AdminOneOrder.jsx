@@ -29,7 +29,6 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
       (acc, cartItem) => acc + cartItem.quantity * cartItem.price,
       0
     );
-    console.log(totalAmount, 'totalAmount');
     return totalAmount;
   }
 

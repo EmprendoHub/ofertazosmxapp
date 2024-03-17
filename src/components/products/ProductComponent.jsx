@@ -43,7 +43,6 @@ const ProductComponent = ({ product, trendingProducts }) => {
     const existingProduct = productsData.find((item1) =>
       product.variations.some((item2) => item1._id === item2._id)
     );
-    console.log(existingProduct);
 
     if (existingProduct?.quantity >= product.stock) {
       setAlreadyCart(true);

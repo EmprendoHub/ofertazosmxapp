@@ -31,7 +31,6 @@ export async function GET(request) {
           { _id: productId },
           { $inc: { stock: product.quantity } }
         );
-        console.log(updatedProduct);
       });
 
       await Promise.all(productUpdatePromises);

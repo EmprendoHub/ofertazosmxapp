@@ -116,7 +116,6 @@ const NewVariationOptimized = ({ currentCookies }) => {
   const handleVariationImageChange = async (e, index) => {
     // Get selected files from the input element.
     let files = e?.target.files;
-    console.log(files[0], ' files Variation');
     if (files) {
       for (var i = 0; i < files?.length; i++) {
         var file = files[i];
@@ -124,7 +123,6 @@ const NewVariationOptimized = ({ currentCookies }) => {
         retrieveNewURL(file, (file, url) => {
           const parsed = JSON.parse(url);
           url = parsed.url;
-          console.log(url, 'url Variation');
           // Compress and optimize the image before upload
           compressAndOptimizeImage(file, url, index);
         });
@@ -207,7 +205,6 @@ const NewVariationOptimized = ({ currentCookies }) => {
   const upload = async (e) => {
     // Get selected files from the input element.
     let files = e?.target.files;
-    console.log(files[0], ' files');
     let section = e?.target.id;
     if (files) {
       for (var i = 0; i < files?.length; i++) {
@@ -216,7 +213,6 @@ const NewVariationOptimized = ({ currentCookies }) => {
         retrieveNewURL(file, (file, url) => {
           const parsed = JSON.parse(url);
           url = parsed.url;
-          console.log(url, 'Main image Variation');
           // Compress and optimize the image before upload
           compressAndOptimizeMainImage(file, url, section);
         });

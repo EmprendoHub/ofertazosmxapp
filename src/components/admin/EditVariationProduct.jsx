@@ -193,7 +193,6 @@ const EditVariationProduct = ({ product, currentCookies }) => {
   const upload = async (e) => {
     // Get selected files from the input element.
     let files = e?.target.files;
-    console.log(files[0], ' files');
     let section = e?.target.id;
     if (files) {
       for (var i = 0; i < files?.length; i++) {
@@ -306,7 +305,6 @@ const EditVariationProduct = ({ product, currentCookies }) => {
       return;
     }
     if (!variations[0].cost) {
-      console.log(variations[0].cost);
       const noCostError = {
         cost: { _errors: ['Se requiere un costo de producto '] },
       };
@@ -314,7 +312,6 @@ const EditVariationProduct = ({ product, currentCookies }) => {
       return;
     }
     if (!variations[0].price) {
-      console.log(variations[0].price);
       const noPriceError = {
         price: { _errors: ['Se requiere un precio de producto '] },
       };

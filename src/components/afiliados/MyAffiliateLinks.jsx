@@ -13,7 +13,6 @@ const MyAffiliateLinks = ({ currentCookies }) => {
   useEffect(() => {
     async function getLinks() {
       const data = await getAllAffiliateLinks(currentCookies);
-      console.log(data[0]?.events.length);
       setLinks(data);
     }
     getLinks();

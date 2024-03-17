@@ -16,7 +16,6 @@ function shuffleArray(array) {
 }
 
 const TrendingNewProducts = ({ trendProducts }) => {
-  console.log(trendProducts);
   const cat_title = [
     { id: 1, category: 'Bolsas' },
     { id: 2, category: 'Prendas' },

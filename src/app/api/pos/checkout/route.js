@@ -46,7 +46,6 @@ export const POST = async (request) => {
     //const isLayaway = await request.headers.get('paytype');
     const reqBody = await request.json();
     const { items, email, amountReceived } = await reqBody;
-    console.log(items, email, amountReceived);
     const existingUser = await User.findOne({
       email: email,
     });
@@ -64,7 +63,6 @@ export const POST = async (request) => {
     };
 
     const order_items = await getCartItems(items);
-    console.log(order_items, 'orders items');
     let orderData = {
       user: userId,
       ship_cost,
@@ -76,11 +74,9 @@ export const POST = async (request) => {
       layaway: false,
       affiliateId: '',
     };
-    console.log(orderData);
     //await Order.create(orderData);
     const newOrder = await new Order(orderData);
     await newOrder.save();
-    console.log(newOrder);
     return NextResponse.json({
       message: 'Orden Pagada!',
       success: true,

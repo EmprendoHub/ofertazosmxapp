@@ -12,7 +12,6 @@ const HeaderComponent = ({ cookie }) => {
   const dispatch = useDispatch();
   const referralSuccess = params.get('alink');
   if (referralSuccess) {
-    console.log(referralSuccess);
     dispatch(addAffiliate(referralSuccess));
   }
 

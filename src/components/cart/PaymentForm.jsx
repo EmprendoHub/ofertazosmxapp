@@ -52,7 +52,6 @@ const PaymentForm = () => {
 
     try {
       const data = await response.json();
-      //console.log(data, '<= data');
 
       await dispatch(saveOrder({ order: productsData, id: data.id }));
       stripe?.redirectToCheckout({ sessionId: data.id });

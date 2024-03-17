@@ -7,14 +7,6 @@ export async function GET(request) {
   const sessionRaw = await request.headers.get('session');
   const session = JSON.parse(sessionRaw);
 
-  // const forwarded = request.headers['x-forwarded-for'];
-  // console.log('forwarded', forwarded);
-  // const userIp = forwarded
-  //   ? forwarded.split(/, /)[0]
-  //   : request.socket.remoteAddress;
-
-  // console.log('userIp', userIp);
-
   // Extract the user agent string from the browser
   const header = headers();
   const { device } = userAgent(request);

@@ -165,7 +165,6 @@ export async function payPOSDrawer(data) {
     } else {
       user = userExists;
     }
-    console.log('before form send', user);
     items = JSON.parse(items);
     const branchInfo = 'Sucursal';
     const ship_cost = 0;
@@ -418,7 +417,7 @@ export async function payPOSDrawer(data) {
       };
 
       await transporter.sendMail(mailOption);
-      console.log(`Email sent successfully to ${recipient_email}`);
+      //console.log(`Email sent successfully to ${recipient_email}`);
     } catch (error) {
       console.log(error);
       throw Error(error);
@@ -1419,7 +1418,6 @@ export async function getVariationStock(variationId) {
       );
       return { currentStock: variation.stock };
     } else {
-      console.log('Product not found');
       throw Error('Product not found');
     }
   } catch (error) {
@@ -1453,7 +1451,6 @@ export async function getOnePOSProduct(variationId) {
       variation = JSON.stringify(variation);
       return { product: product, variation: variation };
     } else {
-      console.log('Product not found');
       throw Error('Product not found');
     }
   } catch (error) {
@@ -1659,21 +1656,6 @@ export async function getAllUserOrder(searchQuery, id) {
     apiOrderFilters.pagination(resPerPage, page);
     ordersData = await apiOrderFilters.query.clone();
 
-    // await Promise.all(
-    //   ordersData.map(async (order) => {
-    //     let shippingInfo = await Address.findOne({
-    //       _id: order.shippingInfo,
-    //     });
-    //     let user = await User.findOne({ _id: order.user });
-    //     order.shippingInfo = shippingInfo;
-    //     order.user = user;
-    //   })
-    // );
-
-    // ordersData = await ordersData
-    //   .slice()
-    //   .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
     let orders = JSON.stringify(ordersData);
     client = JSON.stringify(client);
 
@@ -1724,13 +1706,6 @@ export async function getAllClient(searchQuery) {
     apiClientFilters.pagination(resPerPage, page);
     clientsData = await apiClientFilters.query.clone();
 
-    // If you want a new sorted array without modifying the original one, use slice
-    // const sortedObj1 = obj1
-    //   .slice()
-    //   .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-
-    // descending order
-    // descending order
     let sortedClients = clientsData
       .slice()
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -1907,13 +1882,6 @@ export async function getAllAffiliate(searchQuery) {
     apiAffiliateFilters.pagination(resPerPage, page);
     affiliatesData = await apiAffiliateFilters.query.clone();
 
-    // If you want a new sorted array without modifying the original one, use slice
-    // const sortedObj1 = obj1
-    //   .slice()
-    //   .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-
-    // descending order
-    // descending order
     let sortedAffiliates = affiliatesData
       .slice()
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -1965,21 +1933,6 @@ export async function getAllAffiliateOrder(searchQuery, id) {
     const itemCount = ordersData.length;
     apiOrderFilters.pagination(resPerPage, page);
     ordersData = await apiOrderFilters.query.clone();
-
-    // await Promise.all(
-    //   ordersData.map(async (order) => {
-    //     let shippingInfo = await Address.findOne({
-    //       _id: order.shippingInfo,
-    //     });
-    //     let user = await User.findOne({ _id: order.user });
-    //     order.shippingInfo = shippingInfo;
-    //     order.user = user;
-    //   })
-    // );
-
-    // ordersData = await ordersData
-    //   .slice()
-    //   .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     let orders = JSON.stringify(ordersData);
     affiliate = JSON.stringify(affiliate);
@@ -2561,7 +2514,6 @@ export async function addProduct(data) {
   images = JSON.parse(images);
   sizes = JSON.parse(sizes);
   tags = JSON.parse(tags);
-  console.log(tags, 'tags');
   colors = JSON.parse(colors);
   stock = Number(stock);
   cost = Number(cost);

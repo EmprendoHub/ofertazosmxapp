@@ -12,7 +12,6 @@ const ServerPagination = ({
   totalPages,
   searchParams,
 }) => {
-  console.log(searchParams);
   let newParams = '';
   if (searchParams) {
     newParams = '&' + searchParams;

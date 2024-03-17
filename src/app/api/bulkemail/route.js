@@ -13,16 +13,6 @@ export async function POST(request) {
       sender_email,
       name,
     } = await request.json();
-    console.log(
-      subject,
-      body,
-      title,
-      greeting,
-      bestRegards,
-      recipient_email,
-      sender_email,
-      name
-    );
 
     var transporter = nodemailer.createTransport({
       service: 'gmail',

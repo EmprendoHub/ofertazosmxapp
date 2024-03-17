@@ -158,7 +158,6 @@ const RegisterAffiliate = ({ cookie }) => {
             cookie,
           }),
         });
-        console.log(res?.data?.success);
         if (res?.data?.success === true) {
           toast.success(`Success with score: ${res?.data?.score}`);
         } else {

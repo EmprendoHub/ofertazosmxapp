@@ -65,7 +65,6 @@ export async function POST(request, res) {
       );
 
       createdAt = new Date();
-      console.log(createdAt, 'createdAt');
 
       await dbConnect();
       const slug = generateUrlSafeTitle(title);
@@ -248,7 +247,6 @@ export async function PUT(request, res) {
 
       return response;
     } catch (error) {
-      console.log(error, 'intentional errir');
       return NextResponse.json(
         {
           error: 'Error al crear Producto',

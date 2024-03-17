@@ -18,9 +18,7 @@ export const shoppingSlice = createSlice({
   initialState,
   reducers: {
     increaseLoginAttempts: (state, action) => {
-      console.log(state.loginAttempts, 'before', action.payload.count);
       state.loginAttempts += action.payload.count;
-      console.log(state.loginAttempts, 'after', action.payload.count);
     },
     addToPOSCart: (state, action) => {
       const existingProduct = state.productsPOS.find(

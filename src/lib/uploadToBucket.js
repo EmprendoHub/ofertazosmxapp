@@ -9,8 +9,6 @@ export const uploadToBucket = async (file, fileLocation) => {
 
   await writeFile(path, buffer);
 
-  console.log('test');
-
   return new Promise((resolve, reject) => {
     mc.fPutObject('shopout', fileLocation, path, function (err, result) {
       if (err) {

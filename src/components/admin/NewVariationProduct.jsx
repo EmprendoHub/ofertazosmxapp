@@ -164,7 +164,6 @@ const NewVariationProduct = () => {
   const upload = async (e) => {
     // Get selected files from the input element.
     let files = e?.target.files;
-    console.log(files[0], ' files');
     let section = e?.target.id;
     if (files) {
       for (var i = 0; i < files?.length; i++) {

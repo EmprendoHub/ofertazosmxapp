@@ -59,7 +59,6 @@ const NewContactPageComponent = ({ contacto }) => {
   }
 
   const [sections, setSections] = useState(currentData);
-  console.log(sections);
   const [createdAt, setCreatedAt] = useState(
     cstDateTimeClient().toLocaleString()
   );
@@ -159,7 +158,6 @@ const NewContactPageComponent = ({ contacto }) => {
 
       // If the section exists
       const box = section.boxes[boxIndex];
-      console.log(box);
       if (!box) {
         // If the box doesn't exist, create it along with the paragraphs array
         const newBox = {
@@ -234,7 +232,6 @@ const NewContactPageComponent = ({ contacto }) => {
     // write to database using server actions
     let result;
     if (contacto?.sections) {
-      console.log('update');
       formData.append('_id', contacto._id);
       result = await updatePage(formData);
     } else {

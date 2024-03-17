@@ -20,7 +20,6 @@ const POSDashComponent = ({
   thisWeeksOrder,
   dailyOrdersTotals,
 }) => {
-  console.log(dailyOrdersTotals);
   return (
     <div className="p-3 md:mx-auto  text-slate-700">
       <div className="flex-row maxsm:flex-col flex gap-4 justify-start w-full">

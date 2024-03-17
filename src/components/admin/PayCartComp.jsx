@@ -76,7 +76,6 @@ const PayCartComp = ({ setShowModal, payType }) => {
     formData.append('amountReceived', amountReceived);
     formData.append('payType', payType);
 
-    console.log('before form send', email);
     const result = await payPOSDrawer(formData);
     if (result?.error) {
       console.log(result?.error);

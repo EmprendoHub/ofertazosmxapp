@@ -10,7 +10,6 @@ const PayOrderComp = ({ setShowModal, orderId, isPaid }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(typeof amount);
     if (Number(amount) <= 0) {
       toast.error('Por favor agrega la cantidad del pedido para continuar.');
       return;
@@ -29,7 +28,6 @@ const PayOrderComp = ({ setShowModal, orderId, isPaid }) => {
       formData.set('orderId', orderId);
       try {
         const res = await updateOneOrder(formData);
-        console.log(res, 'res');
         setShowModal(false);
       } catch (error) {
         toast.error(

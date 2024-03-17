@@ -46,7 +46,6 @@ function OverlaySlider() {
   const slideRef = useRef(null);
   const [currentImage, setCurrentImage] = useState(slides[0].image);
 
-  //console.log(slideRef);
   const moveNext = () => {
     const lists = slideRef.current.querySelectorAll('.item');
     const lastItem = lists[lists.length - 1];
