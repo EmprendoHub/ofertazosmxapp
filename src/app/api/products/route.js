@@ -21,6 +21,7 @@ export const GET = async (request, res) => {
     const resPerPage = Number(request.headers.get('perpage')) || 15;
     // Extract page and per_page from request URL
     const page = Number(request.nextUrl.searchParams.get('page')) || 1;
+    productQuery = productQuery.sort({ createdAt: -1 });
     // total number of documents in database
     const productsCount = await Product.countDocuments();
     // Extract all possible categories
