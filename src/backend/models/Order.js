@@ -82,6 +82,9 @@ const OrderSchema = new mongoose.Schema({
   branch: {
     type: String,
   },
+  comment: {
+    type: String,
+  },
   shippingInfo: {
     type: mongoose.Schema.Types.ObjectId,
     require: true,

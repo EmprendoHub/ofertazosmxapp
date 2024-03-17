@@ -75,7 +75,8 @@ const POSPaymentForm = () => {
             </span>
           </li>
         </ul>
-        <div className="flex flex-row items-center gap-3">
+
+        <div className="flex flex-row flex-wrap items-center gap-3">
           <button
             onClick={() => handleCheckout('layaway')}
             className="text-4xl text-slate-100 bg-violet-950 mt-4 py-5 px-6 hover:bg-slate-200 hover:text-black duration-300 ease-in-out cursor-pointer w-full uppercase rounded-md"

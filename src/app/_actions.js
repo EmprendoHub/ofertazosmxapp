@@ -165,6 +165,7 @@ export async function payPOSDrawer(data) {
     } else {
       user = userExists;
     }
+    console.log('before form send', user);
     items = JSON.parse(items);
     const branchInfo = 'Sucursal';
     const ship_cost = 0;
@@ -265,7 +266,6 @@ export async function payPOSDrawer(data) {
       order: newOrder?._id,
       user: newOrder?.user,
     };
-    console.log('paymentTransactionData', paymentTransactionData);
     try {
       const newPaymentTransaction = await new Payment(paymentTransactionData);
 
@@ -315,7 +315,6 @@ export async function payPOSDrawer(data) {
         <thead style="font-size: .7rem; color: #4a5568;  text-transform: uppercase;">
           <tr>
             <th style="padding: 0.75rem;">Nombre</th>
-            <th style="padding: 0.75rem;">Img</th>
             <th style="padding: 0.75rem;">Tamaño</th>
             <th style="padding: 0.75rem;">Color</th>
             <th style="padding: 0.75rem;">Cant.</th>
@@ -328,9 +327,6 @@ export async function payPOSDrawer(data) {
               (item, index) =>
                 `<tr style="background-color: #fff;" key="${index}">
               <td style="padding: 0.75rem;">${item.name}</td>
-              <td style="padding: 0.75rem;">
-                <img alt="producto" src="${item.image}" style="width:50px; height:50px;" />
-              </td>
               <td style="padding: 0.75rem;">${item.size}</td>
               <td style="padding: 0.75rem;">${item.color}</td>
               <td style="padding: 0.75rem;">${item.quantity}</td>
@@ -414,7 +410,6 @@ export async function payPOSDrawer(data) {
       </table>
       <div>${bodyTwo}</div>
       <p>${senderName}</p>
-      <img alt="producto" src="https://minio.salvawebpro.com:9000/shopout/avatars/Main_shopout_logo.webp" style="width:150px; height:40px;">
       <p>${bestRegards}</p>
       </div>
       </body>
@@ -1647,7 +1642,7 @@ export async function getAllUserOrder(searchQuery, id) {
     let client = await User.findOne({ _id: id });
 
     const searchParams = new URLSearchParams(searchQuery);
-    const resPerPage = Number(searchParams.get('perpage')) || 5;
+    const resPerPage = Number(searchParams.get('perpage')) || 10;
     // Extract page and per_page from request URL
     const page = Number(searchParams.get('page')) || 1;
     // Apply descending order based on a specific field (e.g., createdAt)

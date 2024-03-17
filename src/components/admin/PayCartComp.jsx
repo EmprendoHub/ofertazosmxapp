@@ -21,6 +21,7 @@ const PayCartComp = ({ setShowModal, payType }) => {
   const [phone, setPhoneNo] = useState('111-111-1111');
   const [email, setEmail] = useState('sucursal@shopout.com.mx');
   const [name, setName] = useState('CLIENTE EFECTIVO');
+  const [savingPayment, setSavingPayment] = useState(false);
 
   const { productsPOS } = useSelector((state) => state.compras);
   const [validationError, setValidationError] = useState(null);
@@ -74,6 +75,8 @@ const PayCartComp = ({ setShowModal, payType }) => {
     formData.append('transactionNo', transactionNo);
     formData.append('amountReceived', amountReceived);
     formData.append('payType', payType);
+
+    console.log('before form send', email);
     const result = await payPOSDrawer(formData);
     if (result?.error) {
       console.log(result?.error);
@@ -153,21 +156,25 @@ const PayCartComp = ({ setShowModal, payType }) => {
                 </p>
               )}
             </div>
-            <div className="flex flex-row items-center gap-3">
-              <div
-                onClick={() => setShowModal(false)}
-                className="my-2 px-4 py-2 text-center text-white bg-red-700 border border-transparent rounded-md hover:bg-red-800 w-full flex flex-row items-center justify-center gap-1 cursor-pointer"
-              >
-                <FaCircleExclamation className="text-xl" />
-                Cancelar
+            {!savingPayment && (
+              <div className="flex flex-row flex-wrap items-center gap-3">
+                <div
+                  onClick={() => setShowModal(false)}
+                  className="my-2 px-4 py-2 text-center text-white bg-red-700 border border-transparent rounded-md hover:bg-red-800 w-full flex flex-row items-center justify-center gap-1 cursor-pointer"
+                >
+                  <FaCircleExclamation className="text-xl" />
+                  Cancelar
+                </div>
+                <button
+                  onClick={() =>
+                    handleCheckout('layaway') && setSavingPayment(true)
+                  }
+                  className="my-2 px-4 py-2 text-center text-white bg-emerald-700 border border-transparent rounded-md hover:bg-emerald-900 w-full flex flex-row items-center justify-center gap-1"
+                >
+                  <FaCircleCheck className="text-xl" /> Procesar
+                </button>
               </div>
-              <button
-                onClick={() => handleCheckout('layaway')}
-                className="my-2 px-4 py-2 text-center text-white bg-emerald-700 border border-transparent rounded-md hover:bg-emerald-900 w-full flex flex-row items-center justify-center gap-1"
-              >
-                <FaCircleCheck className="text-xl" /> Procesar
-              </button>
-            </div>
+            )}
           </div>
         </section>
       </div>
