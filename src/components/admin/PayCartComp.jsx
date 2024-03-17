@@ -18,7 +18,9 @@ const PayCartComp = ({ setShowModal, payType }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [transactionNo, setTransactionNo] = useState('EFECTIVO');
-  const [amount, setAmount] = useState(0);
+  const [phone, setPhoneNo] = useState('111-111-1111');
+  const [email, setEmail] = useState('sucursal@shopout.com.mx');
+  const [name, setName] = useState('CLIENTE EFECTIVO');
 
   const { productsPOS } = useSelector((state) => state.compras);
   const [validationError, setValidationError] = useState(null);
@@ -66,6 +68,10 @@ const PayCartComp = ({ setShowModal, payType }) => {
     const formData = new FormData();
     const items = JSON.stringify(productsPOS);
     formData.append('items', items);
+    formData.append('name', name);
+    formData.append('phone', phone);
+    formData.append('email', email);
+    formData.append('transactionNo', transactionNo);
     formData.append('amountReceived', amountReceived);
     formData.append('payType', payType);
     const result = await payPOSDrawer(formData);
@@ -86,8 +92,8 @@ const PayCartComp = ({ setShowModal, payType }) => {
     <div className="flex flex-col w-full h-full items-center justify-center">
       <div className="w-1/2 maxmd:w-5/6 bg-white pl-4">
         <section className=" p-6 w-full">
-          <h1 className="text-2xl maxmd:text-5xl font-semibold text-black mb-8 font-EB_Garamond text-center">
-            Recibir Pago
+          <h1 className="text-2xl maxmd:text-5xl font-semibold text-black mb-4 font-EB_Garamond text-center uppercase">
+            {payType === 'layaway' ? 'Apartar' : 'Pagar'}
           </h1>
           <div className="flex flex-col items-center gap-1">
             {validationError?.title && (
@@ -96,26 +102,49 @@ const PayCartComp = ({ setShowModal, payType }) => {
               </p>
             )}
             <div className="mb-4 text-center">
-              <label className="block mb-1"> Numero de Transacción </label>
+              <label className="block mb-1"> Referencia </label>
               <input
                 type="text"
                 className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none hover:outline-none focus:border-gray-400 hover:border-gray-400 w-full text-center font-bold "
-                placeholder="EFECTIVO o 654687687"
-                value={transactionNo}
+                placeholder="8971654687687"
                 onChange={(e) => setTransactionNo(e.target.value)}
                 name="transactionNo"
               />
             </div>
             <div className="mb-4 text-center">
-              <label className="block mb-1">
-                Ingresa la cantidad que se recibe:{' '}
-              </label>
+              <input
+                type="text"
+                className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none hover:outline-none focus:border-gray-400 hover:border-gray-400 w-full text-center font-bold "
+                placeholder="Nombre de Cliente"
+                onChange={(e) => setName(e.target.value)}
+                name="name"
+              />
+            </div>
+            <div className="mb-4 text-center">
+              <input
+                type="text"
+                className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none hover:outline-none focus:border-gray-400 hover:border-gray-400 w-full text-center font-bold "
+                placeholder="353 123 4512"
+                onChange={(e) => setPhoneNo(e.target.value)}
+                name="phone"
+              />
+            </div>
+            <div className="mb-4 text-center">
+              <input
+                type="text"
+                className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none hover:outline-none focus:border-gray-400 hover:border-gray-400 w-full text-center font-bold "
+                placeholder="Email"
+                onChange={(e) => setEmail(e.target.value)}
+                name="email"
+              />
+            </div>
+            <div className="mb-4 text-center">
               <input
                 type="text"
                 placeholder="$0.00"
                 value={amountReceived}
                 onChange={(e) => handleAmountReceived(e.target.value)}
-                className="text-7xl text-center outline-none w-full appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400:outline-none focus:border-gray-400 hover:border-gray-400"
+                className="text-5xl text-center outline-none w-full appearance-none border bg-gray-100 rounded-md py-2  border-gray-300 focus:outline-none focus:border-gray-400:outline-none focus:border-gray-400 hover:border-gray-400"
                 name="amount"
               />
               {validationError?.amount && (

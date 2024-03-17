@@ -5,13 +5,13 @@ import { FaCircleCheck, FaCircleExclamation } from 'react-icons/fa6';
 import { updateOneOrder } from '@/app/_actions';
 
 const PayOrderComp = ({ setShowModal, orderId, isPaid }) => {
-  const [transactionNo, setTransactionNo] = useState('');
+  const [transactionNo, setTransactionNo] = useState('EFECTIVO');
   const [amount, setAmount] = useState(0);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (amount === '') {
+    console.log(typeof amount);
+    if (Number(amount) <= 0) {
       toast.error('Por favor agrega la cantidad del pedido para continuar.');
       return;
     }
@@ -61,7 +61,6 @@ const PayOrderComp = ({ setShowModal, orderId, isPaid }) => {
                     type="text"
                     className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
                     placeholder="Nombre de Sorteo"
-                    value={transactionNo}
                     onChange={(e) => setTransactionNo(e.target.value)}
                     name="transactionNo"
                   />

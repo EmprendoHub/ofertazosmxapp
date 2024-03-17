@@ -26,7 +26,8 @@ const AdminUserOrders = ({ orders, filteredOrdersCount, client }) => {
           {`${filteredOrdersCount}
         Pedidos para ${client.name}`}
         </h1>
-
+        <p>{client?.email}</p>
+        <p>{client?.phone}</p>
         <table className="w-full text-sm text-left">
           <thead className="text-l text-gray-700 uppercase">
             <tr>

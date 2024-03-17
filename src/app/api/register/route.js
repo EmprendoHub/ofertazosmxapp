@@ -1,8 +1,8 @@
 import dbConnect from '@/lib/db';
 import nodemailer from 'nodemailer';
 import bcrypt from 'bcrypt';
-import User from '@/backend/models/User';
 import crypto from 'crypto';
+import User from '@/backend/models/User';
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 
