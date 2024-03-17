@@ -1622,20 +1622,11 @@ export async function getAllUserOrder(searchQuery, id) {
     await dbConnect();
     const session = await getServerSession(options);
     let orderQuery;
-    if (session?.user?.role === 'manager') {
-      orderQuery = Order.find({ orderStatus: { $ne: 'Cancelado' } });
-    } else if (session?.user?.role === 'afiliado') {
-      const affiliate = await Affiliate.findOne({ user: session?.user?._id });
-      orderQuery = Order.find({
-        affiliateId: affiliate?._id.toString(),
-        orderStatus: { $ne: 'Cancelado' },
-      });
-    } else {
-      orderQuery = Order.find({
-        user: session?.user?._id,
-        orderStatus: { $ne: 'Cancelado' },
-      });
-    }
+
+    orderQuery = Order.find({
+      user: id,
+      orderStatus: { $ne: 'Cancelado' },
+    });
     let client = await User.findOne({ _id: id });
 
     const searchParams = new URLSearchParams(searchQuery);
