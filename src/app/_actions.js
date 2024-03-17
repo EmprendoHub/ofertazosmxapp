@@ -143,7 +143,6 @@ export async function payPOSDrawer(data) {
       Object.fromEntries(data);
 
     await dbConnect();
-    //const userId = session?.user._id;
     let user;
     const userExists = await User.findOne({
       $or: [{ email: email }, { phone: phone }],
@@ -444,7 +443,6 @@ export async function getDashboard() {
     await dbConnect();
     const session = await getServerSession(options);
     let orders;
-    userId;
     let affiliates;
     let products;
     let clients;
