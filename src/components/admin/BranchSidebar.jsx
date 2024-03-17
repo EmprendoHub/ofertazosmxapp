@@ -19,6 +19,7 @@ const backdropVariants = {
 const BranchSidebar = ({ children }) => {
   const [expandSidebar, setExpandSidebar] = useState(true);
   const { user } = useContext(AuthContext);
+  console.log(user);
   return (
     <aside className="h-screen print:hidden ">
       <nav className="h-full flex flex-col bg-white border-r border-r-slate-300 shadow-sm">

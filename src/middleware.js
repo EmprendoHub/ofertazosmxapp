@@ -11,15 +11,29 @@ const protectedPaths = [
 
 export async function middleware(request) {
   const token = await getToken({ req: request });
-  // console.log(token?.user?.role);
-  // @ts-ignore
   request.nextauth = request.nextauth || {};
-  // @ts-ignore
   request.nextauth.token = token;
   const pathname = request.nextUrl.pathname;
+  let signInUrl;
+
+  if (token?.user) {
+    if (
+      token?.user?.role === 'sucursal' &&
+      !pathname.includes('puntodeventa')
+    ) {
+      signInUrl = new URL('/puntodeventa', request.url);
+      return NextResponse.redirect(signInUrl);
+    }
+
+    if (token?.user?.role === 'manager' && !pathname.includes('admin')) {
+      signInUrl = new URL('/admin', request.url);
+      return NextResponse.redirect(signInUrl);
+    }
+  }
+
   if (pathname.includes('admin')) {
     //if admin user is not logged in
-    let signInUrl;
+
     if (!token) {
       signInUrl = new URL('/api/auth/signin', request.url);
       signInUrl.searchParams.set('callbackUrl', pathname);

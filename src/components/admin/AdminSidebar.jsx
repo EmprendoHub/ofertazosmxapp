@@ -4,7 +4,7 @@ import Link from 'next/link';
 import React, { createContext, useContext, useState } from 'react';
 import { BsChevronBarLeft, BsChevronBarRight } from 'react-icons/bs';
 import { FiMoreVertical, FiLogOut } from 'react-icons/fi';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import AuthContext from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -18,7 +18,12 @@ const backdropVariants = {
 
 const AdminSidebar = ({ children }) => {
   const [expandSidebar, setExpandSidebar] = useState(true);
-  const { user } = useContext(AuthContext);
+  let user;
+  const { data: session } = useSession();
+  const isLoggedIn = Boolean(session?.user);
+  if (isLoggedIn) {
+    user = session?.user;
+  }
   return (
     <aside className="h-screen print:hidden ">
       <nav className="h-full flex flex-col bg-white border-r border-r-slate-300 shadow-sm">

@@ -1,15 +1,10 @@
 'use client';
-import BranchSidebar, { SideBarItem } from '@/components/pos/POSSidebar';
+import BranchSidebar, { SideBarItem } from '@/components/pos/BranchSidebar';
 import { usePathname } from 'next/navigation';
 import { TbDeviceIpadDollar, TbQrcode, TbScan } from 'react-icons/tb';
-import { PiUserListLight } from 'react-icons/pi';
-import { CiGrid31 } from 'react-icons/ci';
 import { TfiDashboard } from 'react-icons/tfi';
-import { MdOutlineContactMail, MdOutlinePostAdd } from 'react-icons/md';
 import { LuReceipt } from 'react-icons/lu';
-import { TbMessage2Question, TbLayoutGridAdd } from 'react-icons/tb';
 import { LiaCashRegisterSolid, LiaStoreAltSolid } from 'react-icons/lia';
-import { GiClothes } from 'react-icons/gi';
 
 export default function UserLayout({ children }) {
   const pathname = usePathname();

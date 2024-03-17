@@ -33,7 +33,12 @@ export default async function RootLayout({ children }) {
           {/* <FooterComponent /> */}
         </CustomSessionProvider>
         <BackToTopButton />
-        {session && session?.user?.role === 'manager' ? '' : <WhatsAppButton />}
+        {(session && session?.user?.role === 'manager') ||
+        session?.user?.role === 'sucursal' ? (
+          ''
+        ) : (
+          <WhatsAppButton />
+        )}
         <CookieConsentComp />
         <ToastContainer position="top-left" autoClose={1000} />
       </body>
