@@ -1,3 +1,4 @@
+'use client';
 import Link from 'next/link';
 import React from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
@@ -9,7 +10,13 @@ const ServerPagination = ({
   prevPage,
   nextPage,
   totalPages,
+  searchParams,
 }) => {
+  console.log(searchParams);
+  let newParams = '';
+  if (searchParams) {
+    newParams = '&' + searchParams;
+  }
   return (
     <>
       {isPageOutOfRange ? (
@@ -26,7 +33,7 @@ const ServerPagination = ({
               </div>
             ) : (
               <Link
-                href={`?page=${prevPage}`}
+                href={`?${searchParams}&page=${prevPage}`}
                 aria-label="Previous Page"
                 className="bg-black w-8 h-8 flex justify-center items-center disabled:bg-slate-300 text-white p-2  rounded-full text-md maxmd:text-xs"
               >
@@ -42,7 +49,7 @@ const ServerPagination = ({
                     ? 'bg-black font-bold px-2 w-8 h-8 flex justify-center items-center text-white rounded-full text-xs'
                     : 'hover:bg-black px-1 rounded-full w-8 h-8 flex justify-center items-center hover:text-white text-xs'
                 }
-                href={`?page=${pageNumber}`}
+                href={`?${searchParams}&page=${pageNumber}`}
               >
                 {pageNumber}
               </Link>
@@ -57,7 +64,7 @@ const ServerPagination = ({
               </div>
             ) : (
               <Link
-                href={`?page=${nextPage}`}
+                href={`?${searchParams}&page=${nextPage}`}
                 aria-label="Next Page"
                 className="bg-black w-8 h-8 flex justify-center items-center disabled:bg-slate-300 text-white p-2  rounded-full text-xl maxmd:text-xs"
               >

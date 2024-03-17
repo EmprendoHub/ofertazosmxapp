@@ -1,4 +1,5 @@
 import { getAllPOSProduct } from '@/app/_actions';
+import { removeUndefinedAndPageKeys } from '@/backend/helpers';
 import ServerPagination from '@/components/pagination/ServerPagination';
 import AllPOSProductsComp from '@/components/pos/AllPOSProductsComp';
 
@@ -11,6 +12,10 @@ const POSProductsPage = async ({ searchParams }) => {
     Object.entries(urlParams).filter(([key, value]) => value !== undefined)
   );
   const searchQuery = new URLSearchParams(filteredUrlParams).toString();
+
+  const queryUrlParams = removeUndefinedAndPageKeys(urlParams);
+  const keywordQuery = new URLSearchParams(queryUrlParams).toString();
+
   const data = await getAllPOSProduct(searchQuery);
   const products = JSON.parse(data.products);
   const filteredProductsCount = data.filteredProductsCount;
@@ -46,6 +51,7 @@ const POSProductsPage = async ({ searchParams }) => {
         prevPage={prevPage}
         nextPage={nextPage}
         totalPages={totalPages}
+        searchParams={keywordQuery}
       />
     </>
   );

@@ -1,6 +1,7 @@
 import ServerPagination from '@/components/pagination/ServerPagination';
 import ListPOSProducts from '@/components/products/ListPOSProducts';
 import { getAllPOSProduct } from '@/app/_actions';
+import { removeUndefinedAndPageKeys } from '@/backend/helpers';
 
 export const metadata = {
   title: 'Tienda Shopout Mx',
@@ -9,6 +10,18 @@ export const metadata = {
 };
 
 const TiendaPage = async ({ searchParams }) => {
+  const urlParams = {
+    keyword: searchParams.keyword,
+    page: searchParams.page,
+  };
+  const filteredUrlParams = Object.fromEntries(
+    Object.entries(urlParams).filter(([key, value]) => value !== undefined)
+  );
+  const searchQuery = new URLSearchParams(filteredUrlParams).toString();
+
+  const queryUrlParams = removeUndefinedAndPageKeys(urlParams);
+  const keywordQuery = new URLSearchParams(queryUrlParams).toString();
+
   const data = await getAllPOSProduct(searchParams);
   //pagination
   let page = parseInt(searchParams.page, 20);
@@ -41,6 +54,7 @@ const TiendaPage = async ({ searchParams }) => {
         prevPage={prevPage}
         nextPage={nextPage}
         totalPages={totalPages}
+        searchParams={keywordQuery}
       />
     </div>
   );

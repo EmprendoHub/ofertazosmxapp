@@ -1,8 +1,7 @@
 import { getAllUserOrder } from '@/app/_actions';
+import { removeUndefinedAndPageKeys } from '@/backend/helpers';
 import AdminUserOrders from '@/components/admin/AdminUserOrders';
 import ServerPagination from '@/components/pagination/ServerPagination';
-import Profile from '@/components/user/profile/Profile';
-import UserProfile from '@/components/user/profile/UserProfile';
 
 const ClientDetailsPage = async ({ searchParams, params }) => {
   const urlParams = {
@@ -13,6 +12,10 @@ const ClientDetailsPage = async ({ searchParams, params }) => {
     Object.entries(urlParams).filter(([key, value]) => value !== undefined)
   );
   const searchQuery = new URLSearchParams(filteredUrlParams).toString();
+
+  const queryUrlParams = removeUndefinedAndPageKeys(urlParams);
+  const keywordQuery = new URLSearchParams(queryUrlParams).toString();
+
   const data = await getAllUserOrder(searchQuery, params.id);
   const orders = JSON.parse(data.orders);
   const client = JSON.parse(data.client);
@@ -47,6 +50,7 @@ const ClientDetailsPage = async ({ searchParams, params }) => {
         prevPage={prevPage}
         nextPage={nextPage}
         totalPages={totalPages}
+        searchParams={keywordQuery}
       />
     </>
   );

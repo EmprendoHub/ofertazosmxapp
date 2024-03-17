@@ -5,19 +5,11 @@ import { getServerSession } from 'next-auth';
 
 import { revalidatePath } from 'next/cache';
 import React from 'react';
+import { removeUndefinedAndPageKeys } from '@/backend/helpers';
 
-async function getAllOrders(searchParams, session) {
+async function getAllOrders(searchQuery, session) {
   try {
-    const urlParams = {
-      keyword: searchParams.keyword,
-      page: searchParams.page,
-    };
     const stringSession = JSON.stringify(session);
-    // Filter out undefined values
-    const filteredUrlParams = Object.fromEntries(
-      Object.entries(urlParams).filter(([key, value]) => value !== undefined)
-    );
-    const searchQuery = new URLSearchParams(filteredUrlParams).toString();
     const URL = `${process.env.NEXTAUTH_URL}/api/orders?${searchQuery}`;
     const res = await fetch(URL, {
       headers: {
@@ -33,8 +25,22 @@ async function getAllOrders(searchParams, session) {
 }
 
 const UserOrdersPage = async ({ searchParams }) => {
+  const urlParams = {
+    keyword: searchParams.keyword,
+    page: searchParams.page,
+  };
+
+  // Filter out undefined values
+  const filteredUrlParams = Object.fromEntries(
+    Object.entries(urlParams).filter(([key, value]) => value !== undefined)
+  );
+  const searchQuery = new URLSearchParams(filteredUrlParams).toString();
+
+  const queryUrlParams = removeUndefinedAndPageKeys(urlParams);
+  const keywordQuery = new URLSearchParams(queryUrlParams).toString();
+
   const session = await getServerSession(options);
-  const data = await getAllOrders(searchParams, session);
+  const data = await getAllOrders(searchQuery, session);
   const filteredOrdersCount = data?.itemCount;
   const orders = data?.orders.orders;
   let page = parseInt(searchParams.page, 10);
@@ -63,6 +69,7 @@ const UserOrdersPage = async ({ searchParams }) => {
         prevPage={prevPage}
         nextPage={nextPage}
         totalPages={totalPages}
+        searchParams={keywordQuery}
       />
     </>
   );

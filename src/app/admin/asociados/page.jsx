@@ -1,5 +1,6 @@
 import { getAllAffiliate } from '@/app/_actions';
 import { options } from '@/app/api/auth/[...nextauth]/options';
+import { removeUndefinedAndPageKeys } from '@/backend/helpers';
 import AllAffiliatesAdmin from '@/components/afiliados/AllAffiliatesAdmin';
 import ServerPagination from '@/components/pagination/ServerPagination';
 import { getServerSession } from 'next-auth';
@@ -40,6 +41,10 @@ const AffiliatesPage = async ({ searchParams }) => {
     Object.entries(urlParams).filter(([key, value]) => value !== undefined)
   );
   const searchQuery = new URLSearchParams(filteredUrlParams).toString();
+
+  const queryUrlParams = removeUndefinedAndPageKeys(urlParams);
+  const keywordQuery = new URLSearchParams(queryUrlParams).toString();
+
   const data = await getAllAffiliate(searchQuery);
   const affiliates = JSON.parse(data.affiliates);
   const filteredAffiliatesCount = data?.filteredAffiliatesCount;
@@ -71,6 +76,7 @@ const AffiliatesPage = async ({ searchParams }) => {
         prevPage={prevPage}
         nextPage={nextPage}
         totalPages={totalPages}
+        searchParams={keywordQuery}
       />
     </>
   );

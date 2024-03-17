@@ -5,6 +5,19 @@ export const isValidEmail = (email) => {
   return emailRegex.test(email);
 };
 
+export function removeUndefinedAndPageKeys(obj) {
+  // Iterate through each key in the object
+  for (const key in obj) {
+    // Check if the value of the current key is undefined or if the key is 'page'
+    if (obj[key] === undefined || key === 'page') {
+      // If it is undefined or the key is 'page', delete the key from the object
+      delete obj[key];
+    }
+  }
+  // Return the modified object
+  return obj;
+}
+
 export function generateUrlSafeTitle(title) {
   // Convert the title to lowercase and replace spaces with dashes
   let urlSafeTitle = title.toLowerCase().replace(/\s+/g, '-');

@@ -95,14 +95,11 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
               <th scope="col" className="px-6 maxsm:px-0 py-3 maxsm:hidden">
                 Titulo
               </th>
-              <th scope="col" className="px-6 maxsm:px-0 py-3 maxmd:hidden">
-                slug
+              <th scope="col" className="px-6 maxsm:px-0 py-3 ">
+                Img
               </th>
               <th scope="col" className="px-6 maxsm:px-0 py-3 ">
                 Precio
-              </th>
-              <th scope="col" className="px-6 maxsm:px-0 py-3 ">
-                Img
               </th>
               <th scope="col" className="px-1 py-3 ">
                 Exst.
@@ -128,28 +125,19 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
                   />
                 </td>
                 <td className="px-6 maxsm:px-2 py-0 maxmd:hidden">
-                  {product._id.substring(0, 10)}...
+                  {product._id.substring(0, 8)}...
                 </td>
                 <td className={`px-6 maxsm:px-0 py-0 font-bold maxsm:hidden`}>
-                  {product.title.substring(0, 15)}
+                  {product.title}
                 </td>
-                <td className="px-6 maxsm:px-2 py-0 maxmd:hidden">
-                  {product?.slug?.substring(0, 10)}...
-                </td>
-
-                <td className="px-6 maxsm:px-0 py-0 ">
-                  <b>
-                    <FormattedPrice amount={product?.variations[0].price} />
-                  </b>
-                </td>
-                <td className="px-6 maxsm:px-0 py-0 relative ">
-                  <span className="relative flex items-center justify-center text-black w-12 h-12 maxsm:w-8 maxsm:h-8 shadow mt-2">
+                <td className="px-6 maxsm:px-0 py-0 relative">
+                  <span className="relative flex items-center justify-center text-black w-20 h-20 maxsm:w-8 maxsm:h-8 shadow mt-2 overflow-hidden">
                     <Image
                       src={product?.images[0].url}
                       alt="Title"
-                      width={100}
-                      height={100}
-                      className="w-10 h-auto maxsm:w-10 "
+                      width={200}
+                      height={200}
+                      className="w-20 object-cover h-20 maxsm:w-20 rounded-md "
                     />
                     {product?.featured === 'Si' ? (
                       <span className="absolute -top-3 -right-1 z-20">
@@ -160,6 +148,12 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
                     )}
                   </span>
                 </td>
+                <td className="px-6 maxsm:px-0 py-0 ">
+                  <b>
+                    <FormattedPrice amount={product?.variations[0].price} />
+                  </b>
+                </td>
+
                 <td className="px-1 py-0 ">{product.stock}</td>
               </tr>
             ))}

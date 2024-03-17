@@ -182,11 +182,8 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
         <table className="w-full text-sm  text-left h-full">
           <thead className="text-l text-gray-700 uppercase">
             <tr>
-              <th scope="col" className="px-6 maxsm:px-0 py-3 maxmd:hidden">
-                SKU
-              </th>
-              <th scope="col" className="px-6 maxsm:px-0 py-3 maxmd:hidden">
-                slug
+              <th scope="col" className="px-6 maxsm:px-0 py-3 maxsm:hidden">
+                Titulo
               </th>
               <th scope="col" className="px-6 maxsm:px-0 py-3 ">
                 Img
@@ -195,9 +192,7 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
               <th scope="col" className="px-6 maxsm:px-0 py-3 ">
                 Precio
               </th>
-              <th scope="col" className="px-6 maxsm:px-0 py-3 maxsm:hidden">
-                Titulo
-              </th>
+
               <th scope="col" className="px-1 py-3 ">
                 Exst.
               </th>
@@ -216,25 +211,19 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                 }`}
                 key={product?._id}
               >
-                <td className="px-2 py-0 maxmd:hidden">
-                  <Link href={`/admin/productos/variacion/${product?.slug}`}>
-                    {product?._id.substring(0, 10)}...
-                  </Link>
+                <td className={`px-6 maxsm:px-0 py-0 font-bold maxsm:hidden`}>
+                  {product?.title}
                 </td>
-                <td className="px-6 maxsm:px-2 py-0 maxmd:hidden">
-                  <Link href={`/admin/productos/variacion/${product?.slug}`}>
-                    {product?.slug?.substring(0, 10)}...
-                  </Link>
-                </td>
+
                 <td className="px-6 maxsm:px-0 py-0 relative ">
-                  <span className="relative flex items-center justify-center text-black w-12 h-12 maxsm:w-8 maxsm:h-8 shadow mt-2">
+                  <span className="relative flex items-center justify-center text-black w-20 h-20 maxsm:w-8 maxsm:h-8 shadow mt-2">
                     <Link href={`/admin/productos/variacion/${product?.slug}`}>
                       <Image
                         src={product?.images[0]?.url}
                         alt="Title"
-                        width={100}
-                        height={100}
-                        className="w-10 h-auto maxsm:w-10 "
+                        width={200}
+                        height={200}
+                        className="w-20 object-cover h-20 maxsm:w-20 rounded-md"
                       />
                     </Link>
                     {product?.featured === 'Si' ? (
@@ -251,9 +240,7 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                     <FormattedPrice amount={product?.variations[0]?.price} />
                   </b>
                 </td>
-                <td className={`px-6 maxsm:px-0 py-0 font-bold maxsm:hidden`}>
-                  {product?.title?.substring(0, 15)}
-                </td>
+
                 <td className="px-1 py-0 ">{product?.stock}</td>
                 <td className="px-1 py-0 flex flex-row items-center gap-x-1">
                   <Link

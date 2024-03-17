@@ -2,6 +2,7 @@ import React from 'react';
 import ServerPagination from '@/components/pagination/ServerPagination';
 import AdminProducts from '@/components/admin/AdminProducts';
 import { getAllProduct } from '@/app/_actions';
+import { removeUndefinedAndPageKeys } from '@/backend/helpers';
 
 const AdminProductsPage = async ({ searchParams }) => {
   const urlParams = {
@@ -12,6 +13,10 @@ const AdminProductsPage = async ({ searchParams }) => {
     Object.entries(urlParams).filter(([key, value]) => value !== undefined)
   );
   const searchQuery = new URLSearchParams(filteredUrlParams).toString();
+
+  const queryUrlParams = removeUndefinedAndPageKeys(urlParams);
+  const keywordQuery = new URLSearchParams(queryUrlParams).toString();
+
   const data = await getAllProduct(searchQuery);
 
   const products = JSON.parse(data.products);
@@ -49,6 +54,7 @@ const AdminProductsPage = async ({ searchParams }) => {
         prevPage={prevPage}
         nextPage={nextPage}
         totalPages={totalPages}
+        searchParams={keywordQuery}
       />
     </>
   );

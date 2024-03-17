@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import { formatDate, formatTime } from '@/backend/helpers';
 
-const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments }) => {
+const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
   const { updateOrder } = useContext(AuthContext);
   const [orderStatus, setOrderStatus] = useState('pendiente');
   const [currentOrderStatus, setCurrentOrderStatus] = useState(
@@ -80,13 +80,14 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments }) => {
 
   return (
     <>
-      <div className="relative overflow-x-auto shadow-md maxsm:rounded-lg p-5 maxsm:p-1">
+      <div className="relative overflow-x-auto shadow-md maxsm:rounded-lg p-5 maxsm:p-1 ">
         <div className="flex flex-row items-center justify-start gap-x-5">
-          <Link href={`/admin/clientes/perfil/${order?.orderUser?._id}`}>
+          <Link href={`/admin/cliente/${user?._id}`}>
             <h2 className="text-3xl mb-1 ml-4 font-bold text-slate-700">
-              {order?.orderUser?.name}
+              {user?.name}
             </h2>
           </Link>
+          <p className="text-gray-600">{user?.email || user?.phone}</p>
         </div>
         <div className="flex flex-row maxsm:flex-col items-start justify-start gap-x-5">
           <h2 className="text-3xl mb-8 ml-4 font-bold ">
@@ -282,7 +283,7 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments }) => {
             )}
           </div>
         </div>
-        {order?.orderStatus ? (
+        <div className="flex flex-col w-full ">
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg p-3 w-full">
             <h2 className="text-2xl">Pagos</h2>
             <table className="w-full text-sm text-left">
@@ -306,7 +307,7 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments }) => {
                 {orderPayments?.map((payment) => (
                   <tr
                     className="bg-white flex flex-row justify-between "
-                    key={payment?.paymentIntent}
+                    key={payment?._id}
                   >
                     <td className="px-2 maxsm:px-0 py-2 w-full">
                       {formatDate(payment?.pay_date)}
@@ -330,71 +331,67 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments }) => {
               </tbody>
             </table>
           </div>
-        ) : (
-          <div className="w-2/3 maxmd:w-full">
-            <hr />
+          <hr className="border border-gray-300" />
+          <div className="w-full mt-8">
             <form
               onSubmit={handleSubmit}
-              className="flex flex-row flex-wrap items-start gap-5 justify-start "
+              className="flex flex-row items-start gap-5 justify-start "
             >
-              {' '}
-              <div className="my-8">
-                <h2
-                  className={`${
-                    order?.orderStatus === 'Procesando'
-                      ? 'text-blue-900'
-                      : order?.orderStatus === 'En Camino'
-                      ? 'text-amber-700'
-                      : order?.orderStatus === 'Entregado'
-                      ? 'text-green-700'
-                      : order.orderStatus === 'Sucursal'
-                      ? 'text-purple-950'
-                      : ''
-                  } text-3xl mb-8 ml-4 font-bold uppercase`}
-                >
-                  {currentOrderStatus}
-                </h2>
+              <h2
+                className={`${
+                  order?.orderStatus === 'Procesando'
+                    ? 'text-blue-900'
+                    : order?.orderStatus === 'En Camino'
+                    ? 'text-amber-700'
+                    : order?.orderStatus === 'Entregado'
+                    ? 'text-green-700'
+                    : order.orderStatus === 'Sucursal'
+                    ? 'text-purple-950'
+                    : ''
+                } text-3xl mb-8 ml-4 font-bold uppercase`}
+              >
+                {currentOrderStatus}
+              </h2>
+
+              <div className="relative w-full">
                 <label className="block mb-3">
-                  {' '}
-                  Actualizar estado de pedido{' '}
+                  Actualizar estado de pedido
                 </label>
-                <div className="relative">
-                  <select
-                    className="block appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
-                    name="orderStatus"
-                    required
-                    value={orderStatus}
-                    onChange={(e) => setOrderStatus(e.target.value)}
+                <select
+                  className="block appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
+                  name="orderStatus"
+                  required
+                  value={orderStatus}
+                  onChange={(e) => setOrderStatus(e.target.value)}
+                >
+                  {['Procesando', 'En Camino', 'Entregado', 'Cancelado'].map(
+                    (status) => (
+                      <option key={status} value={status}>
+                        {status}
+                      </option>
+                    )
+                  )}
+                </select>
+                <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
+                  <svg
+                    width="22"
+                    height="22"
+                    className="fill-current"
+                    viewBox="0 0 20 20"
                   >
-                    {['Procesando', 'En Camino', 'Entregado', 'Cancelado'].map(
-                      (status) => (
-                        <option key={status} value={status}>
-                          {status}
-                        </option>
-                      )
-                    )}
-                  </select>
-                  <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
-                    <svg
-                      width="22"
-                      height="22"
-                      className="fill-current"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M7 10l5 5 5-5H7z"></path>
-                    </svg>
-                  </i>
-                </div>
+                    <path d="M7 10l5 5 5-5H7z"></path>
+                  </svg>
+                </i>
               </div>
               <button
                 type="submit"
-                className="mb-2 px-4 py-2 text-center w-full inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
+                className="my-3 px-4 py-2 text-center w-full inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
               >
                 Actualizar
               </button>
             </form>
           </div>
-        )}
+        </div>
       </div>
     </>
   );

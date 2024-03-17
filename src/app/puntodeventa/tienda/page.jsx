@@ -1,4 +1,4 @@
-import { getCookiesName } from '@/backend/helpers';
+import { getCookiesName, removeUndefinedAndPageKeys } from '@/backend/helpers';
 import { cookies } from 'next/headers';
 import ServerPagination from '@/components/pagination/ServerPagination';
 import ListPOSProducts from '@/components/products/ListPOSProducts';
@@ -8,23 +8,8 @@ export const metadata = {
   description: 'Punto de Venta Shopout Mx',
 };
 
-const getAllProducts = async (searchParams, currentCookies, perPage) => {
+const getAllProducts = async (searchQuery, currentCookies, perPage) => {
   try {
-    const urlParams = {
-      keyword: searchParams.keyword,
-      page: searchParams.page,
-      category: searchParams.category,
-      brand: searchParams.brand,
-      'rating[gte]': searchParams.rating,
-      'price[lte]': searchParams.max,
-      'price[gte]': searchParams.min,
-    };
-    // Filter out undefined values
-    const filteredUrlParams = Object.fromEntries(
-      Object.entries(urlParams).filter(([key, value]) => value !== undefined)
-    );
-
-    const searchQuery = new URLSearchParams(filteredUrlParams).toString();
     const URL = `${process.env.NEXTAUTH_URL}/api/products?${searchQuery}`;
     const res = await fetch(URL, {
       credentials: 'include',
@@ -49,7 +34,26 @@ const TiendaPage = async ({ searchParams }) => {
   const currentCookies = `${cookieName}=${nextAuthSessionToken}`;
 
   const per_page = 10;
-  const data = await getAllProducts(searchParams, currentCookies, per_page);
+  const urlParams = {
+    keyword: searchParams.keyword,
+    page: searchParams.page,
+    category: searchParams.category,
+    brand: searchParams.brand,
+    'rating[gte]': searchParams.rating,
+    'price[lte]': searchParams.max,
+    'price[gte]': searchParams.min,
+  };
+  // Filter out undefined values
+  const filteredUrlParams = Object.fromEntries(
+    Object.entries(urlParams).filter(([key, value]) => value !== undefined)
+  );
+
+  const searchQuery = new URLSearchParams(filteredUrlParams).toString();
+
+  const queryUrlParams = removeUndefinedAndPageKeys(urlParams);
+  const keywordQuery = new URLSearchParams(queryUrlParams).toString();
+
+  const data = await getAllProducts(searchQuery, currentCookies, per_page);
 
   //pagination
   let page = parseInt(searchParams.page, 10);
@@ -90,6 +94,7 @@ const TiendaPage = async ({ searchParams }) => {
         prevPage={prevPage}
         nextPage={nextPage}
         totalPages={totalPages}
+        searchParams={keywordQuery}
       />
     </div>
   );
