@@ -81,7 +81,7 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
         </button>
         <table className="w-full text-sm  text-left">
           <thead className="text-l text-gray-700 uppercase">
-            <tr>
+            <tr className="flex flex-row items-center">
               <th>
                 <input
                   type="checkbox"
@@ -89,19 +89,25 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
                   onChange={handleSelectAll}
                 />
               </th>
-              <th scope="col" className="px-6 maxsm:px-0 py-3 maxmd:hidden">
+              <th
+                scope="col"
+                className="w-full px-6 maxsm:px-0 py-3 maxmd:hidden"
+              >
                 SKU
               </th>
-              <th scope="col" className="px-6 maxsm:px-0 py-3 maxsm:hidden">
+              <th
+                scope="col"
+                className="w-full px-6 maxsm:px-0 py-3 maxsm:hidden"
+              >
                 Titulo
               </th>
-              <th scope="col" className="px-6 maxsm:px-0 py-3 ">
+              <th scope="col" className="w-full px-6 maxsm:px-0 py-3 ">
                 Img
               </th>
-              <th scope="col" className="px-6 maxsm:px-0 py-3 ">
+              <th scope="col" className="w-full px-6 maxsm:px-0 py-3 ">
                 Precio
               </th>
-              <th scope="col" className="px-1 py-3 ">
+              <th scope="col" className="w-full px-1 py-3 ">
                 Exst.
               </th>
             </tr>
@@ -109,7 +115,7 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
           <tbody>
             {selectedProducts?.map((product, index) => (
               <tr
-                className={` ${
+                className={`flex flex-row items-center ${
                   product?.active === true
                     ? 'bg-slate-100'
                     : 'bg-slate-200 text-slate-400'
@@ -124,13 +130,15 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
                     onChange={() => handleCheckBox(product)}
                   />
                 </td>
-                <td className="px-6 maxsm:px-2 py-0 maxmd:hidden">
+                <td className="w-full px-6 maxsm:px-2 py-0 maxmd:hidden">
                   {product._id.substring(0, 8)}...
                 </td>
-                <td className={`px-6 maxsm:px-0 py-0 font-bold maxsm:hidden`}>
+                <td
+                  className={`w-full px-6 maxsm:px-0 py-0 font-bold maxsm:hidden`}
+                >
                   {product.title}
                 </td>
-                <td className="px-6 maxsm:px-0 py-0 relative">
+                <td className="w-full px-6 maxsm:px-0 py-0 relative">
                   <span className="relative flex items-center justify-center text-black w-20 h-20 maxsm:w-8 maxsm:h-8 shadow mt-2 overflow-hidden">
                     <Image
                       src={product?.images[0].url}
@@ -148,13 +156,13 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
                     )}
                   </span>
                 </td>
-                <td className="px-6 maxsm:px-0 py-0 ">
+                <td className="w-full px-6 maxsm:px-0 py-0 ">
                   <b>
                     <FormattedPrice amount={product?.variations[0].price} />
                   </b>
                 </td>
 
-                <td className="px-1 py-0 ">{product.stock}</td>
+                <td className="w-full px-1 py-0 ">{product.stock}</td>
               </tr>
             ))}
           </tbody>

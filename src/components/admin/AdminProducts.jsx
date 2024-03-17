@@ -181,22 +181,25 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
         </div>
         <table className="w-full text-sm  text-left h-full">
           <thead className="text-l text-gray-700 uppercase">
-            <tr>
-              <th scope="col" className="px-6 maxsm:px-0 py-3 maxsm:hidden">
+            <tr className="flex flex-row items-center">
+              <th
+                scope="col"
+                className="w-full px-6 maxsm:px-0 py-3 maxsm:hidden"
+              >
                 Titulo
               </th>
-              <th scope="col" className="px-6 maxsm:px-0 py-3 ">
+              <th scope="col" className="w-full px-6 maxsm:px-0 py-3 ">
                 Img
               </th>
 
-              <th scope="col" className="px-6 maxsm:px-0 py-3 ">
+              <th scope="col" className="w-full px-6 maxsm:px-0 py-3 ">
                 Precio
               </th>
 
-              <th scope="col" className="px-1 py-3 ">
+              <th scope="col" className="w-full px-1 py-3 ">
                 Exst.
               </th>
-              <th scope="col" className="w-5 px-1 py-3 text-center">
+              <th scope="col" className="w-full px-1 py-3 text-center">
                 ...
               </th>
             </tr>
@@ -204,18 +207,20 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
           <tbody>
             {products?.map((product, index) => (
               <tr
-                className={` ${
+                className={`flex flex-row items-center ${
                   product?.active === true
                     ? 'bg-slate-100'
                     : 'bg-slate-200 text-slate-400'
                 }`}
                 key={product?._id}
               >
-                <td className={`px-6 maxsm:px-0 py-0 font-bold maxsm:hidden`}>
+                <td
+                  className={`w-full px-6 maxsm:px-0 py-0 font-bold maxsm:hidden`}
+                >
                   {product?.title}
                 </td>
 
-                <td className="px-6 maxsm:px-0 py-0 relative ">
+                <td className="w-full px-6 maxsm:px-0 py-0 relative ">
                   <span className="relative flex items-center justify-center text-black w-20 h-20 maxsm:w-8 maxsm:h-8 shadow mt-2">
                     <Link href={`/admin/productos/variacion/${product?.slug}`}>
                       <Image
@@ -235,14 +240,14 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                     )}
                   </span>
                 </td>
-                <td className="px-6 maxsm:px-0 py-0 ">
+                <td className="w-full px-6 maxsm:px-0 py-0 ">
                   <b>
                     <FormattedPrice amount={product?.variations[0]?.price} />
                   </b>
                 </td>
 
-                <td className="px-1 py-0 ">{product?.stock}</td>
-                <td className="px-1 py-0 flex flex-row items-center gap-x-1">
+                <td className="w-full px-1 py-0 ">{product?.stock}</td>
+                <td className="w-full px-1 py-0 flex flex-row items-center gap-x-1">
                   <Link
                     href={`/admin/productos/variacion/${product?.slug}`}
                     className="p-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "

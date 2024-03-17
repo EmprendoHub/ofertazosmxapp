@@ -22,7 +22,7 @@ const POSProductsPage = async ({ searchParams }) => {
   // pagination
   let page = parseInt(searchParams.page, 10);
   page = !page || page < 1 ? 1 : page;
-  const perPage = 5;
+  const perPage = 10;
   const itemCount = data?.productsCount;
   const totalPages = Math.ceil(data.filteredProductsCount / perPage);
   const prevPage = page - 1 > 0 ? page - 1 : 1;

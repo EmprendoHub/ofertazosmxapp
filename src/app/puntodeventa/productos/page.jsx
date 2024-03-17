@@ -1,3 +1,4 @@
+import React from 'react';
 import { getAllPOSProduct } from '@/app/_actions';
 import { removeUndefinedAndPageKeys } from '@/backend/helpers';
 import ServerPagination from '@/components/pagination/ServerPagination';
@@ -17,19 +18,20 @@ const POSProductsPage = async ({ searchParams }) => {
   const keywordQuery = new URLSearchParams(queryUrlParams).toString();
 
   const data = await getAllPOSProduct(searchQuery);
+
   const products = JSON.parse(data.products);
   const filteredProductsCount = data.filteredProductsCount;
   // pagination
   let page = parseInt(searchParams.page, 10);
   page = !page || page < 1 ? 1 : page;
-  const perPage = 5;
+  const perPage = 10;
   const itemCount = data?.productsCount;
   const totalPages = Math.ceil(data.filteredProductsCount / perPage);
   const prevPage = page - 1 > 0 ? page - 1 : 1;
   const nextPage = page + 1;
   const isPageOutOfRange = page > totalPages;
   const pageNumbers = [];
-  const offsetNumber = 1;
+  const offsetNumber = 3;
   const search =
     typeof searchParams.search === 'string' ? searchParams.search : undefined;
 
@@ -42,7 +44,7 @@ const POSProductsPage = async ({ searchParams }) => {
     <>
       <AllPOSProductsComp
         products={products}
-        filteredProductsCount={filteredProductsCount}
+        filteredProductsCount={itemCount}
       />
       <ServerPagination
         isPageOutOfRange={isPageOutOfRange}

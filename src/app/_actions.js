@@ -1520,10 +1520,12 @@ export async function getAllPOSProduct(searchQuery) {
       $and: [{ stock: { $gt: 0 } }, { 'availability.branch': true }],
     });
     const searchParams = new URLSearchParams(searchQuery);
-    const resPerPage = Number(searchParams.get('perpage')) || 20;
+    const resPerPage = Number(searchParams.get('perpage')) || 10;
     // Extract page and per_page from request URL
     const page = Number(searchParams.get('page')) || 1;
     productQuery = productQuery.sort({ createdAt: -1 });
+    // total number of documents in database
+    const productsCount = await Product.countDocuments();
     // Apply search Filters
     const apiProductFilters = new APIFilters(productQuery, searchParams)
       .searchAllFields()
@@ -1532,9 +1534,11 @@ export async function getAllPOSProduct(searchQuery) {
     let productsData = await apiProductFilters.query;
 
     const filteredProductsCount = productsData.length;
+
     apiProductFilters.pagination(resPerPage, page);
     productsData = await apiProductFilters.query.clone();
     let products = JSON.stringify(productsData);
+    revalidatePath('/admin/pos/productos/');
     return {
       products: products,
       filteredProductsCount: filteredProductsCount,
