@@ -59,6 +59,15 @@ export default function UserLayout({ children }) {
             url={'/puntodeventa/qr/scanner'}
           />
           <SideBarItem
+            icon={<TbScan size={20} />}
+            text={'Scanner ID'}
+            active={
+              pathname === '/puntodeventa/qr/idscanner' ||
+              (pathname === '/puntodeventa/qr/idscanner' && true)
+            }
+            url={'/puntodeventa/qr/idscanner'}
+          />
+          <SideBarItem
             icon={<TbQrcode size={20} />}
             text={'Generar QRs'}
             active={

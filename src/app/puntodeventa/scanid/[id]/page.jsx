@@ -1,5 +1,5 @@
 import { getOnePOSProduct } from '@/app/_actions';
-import POSScannerComponent from '@/components/pos/POSScannerComponent';
+import POSResultScanner from '@/components/pos/POSResultScanner';
 import React from 'react';
 
 const ScanPOSProductPage = async ({ params }) => {
@@ -8,7 +8,7 @@ const ScanPOSProductPage = async ({ params }) => {
   const product = await JSON.parse(data.product);
   const variation = await JSON.parse(data.variation);
 
-  return <POSScannerComponent product={product} variation={variation} />;
+  return <POSResultScanner product={product} variation={variation} />;
 };
 
 export default ScanPOSProductPage;
