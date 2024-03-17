@@ -65,7 +65,7 @@ const TiendaPage = async ({ searchParams }) => {
   const nextPage = page + 1;
   const isPageOutOfRange = page > totalPages;
   const pageNumbers = [];
-  const offsetNumber = 1;
+  const offsetNumber = 3;
   const products = data?.products.products;
   const allBrands = data?.allBrands;
   const allCategories = data?.allCategories;

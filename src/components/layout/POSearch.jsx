@@ -1,17 +1,26 @@
 'use client';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 const POSSearch = () => {
   const [keyword, setKeyword] = useState('');
+  const pathname = usePathname();
   const router = useRouter();
   const submitHandler = (e) => {
     e.preventDefault();
 
-    if (keyword) {
-      router.push(`/admin/pos/tienda/?keyword=${keyword}`);
+    if (pathname.includes('admin')) {
+      if (keyword) {
+        router.push(`/admin/pos/tienda/?keyword=${keyword}`);
+      } else {
+        router.push('/admin/pos/tienda');
+      }
     } else {
-      router.push('/admin/pos/tienda');
+      if (keyword) {
+        router.push(`/puntodeventa/tienda/?keyword=${keyword}`);
+      } else {
+        router.push('/puntodeventa/tienda');
+      }
     }
   };
   return (
