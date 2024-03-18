@@ -139,8 +139,16 @@ const getClientCountPreviousMonth = async () => {
 export async function payPOSDrawer(data) {
   const session = await getServerSession(options);
   try {
-    let { items, transactionNo, payType, amountReceived, email, phone, name } =
-      Object.fromEntries(data);
+    let {
+      items,
+      transactionNo,
+      payType,
+      amountReceived,
+      note,
+      email,
+      phone,
+      name,
+    } = Object.fromEntries(data);
 
     await dbConnect();
     let user;
@@ -241,6 +249,10 @@ export async function payPOSDrawer(data) {
 
     let orderData = {
       user: user._id,
+      phone: user?.phone,
+      email: user?.email,
+      customerName: user?.name,
+      comment: note,
       ship_cost,
       createdAt: date,
       branch: branchInfo,
@@ -1155,7 +1167,8 @@ export async function getAllOrder(searchQuery) {
 
 export async function updateOneOrder(data) {
   try {
-    let { transactionNo, paidOn, amount, orderId } = Object.fromEntries(data);
+    let { transactionNo, paidOn, note, amount, orderId } =
+      Object.fromEntries(data);
     let newOrderStatus;
     let newOrderPaymentStatus;
     // Define the model name with the suffix appended with the lottery ID
@@ -1194,6 +1207,7 @@ export async function updateOneOrder(data) {
       type: 'sucursal',
       paymentIntent: '',
       amount: amount,
+      comment: note,
       reference: transactionNo,
       pay_date: date,
       method: payMethod,

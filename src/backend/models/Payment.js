@@ -18,6 +18,9 @@ const PaymentSchema = new mongoose.Schema({
   method: {
     type: String,
   },
+  comment: {
+    type: String,
+  },
   pay_date: {
     type: Date,
   },

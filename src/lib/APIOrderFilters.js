@@ -18,11 +18,14 @@ class APIOrderFilters {
             // Include condition to search by orderStatus
             { orderStatus: { $regex: keyword, $options: 'i' } },
             {
-              'user.phone': { $regex: keyword, $options: 'i' },
+              phone: { $regex: keyword, $options: 'i' },
             }, // Filter by user's phone
             {
-              'user.email': { $regex: keyword, $options: 'i' },
+              email: { $regex: keyword, $options: 'i' },
             }, // Filter by user's email
+            {
+              customerName: { $regex: keyword, $options: 'i' },
+            },
           ],
         };
 

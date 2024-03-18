@@ -65,6 +65,9 @@ export const POST = async (request) => {
     const order_items = await getCartItems(items);
     let orderData = {
       user: userId,
+      phone: existingUser?.phone,
+      email: existingUser?.email,
+      customerName: existingUser?.name,
       ship_cost,
       createdAt: date,
       branch: branchInfo,

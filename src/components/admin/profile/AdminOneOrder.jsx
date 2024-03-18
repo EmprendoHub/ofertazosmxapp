@@ -84,7 +84,7 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
         <div className="flex flex-row items-center justify-start gap-x-5">
           <Link href={`/admin/cliente/${user?._id}`}>
             <h2 className="text-3xl mb-1 ml-4 font-bold text-slate-700">
-              {user?.name}
+              {order?.customerName}
             </h2>
           </Link>
           <p className="text-gray-600">{user?.email || user?.phone}</p>
@@ -299,6 +299,9 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
                   <th scope="col" className="px-2 maxsm:px-0 py-3  w-full">
                     Cant.
                   </th>
+                  <th scope="col" className="px-2 maxsm:px-0 py-3  w-full">
+                    Nota.
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -323,6 +326,9 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
                     </td>
                     <td className="px-2 maxsm:px-0 py-2  w-full font-bold">
                       <FormattedPrice amount={payment?.amount || 0} />
+                    </td>
+                    <td className="px-2 maxsm:px-0 py-2  w-full uppercase text-xs">
+                      {payment?.comment}
                     </td>
                   </tr>
                 ))}

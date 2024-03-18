@@ -9,17 +9,21 @@ const UserSchema = new mongoose.Schema(
     name: {
       type: String,
       require: true,
+      index: true,
     },
     email: {
       type: String,
       require: true,
       unique: true,
+      index: true,
     },
     verificationToken: {
       type: String,
     },
     phone: {
       type: String,
+      unique: true,
+      index: true,
     },
     stripe_id: {
       type: String,

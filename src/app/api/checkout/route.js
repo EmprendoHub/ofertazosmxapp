@@ -146,6 +146,9 @@ export const POST = async (request) => {
     if (isLayaway) {
       orderData = {
         user: user._id,
+        phone: user?.phone,
+        email: user?.email,
+        customerName: user?.name,
         ship_cost,
         createdAt: date,
         shippingInfo: shipping,
@@ -159,6 +162,9 @@ export const POST = async (request) => {
     } else {
       orderData = {
         user: user._id,
+        phone: user?.phone,
+        email: user?.email,
+        customerName: user?.name,
         ship_cost,
         createdAt: date,
         shippingInfo: shipping,

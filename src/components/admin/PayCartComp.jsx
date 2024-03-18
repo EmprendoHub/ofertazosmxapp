@@ -18,7 +18,8 @@ const PayCartComp = ({ setShowModal, payType }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [transactionNo, setTransactionNo] = useState('EFECTIVO');
-  const [phone, setPhoneNo] = useState('111-111-1111');
+  const [phone, setPhoneNo] = useState('');
+  const [note, setNote] = useState('');
   const [email, setEmail] = useState('sucursal@shopout.com.mx');
   const [name, setName] = useState('CLIENTE EFECTIVO');
   const [savingPayment, setSavingPayment] = useState(false);
@@ -71,6 +72,7 @@ const PayCartComp = ({ setShowModal, payType }) => {
     formData.append('items', items);
     formData.append('name', name);
     formData.append('phone', phone);
+    formData.append('note', note);
     formData.append('email', email);
     formData.append('transactionNo', transactionNo);
     formData.append('amountReceived', amountReceived);
@@ -138,6 +140,15 @@ const PayCartComp = ({ setShowModal, payType }) => {
                 placeholder="Email"
                 onChange={(e) => setEmail(e.target.value)}
                 name="email"
+              />
+            </div>
+            <div className="mb-4 text-center">
+              <input
+                type="text"
+                className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none hover:outline-none focus:border-gray-400 hover:border-gray-400 w-full text-center font-bold "
+                placeholder="Nota"
+                onChange={(e) => setNote(e.target.value)}
+                name="note"
               />
             </div>
             <div className="mb-4 text-center">

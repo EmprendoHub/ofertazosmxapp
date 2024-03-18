@@ -7,6 +7,7 @@ import { updateOneOrder } from '@/app/_actions';
 const PayOrderComp = ({ setShowModal, orderId, isPaid }) => {
   const [transactionNo, setTransactionNo] = useState('EFECTIVO');
   const [amount, setAmount] = useState(0);
+  const [note, setNote] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,6 +26,7 @@ const PayOrderComp = ({ setShowModal, orderId, isPaid }) => {
       formData.set('transactionNo', transactionNo);
       formData.set('paidOn', new Date());
       formData.set('amount', amount);
+      formData.set('note', note);
       formData.set('orderId', orderId);
       try {
         const res = await updateOneOrder(formData);
@@ -58,7 +60,7 @@ const PayOrderComp = ({ setShowModal, orderId, isPaid }) => {
                   <input
                     type="text"
                     className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
-                    placeholder="Nombre de Sorteo"
+                    placeholder="No de Transacción"
                     onChange={(e) => setTransactionNo(e.target.value)}
                     name="transactionNo"
                   />
@@ -74,6 +76,19 @@ const PayOrderComp = ({ setShowModal, orderId, isPaid }) => {
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     name="amount"
+                  />
+                </div>
+              </div>
+              <div className="gap-y-5 flex-col flex px-2 w-full">
+                <div className="mb-4">
+                  <label className="block mb-1"> Nota </label>
+                  <input
+                    type="text"
+                    className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
+                    placeholder="Nota"
+                    value={note}
+                    onChange={(e) => setNote(e.target.value)}
+                    name="note"
                   />
                 </div>
               </div>
