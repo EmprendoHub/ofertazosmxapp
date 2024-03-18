@@ -1095,21 +1095,28 @@ export async function getOneOrder(id) {
 export async function getAllOrder(searchQuery) {
   try {
     await dbConnect();
+    // Enable profiling for all database operations (level 2)
+
     const session = await getServerSession(options);
     let orderQuery;
-    if (session?.user?.role === 'manager') {
-      orderQuery = Order.find({ orderStatus: { $ne: 'Cancelado' } });
+    if (
+      session?.user?.role === 'manager' ||
+      session?.user?.role === 'sucursal'
+    ) {
+      orderQuery = Order.find({ orderStatus: { $ne: 'Cancelado' } }).populate(
+        'user'
+      );
     } else if (session?.user?.role === 'afiliado') {
       const affiliate = await Affiliate.findOne({ user: session?.user?._id });
       orderQuery = Order.find({
         affiliateId: affiliate?._id.toString(),
         orderStatus: { $ne: 'Cancelado' },
-      });
+      }).populate('user');
     } else {
       orderQuery = Order.find({
         user: session?.user?._id,
         orderStatus: { $ne: 'Cancelado' },
-      });
+      }).populate('user');
     }
 
     const searchParams = new URLSearchParams(searchQuery);
@@ -1121,9 +1128,11 @@ export async function getAllOrder(searchQuery) {
     const totalOrderCount = await Order.countDocuments();
 
     // Apply search Filters including order_id and orderStatus
-    const apiOrderFilters = new APIOrderFilters(orderQuery, searchParams)
-      .searchAllFields()
-      .filter();
+    const apiOrderFilters = new APIOrderFilters(
+      orderQuery,
+      searchParams
+    ).searchAllFields();
+
     let ordersData = await apiOrderFilters.query;
 
     const itemCount = ordersData.length;
@@ -1215,7 +1224,7 @@ export async function getAllPOSOrder(searchQuery) {
     if (session?.user?.role === 'sucursal') {
       orderQuery = Order.find({
         $and: [{ branch: 'Sucursal' }, { orderStatus: { $ne: 'Cancelado' } }],
-      });
+      }).populate('user');
     }
 
     const searchParams = new URLSearchParams(searchQuery);

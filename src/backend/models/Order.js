@@ -97,6 +97,10 @@ const OrderSchema = new mongoose.Schema({
   },
 });
 
+// Add indexes for user.phone and user.email
+OrderSchema.index({ 'user.phone': 1 });
+OrderSchema.index({ 'user.email': 1 });
+
 // Apply the pre-save hook to generate the orderNumber
 OrderSchema.pre('save', async function (next) {
   const doc = this;

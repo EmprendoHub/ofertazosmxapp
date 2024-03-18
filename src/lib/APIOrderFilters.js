@@ -8,7 +8,7 @@ class APIOrderFilters {
     const keyword = this.queryStr.get('keyword');
 
     // Check if the keyword is a valid ObjectId
-    const orderId = !isNaN(keyword);
+    const orderId = !isNaN(keyword) && keyword && keyword.length <= 5;
 
     // Define the conditions to search for the keyword in title, description, and category
     const searchConditions = orderId
@@ -17,17 +17,21 @@ class APIOrderFilters {
           $or: [
             // Include condition to search by orderStatus
             { orderStatus: { $regex: keyword, $options: 'i' } },
-            // Include condition to search by orderId
+            {
+              'user.phone': { $regex: keyword, $options: 'i' },
+            }, // Filter by user's phone
+            {
+              'user.email': { $regex: keyword, $options: 'i' },
+            }, // Filter by user's email
           ],
         };
 
-    // Use a temporary variable to hold the conditions
     const tempConditions = keyword
       ? { $and: [this.query._conditions || {}, searchConditions] }
       : this.query._conditions; // If no keyword, keep existing conditions
+
     // Set the conditions to this.query._conditions
     this.query._conditions = tempConditions;
-
     return this;
   }
 
