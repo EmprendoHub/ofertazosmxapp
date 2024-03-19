@@ -481,77 +481,321 @@ export async function getDashboard() {
     await dbConnect();
     const session = await getServerSession(options);
     let orders;
-    let affiliates;
+    let todaysOrders;
     let products;
+    let affiliates;
     let clients;
     let posts;
+    let thisWeeksOrder;
+    let totalOrdersThisWeek;
+    let dailyOrders;
+    let dailyOrdersTotals;
+    let monthlyOrdersTotals;
+    let yearlyOrdersTotals;
 
-    if (session) {
-      if (session?.user?.role === 'manager') {
-        orders = await Order.find({ orderStatus: { $ne: 'Cancelado' } })
-          .sort({ createdAt: -1 }) // Sort in descending order of creation date
-          .limit(5);
-        affiliates = await Affiliate.find({ published: { $ne: 'false' } })
-          .sort({ createdAt: -1 }) // Sort in descending order of creation date
-          .limit(5);
-        products = await Product.find({ published: { $ne: 'false' } })
-          .sort({ createdAt: -1 }) // Sort in descending order of creation date
-          .limit(5);
-        clients = await User.find({ role: 'cliente' })
-          .sort({ createdAt: -1 }) // Sort in descending order of creation date
-          .limit(5);
-        posts = await Post.find({ published: { $ne: 'false' } })
-          .sort({ createdAt: -1 }) // Sort in descending order of creation date
-          .limit(5);
-      }
-    }
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set time to midnight
+
+    // Set start of the current year
+    const startOfYear = new Date(today.getFullYear(), 0, 1, 0, 0, 0, 0);
+
+    // Set end of the current year
+    const endOfYear = new Date(today.getFullYear() + 1, 0, 0, 0, 0, 0, 0);
+
+    // Set start of the current month
+    const startOfMonth = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      1,
+      0,
+      0,
+      0,
+      0
+    );
+
+    // Set end of the current month
+    const endOfMonth = new Date(
+      today.getFullYear(),
+      today.getMonth() + 1,
+      0,
+      0,
+      0,
+      0,
+      0
+    );
+    const startOfCurrentWeek = new Date(today);
+    startOfCurrentWeek.setDate(today.getDate() - today.getDay());
+    startOfCurrentWeek.setHours(0, 0, 0, 0); // Set time to midnight
+
+    const startOfToday = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate(),
+      0,
+      0,
+      0,
+      0
+    );
+
+    const endOfToday = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate() + 1,
+      0,
+      0,
+      0,
+      0
+    );
+
+    // Calculate yesterday's date
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1, 0, 0, 0, 0); // Set it to yesterday
+
+    // Set start and end of yesterday
+    const startOfYesterday = new Date(
+      yesterday.getFullYear(),
+      yesterday.getMonth(),
+      yesterday.getDate(),
+      0,
+      0,
+      0,
+      0
+    );
+    const endOfYesterday = new Date(
+      yesterday.getFullYear(),
+      yesterday.getMonth(),
+      yesterday.getDate() + 1,
+      0,
+      0,
+      0,
+      0
+    );
+
+    orders = await Order.find({ orderStatus: { $ne: 'Cancelado' } })
+      .sort({ createdAt: -1 }) // Sort in descending order of creation date
+      .limit(5);
+
+    affiliates = await Affiliate.find({ published: { $ne: 'false' } })
+      .sort({ createdAt: -1 }) // Sort in descending order of creation date
+      .limit(5);
+    clients = await Customer.find()
+      .sort({ createdAt: -1 }) // Sort in descending order of creation date
+      .limit(5);
+    posts = await Post.find({ published: { $ne: 'false' } })
+      .sort({ createdAt: -1 }) // Sort in descending order of creation date
+      .limit(5);
+
+    dailyOrders = await Order.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: startOfToday,
+            $lt: endOfToday,
+          },
+        },
+      },
+      {
+        $unwind: '$orderItems',
+      },
+      {
+        $group: {
+          _id: {
+            orderStatus: '$orderStatus',
+            orderId: '$orderId',
+            _id: '$_id',
+          },
+          total: { $sum: '$orderItems.price' },
+        },
+      },
+      {
+        $project: {
+          _id: '$_id._id',
+          total: 1,
+          orderStatus: '$_id.orderStatus',
+          orderId: '$_id.orderId',
+        },
+      },
+    ]);
+
+    dailyOrdersTotals = await Order.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: startOfToday,
+            $lt: endOfToday,
+          },
+        },
+      },
+      {
+        $unwind: '$orderItems',
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: '$orderItems.price' },
+        },
+      },
+    ]);
+
+    // Perform aggregation to get yesterday's totals
+    let yesterdaysOrdersTotals = await Order.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: startOfYesterday,
+            $lt: endOfYesterday,
+          },
+        },
+      },
+      {
+        $unwind: '$orderItems',
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: '$orderItems.price' },
+        },
+      },
+    ]);
+
+    thisWeeksOrder = await Order.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: startOfCurrentWeek,
+            $lt: today,
+          },
+        },
+      },
+      {
+        $unwind: '$orderItems', // Deconstruct the orderItems array
+      },
+      {
+        $group: {
+          _id: {
+            orderStatus: '$orderStatus',
+            orderId: '$orderId', // Include orderId in the _id
+            _id: '$_id', // Include _id in the _id
+          },
+          total: { $sum: '$orderItems.price' }, // Calculate the total sum of prices
+        },
+      },
+      {
+        $project: {
+          _id: '$_id._id', // Project the _id from _id
+          total: 1,
+          orderStatus: '$_id.orderStatus',
+          orderId: '$_id.orderId', // Project orderId
+        },
+      },
+    ]);
+
+    totalOrdersThisWeek = await Order.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: startOfCurrentWeek,
+            $lt: today,
+          },
+        },
+      },
+      {
+        $unwind: '$orderItems', // Deconstruct the orderItems array
+      },
+      {
+        $group: {
+          _id: null, // Group all documents without any specific criteria
+          total: { $sum: '$orderItems.price' }, // Calculate the total sum of prices
+        },
+      },
+    ]);
+
+    // Perform aggregation to get this month's totals
+    monthlyOrdersTotals = await Order.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: startOfMonth,
+            $lt: endOfMonth,
+          },
+        },
+      },
+      {
+        $unwind: '$orderItems',
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: '$orderItems.price' },
+        },
+      },
+    ]);
+
+    // Perform aggregation to get this year's totals
+    yearlyOrdersTotals = await Order.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: startOfYear,
+            $lt: endOfYear,
+          },
+        },
+      },
+      {
+        $unwind: '$orderItems',
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: '$orderItems.price' },
+        },
+      },
+    ]);
+
+    products = await Product.find({ published: { $ne: 'false' } })
+      .sort({ createdAt: -1 }) // Sort in descending order of creation date
+      .limit(5);
 
     const totalOrderCount = await Order.countDocuments({
       orderStatus: { $ne: 'Cancelado' },
     });
-    const totalAffiliateCount = await Affiliate.countDocuments({
-      published: { $ne: 'false' },
+    const totalCustomerCount = await Customer.countDocuments({
+      name: { $ne: 'SUCURSAL' },
     });
     const totalProductCount = await Product.countDocuments({
       published: { $ne: 'false' },
     });
-    const totalClientCount = await User.countDocuments({ role: 'cliente' });
-    const totalPostCount = await Post.countDocuments({
-      published: { $ne: 'false' },
-    });
-
     const orderCountPreviousMonth = await getDocumentCountPreviousMonth(Order);
-    const affiliateCountPreviousMonth = await getDocumentCountPreviousMonth(
-      Affiliate
-    );
-    const productsCountPreviousMonth = await getDocumentCountPreviousMonth(
-      Product
-    );
-    const postCountPreviousMonth = await getDocumentCountPreviousMonth(Post);
-    const clientCountPreviousMonth = await getClientCountPreviousMonth();
 
     orders = JSON.stringify(orders);
+    clients = JSON.stringify(clients);
+    dailyOrders = JSON.stringify(dailyOrders);
     affiliates = JSON.stringify(affiliates);
     products = JSON.stringify(products);
-    clients = JSON.stringify(clients);
     posts = JSON.stringify(posts);
-
+    thisWeeksOrder = JSON.stringify(thisWeeksOrder);
+    const thisWeekOrderTotals = totalOrdersThisWeek[0]?.total;
+    dailyOrdersTotals = dailyOrdersTotals[0]?.total;
+    yesterdaysOrdersTotals = yesterdaysOrdersTotals[0]?.total;
+    monthlyOrdersTotals = monthlyOrdersTotals[0]?.total;
+    yearlyOrdersTotals = yearlyOrdersTotals[0]?.total;
     return {
       orders: orders,
-      affiliates: affiliates,
-      products: products,
       clients: clients,
       posts: posts,
+      affiliates: affiliates,
+      dailyOrders: dailyOrders,
+      dailyOrdersTotals: dailyOrdersTotals,
+      yesterdaysOrdersTotals: yesterdaysOrdersTotals,
+      thisWeeksOrder: thisWeeksOrder,
+      products: products,
       totalOrderCount: totalOrderCount,
+      totalCustomerCount: totalCustomerCount,
       orderCountPreviousMonth: orderCountPreviousMonth,
-      totalAffiliateCount: totalAffiliateCount,
-      affiliateCountPreviousMonth: affiliateCountPreviousMonth,
       totalProductCount: totalProductCount,
-      productsCountPreviousMonth: productsCountPreviousMonth,
-      totalClientCount: totalClientCount,
-      clientCountPreviousMonth: clientCountPreviousMonth,
-      totalPostCount: totalPostCount,
-      postCountPreviousMonth: postCountPreviousMonth,
+      thisWeekOrderTotals: thisWeekOrderTotals,
+      monthlyOrdersTotals: monthlyOrdersTotals,
+      yearlyOrdersTotals: yearlyOrdersTotals,
     };
   } catch (error) {
     console.log(error);
@@ -570,20 +814,32 @@ export async function getPOSDashboard() {
     let totalOrdersThisWeek;
     let dailyOrders;
     let dailyOrdersTotals;
+
     const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set time to midnight
+
     const startOfCurrentWeek = new Date(today);
-    startOfCurrentWeek.setDate(
-      startOfCurrentWeek.getDate() - startOfCurrentWeek.getDay()
-    );
+    startOfCurrentWeek.setDate(today.getDate() - today.getDay());
+    startOfCurrentWeek.setHours(0, 0, 0, 0); // Set time to midnight
+
     const startOfToday = new Date(
       today.getFullYear(),
       today.getMonth(),
-      today.getDate()
+      today.getDate(),
+      0,
+      0,
+      0,
+      0
     );
+
     const endOfToday = new Date(
       today.getFullYear(),
       today.getMonth(),
-      today.getDate() + 1
+      today.getDate() + 1,
+      0,
+      0,
+      0,
+      0
     );
 
     if (session) {

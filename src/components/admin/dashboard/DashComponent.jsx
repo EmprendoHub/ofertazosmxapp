@@ -10,24 +10,31 @@ import {
   HiOutlineUserGroup,
 } from 'react-icons/hi';
 import { GiClothes } from 'react-icons/gi';
+import FormattedPrice from '@/backend/helpers/FormattedPrice';
 
-const DashComponent = ({
-  clients,
-  affiliates,
-  orders,
-  products,
-  posts,
-  orderCountPreviousMonth,
-  affiliateCountPreviousMonth,
-  postCountPreviousMonth,
-  clientCountPreviousMonth,
-  totalOrderCount,
-  totalAffiliateCount,
-  totalProductCount,
-  totalClientCount,
-  totalPostCount,
-  productsCountPreviousMonth,
-}) => {
+const DashComponent = ({ data }) => {
+  const clients = JSON.parse(data?.clients);
+  const products = JSON.parse(data?.products);
+  const affiliates = JSON.parse(data?.affiliates);
+  const orders = JSON.parse(data?.orders);
+  const posts = JSON.parse(data?.posts);
+  const orderCountPreviousMonth = data?.orderCountPreviousMonth;
+  const affiliateCountPreviousMonth = data?.affiliateCountPreviousMonth;
+  const postCountPreviousMonth = data?.postCountPreviousMonth;
+  const clientCountPreviousMonth = data?.clientCountPreviousMonth;
+  const totalOrderCount = data?.totalOrderCount;
+  const totalAffiliateCount = data?.totalAffiliateCount;
+  const totalProductCount = data?.totalProductCount;
+  const productsCountPreviousMonth = data?.productsCountPreviousMonth;
+  const totalCustomerCount = data?.totalCustomerCount;
+  const totalPostCount = data?.totalPostCount;
+  const thisWeeksOrder = JSON.parse(data?.thisWeeksOrder);
+  const thisWeekOrderTotals = data?.thisWeekOrderTotals;
+  const dailyOrdersTotals = data?.dailyOrdersTotals;
+  const yesterdaysOrdersTotals = data?.yesterdaysOrdersTotals;
+  const monthlyOrdersTotals = data?.monthlyOrdersTotals;
+  const yearlyOrdersTotals = data?.yearlyOrdersTotals;
+
   return (
     <div className="p-3 md:mx-auto  text-slate-700">
       <div className="flex-row maxsm:flex-col flex gap-4 justify-start w-full">
@@ -36,9 +43,92 @@ const DashComponent = ({
             <div className="flex justify-between">
               <div className="">
                 <h3 className="text-gray-500 text-md uppercase">
+                  Ventas del Dia
+                </h3>
+                <p className="text-2xl  text-slate-700">
+                  <FormattedPrice amount={dailyOrdersTotals || 0} />
+                </p>
+              </div>
+              <HiOutlineUserGroup className="bg-blue-600  text-white rounded-full text-5xl p-3 shadow-lg" />
+            </div>
+            <div className="flex  gap-2 text-sm">
+              <span className="text-green-700 flex items-center">
+                <HiArrowNarrowUp />
+                <FormattedPrice amount={yesterdaysOrdersTotals || 0} />
+              </span>
+              <div className="text-gray-500">Dia Anterior</div>
+            </div>
+          </div>
+          <div className="flex flex-col p-3 dark:bg-slate-300 gap-4 w-full rounded-md shadow-md">
+            <div className="flex justify-between">
+              <div className="">
+                <h3 className="text-gray-500 text-md uppercase">
+                  Venta Semanal
+                </h3>
+                <p className="text-2xl  text-slate-700">
+                  <FormattedPrice amount={thisWeekOrderTotals || 0} />
+                </p>
+              </div>
+              <MdAttachMoney className="bg-teal-600  text-white rounded-full text-5xl p-3 shadow-lg" />
+            </div>
+            <div className="flex  gap-2 text-sm">
+              <span className="text-green-700 flex items-center">
+                <HiArrowNarrowUp />
+                {orderCountPreviousMonth}
+              </span>
+              <div className="text-gray-500">Semana Anterior</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="w-full flex flex-row maxmd:flex-col gap-4 justify-start items-start">
+          <div className="flex flex-col p-3 dark:bg-slate-300 gap-4 w-full rounded-md shadow-md">
+            <div className="flex justify-between">
+              <div className="">
+                <h3 className="text-gray-500 text-md uppercase">
+                  Venta Mensual
+                </h3>
+                <p className="text-2xl  text-slate-700">
+                  <FormattedPrice amount={monthlyOrdersTotals || 0} />
+                </p>
+              </div>
+              <GiClothes className="bg-indigo-600  text-white rounded-full text-5xl p-3 shadow-lg" />
+            </div>
+            <div className="flex  gap-2 text-sm">
+              <span className="text-green-700 flex items-center">
+                <HiArrowNarrowUp />
+                {productsCountPreviousMonth}
+              </span>
+              <div className="text-gray-500">Mes Anterior</div>
+            </div>
+          </div>
+          <div className="flex flex-col p-3 dark:bg-slate-300 gap-4 w-full rounded-md shadow-md">
+            <div className="flex justify-between">
+              <div className="">
+                <h3 className="text-gray-500 text-md uppercase">Vena Anual</h3>
+                <p className="text-2xl  text-slate-700">{yearlyOrdersTotals}</p>
+              </div>
+              <HiDocumentText className=" bg-orange-500 text-white rounded-full text-5xl p-3 shadow-lg" />
+            </div>
+            <div className="flex  gap-2 text-sm">
+              <span className="text-green-700 flex items-center">
+                <HiArrowNarrowUp />
+                {postCountPreviousMonth}
+              </span>
+              <div className="text-gray-500">Mes Anterior</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="flex-row maxsm:flex-col flex gap-4 justify-start w-full">
+        <div className="w-full flex flex-row maxmd:flex-col gap-4 justify-start items-start">
+          <div className="flex flex-col p-3 dark:bg-slate-300 gap-4 w-full rounded-md shadow-md">
+            <div className="flex justify-between">
+              <div className="">
+                <h3 className="text-gray-500 text-md uppercase">
                   Clientes Totales
                 </h3>
-                <p className="text-2xl  text-slate-700">{totalClientCount}</p>
+                <p className="text-2xl  text-slate-700">{totalCustomerCount}</p>
               </div>
               <HiOutlineUserGroup className="bg-blue-600  text-white rounded-full text-5xl p-3 shadow-lg" />
             </div>

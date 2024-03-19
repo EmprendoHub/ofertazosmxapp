@@ -3,7 +3,6 @@ import Link from 'next/link';
 import React from 'react';
 import { MdAttachMoney } from 'react-icons/md';
 import { IoArrowRedoSharp } from 'react-icons/io5';
-import { HiArrowNarrowUp } from 'react-icons/hi';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 const POSDashComponent = ({ clients, orders, dailyOrdersTotals, products }) => {
   return (
@@ -17,7 +16,7 @@ const POSDashComponent = ({ clients, orders, dailyOrdersTotals, products }) => {
                   Ventas del Dia
                 </h3>
                 <p className="text-2xl  text-slate-700">
-                  <FormattedPrice amount={dailyOrdersTotals} />
+                  <FormattedPrice amount={dailyOrdersTotals || 0} />
                 </p>
               </div>
               <MdAttachMoney className="bg-blue-600  text-white rounded-full text-5xl p-3 shadow-lg" />
