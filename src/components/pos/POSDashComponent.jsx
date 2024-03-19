@@ -4,6 +4,7 @@ import React from 'react';
 import { MdAttachMoney } from 'react-icons/md';
 import { IoArrowRedoSharp } from 'react-icons/io5';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
+
 const POSDashComponent = ({ clients, orders, dailyOrdersTotals, products }) => {
   return (
     <div className="p-3 md:mx-auto  text-slate-700">

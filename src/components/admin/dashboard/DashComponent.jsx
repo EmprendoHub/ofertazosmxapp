@@ -11,6 +11,7 @@ import {
 } from 'react-icons/hi';
 import { GiClothes } from 'react-icons/gi';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
+import { FaTags } from 'react-icons/fa6';
 
 const DashComponent = ({ data }) => {
   const clients = JSON.parse(data?.clients);
@@ -18,6 +19,7 @@ const DashComponent = ({ data }) => {
   const affiliates = JSON.parse(data?.affiliates);
   const orders = JSON.parse(data?.orders);
   const posts = JSON.parse(data?.posts);
+  const totalPostCount = data?.totalPostCount;
   const orderCountPreviousMonth = data?.orderCountPreviousMonth;
   const affiliateCountPreviousMonth = data?.affiliateCountPreviousMonth;
   const postCountPreviousMonth = data?.postCountPreviousMonth;
@@ -27,7 +29,6 @@ const DashComponent = ({ data }) => {
   const totalProductCount = data?.totalProductCount;
   const productsCountPreviousMonth = data?.productsCountPreviousMonth;
   const totalCustomerCount = data?.totalCustomerCount;
-  const totalPostCount = data?.totalPostCount;
   const thisWeeksOrder = JSON.parse(data?.thisWeeksOrder);
   const thisWeekOrderTotals = data?.thisWeekOrderTotals;
   const dailyOrdersTotals = data?.dailyOrdersTotals;
@@ -39,8 +40,8 @@ const DashComponent = ({ data }) => {
     <div className="p-3 md:mx-auto  text-slate-700">
       <div className="flex-row maxsm:flex-col flex gap-4 justify-start w-full">
         <div className="w-full flex flex-row maxmd:flex-col gap-4 justify-start items-start">
-          <div className="flex flex-col p-3 dark:bg-slate-300 gap-4 w-full rounded-md shadow-md">
-            <div className="flex justify-between">
+          <div className="flex flex-col p-3 bg-slate-300 shadow-lg dark:bg-slate-300 gap-4 w-full rounded-md">
+            <div className="flex justify-between ">
               <div className="">
                 <h3 className="text-gray-500 text-md uppercase">
                   Ventas del Dia
@@ -49,7 +50,7 @@ const DashComponent = ({ data }) => {
                   <FormattedPrice amount={dailyOrdersTotals || 0} />
                 </p>
               </div>
-              <HiOutlineUserGroup className="bg-blue-600  text-white rounded-full text-5xl p-3 shadow-lg" />
+              <MdAttachMoney className="bg-blue-600  text-white rounded-full text-5xl p-3 shadow-lg" />
             </div>
             <div className="flex  gap-2 text-sm">
               <span className="text-green-700 flex items-center">
@@ -59,7 +60,7 @@ const DashComponent = ({ data }) => {
               <div className="text-gray-500">Dia Anterior</div>
             </div>
           </div>
-          <div className="flex flex-col p-3 dark:bg-slate-300 gap-4 w-full rounded-md shadow-md">
+          <div className="flex flex-col p-3 bg-slate-300 shadow-lg dark:bg-slate-300 gap-4 w-full rounded-md">
             <div className="flex justify-between">
               <div className="">
                 <h3 className="text-gray-500 text-md uppercase">
@@ -82,7 +83,7 @@ const DashComponent = ({ data }) => {
         </div>
 
         <div className="w-full flex flex-row maxmd:flex-col gap-4 justify-start items-start">
-          <div className="flex flex-col p-3 dark:bg-slate-300 gap-4 w-full rounded-md shadow-md">
+          <div className="flex flex-col p-3 bg-slate-300 shadow-lg dark:bg-slate-300 gap-4 w-full rounded-md ">
             <div className="flex justify-between">
               <div className="">
                 <h3 className="text-gray-500 text-md uppercase">
@@ -92,7 +93,7 @@ const DashComponent = ({ data }) => {
                   <FormattedPrice amount={monthlyOrdersTotals || 0} />
                 </p>
               </div>
-              <GiClothes className="bg-indigo-600  text-white rounded-full text-5xl p-3 shadow-lg" />
+              <MdAttachMoney className="bg-indigo-600  text-white rounded-full text-5xl p-3 shadow-lg" />
             </div>
             <div className="flex  gap-2 text-sm">
               <span className="text-green-700 flex items-center">
@@ -102,13 +103,15 @@ const DashComponent = ({ data }) => {
               <div className="text-gray-500">Mes Anterior</div>
             </div>
           </div>
-          <div className="flex flex-col p-3 dark:bg-slate-300 gap-4 w-full rounded-md shadow-md">
+          <div className="flex flex-col p-3 bg-slate-300 shadow-lg dark:bg-slate-300 gap-4 w-full rounded-md ">
             <div className="flex justify-between">
               <div className="">
                 <h3 className="text-gray-500 text-md uppercase">Vena Anual</h3>
-                <p className="text-2xl  text-slate-700">{yearlyOrdersTotals}</p>
+                <p className="text-2xl  text-slate-700">
+                  <FormattedPrice amount={yearlyOrdersTotals || 0} />
+                </p>
               </div>
-              <HiDocumentText className=" bg-orange-500 text-white rounded-full text-5xl p-3 shadow-lg" />
+              <MdAttachMoney className=" bg-orange-500 text-white rounded-full text-5xl p-3 shadow-lg" />
             </div>
             <div className="flex  gap-2 text-sm">
               <span className="text-green-700 flex items-center">
@@ -120,9 +123,9 @@ const DashComponent = ({ data }) => {
           </div>
         </div>
       </div>
-      <div className="flex-row maxsm:flex-col flex gap-4 justify-start w-full">
+      <div className="flex-row maxsm:flex-col flex gap-4 justify-start w-full mt-4">
         <div className="w-full flex flex-row maxmd:flex-col gap-4 justify-start items-start">
-          <div className="flex flex-col p-3 dark:bg-slate-300 gap-4 w-full rounded-md shadow-md">
+          <div className="flex flex-col p-3 dark:bg-slate-300 gap-4 w-full rounded-md shadow-lg bg-slate-300">
             <div className="flex justify-between">
               <div className="">
                 <h3 className="text-gray-500 text-md uppercase">
@@ -140,7 +143,7 @@ const DashComponent = ({ data }) => {
               <div className="text-gray-500">Mes Anterior</div>
             </div>
           </div>
-          <div className="flex flex-col p-3 dark:bg-slate-300 gap-4 w-full rounded-md shadow-md">
+          <div className="flex flex-col p-3 dark:bg-slate-300 gap-4 w-full rounded-md shadow-lg bg-slate-300">
             <div className="flex justify-between">
               <div className="">
                 <h3 className="text-gray-500 text-md uppercase">
@@ -148,7 +151,7 @@ const DashComponent = ({ data }) => {
                 </h3>
                 <p className="text-2xl text-slate-700">{totalOrderCount}</p>
               </div>
-              <MdAttachMoney className="bg-teal-600  text-white rounded-full text-5xl p-3 shadow-lg" />
+              <FaTags className="bg-teal-600  text-white rounded-full text-5xl p-3 shadow-lg" />
             </div>
             <div className="flex  gap-2 text-sm">
               <span className="text-green-700 flex items-center">
@@ -161,7 +164,7 @@ const DashComponent = ({ data }) => {
         </div>
 
         <div className="w-full flex flex-row maxmd:flex-col gap-4 justify-start items-start">
-          <div className="flex flex-col p-3 dark:bg-slate-300 gap-4 w-full rounded-md shadow-md">
+          <div className="flex flex-col p-3 dark:bg-slate-300 gap-4 w-full rounded-md shadow-lg bg-slate-300">
             <div className="flex justify-between">
               <div className="">
                 <h3 className="text-gray-500 text-md uppercase">
@@ -179,7 +182,7 @@ const DashComponent = ({ data }) => {
               <div className="text-gray-500">Mes Anterior</div>
             </div>
           </div>
-          <div className="flex flex-col p-3 dark:bg-slate-300 gap-4 w-full rounded-md shadow-md">
+          <div className="flex flex-col p-3 dark:bg-slate-300 gap-4 w-full rounded-md shadow-lg bg-slate-300">
             <div className="flex justify-between">
               <div className="">
                 <h3 className="text-gray-500 text-md uppercase">
@@ -201,7 +204,7 @@ const DashComponent = ({ data }) => {
       </div>
       <div className="flex flex-row maxsm:flex-col gap-4 py-3 mx-auto justify-start">
         <div className="w-full flex flex-row maxmd:flex-col gap-4 justify-start items-start">
-          <div className="flex flex-col w-full shadow-md p-5 rounded-md dark:bg-slate-300">
+          <div className="flex flex-col w-full shadow-md p-5 rounded-md bg-slate-300">
             <div className="flex justify-between py-3 text-base font-black font-EB_Garamond">
               <h1>Clientes Recientes</h1>
               <button>
@@ -219,7 +222,7 @@ const DashComponent = ({ data }) => {
               {clients &&
                 clients.map((client) => (
                   <tbody key={client._id} className="divide-y">
-                    <tr className="bg-white dark:border-gray-700 dark:bg-slate-300 flex justify-between items-center mb-2">
+                    <tr className=" dark:border-gray-700 dark:bg-slate-300 flex justify-between items-center mb-2">
                       <td>
                         <Image
                           src={
@@ -244,7 +247,7 @@ const DashComponent = ({ data }) => {
                 ))}
             </table>
           </div>
-          <div className="flex flex-col w-full shadow-md p-5 rounded-md dark:bg-slate-300">
+          <div className="flex flex-col w-full shadow-md p-5 rounded-md bg-slate-300">
             <div className="flex justify-between py-3 text-base font-black font-EB_Garamond">
               <h1>Pedidos recientes</h1>
               <button>
@@ -256,15 +259,17 @@ const DashComponent = ({ data }) => {
                 <tr className="flex justify-between mb-4">
                   <th>No.</th>
                   <th>Status</th>
+                  <th>Cliente</th>
                   <th>...</th>
                 </tr>
               </thead>
               {orders &&
                 orders.map((order) => (
                   <tbody key={order._id} className="divide-y">
-                    <tr className="bg-white flex justify-between dark:border-gray-700 dark:bg-slate-300 mb-4">
+                    <tr className=" flex justify-between dark:border-gray-700 dark:bg-slate-300 mb-4">
                       <td>{order.orderId}</td>
                       <td>{order.orderStatus}</td>
+                      <td>{order.customerName}</td>
                       <td>
                         <Link href={`/admin/pedido/${order._id}`}>
                           <IoArrowRedoSharp className=" text-teal-600 " />
@@ -278,7 +283,7 @@ const DashComponent = ({ data }) => {
         </div>
 
         <div className="w-full flex flex-row maxmd:flex-col gap-4 justify-start items-start">
-          <div className="flex flex-col w-full shadow-md p-5 rounded-md dark:bg-slate-300">
+          <div className="flex flex-col w-full shadow-md p-5 rounded-md bg-slate-300">
             <div className="flex justify-between py-3 text-base font-black font-EB_Garamond">
               <h1>Productos Recientes</h1>
               <button>
@@ -296,7 +301,7 @@ const DashComponent = ({ data }) => {
               {products &&
                 products.map((product) => (
                   <tbody key={product._id} className="divide-y">
-                    <tr className="bg-white flex justify-between dark:border-gray-700 dark:bg-slate-300 mb-2">
+                    <tr className=" flex justify-between dark:border-gray-700 dark:bg-slate-300 mb-2">
                       <td>
                         <Image
                           src={
@@ -324,7 +329,7 @@ const DashComponent = ({ data }) => {
                 ))}
             </table>
           </div>
-          <div className="flex flex-col w-full shadow-md p-5 rounded-md dark:bg-slate-300">
+          <div className="flex flex-col w-full shadow-md p-5 rounded-md bg-slate-300">
             <div className="flex justify-between py-3 text-base font-black font-EB_Garamond">
               <h1>Publicaciones recientes</h1>
               <button>
@@ -342,7 +347,7 @@ const DashComponent = ({ data }) => {
               {posts &&
                 posts?.map((post) => (
                   <tbody key={post?._id} className="divide-y">
-                    <tr className="bg-white flex justify-between dark:border-gray-700 dark:bg-slate-300 mb-2">
+                    <tr className=" flex justify-between dark:border-gray-700 dark:bg-slate-300 mb-2">
                       <td>
                         <Image
                           src={post?.mainImage || '/next.svg'}

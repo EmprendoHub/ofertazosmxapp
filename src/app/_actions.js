@@ -759,6 +759,7 @@ export async function getDashboard() {
     const totalOrderCount = await Order.countDocuments({
       orderStatus: { $ne: 'Cancelado' },
     });
+    const totalPostCount = await Post.countDocuments();
     const totalCustomerCount = await Customer.countDocuments({
       name: { $ne: 'SUCURSAL' },
     });
@@ -796,6 +797,7 @@ export async function getDashboard() {
       thisWeekOrderTotals: thisWeekOrderTotals,
       monthlyOrdersTotals: monthlyOrdersTotals,
       yearlyOrdersTotals: yearlyOrdersTotals,
+      totalPostCount: totalPostCount,
     };
   } catch (error) {
     console.log(error);
