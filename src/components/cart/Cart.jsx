@@ -9,13 +9,22 @@ import {
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
 import { AiOutlineClose } from 'react-icons/ai';
-import { toast } from 'react-toastify';
 import CheckOutForm from './CheckOutForm';
 import { useRouter } from 'next/navigation';
 import { getVariationStock } from '@/app/_actions';
+import BreadCrumbs from '../layout/BreadCrumbs';
 
 const Cart = () => {
-  //import CartContext and assign to addItemToCart
+  const breadCrumbs = [
+    {
+      name: 'Tienda',
+      url: '/tienda',
+    },
+    {
+      name: `carrito`,
+      url: `/carrito`,
+    },
+  ];
   const { productsData } = useSelector((state) => state?.compras);
   const router = useRouter();
   const dispatch = useDispatch();
@@ -39,6 +48,7 @@ const Cart = () => {
 
   return (
     <>
+      <BreadCrumbs breadCrumbs={breadCrumbs} />
       <section className="mt-5  bg-gray-100">
         <div className="max-w-screen-xl mx-auto px-4">
           <h2 className="text-3xl font-semibold mb-2 font-EB_Garamond">

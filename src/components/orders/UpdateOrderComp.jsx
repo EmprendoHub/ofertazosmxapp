@@ -1,8 +1,10 @@
 'use client';
 import { changeOrderNoteStatus, updateOneOrder } from '@/app/_actions';
+import { usePathname } from 'next/navigation';
 import React, { useState } from 'react';
 
 const UpdateOrderComp = ({ setShowModal, order }) => {
+  const pathname = usePathname();
   const [orderStatus, setOrderStatus] = useState(order?.orderStatus);
   const [note, setNote] = useState(order?.comment);
   const [notification, setNotification] = useState('');
@@ -45,40 +47,41 @@ const UpdateOrderComp = ({ setShowModal, order }) => {
           placeholder="Nota"
           onChange={(e) => setNote(e.target.value)}
         />
-
-        <div className="relative w-full text-center">
-          <label className="block mb-1 text-xs">Estado</label>
-          <select
-            className="block appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full text-center"
-            name="orderStatus"
-            required
-            value={order?.orderStatus}
-            onChange={(e) => setOrderStatus(e.target.value)}
-          >
-            {[
-              'Apartado',
-              'Pagado',
-              'Procesando',
-              'En Camino',
-              'Entregado',
-              'Cancelado',
-            ].map((status) => (
-              <option key={status} value={status}>
-                {status}
-              </option>
-            ))}
-          </select>
-          <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
-            <svg
-              width="22"
-              height="22"
-              className="fill-current"
-              viewBox="0 0 20 20"
+        {pathname.includes('admin') && (
+          <div className="relative w-full text-center">
+            <label className="block mb-1 text-xs">Estado</label>
+            <select
+              className="block appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full text-center"
+              name="orderStatus"
+              required
+              value={order?.orderStatus}
+              onChange={(e) => setOrderStatus(e.target.value)}
             >
-              <path d="M7 10l5 5 5-5H7z"></path>
-            </svg>
-          </i>
-        </div>
+              {[
+                'Apartado',
+                'Pagado',
+                'Procesando',
+                'En Camino',
+                'Entregado',
+                'Cancelado',
+              ].map((status) => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
+              ))}
+            </select>
+            <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
+              <svg
+                width="22"
+                height="22"
+                className="fill-current"
+                viewBox="0 0 20 20"
+              >
+                <path d="M7 10l5 5 5-5H7z"></path>
+              </svg>
+            </i>
+          </div>
+        )}
 
         <div className="flex items-center gap-3 ">
           <div

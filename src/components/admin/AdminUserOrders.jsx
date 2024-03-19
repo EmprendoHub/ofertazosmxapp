@@ -34,6 +34,9 @@ const AdminUserOrders = ({ orders, filteredOrdersCount, client }) => {
               <th scope="col" className="px-6 maxsm:px-1 py-3">
                 No.
               </th>
+              <th scope="col" className="px-6 maxsm:px-1 py-3">
+                Cliente
+              </th>
               <th scope="col" className="px-6 maxsm:px-1 maxsm:hidden py-3">
                 Total
               </th>
@@ -62,9 +65,10 @@ const AdminUserOrders = ({ orders, filteredOrdersCount, client }) => {
                     href={`/admin/pedido/${order._id}`}
                     className="px-2 py-2 inline-block text-black shadow-sm border border-gray-200 rounded-md bg-gray-100 cursor-pointer mr-2"
                   >
-                    {order.orderId}
+                    {order?.orderId}
                   </Link>
                 </td>
+                <td className="px-6 maxsm:px-1 py-2">{order?.customerName}</td>
                 <td className="px-6 maxsm:px-1  maxsm:hidden py-2">
                   <FormattedPrice
                     amount={getTotalFromItems(order.orderItems)}

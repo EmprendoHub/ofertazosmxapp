@@ -20,9 +20,11 @@ const PayCartComp = ({ setShowModal, payType }) => {
   const [transactionNo, setTransactionNo] = useState('EFECTIVO');
   const [phone, setPhoneNo] = useState('');
   const [note, setNote] = useState('');
-  const [email, setEmail] = useState('sucursal@shopout.com.mx');
-  const [name, setName] = useState('CLIENTE EFECTIVO');
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [savingPayment, setSavingPayment] = useState(false);
+
+  console.log(savingPayment, email);
 
   const { productsPOS } = useSelector((state) => state.compras);
   const [validationError, setValidationError] = useState(null);
@@ -53,16 +55,29 @@ const PayCartComp = ({ setShowModal, payType }) => {
   };
 
   const handleCheckout = async () => {
+    setSavingPayment(true);
     if (payType === 'layaway') {
       if (!amountReceived || layawayAmount > amountReceived) {
+        setSavingPayment(false);
         toast.error(
           'La cantidad que recibe es menor al minino de 30% que se require para apartar este pedido'
         );
+
+        return;
+      }
+      if (!name || !phone) {
+        setSavingPayment(false);
+        toast.error(
+          'Se requiere un teléfono o correo electrónico para realizar un apartado.'
+        );
+
         return;
       }
     } else {
       if (!amountReceived || totalAmountCalc > amountReceived) {
+        setSavingPayment(false);
         toast.error('La cantidad que recibe es menor al total');
+
         return;
       }
     }
@@ -92,6 +107,25 @@ const PayCartComp = ({ setShowModal, payType }) => {
     }
   };
 
+  const handlePhoneChange = (e) => {
+    const inputPhone = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+    let formattedPhone = '';
+
+    if (inputPhone.length <= 10) {
+      formattedPhone = inputPhone.replace(
+        /(\d{3})(\d{0,3})(\d{0,4})/,
+        '$1$2$3'
+      );
+    } else {
+      // If the phone number exceeds 10 digits, truncate it
+      formattedPhone = inputPhone
+        .slice(0, 10)
+        .replace(/(\d{3})(\d{0,3})(\d{0,4})/, '$1 $2 $3');
+    }
+
+    setPhoneNo(formattedPhone);
+  };
+
   return (
     <div className="flex flex-col w-full h-full items-center justify-center">
       <div className="w-1/2 maxmd:w-5/6 bg-white pl-4">
@@ -99,6 +133,9 @@ const PayCartComp = ({ setShowModal, payType }) => {
           <h1 className="text-2xl maxmd:text-5xl font-semibold text-black mb-4 font-EB_Garamond text-center uppercase">
             {payType === 'layaway' ? 'Apartar' : 'Pagar'}
           </h1>
+          {validationError && (
+            <p className="text-sm text-red-400">{validationError}</p>
+          )}
           <div className="flex flex-col items-center gap-1">
             {validationError?.title && (
               <p className="text-sm text-red-400">
@@ -127,9 +164,10 @@ const PayCartComp = ({ setShowModal, payType }) => {
             <div className="mb-4 text-center">
               <input
                 type="text"
+                value={phone}
                 className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none hover:outline-none focus:border-gray-400 hover:border-gray-400 w-full text-center font-bold "
                 placeholder="353 123 4512"
-                onChange={(e) => setPhoneNo(e.target.value)}
+                onChange={handlePhoneChange}
                 name="phone"
               />
             </div>
@@ -176,9 +214,7 @@ const PayCartComp = ({ setShowModal, payType }) => {
                   Cancelar
                 </div>
                 <button
-                  onClick={() =>
-                    handleCheckout('layaway') && setSavingPayment(true)
-                  }
+                  onClick={() => handleCheckout('layaway')}
                   className="my-2 px-4 py-2 text-center text-white bg-emerald-700 border border-transparent rounded-md hover:bg-emerald-900 w-full flex flex-row items-center justify-center gap-1"
                 >
                   <FaCircleCheck className="text-xl" /> Procesar

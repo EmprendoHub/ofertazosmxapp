@@ -1,6 +1,5 @@
-import { getAllUserOrder } from '@/app/_actions';
+import { getAllCustomerOrders } from '@/app/_actions';
 import { removeUndefinedAndPageKeys } from '@/backend/helpers';
-import AdminUserOrders from '@/components/admin/AdminUserOrders';
 import BranchUserOrders from '@/components/admin/BranchUserOrders';
 import ServerPagination from '@/components/pagination/ServerPagination';
 
@@ -17,7 +16,7 @@ const ClientDetailsPage = async ({ searchParams, params }) => {
   const queryUrlParams = removeUndefinedAndPageKeys(urlParams);
   const keywordQuery = new URLSearchParams(queryUrlParams).toString();
 
-  const data = await getAllUserOrder(searchQuery, params.id);
+  const data = await getAllCustomerOrders(searchQuery, params.id);
   const orders = JSON.parse(data.orders);
   const client = JSON.parse(data.client);
   const filteredOrdersCount = data?.itemCount;
@@ -30,7 +29,7 @@ const ClientDetailsPage = async ({ searchParams, params }) => {
   const nextPage = page + 1;
   const isPageOutOfRange = page > totalPages;
   const pageNumbers = [];
-  const offsetNumber = 1;
+  const offsetNumber = 2;
   for (let i = page - offsetNumber; i <= page + offsetNumber; i++) {
     if (i >= 1 && i <= totalPages) {
       pageNumbers.push(i);

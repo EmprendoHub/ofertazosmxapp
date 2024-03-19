@@ -5,6 +5,7 @@ import crypto from 'crypto';
 import User from '@/backend/models/User';
 import { NextResponse } from 'next/server';
 import axios from 'axios';
+import Customer from '@/backend/models/Customer';
 
 export async function POST(request) {
   const cookie = await request.headers.get('cookie');
@@ -20,6 +21,7 @@ export async function POST(request) {
     const {
       username,
       email,
+      phone,
       password: pass,
       recaptcha,
       honeypot,
@@ -48,8 +50,13 @@ export async function POST(request) {
     if (response && response.data?.success && response.data?.score > 0.5) {
       // Save data to the database from here
       await dbConnect();
-      const isExisting = await User?.findOne({ email });
-      if (isExisting) {
+      const isExistingUser = await User?.findOne({
+        $or: [{ email: email }, { phone: phone }],
+      });
+      const isExistingCustomer = await Customer?.findOne({
+        $or: [{ email: email }, { phone: phone }],
+      });
+      if (isExistingUser || isExistingCustomer) {
         return new Response('User is already registered', { status: 400 });
       }
       const name = username;
@@ -64,8 +71,17 @@ export async function POST(request) {
         password: hashedPassword,
       });
 
+      const newCustomer = new Customer({
+        name,
+        email,
+        phone,
+        user: newUser._id,
+      });
+
       const res = await newUser.save();
+
       if (res?._id) {
+        await newCustomer.save();
         try {
           const subject = 'Confirmar email';
           const body = `Por favor da click en confirmar email para verificar tu cuenta.`;

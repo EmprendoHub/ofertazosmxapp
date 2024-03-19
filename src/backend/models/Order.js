@@ -99,13 +99,16 @@ const OrderSchema = new mongoose.Schema({
   },
   shippingInfo: {
     type: mongoose.Schema.Types.ObjectId,
-    require: true,
     ref: 'Address',
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    require: true,
     ref: 'User',
+  },
+  customer: {
+    type: mongoose.Schema.Types.ObjectId,
+    require: true,
+    ref: 'Customer',
   },
 });
 

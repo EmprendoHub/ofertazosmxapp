@@ -31,8 +31,11 @@ const PaymentSchema = new mongoose.Schema({
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    require: true,
     ref: 'User',
+  },
+  customer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Customer',
   },
 });
 

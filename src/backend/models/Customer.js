@@ -8,15 +8,17 @@ const CustomerSchema = new mongoose.Schema(
     },
     last_name: {
       type: String,
-      require: true,
     },
     phone: {
       type: String,
       unique: true,
     },
+    email: {
+      type: String,
+      unique: true,
+    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      require: true,
       ref: 'User',
     },
   },

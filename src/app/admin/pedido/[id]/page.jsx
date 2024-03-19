@@ -6,12 +6,12 @@ const AdminOneOrderPage = async ({ params }) => {
   const order = JSON.parse(data.order);
   const deliveryAddress = JSON.parse(data.deliveryAddress);
   const orderPayments = JSON.parse(data.orderPayments);
-  const user = JSON.parse(data.user);
+  const customer = JSON.parse(data.customer);
   return (
     <div>
       <AdminOneOrder
         order={order}
-        user={user}
+        customer={customer}
         id={params?.id}
         deliveryAddress={deliveryAddress}
         orderPayments={orderPayments}

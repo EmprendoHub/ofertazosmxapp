@@ -36,11 +36,14 @@ const POSOrders = ({ orders, filteredOrdersCount }) => {
               <th scope="col" className="px-6 maxsm:px-0 py-3">
                 No.
               </th>
-              <th scope="col" className="px-6 py-3 maxmd:hidden">
-                Total
+              <th scope="col" className="px-2 py-3 maxmd:hidden">
+                Cliente
               </th>
-              <th scope="col" className="px-6 maxsm:px-0 py-3">
-                Pagado
+              <th scope="col" className="px-2 py-3 maxmd:hidden">
+                Tel
+              </th>
+              <th scope="col" className="px-2 maxsm:px-0 py-3">
+                Recibió
               </th>
               <th scope="col" className="px-6 maxsm:px-0 py-3">
                 Estado
@@ -64,11 +67,10 @@ const POSOrders = ({ orders, filteredOrdersCount }) => {
                     {order.orderId}
                   </Link>
                 </td>
-                <td className="px-6 py-2 maxmd:hidden">
-                  <FormattedPrice
-                    amount={getTotalFromItems(order.orderItems)}
-                  />
+                <td className="px-2 py-2 maxmd:hidden">
+                  {order?.customerName}
                 </td>
+                <td className="px-2 py-2 maxmd:hidden">{order?.phone}</td>
                 <td className="px-6 maxsm:px-0 py-2 ">
                   <b>
                     <FormattedPrice amount={order?.paymentInfo?.amountPaid} />

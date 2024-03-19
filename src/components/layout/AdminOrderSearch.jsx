@@ -1,18 +1,27 @@
 'use client';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
 
 const AdminOrderSearch = () => {
+  const pathname = usePathname();
   const [keyword, setKeyword] = useState('');
   const router = useRouter();
   const submitHandler = (e) => {
     e.preventDefault();
 
-    if (keyword) {
-      router.push(`/admin/pedidos/?keyword=${keyword}`);
+    if (pathname.includes('admin')) {
+      if (keyword) {
+        router.push(`/admin/pedidos/?keyword=${keyword}`);
+      } else {
+        router.push('/admin/pedidos');
+      }
     } else {
-      router.push('/admin/pedidos');
+      if (keyword) {
+        router.push(`/puntodeventa/pedidos/?keyword=${keyword}`);
+      } else {
+        router.push('/puntodeventa/pedidos');
+      }
     }
   };
   return (

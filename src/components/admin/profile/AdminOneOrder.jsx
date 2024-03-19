@@ -10,7 +10,13 @@ import { FaComment } from 'react-icons/fa6';
 import ModalOrderUpdate from '@/components/modals/ModalOrderUpdate';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 
-const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
+const AdminOneOrder = ({
+  order,
+  deliveryAddress,
+  id,
+  orderPayments,
+  customer,
+}) => {
   const { updateOrder } = useContext(AuthContext);
   const [showModal, setShowModal] = useState(false);
 
@@ -91,12 +97,12 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
       />
       <div className="relative overflow-x-auto shadow-md maxsm:rounded-lg p-5 maxsm:p-1 ">
         <div className="flex flex-col items-start justify-start gap-x-5 ml-4">
-          <Link href={`/admin/cliente/${user?._id}`}>
+          <Link href={`/admin/cliente/${customer?._id}`}>
             <h2 className="text-3xl font-bold text-slate-700">
               {order?.customerName}
             </h2>
           </Link>
-          <p className="text-gray-600">{user?.email || user?.phone}</p>
+          <p className="text-gray-600">{customer?.email || customer?.phone}</p>
         </div>
         <div className="flex flex-row maxsm:flex-col items-start justify-start gap-x-5">
           <h2 className="text-3xl mb-4 ml-4 font-bold ">
@@ -159,7 +165,7 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
           <div className="w-full flex maxsm:flex-col gap-3 justify-between">
             <div className="flex items-center gap-1 tracking-wide text-gray-600">
               <FaComment size={20} />
-              <em>{order?.comment}</em>
+              <em className="text-blue-800">{order?.comment}</em>
             </div>
             <div>
               <div
@@ -353,7 +359,7 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
                     <td className="px-2 maxsm:px-0 py-2  w-full font-bold">
                       <FormattedPrice amount={payment?.amount || 0} />
                     </td>
-                    <td className="px-2 maxsm:px-0 py-2 maxsm:hidden w-full uppercase text-xs">
+                    <td className="px-2 maxsm:px-0 py-2 maxsm:hidden w-full text-xs">
                       {payment?.comment}
                     </td>
                   </tr>

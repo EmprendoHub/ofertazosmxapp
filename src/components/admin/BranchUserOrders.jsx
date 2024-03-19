@@ -34,6 +34,9 @@ const BranchUserOrders = ({ orders, filteredOrdersCount, client }) => {
               <th scope="col" className="px-6 maxsm:px-1 py-3">
                 No.
               </th>
+              <th scope="col" className="px-6 maxsm:px-1 py-3">
+                Cliente
+              </th>
               <th scope="col" className="px-6 maxsm:px-1 maxsm:hidden py-3">
                 Total
               </th>
@@ -65,6 +68,7 @@ const BranchUserOrders = ({ orders, filteredOrdersCount, client }) => {
                     {order.orderId}
                   </Link>
                 </td>
+                <td className="px-6 maxsm:px-1 py-2">{order?.customerName}</td>
                 <td className="px-6 maxsm:px-1  maxsm:hidden py-2">
                   <FormattedPrice
                     amount={getTotalFromItems(order.orderItems)}

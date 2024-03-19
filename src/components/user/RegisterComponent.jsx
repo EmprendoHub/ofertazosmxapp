@@ -6,6 +6,7 @@ import { IoLogoGoogle } from 'react-icons/io';
 import { useRouter } from 'next/navigation';
 import WhiteLogoComponent from '../logos/WhiteLogoComponent';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import { isValidEmail, isValidPhone } from '@/backend/helpers';
 
 const RegisterFormComponent = ({ cookie }) => {
   const [notification, setNotification] = useState('');
@@ -22,13 +23,9 @@ const RegisterFormComponent = ({ cookie }) => {
   const [honeypot, setHoneypot] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-
-  const isValidEmail = (email) => {
-    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-    return emailRegex.test(email);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,6 +45,11 @@ const RegisterFormComponent = ({ cookie }) => {
       return;
     }
 
+    if (!isValidPhone(phone)) {
+      toast.error('Utilice un teléfono válido.');
+      return;
+    }
+
     if (!password || password.length < 8) {
       toast.error('La contraseña debe tener al menos 8 caracteres');
       return;
@@ -60,6 +62,7 @@ const RegisterFormComponent = ({ cookie }) => {
       );
       return;
     }
+
     executeRecaptcha('enquiryFormSubmit').then(async (gReCaptchaToken) => {
       try {
         const res = await fetch(`/api/register`, {
@@ -70,6 +73,7 @@ const RegisterFormComponent = ({ cookie }) => {
           method: 'POST',
           body: JSON.stringify({
             username,
+            phone,
             email,
             password,
             recaptcha: gReCaptchaToken,
@@ -84,20 +88,39 @@ const RegisterFormComponent = ({ cookie }) => {
         }
 
         if (res.status === 400) {
-          toast.warning('This email is already in use');
-          setError('This email is already in use');
+          toast.warning(
+            'Este correo electrónico y/o el teléfono ya esta en uso'
+          );
+          setError('Este correo electrónico y/o el teléfono ya esta en uso');
         }
         if (res.ok) {
-          toast.success('Successfully registered the user');
-          setTimeout(() => {
-            signIn();
-          }, 200);
+          toast.success('Se registró exitosamente al usuario');
+          signIn();
           return;
         }
       } catch (error) {
         console.log(error);
       }
     });
+  };
+
+  const handlePhoneChange = (e) => {
+    const inputPhone = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+    let formattedPhone = '';
+
+    if (inputPhone.length <= 10) {
+      formattedPhone = inputPhone.replace(
+        /(\d{3})(\d{0,3})(\d{0,4})/,
+        '$1$2$3'
+      );
+    } else {
+      // If the phone number exceeds 10 digits, truncate it
+      formattedPhone = inputPhone
+        .slice(0, 10)
+        .replace(/(\d{3})(\d{0,3})(\d{0,4})/, '$1 $2 $3');
+    }
+
+    setPhone(formattedPhone);
   };
 
   return (
@@ -130,10 +153,18 @@ const RegisterFormComponent = ({ cookie }) => {
           />
           <input
             className="text-center py-2"
+            type="text"
+            placeholder="Teléfono"
+            value={phone}
+            onChange={handlePhoneChange}
+          />
+          <input
+            className="text-center py-2"
             type="email"
             placeholder="Correo Electrónico..."
             onChange={(e) => setEmail(e.target.value)}
           />
+
           <input
             hidden
             className="text-center py-2"

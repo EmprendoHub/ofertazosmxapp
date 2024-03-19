@@ -1,4 +1,4 @@
-import { getAllUserOrder } from '@/app/_actions';
+import { getAllCustomerOrders } from '@/app/_actions';
 import { removeUndefinedAndPageKeys } from '@/backend/helpers';
 import AdminUserOrders from '@/components/admin/AdminUserOrders';
 import ServerPagination from '@/components/pagination/ServerPagination';
@@ -16,7 +16,7 @@ const ClientDetailsPage = async ({ searchParams, params }) => {
   const queryUrlParams = removeUndefinedAndPageKeys(urlParams);
   const keywordQuery = new URLSearchParams(queryUrlParams).toString();
 
-  const data = await getAllUserOrder(searchQuery, params.id);
+  const data = await getAllCustomerOrders(searchQuery, params.id);
   const orders = JSON.parse(data.orders);
   const client = JSON.parse(data.client);
   const filteredOrdersCount = data?.itemCount;

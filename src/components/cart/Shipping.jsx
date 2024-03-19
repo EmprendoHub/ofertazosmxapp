@@ -10,8 +10,8 @@ import { useSession } from 'next-auth/react';
 const Shipping = ({ addresses }) => {
   const breadCrumbs = [
     {
-      name: 'Home',
-      url: '/',
+      name: 'Tienda',
+      url: '/tienda',
     },
     {
       name: `carrito`,

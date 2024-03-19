@@ -6,10 +6,15 @@ import AuthContext from '@/context/AuthContext';
 import { toast } from 'react-toastify';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import { formatDate, formatTime } from '@/backend/helpers';
+import ModalOrderUpdate from '@/components/modals/ModalOrderUpdate';
+import { FaComment } from 'react-icons/fa6';
+import { FaCloudUploadAlt } from 'react-icons/fa';
 
-const POSOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
+const POSOrder = ({ order, deliveryAddress, id, orderPayments, customer }) => {
   const { updateOrder } = useContext(AuthContext);
+  const [showModal, setShowModal] = useState(false);
   const [orderStatus, setOrderStatus] = useState('pendiente');
+  const [error, setError] = useState('');
   const [currentOrderStatus, setCurrentOrderStatus] = useState(
     order?.orderStatus
   );
@@ -80,14 +85,25 @@ const POSOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
 
   return (
     <>
+      <ModalOrderUpdate
+        showModal={showModal}
+        setShowModal={setShowModal}
+        order={order}
+      />
       <div className="relative overflow-x-auto shadow-md maxsm:rounded-lg p-5 maxsm:p-1 ">
-        <div className="flex flex-row items-center justify-start gap-x-5">
-          <Link href={`/puntodeventa/cliente/${user?._id}`}>
-            <h2 className="text-3xl mb-1 ml-4 font-bold text-slate-700">
-              {user?.name}
+        <div className="flex flex-col items-start justify-start gap-x-5 ml-4 ">
+          <Link href={`/puntodeventa/cliente/${customer?._id}`}>
+            <h2 className="text-3xl font-bold text-slate-700">
+              {order?.customerName}{' '}
+              <span className="text-sm text-red-800">
+                {order?.email === 'sucursal@shopout.com'
+                  ? '(Sucursal)'
+                  : 'Cliente'}
+              </span>
             </h2>
           </Link>
-          <p className="text-gray-600">{user?.email || user?.phone}</p>
+          <p className="text-gray-600">{order?.email}</p>
+          <p className="text-gray-600">{order?.phone}</p>
         </div>
         <div className="flex flex-row maxsm:flex-col items-start justify-start gap-x-5">
           <h2 className="text-3xl mb-8 ml-4 font-bold ">
@@ -111,7 +127,7 @@ const POSOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
             </h2>
           )}
         </div>
-        {order?.orderStatus !== 'Sucursal' ? (
+        {order?.branch !== 'Sucursal' ? (
           <table className="w-full text-sm text-left flex flex-col maxsm:flex-row">
             <thead className="text-l text-gray-700 uppercase">
               <tr className="flex flex-row maxsm:flex-col">
@@ -153,7 +169,20 @@ const POSOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
             </tbody>
           </table>
         ) : (
-          <div>{order?.branch}</div>
+          <div className="w-full flex maxsm:flex-col gap-3 justify-between">
+            <div className="flex items-center gap-1 tracking-wide text-gray-600 pl-4">
+              <FaComment size={20} />
+              <em className="text-blue-800">{order?.comment}</em>
+            </div>
+            <div>
+              <div
+                onClick={() => setShowModal(true)}
+                className="bg-black flex gap-1 items-center text-white rounded-sm px-6 py-2 cursor-pointer"
+              >
+                <FaCloudUploadAlt /> Actualizar
+              </div>
+            </div>
+          </div>
         )}
       </div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg px-5">
@@ -301,6 +330,12 @@ const POSOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
                   <th scope="col" className="px-2 maxsm:px-0 py-3  w-full">
                     Cant.
                   </th>
+                  <th
+                    scope="col"
+                    className="px-2 maxsm:px-0 py-3 maxsm:hidden w-full"
+                  >
+                    Nota.
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -326,29 +361,15 @@ const POSOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
                     <td className="px-2 maxsm:px-0 py-2  w-full font-bold">
                       <FormattedPrice amount={payment?.amount || 0} />
                     </td>
+                    <td className="px-2 maxsm:px-0 py-2 maxsm:hidden w-full text-xs">
+                      {payment?.comment}
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
           <hr className="border border-gray-300" />
-          <div className="w-full mt-8">
-            <h2
-              className={`${
-                order?.orderStatus === 'Procesando'
-                  ? 'text-blue-900'
-                  : order?.orderStatus === 'En Camino'
-                  ? 'text-amber-700'
-                  : order?.orderStatus === 'Entregado'
-                  ? 'text-green-700'
-                  : order.orderStatus === 'Sucursal'
-                  ? 'text-purple-950'
-                  : ''
-              } text-3xl mb-8 ml-4 font-bold uppercase`}
-            >
-              {currentOrderStatus}
-            </h2>
-          </div>
         </div>
       </div>
     </>
