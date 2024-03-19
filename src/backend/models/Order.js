@@ -79,6 +79,9 @@ const OrderSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
   },
+  updatedAt: {
+    type: Date,
+  },
   branch: {
     type: String,
   },

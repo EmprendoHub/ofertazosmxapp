@@ -6,10 +6,13 @@ import AuthContext from '@/context/AuthContext';
 import { toast } from 'react-toastify';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import { formatDate, formatTime } from '@/backend/helpers';
+import { FaComment } from 'react-icons/fa6';
+import ModalOrderUpdate from '@/components/modals/ModalOrderUpdate';
 
 const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
   const { updateOrder } = useContext(AuthContext);
-  const [orderStatus, setOrderStatus] = useState('pendiente');
+  const [showModal, setShowModal] = useState(false);
+
   const [currentOrderStatus, setCurrentOrderStatus] = useState(
     order?.orderStatus
   );
@@ -80,6 +83,11 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
 
   return (
     <>
+      <ModalOrderUpdate
+        showModal={showModal}
+        setShowModal={setShowModal}
+        order={order}
+      />
       <div className="relative overflow-x-auto shadow-md maxsm:rounded-lg p-5 maxsm:p-1 ">
         <div className="flex flex-row items-center justify-start gap-x-5">
           <Link href={`/admin/cliente/${user?._id}`}>
@@ -111,7 +119,7 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
             </h2>
           )}
         </div>
-        {order?.orderStatus !== 'Sucursal' ? (
+        {order?.branch !== 'Sucursal' ? (
           <table className="w-full text-sm text-left flex flex-col maxsm:flex-row">
             <thead className="text-l text-gray-700 uppercase">
               <tr className="flex flex-row maxsm:flex-col">
@@ -153,7 +161,20 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
             </tbody>
           </table>
         ) : (
-          <div>{order?.branch}</div>
+          <div className="w-full flex justify-between">
+            <div className="flex items-center gap-1 tracking-wide text-gray-600">
+              <FaComment size={20} />
+              {order?.comment}
+            </div>
+            <div>
+              <div
+                onClick={() => setShowModal(true)}
+                className="bg-black text-white rounded-sm px-6 py-2 cursor-pointer"
+              >
+                Actualizar
+              </div>
+            </div>
+          </div>
         )}
       </div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg px-5">
@@ -337,63 +358,21 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
           </div>
           <hr className="border border-gray-300" />
           <div className="w-full mt-8">
-            <form
-              onSubmit={handleSubmit}
-              className="flex flex-row items-start gap-5 justify-start "
+            <h2
+              className={`${
+                order?.orderStatus === 'Procesando'
+                  ? 'text-blue-900'
+                  : order?.orderStatus === 'En Camino'
+                  ? 'text-amber-700'
+                  : order?.orderStatus === 'Entregado'
+                  ? 'text-green-700'
+                  : order.orderStatus === 'Sucursal'
+                  ? 'text-purple-950'
+                  : ''
+              } text-3xl mb-8 ml-4 font-bold uppercase`}
             >
-              <h2
-                className={`${
-                  order?.orderStatus === 'Procesando'
-                    ? 'text-blue-900'
-                    : order?.orderStatus === 'En Camino'
-                    ? 'text-amber-700'
-                    : order?.orderStatus === 'Entregado'
-                    ? 'text-green-700'
-                    : order.orderStatus === 'Sucursal'
-                    ? 'text-purple-950'
-                    : ''
-                } text-3xl mb-8 ml-4 font-bold uppercase`}
-              >
-                {currentOrderStatus}
-              </h2>
-
-              <div className="relative w-full">
-                <label className="block mb-3">
-                  Actualizar estado de pedido
-                </label>
-                <select
-                  className="block appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full"
-                  name="orderStatus"
-                  required
-                  value={orderStatus}
-                  onChange={(e) => setOrderStatus(e.target.value)}
-                >
-                  {['Procesando', 'En Camino', 'Entregado', 'Cancelado'].map(
-                    (status) => (
-                      <option key={status} value={status}>
-                        {status}
-                      </option>
-                    )
-                  )}
-                </select>
-                <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
-                  <svg
-                    width="22"
-                    height="22"
-                    className="fill-current"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M7 10l5 5 5-5H7z"></path>
-                  </svg>
-                </i>
-              </div>
-              <button
-                type="submit"
-                className="my-3 px-4 py-2 text-center w-full inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
-              >
-                Actualizar
-              </button>
-            </form>
+              {currentOrderStatus}
+            </h2>
           </div>
         </div>
       </div>

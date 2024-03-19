@@ -1230,6 +1230,36 @@ export async function updateOneOrder(data) {
   }
 }
 
+export async function changeOrderNoteStatus(data) {
+  try {
+    let { orderId, note, orderStatus } = Object.fromEntries(data);
+    const newStatus = orderStatus;
+    const newNote = note;
+    await dbConnect();
+    const date = cstDateTime();
+
+    console.log(newStatus, newNote, date);
+
+    const updateOrder = await Order.updateOne(
+      { _id: orderId },
+      {
+        orderStatus: newStatus,
+        comment: newNote,
+        updatedAt: date,
+      }
+    );
+    console.log(updateOrder);
+    revalidatePath(`/admin/pedidos`);
+    revalidatePath(`/admin/pedido/${orderId}`);
+    return {
+      ok: true,
+    };
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
+
 export async function getAllPOSOrder(searchQuery) {
   try {
     await dbConnect();
