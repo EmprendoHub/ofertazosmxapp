@@ -17,7 +17,7 @@ const backdropVariants = {
 };
 
 const AdminSidebar = ({ children }) => {
-  const [expandSidebar, setExpandSidebar] = useState(true);
+  const [expandSidebar, setExpandSidebar] = useState(false);
   let user;
   const { data: session } = useSession();
   const isLoggedIn = Boolean(session?.user);
@@ -27,7 +27,7 @@ const AdminSidebar = ({ children }) => {
   return (
     <aside className="h-screen print:hidden ">
       <nav className="h-full flex flex-col bg-white border-r border-r-slate-300 shadow-sm">
-        <div className="p-4 maxmd:p-2 pb-2 flex justify-between maxmd:justify-center items-center">
+        <div className="p-4 maxmd:pl-3 pb-2 flex justify-between maxmd:justify-center items-center">
           <Image
             alt="image"
             src={'/images/Main_shopout_logo.webp'}
@@ -53,7 +53,10 @@ const AdminSidebar = ({ children }) => {
           <ul className="flex-1 ">{children}</ul>
         </SidebarContext.Provider>
         {/* user avatar */}
-        <div className="border-t flex p-1 ">
+        <div
+          onClick={() => setExpandSidebar((currentState) => !currentState)}
+          className="border-t flex p-1 "
+        >
           <Image
             alt={user?.name ? user?.name : 'avatar'}
             src={user?.image ? user?.image : '/images/avatar_placeholder.jpg'}
@@ -118,7 +121,7 @@ export function SideBarItem({ icon, text, active, alert, url, dropdownItems }) {
 
   return (
     <li
-      className={`relative flex flex-col items-center py-2 px-3 maxmd:pr-1 my-1 font-medium rounded-md cursor-pointer gap-x-1 transition-colors group ${
+      className={`relative flex flex-col items-center py-2 pl-2 pr-3 maxmd:pr-1 my-1 font-medium rounded-md cursor-pointer gap-x-1 transition-colors group ${
         active
           ? 'bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800'
           : 'hover:bg-indigo-50 text-gray-600'
@@ -155,7 +158,7 @@ export function SideBarItem({ icon, text, active, alert, url, dropdownItems }) {
           {dropdownItems.map((item, index) => (
             <Link href={item.url} key={index}>
               <li
-                className={`py-2 px-3 cursor-pointer flex items-center rounded-md ${
+                className={`py-2 cursor-pointer flex items-center rounded-md ${
                   item.active
                     ? 'bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800'
                     : 'hover:bg-indigo-50 text-gray-600 bg-opacity-0'

@@ -8,6 +8,7 @@ import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import { formatDate, formatTime } from '@/backend/helpers';
 import { FaComment } from 'react-icons/fa6';
 import ModalOrderUpdate from '@/components/modals/ModalOrderUpdate';
+import { FaCloudUploadAlt } from 'react-icons/fa';
 
 const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
   const { updateOrder } = useContext(AuthContext);
@@ -89,35 +90,29 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
         order={order}
       />
       <div className="relative overflow-x-auto shadow-md maxsm:rounded-lg p-5 maxsm:p-1 ">
-        <div className="flex flex-row items-center justify-start gap-x-5">
+        <div className="flex flex-col items-start justify-start gap-x-5 ml-4">
           <Link href={`/admin/cliente/${user?._id}`}>
-            <h2 className="text-3xl mb-1 ml-4 font-bold text-slate-700">
+            <h2 className="text-3xl font-bold text-slate-700">
               {order?.customerName}
             </h2>
           </Link>
           <p className="text-gray-600">{user?.email || user?.phone}</p>
         </div>
         <div className="flex flex-row maxsm:flex-col items-start justify-start gap-x-5">
-          <h2 className="text-3xl mb-8 ml-4 font-bold ">
+          <h2 className="text-3xl mb-4 ml-4 font-bold ">
             Pedido #{order?.orderId}
           </h2>
-          {order?.orderStatus === 'Apartado' ? (
-            <h2
-              className={`text-3xl mb-8 ml-4 font-bold uppercase text-amber-700`}
-            >
-              Apartado
-            </h2>
-          ) : (
-            <h2
-              className={`text-3xl mb-8 ml-4 font-bold uppercase ${
-                order?.paymentInfo?.status === 'paid' ? 'text-green-700' : ''
-              }`}
-            >
-              {order?.paymentInfo?.amountPaid >= getTotal(order?.orderItems)
-                ? 'PAGADO'
-                : 'PENDIENTE'}
-            </h2>
-          )}
+          <h2
+            className={`text-3xl mb-8 ml-4 font-bold uppercase ${
+              order?.orderStatus === 'Apartado'
+                ? 'text-amber-700'
+                : order?.paymentInfo?.status === 'Pagado'
+                ? 'text-green-700'
+                : ''
+            }`}
+          >
+            {order?.orderStatus}
+          </h2>
         </div>
         {order?.branch !== 'Sucursal' ? (
           <table className="w-full text-sm text-left flex flex-col maxsm:flex-row">
@@ -161,17 +156,17 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
             </tbody>
           </table>
         ) : (
-          <div className="w-full flex justify-between">
+          <div className="w-full flex maxsm:flex-col gap-3 justify-between">
             <div className="flex items-center gap-1 tracking-wide text-gray-600">
               <FaComment size={20} />
-              {order?.comment}
+              <em>{order?.comment}</em>
             </div>
             <div>
               <div
                 onClick={() => setShowModal(true)}
-                className="bg-black text-white rounded-sm px-6 py-2 cursor-pointer"
+                className="bg-black flex gap-1 items-center text-white rounded-sm px-6 py-2 cursor-pointer"
               >
-                Actualizar
+                <FaCloudUploadAlt /> Actualizar
               </div>
             </div>
           </div>
@@ -187,10 +182,10 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
               <th scope="col" className="px-2 maxsm:px-0 py-3">
                 Img
               </th>
-              <th scope="col" className="px-2 maxsm:px-0 py-3">
-                Tamaño
+              <th scope="col" className="px-2 maxsm:px-0 py-3 maxsm:hidden">
+                Talla
               </th>
-              <th scope="col" className="px-2 maxsm:px-0 py-3">
+              <th scope="col" className="px-2 maxsm:px-0 py-3  maxsm:hidden">
                 Color
               </th>
               <th scope="col" className="px-2 maxsm:px-0 py-3">
@@ -215,8 +210,12 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
                     height={50}
                   />
                 </td>
-                <td className="px-2 maxsm:px-0 py-2">{item.size}</td>
-                <td className="px-2 maxsm:px-0 py-2">{item.color}</td>
+                <td className="px-2 maxsm:px-0 py-2 maxsm:hidden">
+                  {item.size}
+                </td>
+                <td className="px-2 maxsm:px-0 py-2 maxsm:hidden">
+                  {item.color}
+                </td>
                 <td className="px-2 maxsm:px-0 py-2">{item.quantity}</td>
                 <td className="px-2 maxsm:px-0 py-2">
                   <FormattedPrice amount={item.price || 0} />
@@ -226,7 +225,7 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
           </tbody>
         </table>
       </div>
-      <div className="relative flex flex-row maxmd:flex-col-reverse items-start justify-start overflow-x-auto shadow-md sm:rounded-lg p-5 gap-12">
+      <div className="relative flex flex-row maxmd:flex-col-reverse items-start justify-start overflow-x-auto shadow-md p-5 maxmd:p-1 gap-12">
         <div className="w-1/3 maxmd:w-full">
           <div className=" max-w-screen-xl mx-auto bg-white flex flex-col p-2">
             <h2 className="text-2xl">Totales</h2>
@@ -311,7 +310,10 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
                   <th scope="col" className="px-2 maxsm:px-0 py-3  w-full">
                     Fecha
                   </th>
-                  <th scope="col" className="px-2 maxsm:px-0 py-3  w-full">
+                  <th
+                    scope="col"
+                    className="px-2 maxsm:px-0 py-3 maxsm:hidden  w-full"
+                  >
                     Método
                   </th>
                   <th scope="col" className="px-2 maxsm:px-0 py-3  w-full">
@@ -320,7 +322,10 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
                   <th scope="col" className="px-2 maxsm:px-0 py-3  w-full">
                     Cant.
                   </th>
-                  <th scope="col" className="px-2 maxsm:px-0 py-3  w-full">
+                  <th
+                    scope="col"
+                    className="px-2 maxsm:px-0 py-3 maxsm:hidden w-full"
+                  >
                     Nota.
                   </th>
                 </tr>
@@ -335,7 +340,7 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
                       {formatDate(payment?.pay_date)}
                       {formatTime(payment?.pay_date)}
                     </td>
-                    <td className="px-2 maxsm:px-0 py-2  w-full uppercase text-xs">
+                    <td className="px-2 maxsm:px-0 py-2  w-full uppercase text-xs maxsm:hidden">
                       {payment?.method === 'card'
                         ? 'tarjeta'
                         : payment?.method === 'customer_balance'
@@ -348,7 +353,7 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
                     <td className="px-2 maxsm:px-0 py-2  w-full font-bold">
                       <FormattedPrice amount={payment?.amount || 0} />
                     </td>
-                    <td className="px-2 maxsm:px-0 py-2  w-full uppercase text-xs">
+                    <td className="px-2 maxsm:px-0 py-2 maxsm:hidden w-full uppercase text-xs">
                       {payment?.comment}
                     </td>
                   </tr>
@@ -357,23 +362,6 @@ const AdminOneOrder = ({ order, deliveryAddress, id, orderPayments, user }) => {
             </table>
           </div>
           <hr className="border border-gray-300" />
-          <div className="w-full mt-8">
-            <h2
-              className={`${
-                order?.orderStatus === 'Procesando'
-                  ? 'text-blue-900'
-                  : order?.orderStatus === 'En Camino'
-                  ? 'text-amber-700'
-                  : order?.orderStatus === 'Entregado'
-                  ? 'text-green-700'
-                  : order.orderStatus === 'Sucursal'
-                  ? 'text-purple-950'
-                  : ''
-              } text-3xl mb-8 ml-4 font-bold uppercase`}
-            >
-              {currentOrderStatus}
-            </h2>
-          </div>
         </div>
       </div>
     </>

@@ -31,10 +31,10 @@ const UpdateOrderComp = ({ setShowModal, order }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="z-50 flex flex-col min-w-full min-h-full items-center justify-center"
+      className=" flex flex-col w-full min-w-full min-h-full items-center justify-center"
     >
       {notification && <p className="text-sm text-blue-600">{notification}</p>}
-      <div className=" z-50 absolute flex flex-col items-center justify-center gap-3 p-7 maxsm:p-4 bg-slate-200">
+      <div className="maxsm:w-[90%]  flex flex-col items-center justify-center gap-3 p-7 maxsm:p-4 bg-slate-200">
         <h2 className="font-bold font-EB_Garamond">Actualizar Pedido</h2>
         <label className=" text-xs">Nota</label>
         <textarea
@@ -80,7 +80,7 @@ const UpdateOrderComp = ({ setShowModal, order }) => {
           </i>
         </div>
 
-        <div className="flex items-center gap-3 maxsm:flex-col">
+        <div className="flex items-center gap-3 ">
           <div
             onClick={() => setShowModal(false)}
             className={`bg-red-700 text-white py-2 px-8 text-xl hover:bg-slate-200 hover:text-red-900 ease-in-out duration-700 rounded-md cursor-pointer`}

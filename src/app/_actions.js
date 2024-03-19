@@ -1238,8 +1238,6 @@ export async function changeOrderNoteStatus(data) {
     await dbConnect();
     const date = cstDateTime();
 
-    console.log(newStatus, newNote, date);
-
     const updateOrder = await Order.updateOne(
       { _id: orderId },
       {
@@ -1248,14 +1246,12 @@ export async function changeOrderNoteStatus(data) {
         updatedAt: date,
       }
     );
-    console.log(updateOrder);
     revalidatePath(`/admin/pedidos`);
     revalidatePath(`/admin/pedido/${orderId}`);
     return {
       ok: true,
     };
   } catch (error) {
-    console.log(error);
     throw Error(error);
   }
 }
