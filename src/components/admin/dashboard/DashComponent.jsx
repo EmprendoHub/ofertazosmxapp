@@ -17,7 +17,6 @@ import 'chart.js/auto';
 const DashComponent = ({ data }) => {
   const dailyData = JSON.parse(data?.dailyData);
   const weeklyData = JSON.parse(data?.weeklyData);
-  console.log(weeklyData);
   // Prepare the labels and data for the chart
   const chartLabels = weeklyData.map((data) => data.date);
   const chartData = weeklyData.map((data) => data.Total);
@@ -189,7 +188,7 @@ const DashComponent = ({ data }) => {
       </div>
       <div className="w-full min-h-[400px] bg-slate-300 p-5  mt-4">
         {/* Chart to display daily totals for the last 7 days */}
-        <div className="chart-container h-[400px]">
+        <div className="chart-container h-[400px] maxsm:h-[200px]">
           <h2>Totales diarios de los últimos 7 días</h2>
           <Bar data={weeklyDataWithColors} options={options} />;
         </div>
