@@ -207,6 +207,13 @@ export async function payPOSDrawer(data) {
     let layAwayIntent;
     let currentOrderStatus;
     let payMethod;
+    let payIntent;
+
+    if (payType === 'layaway') {
+      payIntent = 'partial';
+    } else {
+      payIntent = 'paid';
+    }
 
     if (transactionNo === 'EFECTIVO') {
       payMethod = 'EFECTIVO';
@@ -294,7 +301,7 @@ export async function payPOSDrawer(data) {
 
     let paymentTransactionData = {
       type: 'sucursal',
-      paymentIntent: '',
+      paymentIntent: payIntent,
       amount: amountReceived,
       reference: transactionNo,
       pay_date: date,
@@ -489,19 +496,38 @@ export async function getDashboard() {
     let thisWeeksOrder;
     let totalOrdersThisWeek;
     let dailyOrders;
-    let dailyOrdersTotals;
+    let dailyPaymentsTotals;
     let monthlyOrdersTotals;
     let yearlyOrdersTotals;
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Set time to midnight
+    const cstOffset = 6 * 60 * 60 * 1000; // CST is UTC+6
 
+    const minusCstOffset = -6 * 60 * 60 * 1000; // CST is UTC+6
+
+    // Create a new date with the offset applied
+    const today = new Date(Date.now() + cstOffset);
+    today.setUTCHours(0, 0, 0, 0); // Set time to midnight
     // Set start of the current year
-    const startOfYear = new Date(today.getFullYear(), 0, 1, 0, 0, 0, 0);
+    const startOfYear = new Date(
+      today.getFullYear(),
+      0,
+      1,
+      0,
+      0,
+      0,
+      0 - cstOffset
+    );
 
     // Set end of the current year
-    const endOfYear = new Date(today.getFullYear() + 1, 0, 0, 0, 0, 0, 0);
-
+    const endOfYear = new Date(
+      today.getFullYear() + 1,
+      0,
+      0,
+      23, // 23 hours
+      59, // 59 minutes
+      59, // 59 seconds
+      999 - cstOffset
+    );
     // Set start of the current month
     const startOfMonth = new Date(
       today.getFullYear(),
@@ -510,41 +536,57 @@ export async function getDashboard() {
       0,
       0,
       0,
-      0
+      0 - cstOffset
     );
 
     // Set end of the current month
     const endOfMonth = new Date(
       today.getFullYear(),
-      today.getMonth() + 1,
-      0,
-      0,
-      0,
-      0,
-      0
+      today.getMonth() + 1, // Next month
+      0, // Day 0 of next month is the last day of the current month
+      23, // 23 hours
+      59, // 59 minutes
+      59, // 59 seconds
+      999 - cstOffset
     );
+
     const startOfCurrentWeek = new Date(today);
     startOfCurrentWeek.setDate(today.getDate() - today.getDay());
-    startOfCurrentWeek.setHours(0, 0, 0, 0); // Set time to midnight
+    startOfCurrentWeek.setUTCHours(0, 0, 0, 0); // Set time to midnight
+
+    // Clone the start of the current week to avoid mutating it
+    const endOfCurrentWeek = new Date(startOfCurrentWeek);
+    endOfCurrentWeek.setDate(startOfCurrentWeek.getDate() + 6); // Add six days to get to the end of the week
+    endOfCurrentWeek.setUTCHours(23, 59, 59, 999); // Set time to the end of the day
+
+    // End of the last 7 days (yesterday at 23:59:59.999)
+    const endOfLast7Days = new Date(today);
+    endOfLast7Days.setDate(today.getDate() - 1); // Go back one day to get yesterday
+    endOfLast7Days.setUTCHours(23, 59, 59, 999); // Set to the end of the day
+
+    // Start of the last 7 days (7 days before the end date, at 00:00:00.000)
+    const startOfLast7Days = new Date(endOfLast7Days);
+    startOfLast7Days.setDate(endOfLast7Days.getDate() - 6); // Go back 6 more days to cover the last 7 days
+    startOfLast7Days.setUTCHours(0, 0, 0, 0); // Set to the start of the day
 
     const startOfToday = new Date(
       today.getFullYear(),
       today.getMonth(),
-      today.getDate(),
+      today.getUTCDate(),
       0,
       0,
       0,
-      0
+      0 - cstOffset
     );
 
     const endOfToday = new Date(
       today.getFullYear(),
       today.getMonth(),
-      today.getDate() + 1,
-      0,
-      0,
-      0,
-      0
+      today.getUTCDate(),
+      23,
+      59,
+      59,
+      999 + minusCstOffset
     );
 
     // Calculate yesterday's date
@@ -555,20 +597,21 @@ export async function getDashboard() {
     const startOfYesterday = new Date(
       yesterday.getFullYear(),
       yesterday.getMonth(),
-      yesterday.getDate(),
+      yesterday.getUTCDate(),
       0,
       0,
       0,
-      0
+      0 - cstOffset
     );
+
     const endOfYesterday = new Date(
       yesterday.getFullYear(),
       yesterday.getMonth(),
-      yesterday.getDate() + 1,
-      0,
-      0,
-      0,
-      0
+      yesterday.getUTCDate(),
+      23,
+      59,
+      59,
+      999 + minusCstOffset
     );
 
     orders = await Order.find({ orderStatus: { $ne: 'Cancelado' } })
@@ -584,6 +627,58 @@ export async function getDashboard() {
     posts = await Post.find({ published: { $ne: 'false' } })
       .sort({ createdAt: -1 }) // Sort in descending order of creation date
       .limit(5);
+
+    let weeklyData = await Payment.aggregate([
+      {
+        $match: {
+          pay_date: {
+            $gte: startOfLast7Days,
+            $lt: endOfLast7Days,
+          },
+        },
+      },
+      {
+        $group: {
+          // Group by day using the $dateToString operator
+          _id: { $dateToString: { format: '%m-%d-%Y', date: '$pay_date' } },
+          totalAmount: { $sum: '$amount' },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $project: {
+          _id: 0, // Optional: Remove the _id field
+          date: '$_id', // Rename _id to date
+          Total: '$totalAmount', // Rename totalAmount to Total
+          count: 1, // Include the count field as is
+        },
+      },
+      {
+        $sort: { _id: 1 }, // Sort by date in ascending order
+      },
+    ]);
+
+    let dailyData = await Payment.aggregate([
+      // Match documents for the desired day
+      {
+        $match: {
+          // Filter documents based on the pay_date field
+          pay_date: {
+            $gte: startOfToday, // Start of the day
+            $lt: endOfToday, // End of the day
+          },
+        },
+      },
+      // Group documents by day
+      {
+        $group: {
+          // Group by day using the $dateToString operator on the pay_date field
+          _id: { $dateToString: { format: '%Y-%m-%d', date: '$pay_date' } }, // Group by date in YYYY-MM-DD format
+          totalAmount: { $sum: '$amount' }, // Sum up the amount field for each day
+          count: { $sum: 1 }, // Count the number of payments for each day (optional)
+        },
+      },
+    ]);
 
     dailyOrders = await Order.aggregate([
       {
@@ -617,22 +712,19 @@ export async function getDashboard() {
       },
     ]);
 
-    dailyOrdersTotals = await Order.aggregate([
+    dailyPaymentsTotals = await Payment.aggregate([
       {
         $match: {
-          createdAt: {
+          pay_date: {
             $gte: startOfToday,
             $lt: endOfToday,
           },
         },
       },
       {
-        $unwind: '$orderItems',
-      },
-      {
         $group: {
           _id: null,
-          total: { $sum: '$orderItems.price' },
+          total: { $sum: '$amount' }, // Sum up the amount field for each payment
         },
       },
     ]);
@@ -663,7 +755,7 @@ export async function getDashboard() {
         $match: {
           createdAt: {
             $gte: startOfCurrentWeek,
-            $lt: today,
+            $lt: endOfCurrentWeek,
           },
         },
       },
@@ -774,19 +866,23 @@ export async function getDashboard() {
     affiliates = JSON.stringify(affiliates);
     products = JSON.stringify(products);
     posts = JSON.stringify(posts);
+    weeklyData = JSON.stringify(weeklyData);
+    dailyData = JSON.stringify(dailyData);
     thisWeeksOrder = JSON.stringify(thisWeeksOrder);
     const thisWeekOrderTotals = totalOrdersThisWeek[0]?.total;
-    dailyOrdersTotals = dailyOrdersTotals[0]?.total;
+    dailyPaymentsTotals = dailyPaymentsTotals[0]?.total;
     yesterdaysOrdersTotals = yesterdaysOrdersTotals[0]?.total;
     monthlyOrdersTotals = monthlyOrdersTotals[0]?.total;
     yearlyOrdersTotals = yearlyOrdersTotals[0]?.total;
     return {
+      dailyData: dailyData,
+      weeklyData: weeklyData,
       orders: orders,
       clients: clients,
       posts: posts,
       affiliates: affiliates,
       dailyOrders: dailyOrders,
-      dailyOrdersTotals: dailyOrdersTotals,
+      dailyPaymentsTotals: dailyPaymentsTotals,
       yesterdaysOrdersTotals: yesterdaysOrdersTotals,
       thisWeeksOrder: thisWeeksOrder,
       products: products,
@@ -818,11 +914,11 @@ export async function getPOSDashboard() {
     let dailyOrdersTotals;
 
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Set time to midnight
+    today.setUTCHours(0, 0, 0, 0); // Set time to midnight
 
     const startOfCurrentWeek = new Date(today);
     startOfCurrentWeek.setDate(today.getDate() - today.getDay());
-    startOfCurrentWeek.setHours(0, 0, 0, 0); // Set time to midnight
+    startOfCurrentWeek.setUTCHours(0, 0, 0, 0); // Set time to midnight
 
     const startOfToday = new Date(
       today.getFullYear(),

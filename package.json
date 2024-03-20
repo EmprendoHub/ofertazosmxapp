@@ -19,6 +19,7 @@
     "@stripe/stripe-js": "^2.2.2",
     "axios": "^1.6.2",
     "bcrypt": "^5.1.1",
+    "chart.js": "^4.4.2",
     "cookies-next": "^4.1.1",
     "countries-list": "^3.0.6",
     "fetch-blob": "^4.0.0",

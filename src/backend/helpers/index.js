@@ -70,12 +70,62 @@ export const getPriceQueryParams = (queryParams, key, value) => {
 
 export function cstDateTime() {
   // Create a Date object from the given string
-  const date = new Date();
-  // Adjust to CST (Central Standard Time) - UTC-6
-  const cstDate = new Date(date.getTime() + 6 * 60 * 60 * 1000);
-  // Log the dates in a specific format
+  const currentDate = new Date();
+  // Adjust the date object to the Central Standard Time (CST) time zone
+  const cstOffset = -7 * 60 * 60 * 1000; // CST is UTC-6
+  const cstTime = new Date(currentDate.getTime() + cstOffset);
+  const cstDate = cstTime.toLocaleString('en-US', {
+    timeZone: 'America/Chicago',
+  });
+
+  console.log(cstDate);
 
   return cstDate;
+}
+
+export function formatSpanishDate(inputDate) {
+  // Parse the input date string
+  const date = new Date(inputDate);
+
+  // Adjust the date to the Central Standard Time (CST) timezone
+  const cstOffset = 6 * 60 * 60 * 1000; // CST is UTC-6
+  const cstDate = new Date(date.getTime() + cstOffset);
+
+  // Define arrays for month names in Spanish and AM/PM labels
+  const monthNames = [
+    'enero',
+    'febrero',
+    'marzo',
+    'abril',
+    'mayo',
+    'junio',
+    'julio',
+    'agosto',
+    'septiembre',
+    'octubre',
+    'noviembre',
+    'diciembre',
+  ];
+  const periodLabels = ['AM', 'PM'];
+
+  // Get the day, month, year, hours, and minutes from the adjusted date object
+  const day = cstDate.getDate();
+  const month = monthNames[cstDate.getMonth()];
+  const year = cstDate.getFullYear();
+  let hours = cstDate.getHours();
+  const minutes = String(cstDate.getMinutes()).padStart(2, '0');
+
+  // Determine the period label (AM/PM) based on the hour value
+  const period = hours < 12 ? 0 : 1;
+  console.log(hours, 'hours', inputDate);
+
+  // Convert hours to 12-hour format
+  hours = hours % 12 || 12;
+
+  // Construct the formatted string
+  const formattedDate = `${day} de ${month} de ${year} a las ${hours}:${minutes} ${periodLabels[period]}`;
+
+  return formattedDate;
 }
 
 export function cstDateTimeClient() {
@@ -88,22 +138,18 @@ export function formatDate(dateTimeString) {
   // Create a Date object from the given string
   const date = new Date(dateTimeString);
 
-  // Adjust to CST (Central Standard Time) - UTC-6
-  const cstDate = new Date(date.getTime() - 6 * 60 * 60 * 1000);
-
   // Format the date in the desired format
-  const formattedDate = cstDate.toLocaleDateString('es-ES', {
+  const formattedDate = date.toLocaleDateString('es-ES', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   });
 
   // Format the time in the desired format
-  const formattedTime = cstDate.toLocaleTimeString('es-ES', {
+  const formattedTime = date.toLocaleTimeString('es-ES', {
     hour: '2-digit',
     minute: '2-digit',
     hour12: true,
-    timeZone: 'America/Mexico_City', // Specify the time zone (CST)
   });
 
   return formattedDate;
@@ -113,15 +159,11 @@ export function formatTime(dateTimeString) {
   // Create a Date object from the given string
   const date = new Date(dateTimeString);
 
-  // Adjust to CST (Central Standard Time) - UTC-6
-  const cstDate = new Date(date.getTime() - 6 * 60 * 60 * 1000);
-
   // Format the time in the desired format
-  const formattedTime = cstDate.toLocaleTimeString('en-US', {
+  const formattedTime = date.toLocaleTimeString('en-US', {
     hour: '2-digit',
     minute: '2-digit',
     hour12: true,
-    timeZone: 'America/Mexico_City', // Specify the time zone (CST)
   });
 
   return formattedTime;

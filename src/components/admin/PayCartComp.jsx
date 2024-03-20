@@ -24,8 +24,6 @@ const PayCartComp = ({ setShowModal, payType }) => {
   const [name, setName] = useState('');
   const [savingPayment, setSavingPayment] = useState(false);
 
-  console.log(savingPayment, email);
-
   const { productsPOS } = useSelector((state) => state.compras);
   const [validationError, setValidationError] = useState(null);
   const amountTotal = productsPOS?.reduce(

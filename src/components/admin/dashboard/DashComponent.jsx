@@ -1,8 +1,7 @@
+'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
 import { MdAttachMoney } from 'react-icons/md';
-import { TbAffiliate } from 'react-icons/tb';
 import { IoArrowRedoSharp } from 'react-icons/io5';
 import {
   HiArrowNarrowUp,
@@ -12,8 +11,16 @@ import {
 import { GiClothes } from 'react-icons/gi';
 import FormattedPrice from '@/backend/helpers/FormattedPrice';
 import { FaTags } from 'react-icons/fa6';
+import { Bar } from 'react-chartjs-2';
+import 'chart.js/auto';
 
 const DashComponent = ({ data }) => {
+  const dailyData = JSON.parse(data?.dailyData);
+  const weeklyData = JSON.parse(data?.weeklyData);
+  console.log(weeklyData);
+  // Prepare the labels and data for the chart
+  const chartLabels = weeklyData.map((data) => data.date);
+  const chartData = weeklyData.map((data) => data.Total);
   const clients = JSON.parse(data?.clients);
   const products = JSON.parse(data?.products);
   const affiliates = JSON.parse(data?.affiliates);
@@ -31,10 +38,67 @@ const DashComponent = ({ data }) => {
   const totalCustomerCount = data?.totalCustomerCount;
   const thisWeeksOrder = JSON.parse(data?.thisWeeksOrder);
   const thisWeekOrderTotals = data?.thisWeekOrderTotals;
-  const dailyOrdersTotals = data?.dailyOrdersTotals;
+  const dailyPaymentsTotals = data?.dailyPaymentsTotals;
   const yesterdaysOrdersTotals = data?.yesterdaysOrdersTotals;
   const monthlyOrdersTotals = data?.monthlyOrdersTotals;
   const yearlyOrdersTotals = data?.yearlyOrdersTotals;
+  const colors = [
+    '#8884d8',
+    '#82ca9d',
+    '#ffc658',
+    '#ff8042',
+    '#8dd1e1',
+    '#a4de6c',
+    '#d0ed57',
+    '#ffc0cb',
+  ]; // Example colors
+  // Assuming `weeklyData` is your fetched dataset
+  const weeklyDataWithColors = {
+    labels: chartLabels,
+    datasets: [
+      {
+        label: 'Total de dia',
+        data: chartData,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.5)',
+          'rgba(54, 162, 235, 0.5)',
+          'rgba(255, 206, 86, 0.6)',
+          'rgba(75, 192, 192, 0.5)',
+          'rgba(153, 102, 255, 0.5)',
+          'rgba(255, 159, 64, 0.5)',
+          'rgba(199, 199, 199, 0.5)', // Example colors for 7 data points
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(199, 199, 199, 1)', // Example border colors for 7 data points
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const options = {
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Ventas de los últimos 7 días',
+      },
+    },
+  };
 
   return (
     <div className="p-3 md:mx-auto  text-slate-700">
@@ -47,7 +111,7 @@ const DashComponent = ({ data }) => {
                   Ventas del Dia
                 </h3>
                 <p className="text-2xl  text-slate-700">
-                  <FormattedPrice amount={dailyOrdersTotals || 0} />
+                  <FormattedPrice amount={dailyPaymentsTotals || 0} />
                 </p>
               </div>
               <MdAttachMoney className="bg-blue-600  text-white rounded-full text-5xl p-3 shadow-lg" />
@@ -121,6 +185,13 @@ const DashComponent = ({ data }) => {
               <div className="text-gray-500">Mes Anterior</div>
             </div>
           </div>
+        </div>
+      </div>
+      <div className="w-full min-h-[400px] bg-slate-300 p-5  mt-4">
+        {/* Chart to display daily totals for the last 7 days */}
+        <div className="chart-container h-[400px]">
+          <h2>Totales diarios de los últimos 7 días</h2>
+          <Bar data={weeklyDataWithColors} options={options} />;
         </div>
       </div>
       <div className="flex-row maxsm:flex-col flex gap-4 justify-start w-full mt-4">
