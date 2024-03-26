@@ -1,8 +1,8 @@
-'use server';
-import Address from '@/backend/models/Address';
-import dbConnect from '@/lib/db';
-import { getServerSession } from 'next-auth';
-import { options } from './api/auth/[...nextauth]/options';
+"use server";
+import Address from "@/backend/models/Address";
+import dbConnect from "@/lib/db";
+import { getServerSession } from "next-auth";
+import { options } from "./api/auth/[...nextauth]/options";
 import {
   AddressEntrySchema,
   ClientPasswordUpdateSchema,
@@ -15,31 +15,31 @@ import {
   VariationProductEntrySchema,
   VariationUpdateProductEntrySchema,
   VerifyEmailSchema,
-} from '@/lib/schemas';
-import { revalidatePath } from 'next/cache';
-import Post from '@/backend/models/Post';
-import Product from '@/backend/models/Product';
-import User from '@/backend/models/User';
-import Affiliate from '@/backend/models/Affiliate';
-import bcrypt from 'bcrypt';
-import nodemailer from 'nodemailer';
-import axios from 'axios';
+} from "@/lib/schemas";
+import { revalidatePath } from "next/cache";
+import Post from "@/backend/models/Post";
+import Product from "@/backend/models/Product";
+import User from "@/backend/models/User";
+import Affiliate from "@/backend/models/Affiliate";
+import bcrypt from "bcrypt";
+import nodemailer from "nodemailer";
+import axios from "axios";
 import {
   cstDateTime,
   generateUrlSafeTitle,
   getTotalFromItems,
-} from '@/backend/helpers';
-import Order from '@/backend/models/Order';
-import APIPostsFilters from '@/lib/APIPostsFilters';
-import APIFilters from '@/lib/APIFilters';
-import APIOrderFilters from '@/lib/APIOrderFilters';
-import APIClientFilters from '@/lib/APIClientFilters';
-import APIAffiliateFilters from '@/lib/APIAffiliateFilters';
-import Page from '@/backend/models/Page';
-import Payment from '@/backend/models/Payment';
-import crypto from 'crypto';
-import { NextResponse } from 'next/server';
-import Customer from '@/backend/models/Customer';
+} from "@/backend/helpers";
+import Order from "@/backend/models/Order";
+import APIPostsFilters from "@/lib/APIPostsFilters";
+import APIFilters from "@/lib/APIFilters";
+import APIOrderFilters from "@/lib/APIOrderFilters";
+import APIClientFilters from "@/lib/APIClientFilters";
+import APIAffiliateFilters from "@/lib/APIAffiliateFilters";
+import Page from "@/backend/models/Page";
+import Payment from "@/backend/models/Payment";
+import crypto from "crypto";
+import { NextResponse } from "next/server";
+import Customer from "@/backend/models/Customer";
 
 // Function to get the document count for all from the previous month
 const getDocumentCountPreviousMonth = async (model) => {
@@ -60,13 +60,13 @@ const getDocumentCountPreviousMonth = async (model) => {
         },
       },
       {
-        published: { $ne: 'false' },
+        published: { $ne: "false" },
       }
     );
 
     return documentCount;
   } catch (error) {
-    console.error('Error counting documents from the previous month:', error);
+    console.error("Error counting documents from the previous month:", error);
     throw error;
   }
 };
@@ -77,9 +77,9 @@ async function getQuantities(orderItems) {
   return totalQuantity;
 }
 
-const formatter = new Intl.NumberFormat('es-MX', {
-  style: 'currency',
-  currency: 'MXN',
+const formatter = new Intl.NumberFormat("es-MX", {
+  style: "currency",
+  currency: "MXN",
 });
 
 async function getTotal(orderItems) {
@@ -127,12 +127,12 @@ const getClientCountPreviousMonth = async () => {
           $lte: lastDayOfPreviousMonth,
         },
       },
-      { role: 'cliente' }
+      { role: "cliente" }
     );
 
     return clientCount;
   } catch (error) {
-    console.error('Error counting clients from the previous month:', error);
+    console.error("Error counting clients from the previous month:", error);
     throw error;
   }
 };
@@ -157,23 +157,23 @@ export async function payPOSDrawer(data) {
     let customerName;
 
     if (email.length > 3) {
-      console.log('if  email', email);
+      console.log("if  email", email);
       customerEmail = email;
     } else {
       if (phone.length > 3 || name.length > 3) {
-        console.log('if phone or name', phone, name);
+        console.log("if phone or name", phone, name);
         customerEmail =
-          phone + name.replace(/\s/g, '').substring(0, 8) + '@noemail.com';
+          phone + name.replace(/\s/g, "").substring(0, 8) + "@noemail.com";
       } else {
-        console.log('if sucursal');
-        customerEmail = 'sucursal@shopout.com';
+        console.log("if sucursal");
+        customerEmail = "sucursal@shopout.com";
       }
     }
 
     if (name.length > 3) {
       customerName = name;
     } else {
-      customerName = 'SUCURSAL';
+      customerName = "SUCURSAL";
     }
 
     const query = { $or: [{ email: customerEmail }] };
@@ -181,7 +181,7 @@ export async function payPOSDrawer(data) {
       customerPhone = phone;
       query.$or.push({ phone: phone });
     } else {
-      customerPhone = '';
+      customerPhone = "";
     }
 
     const customerExists = await Customer.findOne(query);
@@ -199,7 +199,7 @@ export async function payPOSDrawer(data) {
       customer = customerExists;
     }
     items = JSON.parse(items);
-    const branchInfo = 'Sucursal';
+    const branchInfo = "Sucursal";
     const ship_cost = 0;
     const date = cstDateTime();
 
@@ -209,36 +209,36 @@ export async function payPOSDrawer(data) {
     let payMethod;
     let payIntent;
 
-    if (payType === 'layaway') {
-      payIntent = 'partial';
+    if (payType === "layaway") {
+      payIntent = "partial";
     } else {
-      payIntent = 'paid';
+      payIntent = "paid";
     }
 
-    if (transactionNo === 'EFECTIVO') {
-      payMethod = 'EFECTIVO';
+    if (transactionNo === "EFECTIVO") {
+      payMethod = "EFECTIVO";
     } else if (!isNaN(transactionNo)) {
-      payMethod = 'TERMINAL';
+      payMethod = "TERMINAL";
     }
-    if (payType === 'layaway') {
+    if (payType === "layaway") {
       paymentInfo = {
-        id: 'partial',
-        status: 'unpaid',
+        id: "partial",
+        status: "unpaid",
         amountPaid: amountReceived,
         taxPaid: 0,
-        paymentIntent: 'partial',
+        paymentIntent: "partial",
       };
-      currentOrderStatus = 'Apartado';
+      currentOrderStatus = "Apartado";
       layAwayIntent = true;
     } else {
       paymentInfo = {
-        id: 'paid',
-        status: 'paid',
+        id: "paid",
+        status: "paid",
         amountPaid: amountReceived,
         taxPaid: 0,
-        paymentIntent: 'paid',
+        paymentIntent: "paid",
       };
-      currentOrderStatus = 'Pagado';
+      currentOrderStatus = "Pagado";
       layAwayIntent = false;
     }
 
@@ -247,7 +247,7 @@ export async function payPOSDrawer(data) {
       items?.map(async (item) => {
         const variationId = item._id.toString();
         const product = await Product.findOne({
-          'variations._id': variationId,
+          "variations._id": variationId,
         });
 
         const variation = product.variations.find((variation) =>
@@ -255,10 +255,10 @@ export async function payPOSDrawer(data) {
         );
         // Check if there is enough stock
         if (variation.stock < item.quantity) {
-          console.log('Este producto no cuenta con existencias');
+          console.log("Este producto no cuenta con existencias");
           return {
             error: {
-              title: { _errors: ['Este producto no cuenta con existencias'] },
+              title: { _errors: ["Este producto no cuenta con existencias"] },
             },
           };
         } else {
@@ -292,7 +292,7 @@ export async function payPOSDrawer(data) {
       orderItems: cartItems,
       orderStatus: currentOrderStatus,
       layaway: layAwayIntent,
-      affiliateId: '',
+      affiliateId: "",
     };
 
     let newOrder = await new Order(orderData);
@@ -300,7 +300,7 @@ export async function payPOSDrawer(data) {
     const newOrderString = JSON.stringify(newOrder);
 
     let paymentTransactionData = {
-      type: 'sucursal',
+      type: "sucursal",
       paymentIntent: payIntent,
       amount: amountReceived,
       reference: transactionNo,
@@ -314,30 +314,30 @@ export async function payPOSDrawer(data) {
 
       await newPaymentTransaction.save();
     } catch (error) {
-      console.log('dBberror', error);
+      console.log("dBberror", error);
     }
 
     // send email after order is confirmed
     if (
-      customerEmail.includes('@noemail.com') ||
-      customerEmail === 'sucursal@shopout.com'
+      customerEmail.includes("@noemail.com") ||
+      customerEmail === "sucursal@shopout.com"
     ) {
-      console.log('did not send email');
+      console.log("did not send email");
     } else {
       try {
-        const subject = '¡Gracias por tu compra!';
+        const subject = "¡Gracias por tu compra!";
         const bodyOne = `Queríamos expresarte nuestro más sincero agradecimiento por haber elegido SHOP OUT MX para realizar tu compra reciente. Nos complace enormemente saber que confías en nuestros productos/servicios.`;
         const bodyTwo = `Tu apoyo significa mucho para nosotros y nos comprometemos a brindarte la mejor experiencia posible. Si tienes alguna pregunta o necesitas asistencia adicional, no dudes en ponerte en contacto con nuestro equipo de atención al cliente. Estamos aquí para ayudarte en cualquier momento.`;
-        const title = 'Recibo de compra';
+        const title = "Recibo de compra";
         const greeting = `Estimado/a ${customer?.name}`;
-        const senderName = 'www.shopout.com.mx';
-        const bestRegards = '¡Que tengas un excelente día!';
+        const senderName = "www.shopout.com.mx";
+        const bestRegards = "¡Que tengas un excelente día!";
         const recipient_email = customer?.email;
-        const sender_email = 'contacto@shopout.com.mx';
-        const fromName = 'Shopout Mx';
+        const sender_email = "contacto@shopout.com.mx";
+        const fromName = "Shopout Mx";
 
         var transporter = nodemailer.createTransport({
-          service: 'gmail',
+          service: "gmail",
           auth: {
             user: process.env.GOOGLE_MAIL,
             pass: process.env.GOOGLE_MAIL_PASS_ONE,
@@ -382,11 +382,11 @@ export async function payPOSDrawer(data) {
                 <td style="padding: 0.75rem;">${item.price}</td>
               </tr>`
               )
-              .join('')}
+              .join("")}
               <tr>
               <div style="max-width: 100%; width: 100%; margin: 0 auto; background-color: #ffffff; display: flex; flex-direction: column; padding: 0.5rem;">
         ${
-          newOrder?.orderStatus === 'Apartado'
+          newOrder?.orderStatus === "Apartado"
             ? `<ul style="margin-bottom: .75rem; padding-left: 0px;">
             <li style="display: flex; justify-content: space-between; gap: 0.75rem; color: #4a5568; margin-bottom: 0.25rem;">
               <span>Total de Artículos:</span>
@@ -474,8 +474,8 @@ export async function payPOSDrawer(data) {
       }
     }
 
-    revalidatePath('/admin/');
-    revalidatePath('/puntodeventa/');
+    revalidatePath("/admin/");
+    revalidatePath("/puntodeventa/");
     return { newOrder: newOrderString };
   } catch (error) {
     console.log(error);
@@ -614,17 +614,17 @@ export async function getDashboard() {
       999 + minusCstOffset
     );
 
-    orders = await Order.find({ orderStatus: { $ne: 'Cancelado' } })
+    orders = await Order.find({ orderStatus: { $ne: "Cancelado" } })
       .sort({ createdAt: -1 }) // Sort in descending order of creation date
       .limit(5);
 
-    affiliates = await Affiliate.find({ published: { $ne: 'false' } })
+    affiliates = await Affiliate.find({ published: { $ne: "false" } })
       .sort({ createdAt: -1 }) // Sort in descending order of creation date
       .limit(5);
     clients = await Customer.find()
       .sort({ createdAt: -1 }) // Sort in descending order of creation date
       .limit(5);
-    posts = await Post.find({ published: { $ne: 'false' } })
+    posts = await Post.find({ published: { $ne: "false" } })
       .sort({ createdAt: -1 }) // Sort in descending order of creation date
       .limit(5);
 
@@ -640,16 +640,16 @@ export async function getDashboard() {
       {
         $group: {
           // Group by day using the $dateToString operator
-          _id: { $dateToString: { format: '%m-%d-%Y', date: '$pay_date' } },
-          totalAmount: { $sum: '$amount' },
+          _id: { $dateToString: { format: "%m-%d-%Y", date: "$pay_date" } },
+          totalAmount: { $sum: "$amount" },
           count: { $sum: 1 },
         },
       },
       {
         $project: {
           _id: 0, // Optional: Remove the _id field
-          date: '$_id', // Rename _id to date
-          Total: '$totalAmount', // Rename totalAmount to Total
+          date: "$_id", // Rename _id to date
+          Total: "$totalAmount", // Rename totalAmount to Total
           count: 1, // Include the count field as is
         },
       },
@@ -673,8 +673,8 @@ export async function getDashboard() {
       {
         $group: {
           // Group by day using the $dateToString operator on the pay_date field
-          _id: { $dateToString: { format: '%Y-%m-%d', date: '$pay_date' } }, // Group by date in YYYY-MM-DD format
-          totalAmount: { $sum: '$amount' }, // Sum up the amount field for each day
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$pay_date" } }, // Group by date in YYYY-MM-DD format
+          totalAmount: { $sum: "$amount" }, // Sum up the amount field for each day
           count: { $sum: 1 }, // Count the number of payments for each day (optional)
         },
       },
@@ -690,24 +690,24 @@ export async function getDashboard() {
         },
       },
       {
-        $unwind: '$orderItems',
+        $unwind: "$orderItems",
       },
       {
         $group: {
           _id: {
-            orderStatus: '$orderStatus',
-            orderId: '$orderId',
-            _id: '$_id',
+            orderStatus: "$orderStatus",
+            orderId: "$orderId",
+            _id: "$_id",
           },
-          total: { $sum: '$orderItems.price' },
+          total: { $sum: "$orderItems.price" },
         },
       },
       {
         $project: {
-          _id: '$_id._id',
+          _id: "$_id._id",
           total: 1,
-          orderStatus: '$_id.orderStatus',
-          orderId: '$_id.orderId',
+          orderStatus: "$_id.orderStatus",
+          orderId: "$_id.orderId",
         },
       },
     ]);
@@ -724,7 +724,7 @@ export async function getDashboard() {
       {
         $group: {
           _id: null,
-          total: { $sum: '$amount' }, // Sum up the amount field for each payment
+          total: { $sum: "$amount" }, // Sum up the amount field for each payment
         },
       },
     ]);
@@ -740,12 +740,12 @@ export async function getDashboard() {
         },
       },
       {
-        $unwind: '$orderItems',
+        $unwind: "$orderItems",
       },
       {
         $group: {
           _id: null,
-          total: { $sum: '$orderItems.price' },
+          total: { $sum: "$orderItems.price" },
         },
       },
     ]);
@@ -760,24 +760,24 @@ export async function getDashboard() {
         },
       },
       {
-        $unwind: '$orderItems', // Deconstruct the orderItems array
+        $unwind: "$orderItems", // Deconstruct the orderItems array
       },
       {
         $group: {
           _id: {
-            orderStatus: '$orderStatus',
-            orderId: '$orderId', // Include orderId in the _id
-            _id: '$_id', // Include _id in the _id
+            orderStatus: "$orderStatus",
+            orderId: "$orderId", // Include orderId in the _id
+            _id: "$_id", // Include _id in the _id
           },
-          total: { $sum: '$orderItems.price' }, // Calculate the total sum of prices
+          total: { $sum: "$orderItems.price" }, // Calculate the total sum of prices
         },
       },
       {
         $project: {
-          _id: '$_id._id', // Project the _id from _id
+          _id: "$_id._id", // Project the _id from _id
           total: 1,
-          orderStatus: '$_id.orderStatus',
-          orderId: '$_id.orderId', // Project orderId
+          orderStatus: "$_id.orderStatus",
+          orderId: "$_id.orderId", // Project orderId
         },
       },
     ]);
@@ -792,12 +792,12 @@ export async function getDashboard() {
         },
       },
       {
-        $unwind: '$orderItems', // Deconstruct the orderItems array
+        $unwind: "$orderItems", // Deconstruct the orderItems array
       },
       {
         $group: {
           _id: null, // Group all documents without any specific criteria
-          total: { $sum: '$orderItems.price' }, // Calculate the total sum of prices
+          total: { $sum: "$orderItems.price" }, // Calculate the total sum of prices
         },
       },
     ]);
@@ -813,12 +813,12 @@ export async function getDashboard() {
         },
       },
       {
-        $unwind: '$orderItems',
+        $unwind: "$orderItems",
       },
       {
         $group: {
           _id: null,
-          total: { $sum: '$orderItems.price' },
+          total: { $sum: "$orderItems.price" },
         },
       },
     ]);
@@ -834,29 +834,29 @@ export async function getDashboard() {
         },
       },
       {
-        $unwind: '$orderItems',
+        $unwind: "$orderItems",
       },
       {
         $group: {
           _id: null,
-          total: { $sum: '$orderItems.price' },
+          total: { $sum: "$orderItems.price" },
         },
       },
     ]);
 
-    products = await Product.find({ published: { $ne: 'false' } })
+    products = await Product.find({ published: { $ne: "false" } })
       .sort({ createdAt: -1 }) // Sort in descending order of creation date
       .limit(5);
 
     const totalOrderCount = await Order.countDocuments({
-      orderStatus: { $ne: 'Cancelado' },
+      orderStatus: { $ne: "Cancelado" },
     });
     const totalPostCount = await Post.countDocuments();
     const totalCustomerCount = await Customer.countDocuments({
-      name: { $ne: 'SUCURSAL' },
+      name: { $ne: "SUCURSAL" },
     });
     const totalProductCount = await Product.countDocuments({
-      published: { $ne: 'false' },
+      published: { $ne: "false" },
     });
     const orderCountPreviousMonth = await getDocumentCountPreviousMonth(Order);
 
@@ -941,8 +941,8 @@ export async function getPOSDashboard() {
     );
 
     if (session) {
-      if (session?.user?.role === 'sucursal') {
-        orders = await Order.find({ orderStatus: { $ne: 'Cancelado' } })
+      if (session?.user?.role === "sucursal") {
+        orders = await Order.find({ orderStatus: { $ne: "Cancelado" } })
           .sort({ createdAt: -1 }) // Sort in descending order of creation date
           .limit(5);
 
@@ -956,24 +956,24 @@ export async function getPOSDashboard() {
             },
           },
           {
-            $unwind: '$orderItems',
+            $unwind: "$orderItems",
           },
           {
             $group: {
               _id: {
-                orderStatus: '$orderStatus',
-                orderId: '$orderId',
-                _id: '$_id',
+                orderStatus: "$orderStatus",
+                orderId: "$orderId",
+                _id: "$_id",
               },
-              total: { $sum: '$orderItems.price' },
+              total: { $sum: "$orderItems.price" },
             },
           },
           {
             $project: {
-              _id: '$_id._id',
+              _id: "$_id._id",
               total: 1,
-              orderStatus: '$_id.orderStatus',
-              orderId: '$_id.orderId',
+              orderStatus: "$_id.orderStatus",
+              orderId: "$_id.orderId",
             },
           },
         ]);
@@ -987,12 +987,12 @@ export async function getPOSDashboard() {
             },
           },
           {
-            $unwind: '$orderItems',
+            $unwind: "$orderItems",
           },
           {
             $group: {
               _id: null,
-              total: { $sum: '$orderItems.price' },
+              total: { $sum: "$orderItems.price" },
             },
           },
         ]);
@@ -1007,24 +1007,24 @@ export async function getPOSDashboard() {
             },
           },
           {
-            $unwind: '$orderItems', // Deconstruct the orderItems array
+            $unwind: "$orderItems", // Deconstruct the orderItems array
           },
           {
             $group: {
               _id: {
-                orderStatus: '$orderStatus',
-                orderId: '$orderId', // Include orderId in the _id
-                _id: '$_id', // Include _id in the _id
+                orderStatus: "$orderStatus",
+                orderId: "$orderId", // Include orderId in the _id
+                _id: "$_id", // Include _id in the _id
               },
-              total: { $sum: '$orderItems.price' }, // Calculate the total sum of prices
+              total: { $sum: "$orderItems.price" }, // Calculate the total sum of prices
             },
           },
           {
             $project: {
-              _id: '$_id._id', // Project the _id from _id
+              _id: "$_id._id", // Project the _id from _id
               total: 1,
-              orderStatus: '$_id.orderStatus',
-              orderId: '$_id.orderId', // Project orderId
+              orderStatus: "$_id.orderStatus",
+              orderId: "$_id.orderId", // Project orderId
             },
           },
         ]);
@@ -1038,27 +1038,27 @@ export async function getPOSDashboard() {
             },
           },
           {
-            $unwind: '$orderItems', // Deconstruct the orderItems array
+            $unwind: "$orderItems", // Deconstruct the orderItems array
           },
           {
             $group: {
               _id: null, // Group all documents without any specific criteria
-              total: { $sum: '$orderItems.price' }, // Calculate the total sum of prices
+              total: { $sum: "$orderItems.price" }, // Calculate the total sum of prices
             },
           },
         ]);
 
-        products = await Product.find({ published: { $ne: 'false' } })
+        products = await Product.find({ published: { $ne: "false" } })
           .sort({ createdAt: -1 }) // Sort in descending order of creation date
           .limit(5);
       }
     }
 
     const totalOrderCount = await Order.countDocuments({
-      orderStatus: { $ne: 'Cancelado' },
+      orderStatus: { $ne: "Cancelado" },
     });
     const totalProductCount = await Product.countDocuments({
-      published: { $ne: 'false' },
+      published: { $ne: "false" },
     });
     const orderCountPreviousMonth = await getDocumentCountPreviousMonth(Order);
 
@@ -1114,8 +1114,8 @@ export async function getInstagramDashboard() {
     );
 
     if (session) {
-      if (session?.user?.role === 'sucursal') {
-        orders = await Order.find({ orderStatus: { $ne: 'Cancelado' } })
+      if (session?.user?.role === "sucursal") {
+        orders = await Order.find({ orderStatus: { $ne: "Cancelado" } })
           .sort({ createdAt: -1 }) // Sort in descending order of creation date
           .limit(5);
 
@@ -1129,24 +1129,24 @@ export async function getInstagramDashboard() {
             },
           },
           {
-            $unwind: '$orderItems',
+            $unwind: "$orderItems",
           },
           {
             $group: {
               _id: {
-                orderStatus: '$orderStatus',
-                orderId: '$orderId',
-                _id: '$_id',
+                orderStatus: "$orderStatus",
+                orderId: "$orderId",
+                _id: "$_id",
               },
-              total: { $sum: '$orderItems.price' },
+              total: { $sum: "$orderItems.price" },
             },
           },
           {
             $project: {
-              _id: '$_id._id',
+              _id: "$_id._id",
               total: 1,
-              orderStatus: '$_id.orderStatus',
-              orderId: '$_id.orderId',
+              orderStatus: "$_id.orderStatus",
+              orderId: "$_id.orderId",
             },
           },
         ]);
@@ -1160,12 +1160,12 @@ export async function getInstagramDashboard() {
             },
           },
           {
-            $unwind: '$orderItems',
+            $unwind: "$orderItems",
           },
           {
             $group: {
               _id: null,
-              total: { $sum: '$orderItems.price' },
+              total: { $sum: "$orderItems.price" },
             },
           },
         ]);
@@ -1180,24 +1180,24 @@ export async function getInstagramDashboard() {
             },
           },
           {
-            $unwind: '$orderItems', // Deconstruct the orderItems array
+            $unwind: "$orderItems", // Deconstruct the orderItems array
           },
           {
             $group: {
               _id: {
-                orderStatus: '$orderStatus',
-                orderId: '$orderId', // Include orderId in the _id
-                _id: '$_id', // Include _id in the _id
+                orderStatus: "$orderStatus",
+                orderId: "$orderId", // Include orderId in the _id
+                _id: "$_id", // Include _id in the _id
               },
-              total: { $sum: '$orderItems.price' }, // Calculate the total sum of prices
+              total: { $sum: "$orderItems.price" }, // Calculate the total sum of prices
             },
           },
           {
             $project: {
-              _id: '$_id._id', // Project the _id from _id
+              _id: "$_id._id", // Project the _id from _id
               total: 1,
-              orderStatus: '$_id.orderStatus',
-              orderId: '$_id.orderId', // Project orderId
+              orderStatus: "$_id.orderStatus",
+              orderId: "$_id.orderId", // Project orderId
             },
           },
         ]);
@@ -1211,27 +1211,27 @@ export async function getInstagramDashboard() {
             },
           },
           {
-            $unwind: '$orderItems', // Deconstruct the orderItems array
+            $unwind: "$orderItems", // Deconstruct the orderItems array
           },
           {
             $group: {
               _id: null, // Group all documents without any specific criteria
-              total: { $sum: '$orderItems.price' }, // Calculate the total sum of prices
+              total: { $sum: "$orderItems.price" }, // Calculate the total sum of prices
             },
           },
         ]);
 
-        products = await Product.find({ published: { $ne: 'false' } })
+        products = await Product.find({ published: { $ne: "false" } })
           .sort({ createdAt: -1 }) // Sort in descending order of creation date
           .limit(5);
       }
     }
 
     const totalOrderCount = await Order.countDocuments({
-      orderStatus: { $ne: 'Cancelado' },
+      orderStatus: { $ne: "Cancelado" },
     });
     const totalProductCount = await Product.countDocuments({
-      published: { $ne: 'false' },
+      published: { $ne: "false" },
     });
     const orderCountPreviousMonth = await getDocumentCountPreviousMonth(Order);
 
@@ -1267,7 +1267,7 @@ export async function getOnePost(slug) {
     const postCategory = post.category;
     // Find products matching any of the tag values
     let trendingProducts = await Product.find({
-      'tags.value': postCategory,
+      "tags.value": postCategory,
     }).limit(4);
 
     // convert to string
@@ -1329,7 +1329,7 @@ export async function addNewPage(data) {
   if (slugExists) {
     return {
       error: {
-        title: { _errors: ['Este Titulo de Pagina ya esta en uso'] },
+        title: { _errors: ["Este Titulo de Pagina ya esta en uso"] },
       },
     };
   }
@@ -1346,7 +1346,7 @@ export async function addNewPage(data) {
     authorId: { _id: session?.user._id },
   });
   if (error) throw Error(error);
-  revalidatePath('/');
+  revalidatePath("/");
 }
 
 export async function updatePage(data) {
@@ -1385,7 +1385,7 @@ export async function updatePage(data) {
   if (slugExists) {
     return {
       error: {
-        title: { _errors: ['Este Titulo de Pagina ya esta en uso'] },
+        title: { _errors: ["Este Titulo de Pagina ya esta en uso"] },
       },
     };
   }
@@ -1405,7 +1405,7 @@ export async function updatePage(data) {
     }
   );
   if (error) throw Error(error);
-  revalidatePath('/');
+  revalidatePath("/");
 }
 
 export async function getAllPost(searchQuery) {
@@ -1415,7 +1415,7 @@ export async function getAllPost(searchQuery) {
     await dbConnect();
     let postQuery;
     if (session) {
-      if (session?.user?.role === 'manager') {
+      if (session?.user?.role === "manager") {
         postQuery = Post.find({});
       } else {
         postQuery = Post.find({ published: true });
@@ -1427,11 +1427,11 @@ export async function getAllPost(searchQuery) {
     const searchParams = new URLSearchParams(searchQuery);
     const resPerPage = 10;
     // Extract page and per_page from request URL
-    const page = Number(searchParams.get('page')) || 1;
+    const page = Number(searchParams.get("page")) || 1;
     // total number of documents in database
     const itemCount = await Post.countDocuments();
     // Extract all possible categories
-    const allCategories = await Post.distinct('category');
+    const allCategories = await Post.distinct("category");
 
     // Apply search Filters
     const apiPostFilters = new APIPostsFilters(postQuery, searchParams)
@@ -1498,29 +1498,29 @@ export async function getAllOrder(searchQuery) {
     const session = await getServerSession(options);
     let orderQuery;
     if (
-      session?.user?.role === 'manager' ||
-      session?.user?.role === 'sucursal'
+      session?.user?.role === "manager" ||
+      session?.user?.role === "sucursal"
     ) {
-      orderQuery = Order.find({ orderStatus: { $ne: 'Cancelado' } }).populate(
-        'user'
+      orderQuery = Order.find({ orderStatus: { $ne: "Cancelado" } }).populate(
+        "user"
       );
-    } else if (session?.user?.role === 'afiliado') {
+    } else if (session?.user?.role === "afiliado") {
       const affiliate = await Affiliate.findOne({ user: session?.user?._id });
       orderQuery = Order.find({
         affiliateId: affiliate?._id.toString(),
-        orderStatus: { $ne: 'Cancelado' },
-      }).populate('user');
+        orderStatus: { $ne: "Cancelado" },
+      }).populate("user");
     } else {
       orderQuery = Order.find({
         user: session?.user?._id,
-        orderStatus: { $ne: 'Cancelado' },
-      }).populate('user');
+        orderStatus: { $ne: "Cancelado" },
+      }).populate("user");
     }
 
     const searchParams = new URLSearchParams(searchQuery);
-    const resPerPage = Number(searchParams.get('perpage')) || 10;
+    const resPerPage = Number(searchParams.get("perpage")) || 10;
     // Extract page and per_page from request URL
-    const page = Number(searchParams.get('page')) || 1;
+    const page = Number(searchParams.get("page")) || 1;
     // Apply descending order based on a specific field (e.g., createdAt)
     orderQuery = orderQuery.sort({ createdAt: -1 });
     const totalOrderCount = await Order.countDocuments();
@@ -1565,33 +1565,33 @@ export async function updateOneOrder(data) {
     const date = cstDateTime();
     const orderTotal = await getTotalFromItems(order?.orderItems);
     if (order.paymentInfo.amountPaid + Number(amount) >= orderTotal) {
-      newOrderStatus = 'Entregado';
-      newOrderPaymentStatus = 'Pagado';
+      newOrderStatus = "Entregado";
+      newOrderPaymentStatus = "Pagado";
     } else {
-      newOrderStatus = 'Apartado';
-      newOrderPaymentStatus = 'Pendiente';
+      newOrderStatus = "Apartado";
+      newOrderPaymentStatus = "Pendiente";
     }
 
     let payMethod;
-    if (transactionNo === 'EFECTIVO') {
-      payMethod = 'EFECTIVO';
+    if (transactionNo === "EFECTIVO") {
+      payMethod = "EFECTIVO";
     } else if (!isNaN(transactionNo)) {
-      payMethod = 'TERMINAL';
+      payMethod = "TERMINAL";
     }
     const updatedOrder = await Order.updateOne(
       { _id: orderId },
       {
         orderStatus: newOrderStatus,
-        'paymentInfo.status': newOrderPaymentStatus,
-        $inc: { 'paymentInfo.amountPaid': Number(amount) },
+        "paymentInfo.status": newOrderPaymentStatus,
+        $inc: { "paymentInfo.amountPaid": Number(amount) },
       }
     );
 
     const lastOrder = await Order.findById(orderId);
 
     let paymentTransactionData = {
-      type: 'sucursal',
-      paymentIntent: '',
+      type: "sucursal",
+      paymentIntent: "",
       amount: amount,
       comment: note,
       reference: transactionNo,
@@ -1606,7 +1606,7 @@ export async function updateOneOrder(data) {
 
       await newPaymentTransaction.save();
     } catch (error) {
-      console.log('dBberror', error);
+      console.log("dBberror", error);
     }
     revalidatePath(`/admin/pedidos`);
     revalidatePath(`/admin/pedido/${lastOrder?._id}`);
@@ -1647,17 +1647,17 @@ export async function getAllPOSOrder(searchQuery) {
     await dbConnect();
     const session = await getServerSession(options);
     let orderQuery;
-    if (session?.user?.role === 'sucursal') {
+    if (session?.user?.role === "sucursal") {
       orderQuery = Order.find({
-        $and: [{ branch: 'Sucursal' }, { orderStatus: { $ne: 'Cancelado' } }],
-      }).populate('user');
+        $and: [{ branch: "Sucursal" }, { orderStatus: { $ne: "Cancelado" } }],
+      }).populate("user");
     }
 
     const searchParams = new URLSearchParams(searchQuery);
 
-    const resPerPage = Number(searchParams.get('perpage')) || 10;
+    const resPerPage = Number(searchParams.get("perpage")) || 10;
     // Extract page and per_page from request URL
-    const page = Number(searchParams.get('page')) || 1;
+    const page = Number(searchParams.get("page")) || 1;
     // Apply descending order based on a specific field (e.g., createdAt)
     orderQuery = orderQuery.sort({ createdAt: -1 });
 
@@ -1751,7 +1751,7 @@ export async function updateProductQuantity(variationId) {
   try {
     await dbConnect();
     // Find the product that contains the variation with the specified variation ID
-    let product = await Product.findOne({ 'variations._id': variationId });
+    let product = await Product.findOne({ "variations._id": variationId });
 
     if (product) {
       // Find the variation within the variations array
@@ -1763,8 +1763,8 @@ export async function updateProductQuantity(variationId) {
       // Save the product to persist the changes
       await product.save();
     } else {
-      console.log('Product not found');
-      throw Error('Product not found');
+      console.log("Product not found");
+      throw Error("Product not found");
     }
   } catch (error) {
     console.log(error);
@@ -1785,7 +1785,7 @@ export async function changeProductStatus(productId) {
     }
     // Save the product to persist the changes
     await product.save();
-    revalidatePath('/admin/productos');
+    revalidatePath("/admin/productos");
   } catch (error) {
     console.log(error);
     throw Error(error);
@@ -1798,7 +1798,7 @@ export async function deleteOneProduct(productId) {
     // Find the product that contains the variation with the specified variation ID
     await Product.findOneAndDelete({ _id: productId });
 
-    revalidatePath('/admin/productos');
+    revalidatePath("/admin/productos");
   } catch (error) {
     console.log(error);
     throw Error(error);
@@ -1810,19 +1810,19 @@ export async function changeProductAvailability(productId, location) {
     await dbConnect();
     // Find the product that contains the variation with the specified variation ID
     let product = await Product.findOne({ _id: productId });
-    if (location === 'Instagram') {
+    if (location === "Instagram") {
       if (product.availability.instagram === true) {
         product.availability.instagram = false; // Remove from physical branch
       } else {
         product.availability.instagram = true; // Add to physical branch
       }
-    } else if (location === 'Branch') {
+    } else if (location === "Branch") {
       if (product.availability.branch === true) {
         product.availability.branch = false; // Remove from physical branch
       } else {
         product.availability.branch = true; // Add to physical branch
       }
-    } else if (location === 'Online') {
+    } else if (location === "Online") {
       if (product.availability.online === true) {
         product.availability.online = false; // Remove from physical branch
       } else {
@@ -1831,9 +1831,9 @@ export async function changeProductAvailability(productId, location) {
     }
     // Save the product to persist the changes
     await product.save();
-    revalidatePath('/admin/productos');
-    revalidatePath('/admin/pos/tienda');
-    revalidatePath('/puntodeventa/tienda');
+    revalidatePath("/admin/productos");
+    revalidatePath("/admin/pos/tienda");
+    revalidatePath("/puntodeventa/tienda");
   } catch (error) {
     console.log(error);
     throw Error(error);
@@ -1844,7 +1844,7 @@ export async function getVariationStock(variationId) {
   try {
     await dbConnect();
     // Find the product that contains the variation with the specified variation ID
-    let product = await Product.findOne({ 'variations._id': variationId });
+    let product = await Product.findOne({ "variations._id": variationId });
 
     if (product) {
       // Find the variation within the variations array
@@ -1853,7 +1853,7 @@ export async function getVariationStock(variationId) {
       );
       return { currentStock: variation.stock };
     } else {
-      throw Error('Product not found');
+      throw Error("Product not found");
     }
   } catch (error) {
     console.log(error);
@@ -1865,7 +1865,7 @@ export async function getOnePOSProduct(variationId) {
   try {
     await dbConnect();
     // Find the product that contains the variation with the specified variation ID
-    let product = await Product.findOne({ 'variations._id': variationId });
+    let product = await Product.findOne({ "variations._id": variationId });
 
     if (product) {
       // Find the variation within the variations array
@@ -1886,7 +1886,7 @@ export async function getOnePOSProduct(variationId) {
       variation = JSON.stringify(variation);
       return { product: product, variation: variation };
     } else {
-      throw Error('Product not found');
+      throw Error("Product not found");
     }
   } catch (error) {
     console.log(error);
@@ -1900,13 +1900,13 @@ export async function getAllPOSProductOld(searchQuery) {
     let productQuery;
     // Find the product that contains the variation with the specified variation ID
     productQuery = Product.find({
-      $and: [{ stock: { $gt: 0 } }, { 'availability.branch': true }],
+      $and: [{ stock: { $gt: 0 } }, { "availability.branch": true }],
     });
 
     const searchParams = new URLSearchParams(searchQuery);
-    const resPerPage = Number(searchParams.get('perpage')) || 10;
+    const resPerPage = Number(searchParams.get("perpage")) || 10;
     // Extract page and per_page from request URL
-    const page = Number(searchParams.get('page')) || 1;
+    const page = Number(searchParams.get("page")) || 1;
     // total number of documents in database
     const productsCount = await Product.countDocuments();
     // Apply search Filters
@@ -1944,12 +1944,12 @@ export async function getAllPOSProduct(searchQuery) {
     await dbConnect();
     // Find the product that contains the variation with the specified variation ID
     let productQuery = Product.find({
-      $and: [{ stock: { $gt: 0 } }, { 'availability.branch': true }],
+      $and: [{ stock: { $gt: 0 } }, { "availability.branch": true }],
     });
     const searchParams = new URLSearchParams(searchQuery);
-    const resPerPage = Number(searchParams.get('perpage')) || 10;
+    const resPerPage = Number(searchParams.get("perpage")) || 10;
     // Extract page and per_page from request URL
-    const page = Number(searchParams.get('page')) || 1;
+    const page = Number(searchParams.get("page")) || 1;
     productQuery = productQuery.sort({ createdAt: -1 });
     // total number of documents in database
     const productsCount = await Product.countDocuments();
@@ -1965,7 +1965,7 @@ export async function getAllPOSProduct(searchQuery) {
     apiProductFilters.pagination(resPerPage, page);
     productsData = await apiProductFilters.query.clone();
     let products = JSON.stringify(productsData);
-    revalidatePath('/admin/pos/productos/');
+    revalidatePath("/admin/pos/productos/");
     return {
       products: products,
       filteredProductsCount: filteredProductsCount,
@@ -1981,7 +1981,7 @@ export async function getAllPOSProductNoFilter(searchQuery) {
     await dbConnect();
     // Find the product that contains the variation with the specified variation ID
     let productsData = await Product.find({
-      $and: [{ stock: { $gt: 0 } }, { 'availability.branch': true }],
+      $and: [{ stock: { $gt: 0 } }, { "availability.branch": true }],
     });
 
     const filteredProductsCount = productsData.length;
@@ -2004,8 +2004,8 @@ export async function getAllProduct(searchQuery) {
     let productQuery;
     if (session) {
       if (
-        session?.user?.role === 'manager' ||
-        session?.user?.role === 'sucursal'
+        session?.user?.role === "manager" ||
+        session?.user?.role === "sucursal"
       ) {
         productQuery = Product.find();
       }
@@ -2014,16 +2014,16 @@ export async function getAllProduct(searchQuery) {
     }
 
     const searchParams = new URLSearchParams(searchQuery);
-    const resPerPage = Number(searchParams.get('perpage')) || 10;
+    const resPerPage = Number(searchParams.get("perpage")) || 10;
     // Extract page and per_page from request URL
-    const page = Number(searchParams.get('page')) || 1;
+    const page = Number(searchParams.get("page")) || 1;
     productQuery = productQuery.sort({ createdAt: -1 });
     // total number of documents in database
     const productsCount = await Product.countDocuments();
     // Extract all possible categories
-    let allCategories = await Product.distinct('category');
+    let allCategories = await Product.distinct("category");
     // Extract all possible categories
-    let allBrands = await Product.distinct('brand');
+    let allBrands = await Product.distinct("brand");
     // Apply search Filters
     const apiProductFilters = new APIFilters(productQuery, searchParams)
       .searchAllFields()
@@ -2038,7 +2038,7 @@ export async function getAllProduct(searchQuery) {
     let sortedProducts = JSON.stringify(productsData);
     allCategories = JSON.stringify(allCategories);
     allBrands = JSON.stringify(allBrands);
-    revalidatePath('/admin/productos/');
+    revalidatePath("/admin/productos/");
     return {
       products: sortedProducts,
       productsCount: productsCount,
@@ -2060,14 +2060,14 @@ export async function getAllUserOrder(searchQuery, id) {
 
     orderQuery = Order.find({
       user: id,
-      orderStatus: { $ne: 'Cancelado' },
+      orderStatus: { $ne: "Cancelado" },
     });
     let client = await User.findOne({ _id: id });
 
     const searchParams = new URLSearchParams(searchQuery);
-    const resPerPage = Number(searchParams.get('perpage')) || 10;
+    const resPerPage = Number(searchParams.get("perpage")) || 10;
     // Extract page and per_page from request URL
-    const page = Number(searchParams.get('page')) || 1;
+    const page = Number(searchParams.get("page")) || 1;
     // Apply descending order based on a specific field (e.g., createdAt)
     orderQuery = orderQuery.sort({ createdAt: -1 });
     const totalOrderCount = await Order.countDocuments();
@@ -2106,14 +2106,14 @@ export async function getAllCustomerOrders(searchQuery, id) {
 
     orderQuery = Order.find({
       customer: id,
-      orderStatus: { $ne: 'Cancelado' },
+      orderStatus: { $ne: "Cancelado" },
     });
     let client = await Customer.findOne({ _id: id });
 
     const searchParams = new URLSearchParams(searchQuery);
-    const resPerPage = Number(searchParams.get('perpage')) || 10;
+    const resPerPage = Number(searchParams.get("perpage")) || 10;
     // Extract page and per_page from request URL
-    const page = Number(searchParams.get('page')) || 1;
+    const page = Number(searchParams.get("page")) || 1;
     // Apply descending order based on a specific field (e.g., createdAt)
     orderQuery = orderQuery.sort({ createdAt: -1 });
     const totalOrderCount = await Order.countDocuments();
@@ -2152,17 +2152,17 @@ export async function getAllClient(searchQuery) {
 
     if (session) {
       if (
-        session?.user?.role === 'manager' ||
-        session?.user?.role === 'sucursal'
+        session?.user?.role === "manager" ||
+        session?.user?.role === "sucursal"
       ) {
-        clientQuery = User.find({ role: 'cliente' });
+        clientQuery = Customer.find({});
       }
     }
 
     const searchParams = new URLSearchParams(searchQuery);
-    const resPerPage = Number(searchParams.get('perpage')) || 5;
+    const resPerPage = Number(searchParams.get("perpage")) || 5;
     // Extract page and per_page from request URL
-    const page = Number(searchParams.get('page')) || 1;
+    const page = Number(searchParams.get("page")) || 1;
     // total number of documents in database
     const clientsCount = await User.countDocuments();
     // Extract all possible categories
@@ -2206,7 +2206,7 @@ export async function changeClientStatus(_id) {
       client.active = false;
     }
     client.save();
-    revalidatePath('/admin/clientes');
+    revalidatePath("/admin/clientes");
   } catch (error) {
     console.log(error);
     throw Error(error);
@@ -2242,7 +2242,7 @@ export async function updateClient(data) {
       if (emailExist) {
         CustomZodError = {
           _errors: [],
-          email: { _errors: ['El email ya esta en uso'] },
+          email: { _errors: ["El email ya esta en uso"] },
         };
         return { error: CustomZodError };
       }
@@ -2253,7 +2253,7 @@ export async function updateClient(data) {
       if (phoneExist.length > 0) {
         CustomZodError = {
           _errors: [],
-          phone: { _errors: ['El teléfono ya esta en uso'] },
+          phone: { _errors: ["El teléfono ya esta en uso"] },
         };
         console.log({ error: CustomZodError });
         return { error: CustomZodError };
@@ -2266,7 +2266,7 @@ export async function updateClient(data) {
     client.updatedAt = updatedAt;
     // client.avatar = avatar;
     client.save();
-    revalidatePath('/perfil/actualizar');
+    revalidatePath("/perfil/actualizar");
   } catch (error) {
     console.log(error);
     throw Error(error);
@@ -2296,13 +2296,13 @@ export async function updateClientPassword(data) {
     await dbConnect();
     let CustomZodError;
     let hashedPassword;
-    const client = await User.findOne({ _id: _id }).select('+password');
+    const client = await User.findOne({ _id: _id }).select("+password");
     const comparePass = await bcrypt.compare(currentPassword, client.password);
     if (!comparePass) {
       CustomZodError = {
         _errors: [],
         currentPassword: {
-          _errors: ['La contraseña actual no es la correcta'],
+          _errors: ["La contraseña actual no es la correcta"],
         },
       };
       return { error: CustomZodError };
@@ -2313,7 +2313,7 @@ export async function updateClientPassword(data) {
     client.password = hashedPassword;
     client.updatedAt = updatedAt;
     client.save();
-    revalidatePath('/perfil/actualizar_contrasena');
+    revalidatePath("/perfil/actualizar_contrasena");
   } catch (error) {
     console.log(error);
     throw Error(error);
@@ -2327,15 +2327,15 @@ export async function getAllAffiliate(searchQuery) {
     let affiliateQuery;
 
     if (session) {
-      if (session?.user?.role === 'manager') {
+      if (session?.user?.role === "manager") {
         affiliateQuery = Affiliate.find({});
       }
     }
 
     const searchParams = new URLSearchParams(searchQuery);
-    const resPerPage = Number(searchParams.get('perpage')) || 5;
+    const resPerPage = Number(searchParams.get("perpage")) || 5;
     // Extract page and per_page from request URL
-    const page = Number(searchParams.get('page')) || 1;
+    const page = Number(searchParams.get("page")) || 1;
     // total number of documents in database
     const affiliatesCount = await Affiliate.countDocuments();
     // Extract all possible categories
@@ -2383,15 +2383,15 @@ export async function getAllAffiliateOrder(searchQuery, id) {
     if (session) {
       orderQuery = Order.find({
         affiliateId: id,
-        orderStatus: { $ne: 'Cancelado' },
+        orderStatus: { $ne: "Cancelado" },
       });
       affiliate = await Affiliate.findOne({ _id: id });
     }
 
     const searchParams = new URLSearchParams(searchQuery);
-    const resPerPage = Number(searchParams.get('perpage')) || 5;
+    const resPerPage = Number(searchParams.get("perpage")) || 5;
     // Extract page and per_page from request URL
-    const page = Number(searchParams.get('page')) || 1;
+    const page = Number(searchParams.get("page")) || 1;
     // Apply descending order based on a specific field (e.g., createdAt)
     orderQuery = orderQuery.sort({ createdAt: -1 });
     const totalOrderCount = await Order.countDocuments();
@@ -2433,7 +2433,7 @@ export async function updateAffiliate(_id) {
       affiliate.isActive = false;
     }
     affiliate.save();
-    revalidatePath('/admin/clientes');
+    revalidatePath("/admin/clientes");
   } catch (error) {
     console.log(error);
     throw Error(error);
@@ -2471,8 +2471,8 @@ export async function addAddress(data) {
     user,
   });
   if (error) throw Error(error);
-  revalidatePath('/perfil/direcciones');
-  revalidatePath('/carrito/envio');
+  revalidatePath("/perfil/direcciones");
+  revalidatePath("/carrito/envio");
 }
 
 export async function deleteAddress(id) {
@@ -2480,8 +2480,8 @@ export async function deleteAddress(id) {
   try {
     await dbConnect();
     const deleteAddress = await Address.findByIdAndDelete(id);
-    revalidatePath('/perfil/direcciones');
-    revalidatePath('/carrito/envio');
+    revalidatePath("/perfil/direcciones");
+    revalidatePath("/carrito/envio");
   } catch (error) {
     if (error) throw Error(error);
   }
@@ -2549,7 +2549,7 @@ export async function addNewPost(data) {
   if (slugExists) {
     return {
       error: {
-        title: { _errors: ['Este Titulo de publicación ya esta en uso'] },
+        title: { _errors: ["Este Titulo de publicación ya esta en uso"] },
       },
     };
   }
@@ -2594,8 +2594,8 @@ export async function addNewPost(data) {
     authorId: { _id: session?.user._id },
   });
   if (error) throw Error(error);
-  revalidatePath('/admin/blog');
-  revalidatePath('/blog');
+  revalidatePath("/admin/blog");
+  revalidatePath("/blog");
 }
 
 export async function updatePost(data) {
@@ -2660,7 +2660,7 @@ export async function updatePost(data) {
   if (slugExists) {
     return {
       error: {
-        title: { _errors: ['Este Titulo de publicación ya esta en uso'] },
+        title: { _errors: ["Este Titulo de publicación ya esta en uso"] },
       },
     };
   }
@@ -2708,10 +2708,10 @@ export async function updatePost(data) {
     }
   );
   if (error) throw Error(error);
-  revalidatePath('/admin/blog');
-  revalidatePath('/blog/publicacion/');
-  revalidatePath('/admin/blog/editor');
-  revalidatePath('/blog');
+  revalidatePath("/admin/blog");
+  revalidatePath("/blog/publicacion/");
+  revalidatePath("/admin/blog/editor");
+  revalidatePath("/blog");
 }
 
 export async function addVariationProduct(data) {
@@ -2738,7 +2738,7 @@ export async function addVariationProduct(data) {
   // Parse variations JSON string with reviver function to convert numeric strings to numbers
   let colors = [];
   variations = JSON.parse(variations, (key, value) => {
-    if (key === 'color') {
+    if (key === "color") {
       const color = {
         value: value,
         label: value,
@@ -2750,8 +2750,8 @@ export async function addVariationProduct(data) {
       }
     }
     // Check if the value is a string and represents a number
-    if (!isNaN(value) && value !== '' && !Array.isArray(value)) {
-      if (key != 'size') {
+    if (!isNaN(value) && value !== "" && !Array.isArray(value)) {
+      if (key != "size") {
         return Number(value); // Convert the string to a number
       }
     }
@@ -2797,7 +2797,7 @@ export async function addVariationProduct(data) {
   if (slugExists) {
     return {
       error: {
-        title: { _errors: ['Este Titulo de producto ya esta en uso'] },
+        title: { _errors: ["Este Titulo de producto ya esta en uso"] },
       },
     };
   }
@@ -2808,7 +2808,7 @@ export async function addVariationProduct(data) {
   };
 
   const { error } = await Product.create({
-    type: 'variation',
+    type: "variation",
     title,
     slug,
     description,
@@ -2829,8 +2829,8 @@ export async function addVariationProduct(data) {
   });
   console.log(error);
   if (error) throw Error(error);
-  revalidatePath('/admin/productos');
-  revalidatePath('/tienda');
+  revalidatePath("/admin/productos");
+  revalidatePath("/tienda");
 }
 
 export async function updateVariationProduct(data) {
@@ -2858,7 +2858,7 @@ export async function updateVariationProduct(data) {
   // Parse variations JSON string with reviver function to convert numeric strings to numbers
   let colors = [];
   variations = JSON.parse(variations, (key, value) => {
-    if (key === 'color') {
+    if (key === "color") {
       const color = {
         value: value,
         label: value,
@@ -2870,8 +2870,8 @@ export async function updateVariationProduct(data) {
       }
     }
     // Check if the value is a string and represents a number
-    if (!isNaN(value) && value !== '' && !Array.isArray(value)) {
-      if (key != 'size') {
+    if (!isNaN(value) && value !== "" && !Array.isArray(value)) {
+      if (key != "size") {
         return Number(value); // Convert the string to a number
       }
     }
@@ -2917,7 +2917,7 @@ export async function updateVariationProduct(data) {
   if (slugExists) {
     return {
       error: {
-        title: { _errors: ['Este Titulo de producto ya esta en uso'] },
+        title: { _errors: ["Este Titulo de producto ya esta en uso"] },
       },
     };
   }
@@ -2930,7 +2930,7 @@ export async function updateVariationProduct(data) {
   const { error } = await Product.updateOne(
     { _id },
     {
-      type: 'variation',
+      type: "variation",
       title,
       slug,
       description,
@@ -2951,13 +2951,13 @@ export async function updateVariationProduct(data) {
     }
   );
   if (error) throw Error(error);
-  revalidatePath('/admin/productos');
-  revalidatePath('/tienda');
+  revalidatePath("/admin/productos");
+  revalidatePath("/tienda");
 }
 
 export async function updateRevalidateProduct() {
-  revalidatePath('/admin/productos');
-  revalidatePath('/tienda');
+  revalidatePath("/admin/productos");
+  revalidatePath("/tienda");
 }
 
 export async function addProduct(data) {
@@ -3024,12 +3024,12 @@ export async function addProduct(data) {
   if (slugExists) {
     return {
       error: {
-        title: { _errors: ['Este Titulo de producto ya esta en uso'] },
+        title: { _errors: ["Este Titulo de producto ya esta en uso"] },
       },
     };
   }
   const { error } = await Product.create({
-    type: 'simple',
+    type: "simple",
     title,
     slug,
     description,
@@ -3050,8 +3050,8 @@ export async function addProduct(data) {
     user,
   });
   if (error) throw Error(error);
-  revalidatePath('/admin/productos');
-  revalidatePath('/tienda');
+  revalidatePath("/admin/productos");
+  revalidatePath("/tienda");
 }
 
 export async function resendEmail(data) {
@@ -3070,16 +3070,16 @@ export async function resendEmail(data) {
   let res;
   try {
     res = await axios.post(
-      'https://www.google.com/recaptcha/api/siteverify',
+      "https://www.google.com/recaptcha/api/siteverify",
       formData,
       {
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          "Content-Type": "application/x-www-form-urlencoded",
         },
       }
     );
   } catch (e) {
-    console.log('recaptcha error:', e);
+    console.log("recaptcha error:", e);
   }
 
   if (res && res.data?.success && res.data?.score > 0.5) {
@@ -3088,25 +3088,25 @@ export async function resendEmail(data) {
       await dbConnect();
       const user = await User.findOne({ email: email });
       if (!user) {
-        return { error: { email: { _errors: ['Email does not exist'] } } };
+        return { error: { email: { _errors: ["Email does not exist"] } } };
       }
       if (user?.isActive === true) {
-        return { error: { email: { _errors: ['Email is already verified'] } } };
+        return { error: { email: { _errors: ["Email is already verified"] } } };
       }
       if (user?._id) {
         try {
-          const subject = 'Confirmar email';
+          const subject = "Confirmar email";
           const body = `Por favor da click en confirmar email para verificar tu cuenta.`;
-          const title = 'Completar registro';
+          const title = "Completar registro";
           const greeting = `Saludos ${user?.name}`;
-          const action = 'CONFIRMAR EMAIL';
-          const bestRegards = 'Gracias por unirte a nuestro sitio.';
+          const action = "CONFIRMAR EMAIL";
+          const bestRegards = "Gracias por unirte a nuestro sitio.";
           const recipient_email = email;
-          const sender_email = 'contacto@shopout.com.mx';
-          const fromName = 'Shopout Mx';
+          const sender_email = "contacto@shopout.com.mx";
+          const fromName = "Shopout Mx";
 
           const transporter = nodemailer.createTransport({
-            host: 'smtp.gmail.com',
+            host: "smtp.gmail.com",
             port: 587,
             secure: false,
             auth: {
@@ -3144,7 +3144,7 @@ export async function resendEmail(data) {
               error: {
                 success: {
                   _errors: [
-                    'El correo se envió exitosamente revisa tu bandeja de entrada y tu correo no deseado',
+                    "El correo se envió exitosamente revisa tu bandeja de entrada y tu correo no deseado",
                   ],
                 },
               },
@@ -3153,7 +3153,7 @@ export async function resendEmail(data) {
             console.log(error);
           }
         } catch (error) {
-          return { error: { email: { _errors: ['Error al enviar email'] } } };
+          return { error: { email: { _errors: ["Error al enviar email"] } } };
         }
       }
     } catch (error) {
@@ -3185,16 +3185,16 @@ export async function resetAccountEmail(data) {
   let res;
   try {
     res = await axios.post(
-      'https://www.google.com/recaptcha/api/siteverify',
+      "https://www.google.com/recaptcha/api/siteverify",
       formData,
       {
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          "Content-Type": "application/x-www-form-urlencoded",
         },
       }
     );
   } catch (e) {
-    console.log('recaptcha error:', e);
+    console.log("recaptcha error:", e);
   }
 
   if (res && res.data?.success && res.data?.score > 0.5) {
@@ -3203,28 +3203,28 @@ export async function resetAccountEmail(data) {
       await dbConnect();
       const user = await User.findOne({ email: email });
       if (!user) {
-        return { error: { email: { _errors: ['El correo no existe'] } } };
+        return { error: { email: { _errors: ["El correo no existe"] } } };
       }
       if (user?.active === false) {
         return {
-          error: { email: { _errors: ['El correo no esta verificado'] } },
+          error: { email: { _errors: ["El correo no esta verificado"] } },
         };
       }
       if (user?._id) {
         try {
-          const subject = 'Desbloquear Cuenta Shopout Mx';
+          const subject = "Desbloquear Cuenta Shopout Mx";
           const body = `Por favor da click en desbloquear para reactivar tu cuenta`;
-          const title = 'Desbloquear Cuenta';
-          const btnAction = 'DESBLOQUEAR';
+          const title = "Desbloquear Cuenta";
+          const btnAction = "DESBLOQUEAR";
           const greeting = `Saludos ${user?.name}`;
           const bestRegards =
-            '¿Problemas? Ponte en contacto contacto@shopout.com.mx';
+            "¿Problemas? Ponte en contacto contacto@shopout.com.mx";
           const recipient_email = email;
-          const sender_email = 'contacto@shopout.com.mx';
-          const fromName = 'Shopout Mx';
+          const sender_email = "contacto@shopout.com.mx";
+          const fromName = "Shopout Mx";
 
           const transporter = nodemailer.createTransport({
-            host: 'smtp.gmail.com',
+            host: "smtp.gmail.com",
             port: 587,
             secure: false,
             auth: {
@@ -3259,13 +3259,13 @@ export async function resetAccountEmail(data) {
             error: {
               success: {
                 _errors: [
-                  'El correo electrónico fue enviado exitosamente revisa tu bandeja de entrada y spam',
+                  "El correo electrónico fue enviado exitosamente revisa tu bandeja de entrada y spam",
                 ],
               },
             },
           };
         } catch (error) {
-          return { error: { email: { _errors: ['Failed to send email'] } } };
+          return { error: { email: { _errors: ["Failed to send email"] } } };
         }
       }
     } catch (error) {

@@ -78,8 +78,6 @@ export function cstDateTime() {
     timeZone: 'America/Chicago',
   });
 
-  console.log(cstDate);
-
   return cstDate;
 }
 
