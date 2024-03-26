@@ -503,7 +503,7 @@ export async function getDashboard() {
     const minusCstOffset = -6 * 60 * 60 * 1000; // CST is UTC+6
 
     // Create a new date with the offset applied
-    const today = new Date(Date.now() + cstOffset);
+    const today = new Date(Date.now() + minusCstOffset);
     today.setUTCHours(0, 0, 0, 0); // Set time to midnight
     // Set start of the current year
     const startOfYear = new Date(
@@ -573,8 +573,17 @@ export async function getDashboard() {
 
     // Clone the start of the current week to avoid mutating it
     const endOfLastWeek = new Date(startOfLastWeek);
-    endOfLastWeek.setDate(startOfLastWeek.getDate() + 7); // Add six days to get to the end of the week
+    endOfLastWeek.setDate(startOfLastWeek.getDate() + 6); // Add six days to get to the end of the week
     endOfLastWeek.setUTCHours(23, 59, 59, 999); // Set time to the end of the day
+
+    const startOfLastMonth = new Date(today);
+    startOfLastMonth.setDate(today.getDate() - 60);
+    startOfLastMonth.setUTCHours(0, 0, 0, 0); // Set time to midnight
+
+    // Clone the start of the current week to avoid mutating it
+    const endOfLastMonth = new Date(startOfLastMonth);
+    endOfLastMonth.setDate(startOfLastMonth.getDate() + 30); // Add six days to get to the end of the week
+    endOfLastMonth.setUTCHours(23, 59, 59, 999); // Set time to the end of the day
 
     const startOfToday = new Date(
       today.getFullYear(),
@@ -598,19 +607,9 @@ export async function getDashboard() {
 
     // Calculate yesterday's date
     const yesterday = new Date(today);
+    // Set start and end of yesterday
 
     yesterday.setDate(today.getDate() - 1, 0, 0, 0, 0); // Set it to yesterday
-    // Set start and end of yesterday
-    const startOfYesterday = new Date(
-      yesterday.getFullYear(),
-      yesterday.getMonth(),
-      yesterday.getUTCDate(),
-      0,
-      0,
-      0,
-      0 - cstOffset
-    );
-
     const endOfYesterday = new Date(
       yesterday.getFullYear(),
       yesterday.getMonth(),
@@ -772,6 +771,24 @@ export async function getDashboard() {
       },
     ]);
 
+    // Perform aggregation to get last months totals
+    let lastMonthsPaymentsTotals = await Payment.aggregate([
+      {
+        $match: {
+          pay_date: {
+            $gte: startOfLastMonth,
+            $lt: endOfLastMonth,
+          },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$amount" }, // Sum up the amount field for each payment
+        },
+      },
+    ]);
+
     thisWeeksOrder = await Order.aggregate([
       {
         $match: {
@@ -811,6 +828,31 @@ export async function getDashboard() {
             $gte: startOfLast7Days,
             $lt: endOfLast7Days,
           },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$amount" }, // Sum up the amount field for each payment
+        },
+      },
+    ]);
+
+    // Perform aggregation to get last weeks totals
+    let lastWeeksLayawayPaymentsTotals = await Payment.aggregate([
+      {
+        $match: {
+          $and: [
+            {
+              pay_date: {
+                $gte: startOfLastWeek,
+                $lt: endOfLastWeek,
+              },
+            },
+            {
+              paymentIntent: "partial",
+            },
+          ],
         },
       },
       {
@@ -888,6 +930,7 @@ export async function getDashboard() {
     monthlyOrdersTotals = monthlyOrdersTotals[0]?.total;
     yearlyOrdersTotals = yearlyOrdersTotals[0]?.total;
     lastWeeksPaymentsTotals = lastWeeksPaymentsTotals[0]?.total;
+    lastMonthsPaymentsTotals = lastMonthsPaymentsTotals[0]?.total;
     return {
       dailyData: dailyData,
       weeklyData: weeklyData,
@@ -909,6 +952,7 @@ export async function getDashboard() {
       yearlyOrdersTotals: yearlyOrdersTotals,
       totalPostCount: totalPostCount,
       lastWeeksPaymentsTotals: lastWeeksPaymentsTotals,
+      lastMonthsPaymentsTotals: lastMonthsPaymentsTotals,
     };
   } catch (error) {
     console.log(error);

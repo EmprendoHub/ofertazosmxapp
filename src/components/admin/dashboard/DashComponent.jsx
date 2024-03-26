@@ -5,6 +5,7 @@ import { MdAttachMoney } from "react-icons/md";
 import { IoArrowRedoSharp } from "react-icons/io5";
 import {
   HiArrowNarrowUp,
+  HiArrowRight,
   HiDocumentText,
   HiOutlineUserGroup,
 } from "react-icons/hi";
@@ -40,13 +41,13 @@ const DashComponent = ({ data }) => {
   const totalProductCount = data?.totalProductCount;
   const productsCountPreviousMonth = data?.productsCountPreviousMonth;
   const totalCustomerCount = data?.totalCustomerCount;
-  const thisWeeksOrder = JSON.parse(data?.thisWeeksOrder);
   const totalPaymentsThisWeek = data?.totalPaymentsThisWeek;
   const dailyPaymentsTotals = data?.dailyPaymentsTotals;
   const yesterdaysOrdersTotals = data?.yesterdaysOrdersTotals;
   const monthlyOrdersTotals = data?.monthlyOrdersTotals;
   const yearlyOrdersTotals = data?.yearlyOrdersTotals;
   const lastWeeksPaymentsTotals = data?.lastWeeksPaymentsTotals;
+  const lastMonthsPaymentsTotals = data?.lastMonthsPaymentsTotals;
   // Assuming `weeklyData` is your fetched dataset
 
   const weeklyDataWithColors = {
@@ -158,7 +159,7 @@ const DashComponent = ({ data }) => {
             <div className="flex  gap-2 text-sm">
               <span className="text-green-700 flex items-center">
                 <HiArrowNarrowUp />
-                {productsCountPreviousMonth}
+                <FormattedPrice amount={lastMonthsPaymentsTotals || 0} />
               </span>
               <div className="text-gray-500">Mes Anterior</div>
             </div>
@@ -166,7 +167,7 @@ const DashComponent = ({ data }) => {
           <div className="flex flex-col p-3 bg-slate-300 shadow-lg dark:bg-slate-300 gap-4 w-full rounded-md ">
             <div className="flex justify-between">
               <div className="">
-                <h3 className="text-gray-500 text-md uppercase">Vena Anual</h3>
+                <h3 className="text-gray-500 text-md uppercase">Venta Anual</h3>
                 <p className="text-2xl  text-slate-700">
                   <FormattedPrice amount={yearlyOrdersTotals || 0} />
                 </p>
@@ -176,9 +177,9 @@ const DashComponent = ({ data }) => {
             <div className="flex  gap-2 text-sm">
               <span className="text-green-700 flex items-center">
                 <HiArrowNarrowUp />
-                {postCountPreviousMonth}
+                <FormattedPrice amount={lastMonthsPaymentsTotals || 0} />
               </span>
-              <div className="text-gray-500">Mes Anterior</div>
+              <div className="text-gray-500">Año Anterior</div>
             </div>
           </div>
         </div>
@@ -202,13 +203,12 @@ const DashComponent = ({ data }) => {
               </div>
               <HiOutlineUserGroup className="bg-blue-600  text-white rounded-full text-5xl p-3 shadow-lg" />
             </div>
-            <div className="flex  gap-2 text-sm">
+            <Link href={"/admin/clientes"} className="flex  gap-2 text-sm">
               <span className="text-green-700 flex items-center">
-                <HiArrowNarrowUp />
-                {clientCountPreviousMonth}
+                <HiArrowRight />
               </span>
-              <div className="text-gray-500">Mes Anterior</div>
-            </div>
+              <div className="text-gray-500">Explorar Clientes</div>
+            </Link>
           </div>
           <div className="flex flex-col p-3 dark:bg-slate-300 gap-4 w-full rounded-md shadow-lg bg-slate-300">
             <div className="flex justify-between">

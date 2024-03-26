@@ -1,14 +1,14 @@
-'use client';
-import React, { useContext, useEffect, useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import AuthContext from '@/context/AuthContext';
-import { toast } from 'react-toastify';
-import FormattedPrice from '@/backend/helpers/FormattedPrice';
-import { formatDate, formatTime } from '@/backend/helpers';
-import { FaComment } from 'react-icons/fa6';
-import ModalOrderUpdate from '@/components/modals/ModalOrderUpdate';
-import { FaCloudUploadAlt } from 'react-icons/fa';
+"use client";
+import React, { useContext, useEffect, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import AuthContext from "@/context/AuthContext";
+import { toast } from "react-toastify";
+import FormattedPrice from "@/backend/helpers/FormattedPrice";
+import { formatDate, formatSpanishDate, formatTime } from "@/backend/helpers";
+import { FaComment } from "react-icons/fa6";
+import ModalOrderUpdate from "@/components/modals/ModalOrderUpdate";
+import { FaCloudUploadAlt } from "react-icons/fa";
 
 const AdminOneOrder = ({
   order,
@@ -61,27 +61,27 @@ const AdminOneOrder = ({
     e.preventDefault();
 
     if (order?.orderStatus === orderStatus) {
-      toast.success('No hubo ningún cambio');
+      toast.success("No hubo ningún cambio");
       return;
     }
 
     try {
       const formData = new FormData();
-      formData.set('orderStatus', orderStatus);
-      formData.set('_id', id);
+      formData.set("orderStatus", orderStatus);
+      formData.set("_id", id);
 
       try {
         const res = await updateOrder(formData);
 
         if (res.ok) {
           const data = await res.json();
-          toast.success('El pedido se actualizo exitosamente');
+          toast.success("El pedido se actualizo exitosamente");
           setCurrentOrderStatus(data.payload.orderStatus);
 
           return;
         }
       } catch (error) {
-        toast.error('Error actualizando pedido. Por favor Intenta de nuevo.');
+        toast.error("Error actualizando pedido. Por favor Intenta de nuevo.");
       }
     } catch (error) {
       console.log(error);
@@ -110,17 +110,17 @@ const AdminOneOrder = ({
           </h2>
           <h2
             className={`text-3xl mb-8 ml-4 font-bold uppercase ${
-              order?.orderStatus === 'Apartado'
-                ? 'text-amber-700'
-                : order?.paymentInfo?.status === 'Pagado'
-                ? 'text-green-700'
-                : ''
+              order?.orderStatus === "Apartado"
+                ? "text-amber-700"
+                : order?.paymentInfo?.status === "Pagado"
+                ? "text-green-700"
+                : ""
             }`}
           >
             {order?.orderStatus}
           </h2>
         </div>
-        {order?.branch !== 'Sucursal' ? (
+        {order?.branch !== "Sucursal" ? (
           <table className="w-full text-sm text-left flex flex-col maxsm:flex-row">
             <thead className="text-l text-gray-700 uppercase">
               <tr className="flex flex-row maxsm:flex-col">
@@ -235,7 +235,7 @@ const AdminOneOrder = ({
         <div className="w-1/3 maxmd:w-full">
           <div className=" max-w-screen-xl mx-auto bg-white flex flex-col p-2">
             <h2 className="text-2xl">Totales</h2>
-            {order?.orderStatus === 'Apartado' ? (
+            {order?.orderStatus === "Apartado" ? (
               <ul className="mb-5">
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
                   <span>Total de Artículos:</span>
@@ -343,14 +343,13 @@ const AdminOneOrder = ({
                     key={payment?._id}
                   >
                     <td className="px-2 maxsm:px-0 py-2 w-full">
-                      {formatDate(payment?.pay_date)}
-                      {formatTime(payment?.pay_date)}
+                      {formatSpanishDate(payment?.pay_date)}
                     </td>
                     <td className="px-2 maxsm:px-0 py-2  w-full uppercase text-xs maxsm:hidden">
-                      {payment?.method === 'card'
-                        ? 'tarjeta'
-                        : payment?.method === 'customer_balance'
-                        ? 'transferencia'
+                      {payment?.method === "card"
+                        ? "tarjeta"
+                        : payment?.method === "customer_balance"
+                        ? "transferencia"
                         : `${payment?.method}`}
                     </td>
                     <td className="px-2 maxsm:px-0 py-2  w-full uppercase text-xs">

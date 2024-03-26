@@ -1,33 +1,33 @@
-'use client';
-import { changeOrderNoteStatus, updateOneOrder } from '@/app/_actions';
-import { usePathname } from 'next/navigation';
-import React, { useState } from 'react';
+"use client";
+import { changeOrderNoteStatus, updateOneOrder } from "@/app/_actions";
+import { usePathname } from "next/navigation";
+import React, { useState } from "react";
 
 const UpdateOrderComp = ({ setShowModal, order }) => {
   const pathname = usePathname();
   const [orderStatus, setOrderStatus] = useState(order?.orderStatus);
   const [note, setNote] = useState(order?.comment);
-  const [notification, setNotification] = useState('');
-  const [error, setError] = useState('');
+  const [notification, setNotification] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.set('orderStatus', orderStatus);
-    formData.set('orderId', order?._id);
-    formData.set('note', note);
+    formData.set("orderStatus", orderStatus);
+    formData.set("orderId", order?._id);
+    formData.set("note", note);
 
     try {
       const res = await changeOrderNoteStatus(formData);
       if (res.ok) {
-        setError('El pedido se actualizo exitosamente');
+        setError("El pedido se actualizo exitosamente");
         setShowModal(false);
         return;
       }
     } catch (error) {
       console.log(error);
-      setError('Error actualizando pedido. Por favor Intenta de nuevo.');
+      setError("Error actualizando pedido. Por favor Intenta de nuevo.");
     }
   };
   return (
@@ -47,23 +47,23 @@ const UpdateOrderComp = ({ setShowModal, order }) => {
           placeholder="Nota"
           onChange={(e) => setNote(e.target.value)}
         />
-        {pathname.includes('admin') && (
+        {pathname.includes("admin") && (
           <div className="relative w-full text-center">
             <label className="block mb-1 text-xs">Estado</label>
             <select
               className="block appearance-none border border-gray-200 bg-gray-100 rounded-md py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-full text-center"
               name="orderStatus"
               required
-              value={order?.orderStatus}
+              value={orderStatus}
               onChange={(e) => setOrderStatus(e.target.value)}
             >
               {[
-                'Apartado',
-                'Pagado',
-                'Procesando',
-                'En Camino',
-                'Entregado',
-                'Cancelado',
+                "Apartado",
+                "Pagado",
+                "Procesando",
+                "En Camino",
+                "Entregado",
+                "Cancelado",
               ].map((status) => (
                 <option key={status} value={status}>
                   {status}
