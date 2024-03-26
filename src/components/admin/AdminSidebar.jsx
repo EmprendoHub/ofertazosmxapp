@@ -1,13 +1,13 @@
-'use client';
-import Image from 'next/image';
-import Link from 'next/link';
-import React, { createContext, useContext, useState } from 'react';
-import { BsChevronBarLeft, BsChevronBarRight } from 'react-icons/bs';
-import { FiMoreVertical, FiLogOut } from 'react-icons/fi';
-import { signOut, useSession } from 'next-auth/react';
-import AuthContext from '@/context/AuthContext';
-import { useRouter } from 'next/navigation';
-import { AnimatePresence, motion } from 'framer-motion';
+"use client";
+import Image from "next/image";
+import Link from "next/link";
+import React, { createContext, useContext, useState } from "react";
+import { BsChevronBarLeft, BsChevronBarRight } from "react-icons/bs";
+import { FiMoreVertical, FiLogOut } from "react-icons/fi";
+import { signOut, useSession } from "next-auth/react";
+import AuthContext from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
+import { AnimatePresence, motion } from "framer-motion";
 
 const SidebarContext = createContext();
 const backdropVariants = {
@@ -30,11 +30,11 @@ const AdminSidebar = ({ children }) => {
         <div className="p-4 maxmd:pl-3 pb-2 flex justify-between maxmd:justify-center items-center">
           <Image
             alt="image"
-            src={'/images/Main_shopout_logo.webp'}
+            src={"/images/Main_shopout_logo.webp"}
             width={500}
             height={500}
             className={`overflow-hidden transition-all ease-in-out ${
-              expandSidebar ? 'w-36 h-auto  maxmd:w-36 maxmd:ml-1' : 'w-0 h-0'
+              expandSidebar ? "w-36 h-auto  maxmd:w-36 maxmd:ml-1" : "w-0 h-0"
             }`}
           />
           <button
@@ -58,8 +58,8 @@ const AdminSidebar = ({ children }) => {
           className="border-t flex p-1 "
         >
           <Image
-            alt={user?.name ? user?.name : 'avatar'}
-            src={user?.image ? user?.image : '/images/avatar_placeholder.jpg'}
+            alt={user?.name ? user?.name : "avatar"}
+            src={user?.image ? user?.image : "/images/avatar_placeholder.jpg"}
             width={500}
             height={500}
             className="w-10 h-10 rounded-full"
@@ -67,13 +67,13 @@ const AdminSidebar = ({ children }) => {
 
           <div
             className={`flex items-center overflow-hidden transition-all ease-in-out  ${
-              expandSidebar ? 'w-full ml-3 maxmd:ml-1' : 'w-0'
+              expandSidebar ? "w-full ml-3 maxmd:ml-1" : "w-0"
             }`}
           >
             <div className="leading-4 w-full">
               <div className="flex items-center">
                 <h4 className="font-semibold text-xs leading-4 text-wrap w-2/3 ">
-                  {' '}
+                  {" "}
                   {user?.name}
                 </h4>
                 <div
@@ -82,7 +82,7 @@ const AdminSidebar = ({ children }) => {
                 >
                   <div
                     className={`${
-                      expandSidebar ? 'group absolute w-32' : 'w-0'
+                      expandSidebar ? "group absolute w-32" : "w-0"
                     }`}
                   >
                     <FiLogOut />
@@ -123,8 +123,8 @@ export function SideBarItem({ icon, text, active, alert, url, dropdownItems }) {
     <li
       className={`relative flex flex-col items-center py-2 pl-2 pr-3 maxmd:pr-1 my-1 font-medium rounded-md cursor-pointer gap-x-1 transition-colors group ${
         active
-          ? 'bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800'
-          : 'hover:bg-indigo-50 text-gray-600'
+          ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800"
+          : "hover:bg-indigo-50 text-gray-600"
       }`}
       onClick={handleDropdownToggle}
     >
@@ -132,7 +132,7 @@ export function SideBarItem({ icon, text, active, alert, url, dropdownItems }) {
         {icon}
         <span
           className={`flex justify-between items-center overflow-hidden transition-all ease-in-out  ${
-            expandSidebar ? ' w-36 ml-2  maxmd:w-36 maxmd:ml-1' : 'w-0'
+            expandSidebar ? " w-36 ml-2  maxmd:w-36 maxmd:ml-1" : "w-0"
           }`}
         >
           {text}
@@ -141,7 +141,7 @@ export function SideBarItem({ icon, text, active, alert, url, dropdownItems }) {
         {alert && (
           <div
             className={`absolute right-2 w-2 h-2 bg-indigo-400 rounded-full ${
-              expandSidebar ? '' : 'top-2'
+              expandSidebar ? "" : "top-2"
             }`}
           />
         )}
@@ -160,14 +160,14 @@ export function SideBarItem({ icon, text, active, alert, url, dropdownItems }) {
               <li
                 className={`py-2 cursor-pointer flex items-center rounded-md ${
                   item.active
-                    ? 'bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800'
-                    : 'hover:bg-indigo-50 text-gray-600 bg-opacity-0'
+                    ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800"
+                    : "hover:bg-indigo-50 text-gray-600 bg-opacity-0"
                 }`}
               >
                 {item.icon && item.icon}
                 <span
                   className={`flex justify-between items-center overflow-hidden transition-all ease-in-out  ${
-                    expandSidebar ? ' w-36 ml-2  maxmd:w-36 maxmd:ml-1' : 'w-0'
+                    expandSidebar ? " w-36 ml-2  maxmd:w-36 maxmd:ml-1" : "w-0"
                   }`}
                 >
                   {item.text}

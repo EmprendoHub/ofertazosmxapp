@@ -1,15 +1,15 @@
-'use client';
-import { formatDate, formatTime, getTotalFromItems } from '@/backend/helpers';
-import FormattedPrice from '@/backend/helpers/FormattedPrice';
-import Link from 'next/link';
-import { useState } from 'react';
-import { FaEye } from 'react-icons/fa6';
-import { TfiMoney } from 'react-icons/tfi';
-import Modal from '../modals/Modal';
+"use client";
+import { formatDate, formatTime, getTotalFromItems } from "@/backend/helpers";
+import FormattedPrice from "@/backend/helpers/FormattedPrice";
+import Link from "next/link";
+import { useState } from "react";
+import { FaEye } from "react-icons/fa6";
+import { TfiMoney } from "react-icons/tfi";
+import Modal from "../modals/Modal";
 
 const BranchUserOrders = ({ orders, filteredOrdersCount, client }) => {
   const [showModal, setShowModal] = useState(false);
-  const [usedOrderId, setUsedOrderId] = useState('');
+  const [usedOrderId, setUsedOrderId] = useState("");
   const updateOrderStatus = async (orderId) => {
     setUsedOrderId(orderId);
     setShowModal(true);
@@ -21,7 +21,7 @@ const BranchUserOrders = ({ orders, filteredOrdersCount, client }) => {
         setShowModal={setShowModal}
         orderId={usedOrderId}
       />
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <div className="pl-3 relative overflow-x-auto shadow-md sm:rounded-lg">
         <h1 className="text-3xl my-5 ml-4 font-bold font-EB_Garamond">
           {`${filteredOrdersCount}
         Pedidos para ${client.name}`}
@@ -81,22 +81,22 @@ const BranchUserOrders = ({ orders, filteredOrdersCount, client }) => {
                 </td>
                 <td
                   className={`px-6 maxsm:px-1 py-2 font-bold ${
-                    order.orderStatus === 'Apartado'
-                      ? 'text-amber-700'
-                      : order.orderStatus === 'En Camino'
-                      ? 'text-blue-700'
-                      : order.orderStatus === 'Entregado'
-                      ? 'text-green-700'
-                      : 'text-slate-600'
+                    order.orderStatus === "Apartado"
+                      ? "text-amber-700"
+                      : order.orderStatus === "En Camino"
+                      ? "text-blue-700"
+                      : order.orderStatus === "Entregado"
+                      ? "text-green-700"
+                      : "text-slate-600"
                   }`}
                 >
                   {order.orderStatus}
                 </td>
                 <td
                   className={`px-6 maxsm:px-0 py-2 font-bold ${
-                    order.branch === 'Sahuayo'
-                      ? 'text-amber-700'
-                      : 'text-slate-600'
+                    order.branch === "Sahuayo"
+                      ? "text-amber-700"
+                      : "text-slate-600"
                   }`}
                 >
                   {order.branch}
@@ -118,7 +118,7 @@ const BranchUserOrders = ({ orders, filteredOrdersCount, client }) => {
                     {order?.paymentInfo?.amountPaid >=
                       getTotalFromItems(order.orderItems) ===
                     true ? (
-                      ''
+                      ""
                     ) : (
                       <button
                         onClick={() => updateOrderStatus(order._id)}
@@ -126,14 +126,14 @@ const BranchUserOrders = ({ orders, filteredOrdersCount, client }) => {
                           order?.paymentInfo?.amountPaid >=
                             getTotalFromItems(order.orderItems) ===
                           true
-                            ? ''
-                            : 'bg-emerald-700'
+                            ? ""
+                            : "bg-emerald-700"
                         }  shadow-sm border border-gray-200 rounded-md hover:scale-110 cursor-pointer mr-2 duration-200 ease-in-out`}
                       >
                         {order?.paymentInfo?.amountPaid >=
                           getTotalFromItems(order.orderItems) ===
                         true ? (
-                          ''
+                          ""
                         ) : (
                           <TfiMoney className="text-white" />
                         )}

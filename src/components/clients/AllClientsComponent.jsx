@@ -1,13 +1,14 @@
-'use client';
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { TiCancel } from 'react-icons/ti';
-import { FaPencilAlt } from 'react-icons/fa';
-import Swal from 'sweetalert2';
-import AdminClientSearch from '../layout/AdminClientSearch';
-import { useDispatch, useSelector } from 'react-redux';
-import { saveEmailReceiver } from '@/redux/shoppingSlice';
-import { changeClientStatus } from '@/app/_actions';
+"use client";
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { TiCancel } from "react-icons/ti";
+import { FaPencilAlt } from "react-icons/fa";
+import Swal from "sweetalert2";
+import AdminClientSearch from "../layout/AdminClientSearch";
+import { useDispatch, useSelector } from "react-redux";
+import { saveEmailReceiver } from "@/redux/shoppingSlice";
+import { changeClientStatus } from "@/app/_actions";
+import { AiOutlineMail } from "react-icons/ai";
 
 const AllClientsComponent = ({ clients, filteredClientsCount }) => {
   const dispatch = useDispatch();
@@ -35,22 +36,22 @@ const AllClientsComponent = ({ clients, filteredClientsCount }) => {
     let icon;
     let confirmBtnColor;
     if (active === true) {
-      icon = 'warning';
-      title = 'Estas seguro(a)?';
+      icon = "warning";
+      title = "Estas seguro(a)?";
       text =
-        '¡Estas a punto de desactivar a este cliente y quedara sin acceso!';
-      confirmBtn = '¡Sí, desactivar cliente!';
-      confirmBtnColor = '#CE7E00';
-      successTitle = 'Desactivar!';
-      successText = 'El cliente ha sido desactivado.';
+        "¡Estas a punto de desactivar a este cliente y quedara sin acceso!";
+      confirmBtn = "¡Sí, desactivar cliente!";
+      confirmBtnColor = "#CE7E00";
+      successTitle = "Desactivar!";
+      successText = "El cliente ha sido desactivado.";
     } else {
-      icon = 'success';
-      title = 'Estas seguro(a)?';
-      text = '¡Estas a punto de reactivar a este cliente!';
-      confirmBtn = '¡Sí, reactivar cliente!';
-      confirmBtnColor = '#228B22';
-      successTitle = 'Reactivado!';
-      successText = 'El cliente ha sido reactivado.';
+      icon = "success";
+      title = "Estas seguro(a)?";
+      text = "¡Estas a punto de reactivar a este cliente!";
+      confirmBtn = "¡Sí, reactivar cliente!";
+      confirmBtnColor = "#228B22";
+      successTitle = "Reactivado!";
+      successText = "El cliente ha sido reactivado.";
     }
     Swal.fire({
       title: title,
@@ -58,9 +59,9 @@ const AllClientsComponent = ({ clients, filteredClientsCount }) => {
       icon: icon,
       showCancelButton: true,
       confirmButtonColor: confirmBtnColor,
-      cancelButtonColor: '#000',
+      cancelButtonColor: "#000",
       confirmButtonText: confirmBtn,
-      cancelButtonText: 'No, cancelar!',
+      cancelButtonText: "No, cancelar!",
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
@@ -85,7 +86,7 @@ const AllClientsComponent = ({ clients, filteredClientsCount }) => {
   return (
     <>
       <hr className="my-4" />
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <div className="pl-3 relative overflow-x-auto shadow-md sm:rounded-lg">
         <div className=" flex flex-row maxsm:flex-col maxsm:items-start items-center justify-between">
           <h1 className="text-2xl mb-5 ml-4 font-bold font-EB_Garamond w-full ">
             {`${filteredClientsCount} Clientes `}
@@ -114,10 +115,10 @@ const AllClientsComponent = ({ clients, filteredClientsCount }) => {
           <tbody>
             {selectedClients?.map((client, index) => (
               <tr
-                className={` ${
+                className={`${
                   client?.active === true
-                    ? 'bg-slate-100'
-                    : 'bg-slate-200 text-slate-400'
+                    ? "bg-slate-100"
+                    : "bg-slate-200 text-slate-400"
                 }`}
                 key={index}
               >
@@ -169,6 +170,19 @@ const AllClientsComponent = ({ clients, filteredClientsCount }) => {
       </div>
 
       <hr className="my-4" />
+      <Link href={"/admin/correos"}>
+        <div className=" relative flex items-center justify-center ">
+          <div className="bg-black text-white flex items-center justify-center gap-3 pl-4 pr-6 py-3 rounded-md">
+            Enviar Correo
+            <div className="relative">
+              <AiOutlineMail className="text-2xl absolute -top-2" />
+              <span className=" rounded-full font-bold text-xs relative -right-3 -top-3 flex items-center justify-center w-3 h-3 shadow-xl ">
+                {emailListData ? emailListData?.length : 0}
+              </span>
+            </div>
+          </div>
+        </div>
+      </Link>
     </>
   );
 };
