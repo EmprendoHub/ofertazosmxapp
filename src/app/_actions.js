@@ -486,15 +486,13 @@ export async function payPOSDrawer(data) {
 export async function getDashboard() {
   try {
     await dbConnect();
-    const session = await getServerSession(options);
     let orders;
-    let todaysOrders;
     let products;
     let affiliates;
     let clients;
     let posts;
     let thisWeeksOrder;
-    let totalOrdersThisWeek;
+    let totalPaymentsThisWeek;
     let dailyOrders;
     let dailyPaymentsTotals;
     let monthlyOrdersTotals;
@@ -569,6 +567,15 @@ export async function getDashboard() {
     startOfLast7Days.setDate(endOfLast7Days.getDate() - 6); // Go back 6 more days to cover the last 7 days
     startOfLast7Days.setUTCHours(0, 0, 0, 0); // Set to the start of the day
 
+    const startOfLastWeek = new Date(today);
+    startOfLastWeek.setDate(today.getDate() - 14);
+    startOfLastWeek.setUTCHours(0, 0, 0, 0); // Set time to midnight
+
+    // Clone the start of the current week to avoid mutating it
+    const endOfLastWeek = new Date(startOfLastWeek);
+    endOfLastWeek.setDate(startOfLastWeek.getDate() + 7); // Add six days to get to the end of the week
+    endOfLastWeek.setUTCHours(23, 59, 59, 999); // Set time to the end of the day
+
     const startOfToday = new Date(
       today.getFullYear(),
       today.getMonth(),
@@ -591,8 +598,8 @@ export async function getDashboard() {
 
     // Calculate yesterday's date
     const yesterday = new Date(today);
-    yesterday.setDate(today.getDate() - 1, 0, 0, 0, 0); // Set it to yesterday
 
+    yesterday.setDate(today.getDate() - 1, 0, 0, 0, 0); // Set it to yesterday
     // Set start and end of yesterday
     const startOfYesterday = new Date(
       yesterday.getFullYear(),
@@ -730,22 +737,37 @@ export async function getDashboard() {
     ]);
 
     // Perform aggregation to get yesterday's totals
-    let yesterdaysOrdersTotals = await Order.aggregate([
+    let yesterdaysOrdersTotals = await Payment.aggregate([
       {
         $match: {
-          createdAt: {
-            $gte: startOfYesterday,
+          pay_date: {
+            $gte: yesterday,
             $lt: endOfYesterday,
           },
         },
       },
       {
-        $unwind: "$orderItems",
+        $group: {
+          _id: null,
+          total: { $sum: "$amount" }, // Sum up the amount field for each payment
+        },
+      },
+    ]);
+
+    // Perform aggregation to get last weeks totals
+    let lastWeeksPaymentsTotals = await Payment.aggregate([
+      {
+        $match: {
+          pay_date: {
+            $gte: startOfLastWeek,
+            $lt: endOfLastWeek,
+          },
+        },
       },
       {
         $group: {
           _id: null,
-          total: { $sum: "$orderItems.price" },
+          total: { $sum: "$amount" }, // Sum up the amount field for each payment
         },
       },
     ]);
@@ -782,64 +804,55 @@ export async function getDashboard() {
       },
     ]);
 
-    totalOrdersThisWeek = await Order.aggregate([
+    totalPaymentsThisWeek = await Payment.aggregate([
       {
         $match: {
-          createdAt: {
-            $gte: startOfCurrentWeek,
-            $lt: today,
+          pay_date: {
+            $gte: startOfLast7Days,
+            $lt: endOfLast7Days,
           },
         },
       },
       {
-        $unwind: "$orderItems", // Deconstruct the orderItems array
-      },
-      {
         $group: {
-          _id: null, // Group all documents without any specific criteria
-          total: { $sum: "$orderItems.price" }, // Calculate the total sum of prices
+          _id: null,
+          total: { $sum: "$amount" }, // Sum up the amount field for each payment
         },
       },
     ]);
 
     // Perform aggregation to get this month's totals
-    monthlyOrdersTotals = await Order.aggregate([
+    monthlyOrdersTotals = await Payment.aggregate([
       {
         $match: {
-          createdAt: {
+          pay_date: {
             $gte: startOfMonth,
             $lt: endOfMonth,
           },
         },
       },
       {
-        $unwind: "$orderItems",
-      },
-      {
         $group: {
           _id: null,
-          total: { $sum: "$orderItems.price" },
+          total: { $sum: "$amount" }, // Sum up the amount field for each payment
         },
       },
     ]);
 
     // Perform aggregation to get this year's totals
-    yearlyOrdersTotals = await Order.aggregate([
+    yearlyOrdersTotals = await Payment.aggregate([
       {
         $match: {
-          createdAt: {
+          pay_date: {
             $gte: startOfYear,
             $lt: endOfYear,
           },
         },
       },
       {
-        $unwind: "$orderItems",
-      },
-      {
         $group: {
           _id: null,
-          total: { $sum: "$orderItems.price" },
+          total: { $sum: "$amount" }, // Sum up the amount field for each payment
         },
       },
     ]);
@@ -869,11 +882,12 @@ export async function getDashboard() {
     weeklyData = JSON.stringify(weeklyData);
     dailyData = JSON.stringify(dailyData);
     thisWeeksOrder = JSON.stringify(thisWeeksOrder);
-    const thisWeekOrderTotals = totalOrdersThisWeek[0]?.total;
+    totalPaymentsThisWeek = totalPaymentsThisWeek[0]?.total;
     dailyPaymentsTotals = dailyPaymentsTotals[0]?.total;
     yesterdaysOrdersTotals = yesterdaysOrdersTotals[0]?.total;
     monthlyOrdersTotals = monthlyOrdersTotals[0]?.total;
     yearlyOrdersTotals = yearlyOrdersTotals[0]?.total;
+    lastWeeksPaymentsTotals = lastWeeksPaymentsTotals[0]?.total;
     return {
       dailyData: dailyData,
       weeklyData: weeklyData,
@@ -890,10 +904,11 @@ export async function getDashboard() {
       totalCustomerCount: totalCustomerCount,
       orderCountPreviousMonth: orderCountPreviousMonth,
       totalProductCount: totalProductCount,
-      thisWeekOrderTotals: thisWeekOrderTotals,
+      totalPaymentsThisWeek: totalPaymentsThisWeek,
       monthlyOrdersTotals: monthlyOrdersTotals,
       yearlyOrdersTotals: yearlyOrdersTotals,
       totalPostCount: totalPostCount,
+      lastWeeksPaymentsTotals: lastWeeksPaymentsTotals,
     };
   } catch (error) {
     console.log(error);

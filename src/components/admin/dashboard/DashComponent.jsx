@@ -1,25 +1,30 @@
-'use client';
-import Image from 'next/image';
-import Link from 'next/link';
-import { MdAttachMoney } from 'react-icons/md';
-import { IoArrowRedoSharp } from 'react-icons/io5';
+"use client";
+import Image from "next/image";
+import Link from "next/link";
+import { MdAttachMoney } from "react-icons/md";
+import { IoArrowRedoSharp } from "react-icons/io5";
 import {
   HiArrowNarrowUp,
   HiDocumentText,
   HiOutlineUserGroup,
-} from 'react-icons/hi';
-import { GiClothes } from 'react-icons/gi';
-import FormattedPrice from '@/backend/helpers/FormattedPrice';
-import { FaTags } from 'react-icons/fa6';
-import { Bar } from 'react-chartjs-2';
-import 'chart.js/auto';
+} from "react-icons/hi";
+import { GiClothes } from "react-icons/gi";
+import FormattedPrice from "@/backend/helpers/FormattedPrice";
+import { FaTags } from "react-icons/fa6";
+import { Bar } from "react-chartjs-2";
+import "chart.js/auto";
 
 const DashComponent = ({ data }) => {
-  const dailyData = JSON.parse(data?.dailyData);
   const weeklyData = JSON.parse(data?.weeklyData);
+  const sortedData = weeklyData
+    .map((item, index) => ({ index, item }))
+    .sort((a, b) => new Date(a.item.date) - new Date(b.item.date))
+    .map(({ index }) => weeklyData[index]);
+  weeklyData.sort((a, b, c) => new Date(c) - new Date(c));
+  console.log(sortedData, "weeklyData");
   // Prepare the labels and data for the chart
-  const chartLabels = weeklyData.map((data) => data.date);
-  const chartData = weeklyData.map((data) => data.Total);
+  const chartLabels = sortedData.map((data) => data.date);
+  const chartData = sortedData.map((data) => data.Total);
   const clients = JSON.parse(data?.clients);
   const products = JSON.parse(data?.products);
   const affiliates = JSON.parse(data?.affiliates);
@@ -36,45 +41,37 @@ const DashComponent = ({ data }) => {
   const productsCountPreviousMonth = data?.productsCountPreviousMonth;
   const totalCustomerCount = data?.totalCustomerCount;
   const thisWeeksOrder = JSON.parse(data?.thisWeeksOrder);
-  const thisWeekOrderTotals = data?.thisWeekOrderTotals;
+  const totalPaymentsThisWeek = data?.totalPaymentsThisWeek;
   const dailyPaymentsTotals = data?.dailyPaymentsTotals;
   const yesterdaysOrdersTotals = data?.yesterdaysOrdersTotals;
   const monthlyOrdersTotals = data?.monthlyOrdersTotals;
   const yearlyOrdersTotals = data?.yearlyOrdersTotals;
-  const colors = [
-    '#8884d8',
-    '#82ca9d',
-    '#ffc658',
-    '#ff8042',
-    '#8dd1e1',
-    '#a4de6c',
-    '#d0ed57',
-    '#ffc0cb',
-  ]; // Example colors
+  const lastWeeksPaymentsTotals = data?.lastWeeksPaymentsTotals;
   // Assuming `weeklyData` is your fetched dataset
+
   const weeklyDataWithColors = {
     labels: chartLabels,
     datasets: [
       {
-        label: 'Total de dia',
+        label: "Total de dia",
         data: chartData,
         backgroundColor: [
-          'rgba(255, 99, 132, 0.5)',
-          'rgba(54, 162, 235, 0.5)',
-          'rgba(255, 206, 86, 0.6)',
-          'rgba(75, 192, 192, 0.5)',
-          'rgba(153, 102, 255, 0.5)',
-          'rgba(255, 159, 64, 0.5)',
-          'rgba(199, 199, 199, 0.5)', // Example colors for 7 data points
+          "rgba(255, 99, 132, 0.5)",
+          "rgba(54, 162, 235, 0.5)",
+          "rgba(255, 206, 86, 0.6)",
+          "rgba(75, 192, 192, 0.5)",
+          "rgba(153, 102, 255, 0.5)",
+          "rgba(255, 159, 64, 0.5)",
+          "rgba(131, 201, 139, 0.5)", // Example colors for 7 data points
         ],
         borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
-          'rgba(199, 199, 199, 1)', // Example border colors for 7 data points
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 159, 64, 1)",
+          "rgba(131, 201, 139, 1)", // Example border colors for 7 data points
         ],
         borderWidth: 1,
       },
@@ -90,11 +87,11 @@ const DashComponent = ({ data }) => {
     plugins: {
       legend: {
         display: true,
-        position: 'top',
+        position: "top",
       },
       title: {
         display: true,
-        text: 'Ventas de los últimos 7 días',
+        text: "Ventas de los últimos 7 días",
       },
     },
   };
@@ -130,7 +127,7 @@ const DashComponent = ({ data }) => {
                   Venta Semanal
                 </h3>
                 <p className="text-2xl  text-slate-700">
-                  <FormattedPrice amount={thisWeekOrderTotals || 0} />
+                  <FormattedPrice amount={totalPaymentsThisWeek || 0} />
                 </p>
               </div>
               <MdAttachMoney className="bg-teal-600  text-white rounded-full text-5xl p-3 shadow-lg" />
@@ -138,7 +135,7 @@ const DashComponent = ({ data }) => {
             <div className="flex  gap-2 text-sm">
               <span className="text-green-700 flex items-center">
                 <HiArrowNarrowUp />
-                {orderCountPreviousMonth}
+                <FormattedPrice amount={lastWeeksPaymentsTotals || 0} />
               </span>
               <div className="text-gray-500">Semana Anterior</div>
             </div>
@@ -190,7 +187,7 @@ const DashComponent = ({ data }) => {
         {/* Chart to display daily totals for the last 7 days */}
         <div className="chart-container h-[400px] maxsm:h-[200px]">
           <h2>Totales diarios de los últimos 7 días</h2>
-          <Bar data={weeklyDataWithColors} options={options} />;
+          <Bar data={weeklyDataWithColors} options={options} />
         </div>
       </div>
       <div className="flex-row maxsm:flex-col flex gap-4 justify-start w-full mt-4">
@@ -278,7 +275,7 @@ const DashComponent = ({ data }) => {
             <div className="flex justify-between py-3 text-base font-black font-EB_Garamond">
               <h1>Clientes Recientes</h1>
               <button>
-                <Link href={'/admin/clientes'}>Ver Todos</Link>
+                <Link href={"/admin/clientes"}>Ver Todos</Link>
               </button>
             </div>
             <table>
@@ -296,7 +293,7 @@ const DashComponent = ({ data }) => {
                       <td>
                         <Image
                           src={
-                            client.avatar || '/images/avatar_placeholder.jpg'
+                            client.avatar || "/images/avatar_placeholder.jpg"
                           }
                           alt="client"
                           width={400}
@@ -321,7 +318,7 @@ const DashComponent = ({ data }) => {
             <div className="flex justify-between py-3 text-base font-black font-EB_Garamond">
               <h1>Pedidos recientes</h1>
               <button>
-                <Link href={'/admin/pedidos'}>Ver todos</Link>
+                <Link href={"/admin/pedidos"}>Ver todos</Link>
               </button>
             </div>
             <table>
@@ -357,7 +354,7 @@ const DashComponent = ({ data }) => {
             <div className="flex justify-between py-3 text-base font-black font-EB_Garamond">
               <h1>Productos Recientes</h1>
               <button>
-                <Link href={'/admin/productos'}>Ver Todos</Link>
+                <Link href={"/admin/productos"}>Ver Todos</Link>
               </button>
             </div>
             <table>
@@ -376,7 +373,7 @@ const DashComponent = ({ data }) => {
                         <Image
                           src={
                             product?.images[0].url ||
-                            '/images/avatar_placeholder.jpg'
+                            "/images/avatar_placeholder.jpg"
                           }
                           alt="producto"
                           width={400}
@@ -403,7 +400,7 @@ const DashComponent = ({ data }) => {
             <div className="flex justify-between py-3 text-base font-black font-EB_Garamond">
               <h1>Publicaciones recientes</h1>
               <button>
-                <Link href={'/admin/blog'}>Ver todas</Link>
+                <Link href={"/admin/blog"}>Ver todas</Link>
               </button>
             </div>
             <table>
@@ -420,7 +417,7 @@ const DashComponent = ({ data }) => {
                     <tr className=" flex justify-between dark:border-gray-700 dark:bg-slate-300 mb-2">
                       <td>
                         <Image
-                          src={post?.mainImage || '/next.svg'}
+                          src={post?.mainImage || "/next.svg"}
                           alt="user"
                           width={400}
                           height={400}
