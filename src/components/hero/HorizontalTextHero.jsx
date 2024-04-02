@@ -1,10 +1,10 @@
-'use client';
-import React from 'react';
-import ScrollTrigger from 'gsap/ScrollTrigger';
-import gsap from 'gsap';
-import { useEffect, useRef } from 'react';
-import Image from 'next/image';
-import { motion } from 'framer-motion';
+"use client";
+import React from "react";
+import ScrollTrigger from "gsap/ScrollTrigger";
+import gsap from "gsap";
+import { useEffect, useRef } from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
 
 const HorizontalTextHero = () => {
   const firstText = useRef(null);
@@ -16,23 +16,72 @@ const HorizontalTextHero = () => {
   let direction = -1;
 
   useEffect(() => {
+    // Register GSAP plugins
     gsap.registerPlugin(ScrollTrigger);
-    requestAnimationFrame(animation);
 
-    gsap.to(slider.current, {
-      scrollTrigger: {
-        trigger: slider.sliderContainer,
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: 0.25,
+    // Initialize animation only if the elements are available
+    if (
+      slider.current &&
+      firstText.current &&
+      secondText.current &&
+      sliderContainer.current
+    ) {
+      // Animation Frame ID for cleanup
+      let animationFrameId;
 
-        onUpdate: (e) => (direction = e.direction * -1),
-      },
-      x: '-=300px',
-    });
-  }, []);
+      // Corrected ScrollTrigger configuration
+      gsap.to(slider.current, {
+        scrollTrigger: {
+          trigger: sliderContainer.current, // Correctly reference the `sliderContainer` ref
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 0.25,
+          onUpdate: (self) => {
+            direction = self.direction * -1;
+          },
+        },
+        x: "-=300px",
+      });
+
+      // Animation function with safeguard checks
+      const animation = () => {
+        if (!firstText.current || !secondText.current) {
+          // Early exit if refs are null
+          return;
+        }
+        if (xPercent <= -100) {
+          xPercent = 0;
+        }
+        if (xPercent > 0) {
+          xPercent = -100;
+        }
+        gsap.set(firstText.current, { xPercent: xPercent });
+        gsap.set(secondText.current, { xPercent: xPercent });
+        xPercent += 0.07 * direction;
+        animationFrameId = requestAnimationFrame(animation);
+      };
+
+      // Start the animation
+      animationFrameId = requestAnimationFrame(animation);
+
+      // Cleanup function to cancel the animation frame and kill GSAP animations
+      return () => {
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+        }
+
+        // Kill all ScrollTriggers to prevent leaks
+        ScrollTrigger.getAll().forEach((st) => st.kill());
+      };
+    }
+  }, []); // Dependencies array is empty, meaning this effect runs once on mount
 
   const animation = () => {
+    if (!firstText.current || !secondText.current) {
+      // Optionally, stop animation or handle the case when elements are not available
+      return;
+    }
+
     if (xPercent <= -100) {
       xPercent = 0;
     }
@@ -54,7 +103,7 @@ const HorizontalTextHero = () => {
       className="relative flex items-center justify-center min-h-[95vh] overflow-hidden w-full mb-40"
     >
       <Image
-        src={'/images/black-dress-expressing-true-exitement.jpg'}
+        src={"/images/black-dress-expressing-true-exitement.jpg"}
         alt="main image"
         fill={true}
         objectFit="cover"
