@@ -82,8 +82,9 @@ export function cstDateTime() {
   // Create a Date object from the given string
   const currentDate = new Date();
   // Adjust the date object to the Central Standard Time (CST) time zone
-  const cstOffset = -6 * 60 * 60 * 1000; // CST is UTC-6
-  const cstTime = new Date(currentDate.getTime() + cstOffset);
+  //const cstOffset = -6 * 60 * 60 * 1000; // CST is UTC-6
+  //const cstTime = new Date(currentDate.getTime() + cstOffset);
+  const cstTime = new Date(currentDate.getTime());
   const cstDate = cstTime.toLocaleString("en-US", {
     timeZone: "America/Mexico_City",
   });
