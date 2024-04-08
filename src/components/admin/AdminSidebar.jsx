@@ -3,9 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { createContext, useContext, useState } from "react";
 import { BsChevronBarLeft, BsChevronBarRight } from "react-icons/bs";
-import { FiMoreVertical, FiLogOut } from "react-icons/fi";
+import { FiLogOut } from "react-icons/fi";
 import { signOut, useSession } from "next-auth/react";
-import AuthContext from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -62,7 +61,7 @@ const AdminSidebar = ({ children }) => {
             src={user?.image ? user?.image : "/images/avatar_placeholder.jpg"}
             width={500}
             height={500}
-            className="w-10 h-10 rounded-full"
+            className="w-10 h-10 rounded-full cursor-pointer"
           />
 
           <div
@@ -122,7 +121,7 @@ export function SideBarItem({ icon, text, active, alert, url, dropdownItems }) {
   return (
     <li
       className={`relative flex flex-col items-center py-2 pl-2 pr-3 maxmd:pr-1 my-1 font-medium rounded-md cursor-pointer gap-x-1 transition-colors group ${
-        active
+        active === "true"
           ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800"
           : "hover:bg-indigo-50 text-gray-600"
       }`}

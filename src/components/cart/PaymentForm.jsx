@@ -1,15 +1,15 @@
-'use client';
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { AiOutlineUser } from 'react-icons/ai';
-import { useSession } from 'next-auth/react';
-import { loadStripe } from '@stripe/stripe-js';
-import { resetCart, saveOrder } from '@/redux/shoppingSlice';
-import { useDispatch } from 'react-redux';
-import Image from 'next/image';
-import Link from 'next/link';
-import FormattedPrice from '@/backend/helpers/FormattedPrice';
-import { revalidatePath } from 'next/cache';
+"use client";
+import React from "react";
+import { useSelector } from "react-redux";
+import { AiOutlineUser } from "react-icons/ai";
+import { useSession } from "next-auth/react";
+import { loadStripe } from "@stripe/stripe-js";
+import { resetCart, saveOrder } from "@/redux/shoppingSlice";
+import { useDispatch } from "react-redux";
+import Image from "next/image";
+import Link from "next/link";
+import FormattedPrice from "@/backend/helpers/FormattedPrice";
+import { revalidatePath } from "next/cache";
 
 const PaymentForm = () => {
   const dispatch = useDispatch();
@@ -38,8 +38,8 @@ const PaymentForm = () => {
     const stripe = await stripePromise;
 
     const response = await fetch(`/api/checkout?${payType}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         items: productsData,
         email: session?.user?.email,
@@ -53,10 +53,10 @@ const PaymentForm = () => {
     try {
       const data = await response.json();
 
-      await dispatch(saveOrder({ order: productsData, id: data.id }));
+      dispatch(saveOrder({ order: productsData, id: data.id }));
       stripe?.redirectToCheckout({ sessionId: data.id });
       dispatch(resetCart());
-      revalidatePath('/admin/pedidos');
+      revalidatePath("/admin/pedidos");
     } catch (error) {
       console.log(error);
     }
@@ -114,16 +114,16 @@ const PaymentForm = () => {
         {isLoggedIn ? (
           <div className="flex flex-col items-center gap-1">
             <button
-              onClick={() => handleCheckout('layaway')}
+              onClick={() => handleCheckout("layaway")}
               className=" text-slate-100 bg-violet-950 mt-4 py-3 px-6 hover:bg-slate-200 hover:text-black duration-300 ease-in-out cursor-pointer w-full"
             >
-              Apartar Artículos{' '}
+              Apartar Artículos{" "}
             </button>
             <button
-              onClick={() => handleCheckout('total')}
+              onClick={() => handleCheckout("total")}
               className="bg-black w-full text-slate-100 mt-4 py-3 px-6 hover:bg-slate-200 hover:text-black duration-300 ease-in-out cursor-pointer"
             >
-              Pagar Total{' '}
+              Pagar Total{" "}
             </button>
             <p>Si realizaste un pago por Oxxo o Transferencia Bancaria</p>
             <p>
@@ -142,7 +142,7 @@ const PaymentForm = () => {
             {/** Login/Register */}
             {!session && (
               <>
-                <Link href={'/iniciar'}>
+                <Link href={"/iniciar"}>
                   <div className=" w-1/4 maxmd:w-2/3 sm:w-full bg-black text-slate-100 mt-4 py-3 px-6 hover:bg-green-600 duration-500 cursor-pointer">
                     <div className="flex flex-row justify-center items-center gap-x-3 ">
                       <AiOutlineUser className="text-ld" />
@@ -159,7 +159,7 @@ const PaymentForm = () => {
         )}
         <div className="trustfactor-class">
           <Image
-            src={'/images/stripe-badge-transparente.webp'}
+            src={"/images/stripe-badge-transparente.webp"}
             width={500}
             height={200}
             alt="Stripe Payment"

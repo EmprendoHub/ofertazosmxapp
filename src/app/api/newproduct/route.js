@@ -1,8 +1,8 @@
-import { NextResponse } from 'next/server';
-import dbConnect from '@/lib/db';
-import Product from '@/backend/models/Product';
-import { getToken } from 'next-auth/jwt';
-import { generateUrlSafeTitle } from '@/backend/helpers';
+import { NextResponse } from "next/server";
+import dbConnect from "@/lib/db";
+import Product from "@/backend/models/Product";
+import { getToken } from "next-auth/jwt";
+import { generateUrlSafeTitle, newCSTDate } from "@/backend/helpers";
 
 export async function POST(request, res) {
   const token = await getToken({ req: request });
@@ -31,7 +31,7 @@ export async function POST(request, res) {
       // Parse variations JSON string with reviver function to convert numeric strings to numbers
       let colors = [];
       variations = JSON.parse(variations, (key, value) => {
-        if (key === 'color') {
+        if (key === "color") {
           const color = {
             value: value,
             label: value,
@@ -45,8 +45,8 @@ export async function POST(request, res) {
           }
         }
         // Check if the value is a string and represents a number
-        if (!isNaN(value) && value !== '' && !Array.isArray(value)) {
-          if (key != 'size') {
+        if (!isNaN(value) && value !== "" && !Array.isArray(value)) {
+          if (key != "size") {
             return Number(value); // Convert the string to a number
           }
         }
@@ -64,7 +64,7 @@ export async function POST(request, res) {
         0
       );
 
-      createdAt = new Date();
+      createdAt = newCSTDate();
 
       await dbConnect();
       const slug = generateUrlSafeTitle(title);
@@ -74,7 +74,7 @@ export async function POST(request, res) {
       if (slugExists) {
         return {
           error: {
-            title: { _errors: ['Este Titulo de producto ya esta en uso'] },
+            title: { _errors: ["Este Titulo de producto ya esta en uso"] },
           },
         };
       }
@@ -86,7 +86,7 @@ export async function POST(request, res) {
       };
 
       const newProduct = new Product({
-        type: 'variation',
+        type: "variation",
         title,
         slug,
         description,
@@ -109,7 +109,7 @@ export async function POST(request, res) {
       // Save the Product to the database
       await newProduct.save();
       const response = NextResponse.json({
-        message: 'Producto creado exitosamente',
+        message: "Producto creado exitosamente",
         success: true,
       });
 
@@ -118,14 +118,14 @@ export async function POST(request, res) {
       console.log(error);
       return NextResponse.json(
         {
-          error: 'Error al crear Producto',
+          error: "Error al crear Producto",
         },
         { status: 500 }
       );
     }
   } else {
     // Not Signed in
-    return new Response('You are not authorized, eh eh eh, no no no', {
+    return new Response("You are not authorized, eh eh eh, no no no", {
       status: 400,
     });
   }
@@ -161,7 +161,7 @@ export async function PUT(request, res) {
       // Parse variations JSON string with reviver function to convert numeric strings to numbers
       let colors = [];
       variations = JSON.parse(variations, (key, value) => {
-        if (key === 'color') {
+        if (key === "color") {
           const color = {
             value: value,
             label: value,
@@ -175,8 +175,8 @@ export async function PUT(request, res) {
           }
         }
         // Check if the value is a string and represents a number
-        if (!isNaN(value) && value !== '' && !Array.isArray(value)) {
-          if (key != 'size') {
+        if (!isNaN(value) && value !== "" && !Array.isArray(value)) {
+          if (key != "size") {
             return Number(value); // Convert the string to a number
           }
         }
@@ -205,7 +205,7 @@ export async function PUT(request, res) {
       if (slugExists) {
         return {
           error: {
-            title: { _errors: ['Este Titulo de producto ya esta en uso'] },
+            title: { _errors: ["Este Titulo de producto ya esta en uso"] },
           },
         };
       }
@@ -220,7 +220,7 @@ export async function PUT(request, res) {
       await Product.updateOne(
         { _id },
         {
-          type: 'variation',
+          type: "variation",
           title,
           slug,
           description,
@@ -241,7 +241,7 @@ export async function PUT(request, res) {
         }
       );
       const response = NextResponse.json({
-        message: 'Producto actualizado exitosamente',
+        message: "Producto actualizado exitosamente",
         success: true,
       });
 
@@ -249,14 +249,14 @@ export async function PUT(request, res) {
     } catch (error) {
       return NextResponse.json(
         {
-          error: 'Error al crear Producto',
+          error: "Error al crear Producto",
         },
         { status: 500 }
       );
     }
   } else {
     // Not Signed in
-    return new Response('You are not authorized, eh eh eh, no no no', {
+    return new Response("You are not authorized, eh eh eh, no no no", {
       status: 400,
     });
   }

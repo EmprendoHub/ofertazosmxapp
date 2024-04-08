@@ -1,14 +1,15 @@
-import Affiliate from '@/backend/models/Affiliate';
-import Order from '@/backend/models/Order';
-import Post from '@/backend/models/Post';
-import Product from '@/backend/models/Product';
-import User from '@/backend/models/User';
-import dbConnect from '@/lib/db';
-import { NextResponse } from 'next/server';
+import { newCSTDate } from "@/backend/helpers";
+import Affiliate from "@/backend/models/Affiliate";
+import Order from "@/backend/models/Order";
+import Post from "@/backend/models/Post";
+import Product from "@/backend/models/Product";
+import User from "@/backend/models/User";
+import dbConnect from "@/lib/db";
+import { NextResponse } from "next/server";
 
 // Function to get the document count for all from the previous month
 const getDocumentCountPreviousMonth = async (model) => {
-  const now = new Date();
+  const now = newCSTDate();
   const firstDayOfPreviousMonth = new Date(
     now.getFullYear(),
     now.getMonth() - 1,
@@ -25,20 +26,20 @@ const getDocumentCountPreviousMonth = async (model) => {
         },
       },
       {
-        published: { $ne: 'false' },
+        published: { $ne: "false" },
       }
     );
 
     return documentCount;
   } catch (error) {
-    console.error('Error counting documents from the previous month:', error);
+    console.error("Error counting documents from the previous month:", error);
     throw error;
   }
 };
 
 // Function to get the document count for all orders from the previous month
 const getClientCountPreviousMonth = async () => {
-  const now = new Date();
+  const now = newCSTDate();
   const firstDayOfPreviousMonth = new Date(
     now.getFullYear(),
     now.getMonth() - 1,
@@ -54,22 +55,22 @@ const getClientCountPreviousMonth = async () => {
           $lte: lastDayOfPreviousMonth,
         },
       },
-      { role: 'cliente' }
+      { role: "cliente" }
     );
 
     return clientCount;
   } catch (error) {
-    console.error('Error counting clients from the previous month:', error);
+    console.error("Error counting clients from the previous month:", error);
     throw error;
   }
 };
 
 export const GET = async (request, res) => {
-  const sessionRaw = await request.headers.get('session');
+  const sessionRaw = await request.headers.get("session");
   const session = JSON.parse(sessionRaw);
   if (!session) {
     // Not Signed in
-    return new Response('You are not authorized, eh eh eh, no no no', {
+    return new Response("You are not authorized, eh eh eh, no no no", {
       status: 400,
     });
   }
@@ -82,35 +83,35 @@ export const GET = async (request, res) => {
     let clients;
     let posts;
 
-    if (session?.user?.role === 'manager') {
-      orders = await Order.find({ orderStatus: { $ne: 'Cancelado' } })
+    if (session?.user?.role === "manager") {
+      orders = await Order.find({ orderStatus: { $ne: "Cancelado" } })
         .sort({ createdAt: -1 }) // Sort in descending order of creation date
         .limit(5);
-      affiliates = await Affiliate.find({ published: { $ne: 'false' } })
+      affiliates = await Affiliate.find({ published: { $ne: "false" } })
         .sort({ createdAt: -1 }) // Sort in descending order of creation date
         .limit(5);
-      products = await Product.find({ published: { $ne: 'false' } })
+      products = await Product.find({ published: { $ne: "false" } })
         .sort({ createdAt: -1 }) // Sort in descending order of creation date
         .limit(5);
-      clients = await User.find({ role: 'cliente' })
+      clients = await User.find({ role: "cliente" })
         .sort({ createdAt: -1 }) // Sort in descending order of creation date
         .limit(5);
-      posts = await Post.find({ published: { $ne: 'false' } })
+      posts = await Post.find({ published: { $ne: "false" } })
         .sort({ createdAt: -1 }) // Sort in descending order of creation date
         .limit(5);
 
       const totalOrderCount = await Order.countDocuments({
-        orderStatus: { $ne: 'Cancelado' },
+        orderStatus: { $ne: "Cancelado" },
       });
       const totalAffiliateCount = await Affiliate.countDocuments({
-        published: { $ne: 'false' },
+        published: { $ne: "false" },
       });
       const totalProductCount = await Product.countDocuments({
-        published: { $ne: 'false' },
+        published: { $ne: "false" },
       });
-      const totalClientCount = await User.countDocuments({ role: 'cliente' });
+      const totalClientCount = await User.countDocuments({ role: "cliente" });
       const totalPostCount = await Post.countDocuments({
-        published: { $ne: 'false' },
+        published: { $ne: "false" },
       });
 
       const orderCountPreviousMonth = await getDocumentCountPreviousMonth(
@@ -143,7 +144,7 @@ export const GET = async (request, res) => {
   } catch (error) {
     return NextResponse.json(
       {
-        error: 'Dashboard DB loading error',
+        error: "Dashboard DB loading error",
       },
       { status: 500 }
     );

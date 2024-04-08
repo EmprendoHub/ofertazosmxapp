@@ -1,16 +1,13 @@
-'use client';
-import React, { useState, useRef, useEffect } from 'react';
-import Image from 'next/image';
-import DateTimePicker from 'react-datetime-picker';
-import 'react-datetime-picker/dist/DateTimePicker.css';
-import 'react-calendar/dist/Calendar.css';
-import 'react-clock/dist/Clock.css';
-import { cstDateTimeClient } from '@/backend/helpers';
-import {
-  updateRevalidateProduct,
-  updateVariationProduct,
-} from '@/app/_actions';
-import { useRouter } from 'next/navigation';
+"use client";
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import DateTimePicker from "react-datetime-picker";
+import "react-datetime-picker/dist/DateTimePicker.css";
+import "react-calendar/dist/Calendar.css";
+import "react-clock/dist/Clock.css";
+import { cstDateTimeClient } from "@/backend/helpers";
+import { updateRevalidateProduct } from "@/app/_actions";
+import { useRouter } from "next/navigation";
 import {
   set_colors,
   sizes_prendas,
@@ -19,9 +16,8 @@ import {
   product_categories,
   genders,
   blog_categories,
-} from '@/backend/data/productData';
-import MultiselectTagComponent from '../forms/MultiselectTagComponent';
-import { revalidatePath } from 'next/cache';
+} from "@/backend/data/productData";
+import MultiselectTagComponent from "../forms/MultiselectTagComponent";
 
 const EditVariationProduct = ({ product, currentCookies }) => {
   const router = useRouter();
@@ -47,7 +43,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
   );
   const [salePrice, setSalePrice] = useState(product?.sale_price);
   const [salePriceEndDate, setSalePriceEndDate] = useState(
-    product?.sale_price_end_date || ''
+    product?.sale_price_end_date || ""
   );
   const [sizeSelection, setSizeSelection] = useState(sizes_prendas);
   const [tagSelection, setTagSelection] = useState(blog_categories);
@@ -61,8 +57,8 @@ const EditVariationProduct = ({ product, currentCookies }) => {
     setVariations((prevVariations) => [
       ...prevVariations,
       {
-        size: '',
-        color: '',
+        size: "",
+        color: "",
         price: prevVariations[0].price,
         cost: prevVariations[0].cost,
         stock: 1,
@@ -120,7 +116,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
 
   async function compressAndOptimizeImage(file, url, index) {
     // Create an HTML Image element
-    const img = document.createElement('img');
+    const img = document.createElement("img");
 
     // Load the file into the Image element
     img.src = URL.createObjectURL(file);
@@ -128,8 +124,8 @@ const EditVariationProduct = ({ product, currentCookies }) => {
     // Wait for the image to load
     img.onload = async () => {
       // Create a canvas element
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
 
       // Set the canvas dimensions to the image dimensions
       canvas.width = img.width;
@@ -140,7 +136,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
 
       // Compress and set quality (adjust quality value as needed)
       const quality = 0.8; // Adjust quality value as needed
-      const compressedImageData = canvas.toDataURL('image/jpeg', quality);
+      const compressedImageData = canvas.toDataURL("image/jpeg", quality);
 
       // Convert base64 data URL to Blob
       const blobData = await fetch(compressedImageData).then((res) =>
@@ -154,11 +150,11 @@ const EditVariationProduct = ({ product, currentCookies }) => {
 
   async function uploadVariationFile(blobData, url, index) {
     fetch(url, {
-      method: 'PUT',
+      method: "PUT",
       body: blobData,
     })
       .then(() => {
-        const newUrl = url.split('?');
+        const newUrl = url.split("?");
         const newVariations = [...variations];
         newVariations[index].image = newUrl[0];
         setVariations(newVariations);
@@ -172,9 +168,9 @@ const EditVariationProduct = ({ product, currentCookies }) => {
   async function retrieveNewURL(file, cb) {
     const endpoint = `/api/minio/`;
     fetch(endpoint, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        "Access-Control-Allow-Origin": "*",
         Name: file.name,
       },
     })
@@ -210,7 +206,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
 
   async function compressAndOptimizeMainImage(file, url, section) {
     // Create an HTML Image element
-    const img = document.createElement('img');
+    const img = document.createElement("img");
 
     // Load the file into the Image element
     img.src = URL.createObjectURL(file);
@@ -218,8 +214,8 @@ const EditVariationProduct = ({ product, currentCookies }) => {
     // Wait for the image to load
     img.onload = async () => {
       // Create a canvas element
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
 
       // Set the canvas dimensions to the image dimensions
       canvas.width = img.width;
@@ -230,7 +226,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
 
       // Compress and set quality (adjust quality value as needed)
       const quality = 0.8; // Adjust quality value as needed
-      const compressedImageData = canvas.toDataURL('image/jpeg', quality);
+      const compressedImageData = canvas.toDataURL("image/jpeg", quality);
 
       // Convert base64 data URL to Blob
       const blobData = await fetch(compressedImageData).then((res) =>
@@ -246,9 +242,9 @@ const EditVariationProduct = ({ product, currentCookies }) => {
   async function uploadFile(blobData, url, section) {
     fetch(url, {
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        "Access-Control-Allow-Origin": "*",
       },
-      method: 'PUT',
+      method: "PUT",
       body: blobData,
     })
       .then(() => {
@@ -256,8 +252,8 @@ const EditVariationProduct = ({ product, currentCookies }) => {
         // document.querySelector(
         //   '#status'
         // ).innerHTML += `<br>Uploaded ${file.name}.`;
-        const newUrl = url.split('?');
-        if (section === 'selectorMain') {
+        const newUrl = url.split("?");
+        if (section === "selectorMain") {
           setMainImage(newUrl[0]);
         }
       })
@@ -270,92 +266,92 @@ const EditVariationProduct = ({ product, currentCookies }) => {
     e.preventDefault();
     if (
       !mainImage ||
-      mainImage === '/images/product-placeholder-minimalist.jpg'
+      mainImage === "/images/product-placeholder-minimalist.jpg"
     ) {
       const noMainImageError = {
-        mainImage: { _errors: ['Se requiere una imagen '] },
+        mainImage: { _errors: ["Se requiere una imagen "] },
       };
       setValidationError(noMainImageError);
       return;
     }
     if (!title) {
-      const noTitleError = { title: { _errors: ['Se requiere un titulo '] } };
+      const noTitleError = { title: { _errors: ["Se requiere un titulo "] } };
       setValidationError(noTitleError);
       return;
     }
     if (!description) {
       const noDescriptionError = {
-        description: { _errors: ['Se requiere descripción '] },
+        description: { _errors: ["Se requiere descripción "] },
       };
       setValidationError(noDescriptionError);
       return;
     }
     if (!brand) {
       const noBrandError = {
-        brand: { _errors: ['Se requiere un Marca '] },
+        brand: { _errors: ["Se requiere un Marca "] },
       };
       setValidationError(noBrandError);
       return;
     }
     if (!tags) {
       const noTagsError = {
-        tags: { _errors: ['Se requiere mínimo una etiqueta '] },
+        tags: { _errors: ["Se requiere mínimo una etiqueta "] },
       };
       setValidationError(noTagsError);
       return;
     }
     if (!variations[0].cost) {
       const noCostError = {
-        cost: { _errors: ['Se requiere un costo de producto '] },
+        cost: { _errors: ["Se requiere un costo de producto "] },
       };
       setValidationError(noCostError);
       return;
     }
     if (!variations[0].price) {
       const noPriceError = {
-        price: { _errors: ['Se requiere un precio de producto '] },
+        price: { _errors: ["Se requiere un precio de producto "] },
       };
       setValidationError(noPriceError);
       return;
     }
     if (!variations[0].size) {
       const noSizesError = {
-        sizes: { _errors: ['Se requiere una talla o tamaño '] },
+        sizes: { _errors: ["Se requiere una talla o tamaño "] },
       };
       setValidationError(noSizesError);
       return;
     }
     if (!variations[0].color) {
       const noColorsError = {
-        colors: { _errors: ['Se requiere un color '] },
+        colors: { _errors: ["Se requiere un color "] },
       };
       setValidationError(noColorsError);
       return;
     }
 
     const formData = new FormData();
-    formData.append('title', title);
-    formData.append('description', description);
-    formData.append('category', category);
-    formData.append('featured', featured);
-    formData.append('branchAvailability', branchAvailability);
-    formData.append('instagramAvailability', instagramAvailability);
-    formData.append('onlineAvailability', onlineAvailability);
-    formData.append('brand', brand);
-    formData.append('gender', gender);
-    formData.append('mainImage', mainImage);
-    formData.append('variations', JSON.stringify(variations));
-    formData.append('tags', JSON.stringify(tags));
-    formData.append('salePrice', Number(salePrice));
-    formData.append('salePriceEndDate', salePriceEndDate);
-    formData.append('updatedAt', updatedAt);
-    formData.append('_id', product?._id);
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("category", category);
+    formData.append("featured", featured);
+    formData.append("branchAvailability", branchAvailability);
+    formData.append("instagramAvailability", instagramAvailability);
+    formData.append("onlineAvailability", onlineAvailability);
+    formData.append("brand", brand);
+    formData.append("gender", gender);
+    formData.append("mainImage", mainImage);
+    formData.append("variations", JSON.stringify(variations));
+    formData.append("tags", JSON.stringify(tags));
+    formData.append("salePrice", Number(salePrice));
+    formData.append("salePriceEndDate", salePriceEndDate);
+    formData.append("updatedAt", updatedAt);
+    formData.append("_id", product?._id);
     // write to database using server actions
 
     // const result = await updateVariationProduct(formData);
     const endpoint = `/api/newproduct`;
     const result = await fetch(endpoint, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
         Cookie: currentCookies,
       },
@@ -370,24 +366,24 @@ const EditVariationProduct = ({ product, currentCookies }) => {
       setIsSending(true);
       //formRef.current.reset();
       await updateRevalidateProduct();
-      router.push('/admin/productos');
+      router.push("/admin/productos");
     }
   }
 
   const handleCategoryChange = async (e) => {
     setCategory(e);
-    if (e === 'Calzado' && gender == 'Damas') {
+    if (e === "Calzado" && gender == "Damas") {
       setSizeSelection(sizes_shoes_woman);
     } else {
       setSizeSelection(sizes_shoes_men);
     }
 
     if (
-      e === 'Prendas' ||
-      e === 'Bolsas' ||
-      e === 'Accesorios' ||
-      e === 'Belleza' ||
-      e === 'Joyeria'
+      e === "Prendas" ||
+      e === "Bolsas" ||
+      e === "Accesorios" ||
+      e === "Belleza" ||
+      e === "Joyeria"
     ) {
       setSizeSelection(sizes_prendas);
     }
@@ -403,18 +399,18 @@ const EditVariationProduct = ({ product, currentCookies }) => {
 
   const handleGenderChange = async (e) => {
     setGender(e);
-    if (category === 'Calzado' && e == 'Damas') {
+    if (category === "Calzado" && e == "Damas") {
       setSizeSelection(sizes_shoes_woman);
     } else {
       setSizeSelection(sizes_shoes_men);
     }
 
     if (
-      category === 'Prendas' ||
-      category === 'Bolsas' ||
-      category === 'Accesorios' ||
-      category === 'Belleza' ||
-      category === 'Joyeria'
+      category === "Prendas" ||
+      category === "Bolsas" ||
+      category === "Accesorios" ||
+      category === "Belleza" ||
+      category === "Joyeria"
     ) {
       setSizeSelection(sizes_prendas);
     }
@@ -423,34 +419,34 @@ const EditVariationProduct = ({ product, currentCookies }) => {
   useEffect(() => {
     // handle Gender Change
     setGender(product?.gender);
-    if (category === 'Calzado' && product?.gender == 'Damas') {
+    if (category === "Calzado" && product?.gender == "Damas") {
       setSizeSelection(sizes_shoes_woman);
     } else {
       setSizeSelection(sizes_shoes_men);
     }
 
     if (
-      category === 'Prendas' ||
-      category === 'Bolsas' ||
-      category === 'Accesorios' ||
-      category === 'Belleza' ||
-      category === 'Joyeria'
+      category === "Prendas" ||
+      category === "Bolsas" ||
+      category === "Accesorios" ||
+      category === "Belleza" ||
+      category === "Joyeria"
     ) {
       setSizeSelection(sizes_prendas);
     }
 
-    if (product?.category === 'Calzado' && gender == 'Damas') {
+    if (product?.category === "Calzado" && gender == "Damas") {
       setSizeSelection(sizes_shoes_woman);
     } else {
       setSizeSelection(sizes_shoes_men);
     }
 
     if (
-      product?.category === 'Prendas' ||
-      product?.category === 'Bolsas' ||
-      product?.category === 'Accesorios' ||
-      product?.category === 'Belleza' ||
-      product?.category === 'Joyeria'
+      product?.category === "Prendas" ||
+      product?.category === "Bolsas" ||
+      product?.category === "Accesorios" ||
+      product?.category === "Belleza" ||
+      product?.category === "Joyeria"
     ) {
       setSizeSelection(sizes_prendas);
     }
@@ -479,8 +475,8 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                     value={featured}
                   >
                     {[
-                      { value: false, name: 'No', uniqueKey: 'featuredNO' },
-                      { value: true, name: 'Si', uniqueKey: 'featuredYES' },
+                      { value: false, name: "No", uniqueKey: "featuredNO" },
+                      { value: true, name: "Si", uniqueKey: "featuredYES" },
                     ].map((opt) => (
                       <option key={opt.uniqueKey} value={opt}>
                         {opt.name}
@@ -489,7 +485,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                   </select>
                   {validationError?.featured && (
                     <p className="text-sm text-red-400">
-                      {validationError.featured._errors.join(', ')}
+                      {validationError.featured._errors.join(", ")}
                     </p>
                   )}
                   <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
@@ -517,13 +513,13 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                     {[
                       {
                         value: false,
-                        name: 'No',
-                        uniqueKey: 'instagramNO',
+                        name: "No",
+                        uniqueKey: "instagramNO",
                       },
                       {
                         value: true,
-                        name: 'Si',
-                        uniqueKey: 'instagramYes',
+                        name: "Si",
+                        uniqueKey: "instagramYes",
                       },
                     ].map((opt) => (
                       <option key={opt.uniqueKey} value={opt.value}>
@@ -557,13 +553,13 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                     {[
                       {
                         value: false,
-                        name: 'No',
-                        uniqueKey: 'branchNo',
+                        name: "No",
+                        uniqueKey: "branchNo",
                       },
                       {
                         value: true,
-                        name: 'Si',
-                        uniqueKey: 'branchYes',
+                        name: "Si",
+                        uniqueKey: "branchYes",
                       },
                     ].map((opt) => (
                       <option key={opt.uniqueKey} value={opt.value}>
@@ -595,13 +591,13 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                     {[
                       {
                         value: false,
-                        name: 'No',
-                        uniqueKey: 'onlineNo',
+                        name: "No",
+                        uniqueKey: "onlineNo",
                       },
                       {
                         value: true,
-                        name: 'Si',
-                        uniqueKey: 'onlineYes',
+                        name: "Si",
+                        uniqueKey: "onlineYes",
                       },
                     ].map((opt) => (
                       <option key={opt.uniqueKey} value={opt.value}>
@@ -650,7 +646,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
 
                     {validationError?.mainImage && (
                       <p className="text-sm text-red-400">
-                        {validationError.mainImage._errors.join(', ')}
+                        {validationError.mainImage._errors.join(", ")}
                       </p>
                     )}
                   </label>
@@ -673,13 +669,13 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                   />
                   {validationError?.title && (
                     <p className="text-sm text-red-400">
-                      {validationError.title._errors.join(', ')}
+                      {validationError.title._errors.join(", ")}
                     </p>
                   )}
                 </div>
                 <div className="mb-4">
                   <label className="block mb-1  font-EB_Garamond">
-                    {' '}
+                    {" "}
                     Description Corta
                   </label>
                   <textarea
@@ -693,13 +689,13 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                   ></textarea>
                   {validationError?.description && (
                     <p className="text-sm text-red-400">
-                      {validationError.description._errors.join(', ')}
+                      {validationError.description._errors.join(", ")}
                     </p>
                   )}
                 </div>
                 <div className="mb-4">
                   <label className="block mb-1  font-EB_Garamond">
-                    {' '}
+                    {" "}
                     Marca del Producto
                   </label>
                   <input
@@ -713,14 +709,14 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                   />
                   {validationError?.brand && (
                     <p className="text-sm text-red-400">
-                      {validationError.brand._errors.join(', ')}
+                      {validationError.brand._errors.join(", ")}
                     </p>
                   )}
                 </div>
                 <div className="mb-4 w-full">
                   <label className="block mb-1 font-EB_Garamond">
-                    {' '}
-                    Género{' '}
+                    {" "}
+                    Género{" "}
                   </label>
                   <div className="relative">
                     <select
@@ -738,7 +734,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                     </select>
                     {validationError?.gender && (
                       <p className="text-sm text-red-400">
-                        {validationError.gender._errors.join(', ')}
+                        {validationError.gender._errors.join(", ")}
                       </p>
                     )}
                     <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
@@ -766,7 +762,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                     />
                     {validationError?.tags && (
                       <p className="text-sm text-red-400">
-                        {validationError.tags._errors.join(', ')}
+                        {validationError.tags._errors.join(", ")}
                       </p>
                     )}
                   </div>
@@ -791,7 +787,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                     </select>
                     {validationError?.category && (
                       <p className="text-sm text-red-400">
-                        {validationError.category._errors.join(', ')}
+                        {validationError.category._errors.join(", ")}
                       </p>
                     )}
                     <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
@@ -826,7 +822,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                         />
                         {validationError?.salePrice && (
                           <p className="text-sm text-red-400">
-                            {validationError.salePrice._errors.join(', ')}
+                            {validationError.salePrice._errors.join(", ")}
                           </p>
                         )}
                       </div>
@@ -840,9 +836,9 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                     <DateTimePicker
                       onChange={onChangeDate}
                       value={salePriceEndDate}
-                      locale={'es-MX'}
+                      locale={"es-MX"}
                       minDate={cstDateTimeClient()}
-                      className={'h-full'}
+                      className={"h-full"}
                     />
                   </div>
                 </div>
@@ -876,7 +872,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                     </select>
                     {validationError?.sizes && (
                       <p className="text-sm text-red-400">
-                        {validationError.sizes._errors.join(', ')}
+                        {validationError.sizes._errors.join(", ")}
                       </p>
                     )}
                   </div>
@@ -899,7 +895,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                     </select>
                     {validationError?.colors && (
                       <p className="text-sm text-red-400">
-                        {validationError.colors._errors.join(', ')}
+                        {validationError.colors._errors.join(", ")}
                       </p>
                     )}
                   </div>
@@ -920,7 +916,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                       />
                       {validationError?.price && (
                         <p className="text-sm text-red-400">
-                          {validationError.price._errors.join(', ')}
+                          {validationError.price._errors.join(", ")}
                         </p>
                       )}
                     </div>
@@ -942,7 +938,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                       />
                       {validationError?.cost && (
                         <p className="text-sm text-red-400">
-                          {validationError.cost._errors.join(', ')}
+                          {validationError.cost._errors.join(", ")}
                         </p>
                       )}
                     </div>
@@ -950,8 +946,8 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                 </div>
                 <div className="mb-4 w-full">
                   <label className="block mb-1 font-EB_Garamond">
-                    {' '}
-                    Existencias{' '}
+                    {" "}
+                    Existencias{" "}
                   </label>
                   <div className="relative">
                     <div className="col-span-2">
@@ -967,7 +963,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                       />
                       {validationError?.stock && (
                         <p className="text-sm text-red-400">
-                          {validationError.stock._errors.join(', ')}
+                          {validationError.stock._errors.join(", ")}
                         </p>
                       )}
                     </div>
@@ -1001,7 +997,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
 
                       {validationError?.mainImage && (
                         <p className="text-sm text-red-400">
-                          {validationError.mainImage._errors.join(', ')}
+                          {validationError.mainImage._errors.join(", ")}
                         </p>
                       )}
                     </label>
@@ -1022,8 +1018,8 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                   </div>
                   <div className="mb-4 w-full">
                     <label className="block mb-1 font-EB_Garamond">
-                      {' '}
-                      Talla{' '}
+                      {" "}
+                      Talla{" "}
                     </label>
                     <div className="relative">
                       <select
@@ -1044,15 +1040,15 @@ const EditVariationProduct = ({ product, currentCookies }) => {
 
                       {validationError?.sizes && (
                         <p className="text-sm text-red-400">
-                          {validationError.sizes._errors.join(', ')}
+                          {validationError.sizes._errors.join(", ")}
                         </p>
                       )}
                     </div>
                   </div>
                   <div className="mb-4 w-full">
                     <label className="block mb-1 font-EB_Garamond">
-                      {' '}
-                      Color{' '}
+                      {" "}
+                      Color{" "}
                     </label>
                     <div className="relative">
                       <select
@@ -1072,7 +1068,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                       </select>
                       {validationError?.colors && (
                         <p className="text-sm text-red-400">
-                          {validationError.colors._errors.join(', ')}
+                          {validationError.colors._errors.join(", ")}
                         </p>
                       )}
                     </div>
@@ -1097,8 +1093,8 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                   </div>
                   <div className="mb-4 w-full">
                     <label className="block mb-1 font-EB_Garamond">
-                      {' '}
-                      Costo{' '}
+                      {" "}
+                      Costo{" "}
                     </label>
                     <div className="relative">
                       <input
@@ -1116,8 +1112,8 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                   </div>
                   <div className="mb-4 w-full">
                     <label className="block mb-1 font-EB_Garamond">
-                      {' '}
-                      Existencias{' '}
+                      {" "}
+                      Existencias{" "}
                     </label>
                     <div className="relative">
                       <input
@@ -1164,7 +1160,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
 
                         {validationError?.mainImage && (
                           <p className="text-sm text-red-400">
-                            {validationError.mainImage._errors.join(', ')}
+                            {validationError.mainImage._errors.join(", ")}
                           </p>
                         )}
                       </label>

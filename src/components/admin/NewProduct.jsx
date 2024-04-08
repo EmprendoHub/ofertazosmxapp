@@ -1,16 +1,16 @@
-'use client';
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import Image from 'next/image';
-import DateTimePicker from 'react-datetime-picker';
-import 'react-datetime-picker/dist/DateTimePicker.css';
-import 'react-calendar/dist/Calendar.css';
-import 'react-clock/dist/Clock.css';
-import MultiselectComponent from '../forms/MultiselectComponent';
-import { cstDateTimeClient } from '@/backend/helpers';
-import { useDropzone } from 'react-dropzone';
-import { FaWindowClose, FaArrowUp } from 'react-icons/fa';
-import { addProduct } from '@/app/_actions';
-import { useRouter } from 'next/navigation';
+"use client";
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import Image from "next/image";
+import DateTimePicker from "react-datetime-picker";
+import "react-datetime-picker/dist/DateTimePicker.css";
+import "react-calendar/dist/Calendar.css";
+import "react-clock/dist/Clock.css";
+import MultiselectComponent from "../forms/MultiselectComponent";
+import { cstDateTimeClient } from "@/backend/helpers";
+import { useDropzone } from "react-dropzone";
+import { FaWindowClose, FaArrowUp } from "react-icons/fa";
+import { addProduct } from "@/app/_actions";
+import { useRouter } from "next/navigation";
 import {
   set_colors,
   sizes_prendas,
@@ -19,24 +19,24 @@ import {
   product_categories,
   genders,
   blog_categories,
-} from '@/backend/data/productData';
-import MultiselectColor from '../forms/MultiselectColor';
-import MultiselectTagComponent from '../forms/MultiselectTagComponent';
+} from "@/backend/data/productData";
+import MultiselectColor from "../forms/MultiselectColor";
+import MultiselectTagComponent from "../forms/MultiselectTagComponent";
 
 const NewProduct = () => {
   const router = useRouter();
   const formRef = useRef();
   const [files, setFiles] = useState([]);
   const [rejected, setRejected] = useState([]);
-  const [title, setTitle] = useState('');
-  const [brand, setBrand] = useState('');
-  const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('Moda');
+  const [title, setTitle] = useState("");
+  const [brand, setBrand] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("Moda");
   const [sizes, setSizes] = useState([]);
   const [tags, setTags] = useState([]);
   const [colors, setColors] = useState([]);
-  const [gender, setGender] = useState('Damas');
-  const [featured, setFeatured] = useState('No');
+  const [gender, setGender] = useState("Damas");
+  const [featured, setFeatured] = useState("No");
   const [stock, setStock] = useState(1);
   const [cost, setCost] = useState(0);
   const [price, setPrice] = useState(0);
@@ -71,7 +71,7 @@ const NewProduct = () => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
-      'image/*': [],
+      "image/*": [],
     },
     maxSize: 1024 * 1000,
     maxFiles: 3,
@@ -99,60 +99,60 @@ const NewProduct = () => {
   async function action() {
     const file = files[0];
     if (!file) {
-      const noFileError = { images: { _errors: ['Se requiere una imagen '] } };
+      const noFileError = { images: { _errors: ["Se requiere una imagen "] } };
       setValidationError(noFileError);
       return;
     }
     if (!title) {
-      const noTitleError = { title: { _errors: ['Se requiere un titulo '] } };
+      const noTitleError = { title: { _errors: ["Se requiere un titulo "] } };
       setValidationError(noTitleError);
       return;
     }
     if (!description) {
       const noDescriptionError = {
-        description: { _errors: ['Se requiere descripción '] },
+        description: { _errors: ["Se requiere descripción "] },
       };
       setValidationError(noDescriptionError);
       return;
     }
     if (!brand) {
       const noBrandError = {
-        brand: { _errors: ['Se requiere un Marca '] },
+        brand: { _errors: ["Se requiere un Marca "] },
       };
       setValidationError(noBrandError);
       return;
     }
     if (!price) {
       const noPriceError = {
-        precio: { _errors: ['Se requiere un precio '] },
+        precio: { _errors: ["Se requiere un precio "] },
       };
       setValidationError(noPriceError);
       return;
     }
     if (!cost) {
       const noCostError = {
-        cost: { _errors: ['Se requiere un costo de producto '] },
+        cost: { _errors: ["Se requiere un costo de producto "] },
       };
       setValidationError(noCostError);
       return;
     }
     if (!sizes) {
       const noSizesError = {
-        sizes: { _errors: ['Se requiere una talla o tamaño '] },
+        sizes: { _errors: ["Se requiere una talla o tamaño "] },
       };
       setValidationError(noSizesError);
       return;
     }
     if (!tags) {
       const noTagsError = {
-        tags: { _errors: ['Se requiere mínimo una etiqueta '] },
+        tags: { _errors: ["Se requiere mínimo una etiqueta "] },
       };
       setValidationError(noTagsError);
       return;
     }
     if (!colors) {
       const noColorsError = {
-        colors: { _errors: ['Se requiere un color '] },
+        colors: { _errors: ["Se requiere un color "] },
       };
       setValidationError(noColorsError);
       return;
@@ -160,13 +160,13 @@ const NewProduct = () => {
 
     const imageFormData = new FormData();
     files.forEach((file) => {
-      imageFormData.append('images', file);
+      imageFormData.append("images", file);
     });
     const endpoint = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/minio`;
     const data = await fetch(endpoint, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        Type: 'products',
+        Type: "products",
       },
       body: imageFormData,
     }).then((res) => res.json());
@@ -177,22 +177,22 @@ const NewProduct = () => {
     });
 
     const formData = new FormData();
-    formData.append('title', title);
-    formData.append('description', description);
-    formData.append('category', category);
-    formData.append('stock', stock);
-    formData.append('price', price);
-    formData.append('cost', cost);
-    formData.append('featured', featured);
-    formData.append('brand', brand);
-    formData.append('gender', gender);
-    formData.append('images', JSON.stringify(images));
-    formData.append('sizes', JSON.stringify(sizes));
-    formData.append('tags', JSON.stringify(tags));
-    formData.append('colors', JSON.stringify(colors));
-    formData.append('salePrice', salePrice);
-    formData.append('salePriceEndDate', salePriceEndDate);
-    formData.append('createdAt', createdAt);
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("category", category);
+    formData.append("stock", stock);
+    formData.append("price", price);
+    formData.append("cost", cost);
+    formData.append("featured", featured);
+    formData.append("brand", brand);
+    formData.append("gender", gender);
+    formData.append("images", JSON.stringify(images));
+    formData.append("sizes", JSON.stringify(sizes));
+    formData.append("tags", JSON.stringify(tags));
+    formData.append("colors", JSON.stringify(colors));
+    formData.append("salePrice", salePrice);
+    formData.append("salePriceEndDate", salePriceEndDate);
+    formData.append("createdAt", createdAt);
     // write to database using server actions
 
     const result = await addProduct(formData);
@@ -202,23 +202,23 @@ const NewProduct = () => {
       setValidationError(null);
       //reset the form
       formRef.current.reset();
-      router.push('/admin/productos');
+      router.push("/admin/productos");
     }
   }
   const handleCategoryChange = async (e) => {
     setCategory(e);
-    if (e === 'Calzado' && gender == 'Damas') {
+    if (e === "Calzado" && gender == "Damas") {
       setSizeSelection(sizes_shoes_woman);
     } else {
       setSizeSelection(sizes_shoes_men);
     }
 
     if (
-      e === 'Prendas' ||
-      e === 'Bolsas' ||
-      e === 'Accesorios' ||
-      e === 'Belleza' ||
-      e === 'Joyeria'
+      e === "Prendas" ||
+      e === "Bolsas" ||
+      e === "Accesorios" ||
+      e === "Belleza" ||
+      e === "Joyeria"
     ) {
       setSizeSelection(sizes_prendas);
     }
@@ -242,18 +242,18 @@ const NewProduct = () => {
 
   const handleGenderChange = async (e) => {
     setGender(e);
-    if (category === 'Calzado' && e == 'Damas') {
+    if (category === "Calzado" && e == "Damas") {
       setSizeSelection(sizes_shoes_woman);
     } else {
       setSizeSelection(sizes_shoes_men);
     }
 
     if (
-      category === 'Prendas' ||
-      category === 'Bolsas' ||
-      category === 'Accesorios' ||
-      category === 'Belleza' ||
-      category === 'Joyeria'
+      category === "Prendas" ||
+      category === "Bolsas" ||
+      category === "Accesorios" ||
+      category === "Belleza" ||
+      category === "Joyeria"
     ) {
       setSizeSelection(sizes_prendas);
     }
@@ -275,7 +275,7 @@ const NewProduct = () => {
             <div className="gap-y-5 flex-col flex px-2 w-full">
               <div className="mb-4">
                 <label className="block mb-1  font-EB_Garamond">
-                  {' '}
+                  {" "}
                   Titulo del Producto
                 </label>
                 <input
@@ -288,13 +288,13 @@ const NewProduct = () => {
                 />
                 {validationError?.title && (
                   <p className="text-sm text-red-400">
-                    {validationError.title._errors.join(', ')}
+                    {validationError.title._errors.join(", ")}
                   </p>
                 )}
               </div>
               <div className="mb-4">
                 <label className="block mb-1  font-EB_Garamond">
-                  {' '}
+                  {" "}
                   Description Corta
                 </label>
                 <textarea
@@ -307,13 +307,13 @@ const NewProduct = () => {
                 ></textarea>
                 {validationError?.description && (
                   <p className="text-sm text-red-400">
-                    {validationError.description._errors.join(', ')}
+                    {validationError.description._errors.join(", ")}
                   </p>
                 )}
               </div>
               <div className="mb-4">
                 <label className="block mb-1  font-EB_Garamond">
-                  {' '}
+                  {" "}
                   Marca del Producto
                 </label>
                 <input
@@ -326,15 +326,15 @@ const NewProduct = () => {
                 />
                 {validationError?.brand && (
                   <p className="text-sm text-red-400">
-                    {validationError.brand._errors.join(', ')}
+                    {validationError.brand._errors.join(", ")}
                   </p>
                 )}
               </div>
               <div className="flex flex-row maxsm:flex-col items-center gap-5">
                 <div className="mb-4 w-full">
                   <label className="block mb-1  font-EB_Garamond">
-                    {' '}
-                    Precio de Venta{' '}
+                    {" "}
+                    Precio de Venta{" "}
                   </label>
                   <div className="relative">
                     <div className="col-span-2">
@@ -349,7 +349,7 @@ const NewProduct = () => {
                       />
                       {validationError?.price && (
                         <p className="text-sm text-red-400">
-                          {validationError.price._errors.join(', ')}
+                          {validationError.price._errors.join(", ")}
                         </p>
                       )}
                     </div>
@@ -370,7 +370,7 @@ const NewProduct = () => {
                       />
                       {validationError?.cost && (
                         <p className="text-sm text-red-400">
-                          {validationError.cost._errors.join(', ')}
+                          {validationError.cost._errors.join(", ")}
                         </p>
                       )}
                     </div>
@@ -378,8 +378,8 @@ const NewProduct = () => {
                 </div>
                 <div className="mb-4 w-full">
                   <label className="block mb-1 font-EB_Garamond">
-                    {' '}
-                    Existencias{' '}
+                    {" "}
+                    Existencias{" "}
                   </label>
                   <div className="relative">
                     <div className="col-span-2">
@@ -394,7 +394,7 @@ const NewProduct = () => {
                       />
                       {validationError?.stock && (
                         <p className="text-sm text-red-400">
-                          {validationError.stock._errors.join(', ')}
+                          {validationError.stock._errors.join(", ")}
                         </p>
                       )}
                     </div>
@@ -402,8 +402,8 @@ const NewProduct = () => {
                 </div>
                 <div className="mb-4 w-full">
                   <label className="block mb-1 font-EB_Garamond">
-                    {' '}
-                    Destacado{' '}
+                    {" "}
+                    Destacado{" "}
                   </label>
                   <div className="relative">
                     <select
@@ -412,7 +412,7 @@ const NewProduct = () => {
                       onChange={(e) => setFeatured(e.target.value)}
                       value={featured}
                     >
-                      {['No', 'Si'].map((opt) => (
+                      {["No", "Si"].map((opt) => (
                         <option key={opt} value={opt}>
                           {opt}
                         </option>
@@ -420,7 +420,7 @@ const NewProduct = () => {
                     </select>
                     {validationError?.featured && (
                       <p className="text-sm text-red-400">
-                        {validationError.featured._errors.join(', ')}
+                        {validationError.featured._errors.join(", ")}
                       </p>
                     )}
                     <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
@@ -439,8 +439,8 @@ const NewProduct = () => {
               <div className="flex flex-row maxsm:flex-col items-center gap-5">
                 <div className="mb-4 w-full">
                   <label className="block mb-1 font-EB_Garamond">
-                    {' '}
-                    Género{' '}
+                    {" "}
+                    Género{" "}
                   </label>
                   <div className="relative">
                     <select
@@ -456,7 +456,7 @@ const NewProduct = () => {
                     </select>
                     {validationError?.gender && (
                       <p className="text-sm text-red-400">
-                        {validationError.gender._errors.join(', ')}
+                        {validationError.gender._errors.join(", ")}
                       </p>
                     )}
                     <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
@@ -473,8 +473,8 @@ const NewProduct = () => {
                 </div>
                 <div className="mb-4 w-full">
                   <label className="block mb-1 font-EB_Garamond">
-                    {' '}
-                    Categoría{' '}
+                    {" "}
+                    Categoría{" "}
                   </label>
                   <div className="relative">
                     <select
@@ -490,7 +490,7 @@ const NewProduct = () => {
                     </select>
                     {validationError?.category && (
                       <p className="text-sm text-red-400">
-                        {validationError.category._errors.join(', ')}
+                        {validationError.category._errors.join(", ")}
                       </p>
                     )}
                     <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
@@ -518,15 +518,15 @@ const NewProduct = () => {
                   />
                   {validationError?.sizes && (
                     <p className="text-sm text-red-400">
-                      {validationError.sizes._errors.join(', ')}
+                      {validationError.sizes._errors.join(", ")}
                     </p>
                   )}
                 </div>
               </div>
               <div className="mb-4 w-full">
                 <label className="block mb-1 font-EB_Garamond">
-                  {' '}
-                  Etiquetas{' '}
+                  {" "}
+                  Etiquetas{" "}
                 </label>
                 <div className="relative">
                   <MultiselectTagComponent
@@ -535,7 +535,7 @@ const NewProduct = () => {
                   />
                   {validationError?.tags && (
                     <p className="text-sm text-red-400">
-                      {validationError.tags._errors.join(', ')}
+                      {validationError.tags._errors.join(", ")}
                     </p>
                   )}
                 </div>
@@ -549,15 +549,15 @@ const NewProduct = () => {
                   />
                   {validationError?.colors && (
                     <p className="text-sm text-red-400">
-                      {validationError.colors._errors.join(', ')}
+                      {validationError.colors._errors.join(", ")}
                     </p>
                   )}
                 </div>
               </div>
               <div className="mb-4 w-full">
                 <label className="block mb-1 font-EB_Garamond">
-                  {' '}
-                  Precio de Oferta{' '}
+                  {" "}
+                  Precio de Oferta{" "}
                 </label>
                 <div className="relative">
                   <div className="col-span-2">
@@ -572,7 +572,7 @@ const NewProduct = () => {
                     />
                     {validationError?.salePrice && (
                       <p className="text-sm text-red-400">
-                        {validationError.salePrice._errors.join(', ')}
+                        {validationError.salePrice._errors.join(", ")}
                       </p>
                     )}
                   </div>
@@ -580,14 +580,14 @@ const NewProduct = () => {
               </div>
               <div className="mb-4 w-full">
                 <label className="block mb-1 font-EB_Garamond">
-                  {' '}
-                  Finalización de Oferta{' '}
+                  {" "}
+                  Finalización de Oferta{" "}
                 </label>
                 <div className="flex flex-row items-center gap-x-3"></div>
                 <DateTimePicker
                   onChange={onChangeDate}
                   value={salePriceEndDate}
-                  locale={'es-MX'}
+                  locale={"es-MX"}
                   minDate={cstDateTimeClient()}
                 />
               </div>
@@ -599,7 +599,7 @@ const NewProduct = () => {
               {...getRootProps({})}
               className="h-[300px] bg-slate-200 cursor-pointer"
             >
-              <input {...getInputProps({ name: 'file' })} />
+              <input {...getInputProps({ name: "file" })} />
 
               <div className="flex flex-col items-center justify-center gap-4 min-h-44">
                 <FaArrowUp className="h-5 w-5 fill-current" />
@@ -613,7 +613,7 @@ const NewProduct = () => {
                 )}
                 {validationError?.images && (
                   <p className="text-sm text-red-400">
-                    {validationError.images._errors.join(', ')}
+                    {validationError.images._errors.join(", ")}
                   </p>
                 )}
               </div>

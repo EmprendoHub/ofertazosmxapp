@@ -28,6 +28,7 @@ import {
   cstDateTime,
   generateUrlSafeTitle,
   getTotalFromItems,
+  newCSTDate,
 } from "@/backend/helpers";
 import Order from "@/backend/models/Order";
 import APIPostsFilters from "@/lib/APIPostsFilters";
@@ -37,13 +38,11 @@ import APIClientFilters from "@/lib/APIClientFilters";
 import APIAffiliateFilters from "@/lib/APIAffiliateFilters";
 import Page from "@/backend/models/Page";
 import Payment from "@/backend/models/Payment";
-import crypto from "crypto";
-import { NextResponse } from "next/server";
 import Customer from "@/backend/models/Customer";
 
 // Function to get the document count for all from the previous month
 const getDocumentCountPreviousMonth = async (model) => {
-  const now = new Date();
+  const now = newCSTDate();
   const firstDayOfPreviousMonth = new Date(
     now.getFullYear(),
     now.getMonth() - 1,
@@ -111,7 +110,7 @@ async function subtotal(order) {
 
 // Function to get the document count for all orders from the previous month
 const getClientCountPreviousMonth = async () => {
-  const now = new Date();
+  const now = newCSTDate();
   const firstDayOfPreviousMonth = new Date(
     now.getFullYear(),
     now.getMonth() - 1,
@@ -972,7 +971,7 @@ export async function getPOSDashboard() {
     let dailyOrders;
     let dailyOrdersTotals;
 
-    const today = new Date();
+    const today = newCSTDate();
     today.setUTCHours(0, 0, 0, 0); // Set time to midnight
 
     const startOfCurrentWeek = new Date(today);
@@ -1156,7 +1155,7 @@ export async function getInstagramDashboard() {
     let totalOrdersThisWeek;
     let dailyOrders;
     let dailyOrdersTotals;
-    const today = new Date();
+    const today = newCSTDate();
     const startOfCurrentWeek = new Date(today);
     startOfCurrentWeek.setDate(
       startOfCurrentWeek.getDate() - startOfCurrentWeek.getDay()

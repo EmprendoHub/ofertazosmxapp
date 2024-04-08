@@ -1,39 +1,40 @@
-'use client';
-import React, { useState } from 'react';
-import { toast } from 'react-toastify';
-import { FaCircleCheck, FaCircleExclamation } from 'react-icons/fa6';
-import { updateOneOrder } from '@/app/_actions';
+"use client";
+import React, { useState } from "react";
+import { toast } from "react-toastify";
+import { FaCircleCheck, FaCircleExclamation } from "react-icons/fa6";
+import { updateOneOrder } from "@/app/_actions";
+import { newCSTDate } from "@/backend/helpers";
 
 const PayOrderComp = ({ setShowModal, orderId, isPaid }) => {
-  const [transactionNo, setTransactionNo] = useState('EFECTIVO');
+  const [transactionNo, setTransactionNo] = useState("EFECTIVO");
   const [amount, setAmount] = useState(0);
-  const [note, setNote] = useState('');
+  const [note, setNote] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (Number(amount) <= 0) {
-      toast.error('Por favor agrega la cantidad del pedido para continuar.');
+      toast.error("Por favor agrega la cantidad del pedido para continuar.");
       return;
     }
 
-    if (transactionNo === '') {
-      toast.error('Por favor agregar una referencia de pago para continuar.');
+    if (transactionNo === "") {
+      toast.error("Por favor agregar una referencia de pago para continuar.");
       return;
     }
 
     try {
       const formData = new FormData();
-      formData.set('transactionNo', transactionNo);
-      formData.set('paidOn', new Date());
-      formData.set('amount', amount);
-      formData.set('note', note);
-      formData.set('orderId', orderId);
+      formData.set("transactionNo", transactionNo);
+      formData.set("paidOn", newCSTDate());
+      formData.set("amount", amount);
+      formData.set("note", note);
+      formData.set("orderId", orderId);
       try {
         const res = await updateOneOrder(formData);
         setShowModal(false);
       } catch (error) {
         toast.error(
-          'Error actualizando el pedido. Por favor Intenta de nuevo.'
+          "Error actualizando el pedido. Por favor Intenta de nuevo."
         );
       }
     } catch (error) {

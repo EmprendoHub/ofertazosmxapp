@@ -1,4 +1,4 @@
-export const cx = (...classNames) => classNames.filter(Boolean).join(' ');
+export const cx = (...classNames) => classNames.filter(Boolean).join(" ");
 
 export const isValidEmail = (email) => {
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -9,7 +9,7 @@ export function removeUndefinedAndPageKeys(obj) {
   // Iterate through each key in the object
   for (const key in obj) {
     // Check if the value of the current key is undefined or if the key is 'page'
-    if (obj[key] === undefined || key === 'page') {
+    if (obj[key] === undefined || key === "page") {
       // If it is undefined or the key is 'page', delete the key from the object
       delete obj[key];
     }
@@ -20,10 +20,10 @@ export function removeUndefinedAndPageKeys(obj) {
 
 export function generateUrlSafeTitle(title) {
   // Convert the title to lowercase and replace spaces with dashes
-  let urlSafeTitle = title.toLowerCase().replace(/\s+/g, '-');
+  let urlSafeTitle = title.toLowerCase().replace(/\s+/g, "-");
 
   // Remove special characters and non-alphanumeric characters
-  urlSafeTitle = urlSafeTitle.replace(/[^\w-]+/g, '');
+  urlSafeTitle = urlSafeTitle.replace(/[^\w-]+/g, "");
 
   return urlSafeTitle;
 }
@@ -68,14 +68,24 @@ export const getPriceQueryParams = (queryParams, key, value) => {
   return queryParams;
 };
 
+export function newCSTDate() {
+  // Create a Date object from the given string
+  const currentDate = new Date();
+  // Adjust the date object to the Central Standard Time (CST) time zone
+  const cstOffset = -6 * 60 * 60 * 1000; // CST is UTC-6
+  const cstDateTime = new Date(currentDate.getTime() + cstOffset);
+
+  return cstDateTime;
+}
+
 export function cstDateTime() {
   // Create a Date object from the given string
   const currentDate = new Date();
   // Adjust the date object to the Central Standard Time (CST) time zone
-  const cstOffset = -7 * 60 * 60 * 1000; // CST is UTC-6
+  const cstOffset = -6 * 60 * 60 * 1000; // CST is UTC-6
   const cstTime = new Date(currentDate.getTime() + cstOffset);
-  const cstDate = cstTime.toLocaleString('en-US', {
-    timeZone: 'America/Chicago',
+  const cstDate = cstTime.toLocaleString("en-US", {
+    timeZone: "America/Mexico_City",
   });
 
   return cstDate;
@@ -91,31 +101,31 @@ export function formatSpanishDate(inputDate) {
 
   // Define arrays for month names in Spanish and AM/PM labels
   const monthNames = [
-    'enero',
-    'febrero',
-    'marzo',
-    'abril',
-    'mayo',
-    'junio',
-    'julio',
-    'agosto',
-    'septiembre',
-    'octubre',
-    'noviembre',
-    'diciembre',
+    "enero",
+    "febrero",
+    "marzo",
+    "abril",
+    "mayo",
+    "junio",
+    "julio",
+    "agosto",
+    "septiembre",
+    "octubre",
+    "noviembre",
+    "diciembre",
   ];
-  const periodLabels = ['AM', 'PM'];
+  const periodLabels = ["AM", "PM"];
 
   // Get the day, month, year, hours, and minutes from the adjusted date object
   const day = cstDate.getDate();
   const month = monthNames[cstDate.getMonth()];
   const year = cstDate.getFullYear();
   let hours = cstDate.getHours();
-  const minutes = String(cstDate.getMinutes()).padStart(2, '0');
+  const minutes = String(cstDate.getMinutes()).padStart(2, "0");
 
   // Determine the period label (AM/PM) based on the hour value
   const period = hours < 12 ? 0 : 1;
-  console.log(hours, 'hours', inputDate);
+  console.log(hours, "hours", inputDate);
 
   // Convert hours to 12-hour format
   hours = hours % 12 || 12;
@@ -137,16 +147,16 @@ export function formatDate(dateTimeString) {
   const date = new Date(dateTimeString);
 
   // Format the date in the desired format
-  const formattedDate = date.toLocaleDateString('es-ES', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
+  const formattedDate = date.toLocaleDateString("es-ES", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
 
   // Format the time in the desired format
-  const formattedTime = date.toLocaleTimeString('es-ES', {
-    hour: '2-digit',
-    minute: '2-digit',
+  const formattedTime = date.toLocaleTimeString("es-ES", {
+    hour: "2-digit",
+    minute: "2-digit",
     hour12: true,
   });
 
@@ -158,9 +168,9 @@ export function formatTime(dateTimeString) {
   const date = new Date(dateTimeString);
 
   // Format the time in the desired format
-  const formattedTime = date.toLocaleTimeString('en-US', {
-    hour: '2-digit',
-    minute: '2-digit',
+  const formattedTime = date.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
     hour12: true,
   });
 
@@ -190,28 +200,28 @@ export function getOrderItemsQuantities(orderItems) {
 }
 
 export const getCookiesName = () => {
-  let cookieName = '';
+  let cookieName = "";
 
-  if (process.env.NODE_ENV === 'development') {
-    cookieName = 'next-auth.csrf-token';
+  if (process.env.NODE_ENV === "development") {
+    cookieName = "next-auth.csrf-token";
   }
 
-  if (process.env.NODE_ENV === 'production') {
-    cookieName = '__Host-next-auth.csrf-token';
+  if (process.env.NODE_ENV === "production") {
+    cookieName = "__Host-next-auth.csrf-token";
   }
 
   return cookieName;
 };
 
 export const getSessionCookiesName = () => {
-  let cookieName = '';
+  let cookieName = "";
 
-  if (process.env.NODE_ENV === 'development') {
-    cookieName = 'next-auth.session-token';
+  if (process.env.NODE_ENV === "development") {
+    cookieName = "next-auth.session-token";
   }
 
-  if (process.env.NODE_ENV === 'production') {
-    cookieName = '__Secure-next-auth.session-token';
+  if (process.env.NODE_ENV === "production") {
+    cookieName = "__Secure-next-auth.session-token";
   }
 
   return cookieName;
@@ -223,12 +233,12 @@ function getRandomChar(charset) {
 }
 
 export function generateRandomPassword(length) {
-  const lowercaseChars = 'abcdefghijklmnopqrstuvwxyz';
-  const uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const numberChars = '0123456789';
-  const specialChars = '!@#$%&*-_=+';
+  const lowercaseChars = "abcdefghijklmnopqrstuvwxyz";
+  const uppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const numberChars = "0123456789";
+  const specialChars = "!@#$%&*-_=+";
 
-  let password = '';
+  let password = "";
 
   // Ensure at least one character from each category
   password += getRandomChar(lowercaseChars);
@@ -266,9 +276,9 @@ export function generateRandomPassword(length) {
 
   // Shuffle the password to make the order random
   password = password
-    .split('')
+    .split("")
     .sort(() => Math.random() - 0.5)
-    .join('');
+    .join("");
 
   return password;
 }
