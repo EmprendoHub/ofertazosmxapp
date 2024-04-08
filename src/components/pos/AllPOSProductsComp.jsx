@@ -1,12 +1,12 @@
-'use client';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { saveQRToPrint } from '@/redux/shoppingSlice';
-import POSProductSearch from '../layout/POSProductSearch';
-import FormattedPrice from '@/backend/helpers/FormattedPrice';
-import { FaStar } from 'react-icons/fa6';
-import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
+"use client";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { saveQRToPrint } from "@/redux/shoppingSlice";
+import POSProductSearch from "../layout/POSProductSearch";
+import FormattedPrice from "@/backend/helpers/FormattedPrice";
+import { FaStar } from "react-icons/fa6";
+import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
 
 const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
   const dispatch = useDispatch();
@@ -29,6 +29,14 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
     setSelectedProducts(updatedSelectedProducts);
   }, [qrListData, products]);
 
+  useEffect(() => {
+    // Set selectAll based on whether all displayed products are selected
+    const areAllSelected = selectedProducts.every(
+      (product) => product.isSelected
+    );
+    setSelectAll(areAllSelected);
+  }, [selectedProducts]); // Runs whenever selectedProducts changes
+
   const handleCheckBox = (product) => {
     // If the product with the same ID doesn't exist, add it to the list
     const receiver = {
@@ -40,10 +48,10 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
   };
 
   const handleGenerateQR = () => {
-    if (pathname.includes('admin')) {
-      router.push('/admin/pos/qr/generador');
+    if (pathname.includes("admin")) {
+      router.push("/admin/pos/qr/generador");
     } else {
-      router.push('/puntodeventa/qr/generador');
+      router.push("/puntodeventa/qr/generador");
     }
   };
 
@@ -69,14 +77,17 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
   return (
     <>
       <hr className="my-4" />
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <div className="relative pl-10 maxsm:pl-3 overflow-x-auto shadow-md rounded-lg">
         <div className=" flex flex-row maxsm:flex-col maxsm:items-start items-center justify-between">
           <h1 className="text-2xl mb-5 ml-1 font-bold font-EB_Garamond">
             {`${filteredProductsCount} Productos Con Existencias`}
           </h1>
           <POSProductSearch />
         </div>
-        <button className="bg-black text-white p-4" onClick={handleGenerateQR}>
+        <button
+          className="bg-black rounded-lg text-white p-4"
+          onClick={handleGenerateQR}
+        >
           Generar QRs
         </button>
         <table className="w-full text-sm  text-left">
@@ -87,13 +98,8 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
                   type="checkbox"
                   checked={selectAll}
                   onChange={handleSelectAll}
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
                 />
-              </th>
-              <th
-                scope="col"
-                className="w-full px-6 maxsm:px-0 py-3 maxmd:hidden"
-              >
-                SKU
               </th>
               <th
                 scope="col"
@@ -117,8 +123,8 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
               <tr
                 className={`flex flex-row items-center ${
                   product?.active === true
-                    ? 'bg-slate-100'
-                    : 'bg-slate-200 text-slate-400'
+                    ? "bg-slate-100"
+                    : "bg-slate-200 text-slate-400"
                 }`}
                 key={index}
               >
@@ -128,18 +134,20 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
                     id={product._id}
                     checked={product.isSelected} // Bind the checked attribute based on isSelected
                     onChange={() => handleCheckBox(product)}
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
                   />
                 </td>
-                <td className="w-full px-6 maxsm:px-2 py-0 maxmd:hidden">
-                  {product._id.substring(0, 8)}...
-                </td>
                 <td
-                  className={`w-full px-6 maxsm:px-0 py-0 font-bold maxsm:hidden`}
+                  onClick={() => handleCheckBox(product)}
+                  className={`w-full px-6 maxsm:px-0 py-0 font-semibold maxsm:hidden capitalize cursor-pointer`}
                 >
                   {product.title}
                 </td>
                 <td className="w-full px-6 maxsm:px-0 py-0 relative">
-                  <span className="relative flex items-center justify-center text-black w-20 h-20 maxsm:w-8 maxsm:h-8 shadow mt-2 overflow-hidden">
+                  <span
+                    onClick={() => handleCheckBox(product)}
+                    className="relative flex items-center justify-center text-black w-20 h-20 maxsm:w-8 maxsm:h-8 shadow mt-2 overflow-hidden cursor-pointer"
+                  >
                     <Image
                       src={product?.images[0].url}
                       alt="Title"
@@ -147,12 +155,12 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
                       height={200}
                       className="w-20 object-cover h-20 maxsm:w-20 rounded-md "
                     />
-                    {product?.featured === 'Si' ? (
+                    {product?.featured === "Si" ? (
                       <span className="absolute -top-3 -right-1 z-20">
                         <FaStar className="text-xl text-amber-600" />
                       </span>
                     ) : (
-                      ''
+                      ""
                     )}
                   </span>
                 </td>

@@ -1,18 +1,18 @@
-'use client';
-import Link from 'next/link';
-import { FaEye } from 'react-icons/fa';
-import { formatDate, formatSpanishDate, formatTime } from '@/backend/helpers';
-import { getTotalFromItems } from '@/backend/helpers';
-import FormattedPrice from '@/backend/helpers/FormattedPrice';
-import AdminOrderSearch from '@/components/layout/AdminOrderSearch';
-import { TfiMoney } from 'react-icons/tfi';
-import { useState } from 'react';
-import Modal from '../modals/Modal';
-import { FaPrint } from 'react-icons/fa6';
+"use client";
+import Link from "next/link";
+import { FaEye } from "react-icons/fa";
+import { formatDate, formatSpanishDate, formatTime } from "@/backend/helpers";
+import { getTotalFromItems } from "@/backend/helpers";
+import FormattedPrice from "@/backend/helpers/FormattedPrice";
+import AdminOrderSearch from "@/components/layout/AdminOrderSearch";
+import { TfiMoney } from "react-icons/tfi";
+import { useState } from "react";
+import Modal from "../modals/Modal";
+import { FaPrint } from "react-icons/fa6";
 
 const AdminOrders = ({ orders, filteredOrdersCount }) => {
   const [showModal, setShowModal] = useState(false);
-  const [usedOrderId, setUsedOrderId] = useState('');
+  const [usedOrderId, setUsedOrderId] = useState("");
   const updateOrderStatus = async (orderId) => {
     setUsedOrderId(orderId);
     setShowModal(true);
@@ -24,7 +24,7 @@ const AdminOrders = ({ orders, filteredOrdersCount }) => {
         setShowModal={setShowModal}
         orderId={usedOrderId}
       />
-      <div className="relative overflow-x-auto shadow-md maxsm:rounded-lg">
+      <div className="pl-5 maxsm:pl-3 relative overflow-x-auto shadow-md maxsm:rounded-lg">
         <div className=" flex flex-row maxsm:flex-col maxsm:items-start items-center justify-between">
           <h1 className="text-3xl w-full maxsm:text-xl my-5 maxsm:my-1 ml-4 maxsm:ml-0 font-bold font-EB_Garamond">
             {`${filteredOrdersCount} Pedidos `}
@@ -79,24 +79,24 @@ const AdminOrders = ({ orders, filteredOrdersCount }) => {
                 </td>
                 <td
                   className={`px-2 maxsm:px-0 py-2 font-bold ${
-                    order.orderStatus === 'Apartado'
-                      ? 'text-amber-700'
-                      : order.orderStatus === 'En Camino'
-                      ? 'text-blue-700'
-                      : order.orderStatus === 'Entregado'
-                      ? 'text-green-700'
-                      : order.orderStatus === 'Pagado'
-                      ? 'text-green-800'
-                      : 'text-slate-600'
+                    order.orderStatus === "Apartado"
+                      ? "text-amber-700"
+                      : order.orderStatus === "En Camino"
+                      ? "text-blue-700"
+                      : order.orderStatus === "Entregado"
+                      ? "text-green-700"
+                      : order.orderStatus === "Pagado"
+                      ? "text-green-800"
+                      : "text-slate-600"
                   }`}
                 >
                   {order.orderStatus}
                 </td>
                 <td
                   className={`px-2 maxsm:px-0 py-2 font-bold ${
-                    order.branch === 'Sahuayo'
-                      ? 'text-amber-700'
-                      : 'text-slate-600'
+                    order.branch === "Sahuayo"
+                      ? "text-amber-700"
+                      : "text-slate-600"
                   }`}
                 >
                   {order.branch}
@@ -121,7 +121,7 @@ const AdminOrders = ({ orders, filteredOrdersCount }) => {
                     {order?.paymentInfo?.amountPaid >=
                       getTotalFromItems(order.orderItems) ===
                     true ? (
-                      ''
+                      ""
                     ) : (
                       <button
                         onClick={() => updateOrderStatus(order._id)}
@@ -129,14 +129,14 @@ const AdminOrders = ({ orders, filteredOrdersCount }) => {
                           order?.paymentInfo?.amountPaid >=
                             getTotalFromItems(order.orderItems) ===
                           true
-                            ? ''
-                            : 'bg-emerald-700'
+                            ? ""
+                            : "bg-emerald-700"
                         }  shadow-sm border border-gray-200 rounded-md hover:scale-110 cursor-pointer mr-2 duration-200 ease-in-out`}
                       >
                         {order?.paymentInfo?.amountPaid >=
                           getTotalFromItems(order.orderItems) ===
                         true ? (
-                          ''
+                          ""
                         ) : (
                           <TfiMoney className="text-white" />
                         )}

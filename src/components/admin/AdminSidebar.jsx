@@ -107,72 +107,75 @@ export default AdminSidebar;
 export function SideBarItem({ icon, text, active, alert, url, dropdownItems }) {
   const { expandSidebar } = useContext(SidebarContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState(null); // Track the hovered item by its index
   const router = useRouter();
 
   const handleDropdownToggle = () => {
     if (dropdownItems) {
       setDropdownOpen(!dropdownOpen);
     } else {
-      // If no dropdown items, navigate to the URL directly
       router.push(url);
     }
   };
 
   return (
     <li
-      className={`relative flex flex-col items-center py-2 pl-2 pr-3 maxmd:pr-1 my-1 font-medium rounded-md cursor-pointer gap-x-1 transition-colors group ${
+      className={`relative flex flex-col items-center py-2 pl-2 pr-3 maxmd:pr-1 my-1 font-medium rounded-md cursor-pointer gap-x-1 transition-colors ${
         active === "true"
-          ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800"
+          ? " text-indigo-800"
           : "hover:bg-indigo-50 text-gray-600"
       }`}
       onClick={handleDropdownToggle}
+      onMouseEnter={() => setHoveredIndex("main")} // Set hoveredIndex to 'main' for the main item
+      onMouseLeave={() => setHoveredIndex(null)} // Reset on mouse leave
     >
       <div className="flex ">
         {icon}
         <span
-          className={`flex justify-between items-center overflow-hidden transition-all ease-in-out  ${
+          className={`flex justify-between items-center overflow-hidden transition-all ease-in-out ${
             expandSidebar ? " w-36 ml-2  maxmd:w-36 maxmd:ml-1" : "w-0"
           }`}
         >
           {text}
         </span>
-
-        {alert && (
-          <div
-            className={`absolute right-2 w-2 h-2 bg-indigo-400 rounded-full ${
-              expandSidebar ? "" : "top-2"
-            }`}
-          />
-        )}
       </div>
 
-      {/* Render dropdown items if dropdown is open */}
+      {/* Conditional rendering for main item hover text */}
+      {!expandSidebar && hoveredIndex === "main" && (
+        <div className="absolute z-50 left-full rounded-md px-2 py-1 ml-0 bg-indigo-100 text-indigo-800 text-sm opacity-100 min-w-[250px]">
+          {text}
+        </div>
+      )}
+
       {dropdownOpen && dropdownItems && (
         <motion.ul
           variants={backdropVariants}
           initial="initial"
           animate="animate"
-          className="relative flex flex-col mt-1 w-full bg-white"
+          className="relative flex flex-col gap-1 mt-1 w-full bg-white"
         >
           {dropdownItems.map((item, index) => (
-            <Link href={item.url} key={index}>
+            <Link href={item.url} key={index} className="min-w-full">
               <li
-                className={`py-2 cursor-pointer flex items-center rounded-md ${
-                  item.active
+                className={`p-2 cursor-pointer flex items-center justify-center rounded-md ${
+                  item.active === "true"
                     ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800"
                     : "hover:bg-indigo-50 text-gray-600 bg-opacity-0"
                 }`}
+                onMouseEnter={() => setHoveredIndex(index)} // Set hoveredIndex to the current item's index
+                onMouseLeave={() => setHoveredIndex(null)} // Reset on mouse leave
               >
                 {item.icon && item.icon}
                 <span
-                  className={`flex justify-between items-center overflow-hidden transition-all ease-in-out  ${
+                  className={`flex justify-between items-center overflow-hidden transition-all ease-in-out ${
                     expandSidebar ? " w-36 ml-2  maxmd:w-36 maxmd:ml-1" : "w-0"
                   }`}
                 >
                   {item.text}
                 </span>
-                {!expandSidebar && (
-                  <div className="absolute z-50 left-full rounded-md px-2 py-1 ml-0 bg-indigo-100 text-indigo-800 text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0">
+                {/* Conditional rendering for dropdown item hover text */}
+                {!expandSidebar && hoveredIndex === index && (
+                  <div className="absolute z-50 left-full rounded-md px-2 py-1 ml-0 bg-indigo-100 text-indigo-800 text-sm opacity-100 min-w-[250px]">
                     {item.text}
                   </div>
                 )}
@@ -180,12 +183,6 @@ export function SideBarItem({ icon, text, active, alert, url, dropdownItems }) {
             </Link>
           ))}
         </motion.ul>
-      )}
-
-      {!expandSidebar && (
-        <div className="absolute z-50 left-full rounded-md px-2 py-1 ml-0 bg-indigo-100 text-indigo-800 text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0">
-          {text}
-        </div>
       )}
     </li>
   );

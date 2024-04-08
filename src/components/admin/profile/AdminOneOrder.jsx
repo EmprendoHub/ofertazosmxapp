@@ -95,7 +95,7 @@ const AdminOneOrder = ({
         setShowModal={setShowModal}
         order={order}
       />
-      <div className="relative overflow-x-auto shadow-md maxsm:rounded-lg p-5 maxsm:p-1 ">
+      <div className="pl-5 maxsm:pl-3 relative overflow-x-auto shadow-md maxsm:rounded-lg p-5 maxsm:p-1 ">
         <div className="flex flex-col items-start justify-start gap-x-5 ml-4">
           <Link href={`/admin/cliente/${customer?._id}`}>
             <h2 className="text-3xl font-bold text-slate-700">

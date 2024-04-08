@@ -1,20 +1,20 @@
-'use client';
-import React, { useContext, useEffect, useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import AuthContext from '@/context/AuthContext';
-import { toast } from 'react-toastify';
-import FormattedPrice from '@/backend/helpers/FormattedPrice';
-import { formatDate, formatTime } from '@/backend/helpers';
-import ModalOrderUpdate from '@/components/modals/ModalOrderUpdate';
-import { FaComment } from 'react-icons/fa6';
-import { FaCloudUploadAlt } from 'react-icons/fa';
+"use client";
+import React, { useContext, useEffect, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import AuthContext from "@/context/AuthContext";
+import { toast } from "react-toastify";
+import FormattedPrice from "@/backend/helpers/FormattedPrice";
+import { formatDate, formatTime } from "@/backend/helpers";
+import ModalOrderUpdate from "@/components/modals/ModalOrderUpdate";
+import { FaComment } from "react-icons/fa6";
+import { FaCloudUploadAlt } from "react-icons/fa";
 
 const POSOrder = ({ order, deliveryAddress, id, orderPayments, customer }) => {
   const { updateOrder } = useContext(AuthContext);
   const [showModal, setShowModal] = useState(false);
-  const [orderStatus, setOrderStatus] = useState('pendiente');
-  const [error, setError] = useState('');
+  const [orderStatus, setOrderStatus] = useState("pendiente");
+  const [error, setError] = useState("");
   const [currentOrderStatus, setCurrentOrderStatus] = useState(
     order?.orderStatus
   );
@@ -56,27 +56,27 @@ const POSOrder = ({ order, deliveryAddress, id, orderPayments, customer }) => {
     e.preventDefault();
 
     if (order?.orderStatus === orderStatus) {
-      toast.success('No hubo ningún cambio');
+      toast.success("No hubo ningún cambio");
       return;
     }
 
     try {
       const formData = new FormData();
-      formData.set('orderStatus', orderStatus);
-      formData.set('_id', id);
+      formData.set("orderStatus", orderStatus);
+      formData.set("_id", id);
 
       try {
         const res = await updateOrder(formData);
 
         if (res.ok) {
           const data = await res.json();
-          toast.success('El pedido se actualizo exitosamente');
+          toast.success("El pedido se actualizo exitosamente");
           setCurrentOrderStatus(data.payload.orderStatus);
 
           return;
         }
       } catch (error) {
-        toast.error('Error actualizando pedido. Por favor Intenta de nuevo.');
+        toast.error("Error actualizando pedido. Por favor Intenta de nuevo.");
       }
     } catch (error) {
       console.log(error);
@@ -90,15 +90,15 @@ const POSOrder = ({ order, deliveryAddress, id, orderPayments, customer }) => {
         setShowModal={setShowModal}
         order={order}
       />
-      <div className="relative overflow-x-auto shadow-md maxsm:rounded-lg p-5 maxsm:p-1 ">
+      <div className="pl-5 maxsm:pl-3 relative overflow-x-auto shadow-md maxsm:rounded-lg p-5 maxsm:p-1 ">
         <div className="flex flex-col items-start justify-start gap-x-5 ml-4 ">
           <Link href={`/puntodeventa/cliente/${customer?._id}`}>
             <h2 className="text-3xl font-bold text-slate-700">
-              {order?.customerName}{' '}
+              {order?.customerName}{" "}
               <span className="text-sm text-red-800">
-                {order?.email === 'sucursal@shopout.com'
-                  ? '(Sucursal)'
-                  : 'Cliente'}
+                {order?.email === "sucursal@shopout.com"
+                  ? "(Sucursal)"
+                  : "Cliente"}
               </span>
             </h2>
           </Link>
@@ -109,7 +109,7 @@ const POSOrder = ({ order, deliveryAddress, id, orderPayments, customer }) => {
           <h2 className="text-3xl mb-8 ml-4 font-bold ">
             Pedido #{order?.orderId}
           </h2>
-          {order?.orderStatus === 'Apartado' ? (
+          {order?.orderStatus === "Apartado" ? (
             <h2
               className={`text-3xl mb-8 ml-4 font-bold uppercase text-amber-700`}
             >
@@ -118,16 +118,16 @@ const POSOrder = ({ order, deliveryAddress, id, orderPayments, customer }) => {
           ) : (
             <h2
               className={`text-3xl mb-8 ml-4 font-bold uppercase ${
-                order?.paymentInfo?.status === 'paid' ? 'text-green-700' : ''
+                order?.paymentInfo?.status === "paid" ? "text-green-700" : ""
               }`}
             >
               {order?.paymentInfo?.amountPaid >= getTotal(order?.orderItems)
-                ? 'PAGADO'
-                : 'PENDIENTE'}
+                ? "PAGADO"
+                : "PENDIENTE"}
             </h2>
           )}
         </div>
-        {order?.branch !== 'Sucursal' ? (
+        {order?.branch !== "Sucursal" ? (
           <table className="w-full text-sm text-left flex flex-col maxsm:flex-row">
             <thead className="text-l text-gray-700 uppercase">
               <tr className="flex flex-row maxsm:flex-col">
@@ -238,7 +238,7 @@ const POSOrder = ({ order, deliveryAddress, id, orderPayments, customer }) => {
         <div className="w-1/3 maxmd:w-full">
           <div className=" max-w-screen-xl mx-auto bg-white flex flex-col p-2">
             <h2 className="text-2xl">Totales</h2>
-            {order?.orderStatus === 'Apartado' ? (
+            {order?.orderStatus === "Apartado" ? (
               <ul className="mb-5">
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
                   <span>Total de Artículos:</span>
@@ -349,10 +349,10 @@ const POSOrder = ({ order, deliveryAddress, id, orderPayments, customer }) => {
                       {formatTime(payment?.pay_date)}
                     </td>
                     <td className="px-2 maxsm:px-0 py-2  w-full uppercase text-xs">
-                      {payment?.method === 'card'
-                        ? 'tarjeta'
-                        : payment?.method === 'customer_balance'
-                        ? 'transferencia'
+                      {payment?.method === "card"
+                        ? "tarjeta"
+                        : payment?.method === "customer_balance"
+                        ? "transferencia"
                         : `${payment?.method}`}
                     </td>
                     <td className="px-2 maxsm:px-0 py-2  w-full uppercase text-xs">

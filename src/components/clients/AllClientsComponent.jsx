@@ -9,11 +9,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { saveEmailReceiver } from "@/redux/shoppingSlice";
 import { changeClientStatus } from "@/app/_actions";
 import { AiOutlineMail } from "react-icons/ai";
+import { FaCheck } from "react-icons/fa6";
 
 const AllClientsComponent = ({ clients, filteredClientsCount }) => {
   const dispatch = useDispatch();
   const { emailListData } = useSelector((state) => state.compras);
   const [selectedClients, setSelectedClients] = useState([]);
+  const [selectAll, setSelectAll] = useState(false); // New state to track select all
   useEffect(() => {
     // Map through emailListData and extract only the ids
     const emailIds = emailListData.map((data) => data.id);
@@ -26,6 +28,12 @@ const AllClientsComponent = ({ clients, filteredClientsCount }) => {
 
     setSelectedClients(updatedSelectedClients);
   }, [emailListData, clients]);
+
+  useEffect(() => {
+    // Set selectAll based on whether all displayed products are selected
+    const areAllSelected = selectedClients.every((client) => client.isSelected);
+    setSelectAll(areAllSelected);
+  }, [selectedClients]); // Runs whenever selectedProducts changes
 
   const deactivateHandler = (client_id, active) => {
     let title;
@@ -83,20 +91,63 @@ const AllClientsComponent = ({ clients, filteredClientsCount }) => {
     dispatch(saveEmailReceiver(receiver));
   };
 
+  const handleSelectAll = () => {
+    setSelectAll(!selectAll);
+    setSelectedClients(
+      selectedClients.map((client) => {
+        dispatch(
+          saveEmailReceiver({
+            id: client?._id,
+            email: client?.email,
+            name: client?.name,
+          })
+        );
+        return {
+          ...client,
+          isSelected: !selectAll,
+        };
+      })
+    );
+  };
+
   return (
     <>
       <hr className="my-4" />
-      <div className="pl-3 relative overflow-x-auto shadow-md sm:rounded-lg">
+      <div className="pl-5 maxsm:pl-3 relative overflow-x-auto shadow-md sm:rounded-lg">
         <div className=" flex flex-row maxsm:flex-col maxsm:items-start items-center justify-between">
           <h1 className="text-2xl mb-5 ml-4 font-bold font-EB_Garamond w-full ">
             {`${filteredClientsCount} Clientes `}
           </h1>
           <AdminClientSearch />
         </div>
+        <div className="flex relative mb-2">
+          {emailListData?.length > 0 && (
+            <Link href={"/admin/correos"}>
+              <div className="relative flex items-center justify-start ">
+                <div className="bg-black text-white flex items-center justify-center gap-3 pl-4 pr-6 py-3 rounded-md">
+                  Enviar Correo
+                  <div className="relative">
+                    <AiOutlineMail className="text-2xl absolute -top-2" />
+                    <span className=" rounded-full font-bold text-xs relative -right-3 -top-3 flex items-center justify-center w-3 h-3 shadow-xl ">
+                      {emailListData ? emailListData?.length : 0}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          )}
+        </div>
         <table className="w-full text-sm  text-left">
-          <thead className="text-l text-gray-700 uppercase">
+          <thead className="text-l text-gray-700 uppercase pl-2">
             <tr>
-              <th></th>
+              <th>
+                <input
+                  type="checkbox"
+                  checked={selectAll}
+                  onChange={handleSelectAll}
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
+                />
+              </th>
               <th scope="col" className="px-6 maxsm:px-0 py-3 maxmd:hidden">
                 Nombre
               </th>
@@ -115,10 +166,8 @@ const AllClientsComponent = ({ clients, filteredClientsCount }) => {
           <tbody>
             {selectedClients?.map((client, index) => (
               <tr
-                className={`${
-                  client?.active === true
-                    ? "bg-slate-100"
-                    : "bg-slate-200 text-slate-400"
+                className={` ml-10 ${
+                  client?.active === true ? "bg-slate-900" : "text-slate-400"
                 }`}
                 key={index}
               >
@@ -129,15 +178,16 @@ const AllClientsComponent = ({ clients, filteredClientsCount }) => {
                     id={client._id}
                     checked={client.isSelected} // Bind the checked attribute based on isSelected
                     onChange={() => handleCheckBox(client)}
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
                   />
                 </td>
-                <td className="px-6 maxsm:px-2 py-2">
+                <td className="px-6 maxsm:px-2 py-2 maxmd:hidden">
                   <Link key={index} href={`/admin/cliente/${client._id}`}>
                     {client.name.substring(0, 15)}...
                   </Link>
                 </td>
-                <td className="px-6 maxsm:px-0 py-2  maxmd:hidden">
-                  <b>{client.role}</b>
+                <td className="px-6 maxsm:px-0 py-2">
+                  <b>{client.phone}</b>
                 </td>
 
                 <td className="px-1 py-2">
@@ -153,14 +203,25 @@ const AllClientsComponent = ({ clients, filteredClientsCount }) => {
                     </Link>
                   </div>
                   <div>
-                    <button
-                      onClick={() =>
-                        deactivateHandler(client._id, client?.active)
-                      }
-                      className="px-2 py-2 inline-block text-white hover:text-black bg-slate-400 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
-                    >
-                      <TiCancel className="" />
-                    </button>
+                    {client?.active === true ? (
+                      <button
+                        onClick={() =>
+                          deactivateHandler(client._id, client?.active)
+                        }
+                        className="px-2 py-2 inline-block text-white hover:text-black bg-slate-400 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
+                      >
+                        <TiCancel className="" />
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() =>
+                          deactivateHandler(client._id, client?.active)
+                        }
+                        className="px-2 py-2 inline-block text-green-800 hover:text-black bg-slate-200 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
+                      >
+                        <FaCheck className="" />
+                      </button>
+                    )}
                   </div>
                 </td>
               </tr>
@@ -170,19 +231,6 @@ const AllClientsComponent = ({ clients, filteredClientsCount }) => {
       </div>
 
       <hr className="my-4" />
-      <Link href={"/admin/correos"}>
-        <div className=" relative flex items-center justify-center ">
-          <div className="bg-black text-white flex items-center justify-center gap-3 pl-4 pr-6 py-3 rounded-md">
-            Enviar Correo
-            <div className="relative">
-              <AiOutlineMail className="text-2xl absolute -top-2" />
-              <span className=" rounded-full font-bold text-xs relative -right-3 -top-3 flex items-center justify-center w-3 h-3 shadow-xl ">
-                {emailListData ? emailListData?.length : 0}
-              </span>
-            </div>
-          </div>
-        </div>
-      </Link>
     </>
   );
 };

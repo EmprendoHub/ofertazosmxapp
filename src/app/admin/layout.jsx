@@ -14,12 +14,13 @@ import {
 } from "react-icons/tb";
 import { LiaCashRegisterSolid, LiaStoreAltSolid } from "react-icons/lia";
 import { GiClothes } from "react-icons/gi";
+import { FaCartPlus } from "react-icons/fa6";
 
 export default function UserLayout({ children }) {
   const pathname = usePathname();
 
   return (
-    <div className="max-w-full pr-2">
+    <div className="max-w-full">
       <div className="flex items-start w-full ">
         <AdminSidebar>
           <SideBarItem
@@ -42,13 +43,13 @@ export default function UserLayout({ children }) {
             alert
             dropdownItems={[
               {
-                text: "Todas",
+                text: "Publicaciones",
                 url: "/admin/blog",
                 active: pathname === "/admin/blog" ? "true" : "false",
                 icon: <CiGrid31 size={20} />,
               },
               {
-                text: "Nueva Publicación ",
+                text: "Nueva",
                 url: "/admin/blog/editor",
                 active: pathname === "/admin/blog/editor" ? "true" : "false",
                 icon: <MdOutlinePostAdd size={20} />,
@@ -62,25 +63,27 @@ export default function UserLayout({ children }) {
             text={"Productos"}
             active={
               pathname === "/admin/productos" ||
-              (pathname === "/admin/productos/nuevo/variaciones" && true)
+              pathname === "/admin/productos/nuevo/variaciones"
+                ? "true"
+                : "false"
             }
             url={"/admin/productos"}
             alert
             dropdownItems={[
               {
-                text: "Todos",
+                text: "Productos",
                 url: "/admin/productos",
                 active: pathname === "/admin/productos" ? "true" : "false",
                 icon: <GiClothes size={20} />,
               },
               {
-                text: "Nuevo Producto",
+                text: "Nuevo",
                 url: "/admin/productos/nuevo/variaciones",
                 active:
                   pathname === "/admin/productos/nuevo/variaciones"
                     ? "true"
                     : "false",
-                icon: <TbLayoutGridAdd size={20} />,
+                icon: <FaCartPlus size={20} />,
               },
               // Add more dropdown items as needed
             ]}
@@ -130,14 +133,14 @@ export default function UserLayout({ children }) {
                 icon: <TbScan size={20} />,
               },
               {
-                text: "Scanner ID",
+                text: "Identificador",
                 url: "/admin/pos/qr/idscanner",
                 active:
                   pathname === "/admin/pos/qr/idscanner" ? "true" : "false",
                 icon: <TbScan size={20} />,
               },
               {
-                text: "Generar QRs`",
+                text: "Generador",
                 url: "/admin/pos/productos",
                 active: pathname === "/admin/pos/productos" ? "true" : "false",
                 icon: <TbQrcode size={20} />,

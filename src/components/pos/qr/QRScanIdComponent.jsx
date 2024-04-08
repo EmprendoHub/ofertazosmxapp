@@ -1,15 +1,15 @@
-'use client';
-import React, { useEffect, useState } from 'react';
-import { Html5QrcodeScanner } from 'html5-qrcode';
-import { usePathname, useRouter } from 'next/navigation';
-import './qrstyles.css';
+"use client";
+import React, { useEffect, useState } from "react";
+import { Html5QrcodeScanner } from "html5-qrcode";
+import { usePathname, useRouter } from "next/navigation";
+import "./qrstyles.scss";
 
 const QRScanIdComponent = () => {
   const [scanResult, setScanResult] = useState(null);
   const pathname = usePathname();
   const router = useRouter();
   useEffect(() => {
-    const scanner = new Html5QrcodeScanner('reader', {
+    const scanner = new Html5QrcodeScanner("reader", {
       qrbox: {
         width: 500,
         height: 500,
@@ -20,7 +20,7 @@ const QRScanIdComponent = () => {
     scanner.render(success, error);
 
     function success(result) {
-      const parts = result.split('-');
+      const parts = result.split("-");
       const variationId = parts[0];
       setScanResult(variationId);
       scanner.clear();
@@ -32,7 +32,7 @@ const QRScanIdComponent = () => {
 
   useEffect(() => {
     if (scanResult) {
-      if (pathname.includes('admin')) {
+      if (pathname.includes("admin")) {
         router.push(`/admin/pos/scanid/${scanResult}`);
       } else {
         router.push(`/puntodeventa/scanid/${scanResult}`);
@@ -53,7 +53,7 @@ const QRScanIdComponent = () => {
           <hr className="border border-slate-300 my-3" />
           {scanResult && scanResult !== null ? (
             <div>
-              Success:{' '}
+              Success:{" "}
               <a
                 href={`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/${scanResult}`}
               >{`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/${scanResult}`}</a>

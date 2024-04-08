@@ -1,13 +1,12 @@
-'use client';
-import Image from 'next/image';
-import React, { useEffect, useRef, useState } from 'react';
-import qrcode from 'qrcode';
-import { useDispatch, useSelector } from 'react-redux';
-import { resetQRToPrint } from '@/redux/shoppingSlice';
-import ReactToPrint from 'react-to-print';
-import { Button } from 'react-bootstrap';
-import { FaPrint } from 'react-icons/fa6';
-import FormattedPrice from '@/backend/helpers/FormattedPrice';
+"use client";
+import Image from "next/image";
+import React, { useEffect, useRef, useState } from "react";
+import qrcode from "qrcode";
+import { useDispatch, useSelector } from "react-redux";
+import { resetQRToPrint } from "@/redux/shoppingSlice";
+import ReactToPrint from "react-to-print";
+import { FaPrint } from "react-icons/fa6";
+import FormattedPrice from "@/backend/helpers/FormattedPrice";
 
 const QRGenerator = ({ products }) => {
   const ref = useRef();
@@ -28,15 +27,15 @@ const QRGenerator = ({ products }) => {
     qrArray.forEach(async (product) => {
       product.variations.forEach(async (variation) => {
         const id = variation._id;
-        const formattedAmount = variation.price?.toLocaleString('en-US', {
-          style: 'currency',
-          currency: 'MXN',
+        const formattedAmount = variation.price?.toLocaleString("en-US", {
+          style: "currency",
+          currency: "MXN",
           maximumFractionDigits: 2,
         });
 
         // Remove 'MX' from the formatted amount
-        const price = formattedAmount?.replace('MX', '').trim();
-        const text = id + '-' + product.title + '-' + price.toString();
+        const price = formattedAmount?.replace("MX", "").trim();
+        const text = id + "-" + product.title + "-" + price.toString();
         const image = await qrcode.toDataURL(text);
         if (variation.stock > 0) {
           for (let i = 0; i < variation.stock; i++) {
@@ -64,7 +63,7 @@ const QRGenerator = ({ products }) => {
       ref={ref}
       className="container flex flex-col h-screen items-center justify-start mt-10 print:mt-0 print:mx-0 mx-auto"
     >
-      <div className=" flex flex-row w-full items-center justify-start print:hidden">
+      <div className=" flex flex-row w-full items-center justify-between print:hidden">
         <h2 className=" text-slate-700 text-center w-full uppercase font-semibold tracking-wide text-2xl font-EB_Garamond">
           Generador de códigos QR
         </h2>
@@ -75,13 +74,10 @@ const QRGenerator = ({ products }) => {
             documentTitle={`QR codes`}
             content={() => ref.current}
             trigger={() => (
-              <Button
-                className="print-btn w-full bg-black text-white p-4 rounded-sm"
-                type="primary"
-                icon={<FaPrint />}
-              >
-                Imprimir QR&apos;s
-              </Button>
+              <div className="flex flex-row items-center justify-center gap-2 print-btn text-sm w-[200px] bg-black text-white p-4 rounded-sm cursor-pointer">
+                <FaPrint />
+                <p>Imprimir QR&apos;s</p>
+              </div>
             )}
           />
         </div>
