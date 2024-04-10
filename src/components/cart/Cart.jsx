@@ -1,24 +1,26 @@
-'use client';
-import React, { useEffect } from 'react';
-import Image from 'next/image';
+"use client";
+import React, { useEffect } from "react";
+import Image from "next/image";
 import {
   decreaseQuantity,
   deleteProduct,
   increaseQuantity,
-} from '@/redux/shoppingSlice';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import { useDispatch, useSelector } from 'react-redux';
-import { AiOutlineClose } from 'react-icons/ai';
-import CheckOutForm from './CheckOutForm';
-import { useRouter } from 'next/navigation';
-import { getVariationStock } from '@/app/_actions';
-import BreadCrumbs from '../layout/BreadCrumbs';
+} from "@/redux/shoppingSlice";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
+import { AiOutlineClose } from "react-icons/ai";
+import CheckOutForm from "./CheckOutForm";
+import { useRouter } from "next/navigation";
+import { getVariationStock } from "@/app/_actions";
+import BreadCrumbs from "../layout/BreadCrumbs";
 
 const Cart = () => {
+  const router = useRouter();
+  const dispatch = useDispatch();
   const breadCrumbs = [
     {
-      name: 'Tienda',
-      url: '/tienda',
+      name: "Tienda",
+      url: "/tienda",
     },
     {
       name: `carrito`,
@@ -26,11 +28,12 @@ const Cart = () => {
     },
   ];
   const { productsData } = useSelector((state) => state?.compras);
-  const router = useRouter();
-  const dispatch = useDispatch();
-  if (productsData?.length <= 0) {
-    router.replace('/tienda');
-  }
+
+  useEffect(() => {
+    if (productsData?.length <= 0) {
+      router.replace("/tienda");
+    }
+  }, [productsData]);
 
   const handleIncreaseQuantity = async (cartItem) => {
     const currentStock = await getVariationStock(cartItem._id);
@@ -82,7 +85,7 @@ const Cart = () => {
                             <figcaption className="ml-3">
                               <p>{cartItem?.title}</p>
                               <p className="mt-1 text-gray-400">
-                                {' '}
+                                {" "}
                                 Marca: {cartItem?.brand}
                               </p>
                             </figcaption>
@@ -115,8 +118,8 @@ const Cart = () => {
                               ${cartItem?.price * cartItem?.quantity.toFixed(2)}
                             </p>
                             <small className="text-gray-400">
-                              {' '}
-                              ${cartItem?.price} / por articulo{' '}
+                              {" "}
+                              ${cartItem?.price} / por articulo{" "}
                             </small>
                           </div>
                         </div>
