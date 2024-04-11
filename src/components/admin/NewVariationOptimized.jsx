@@ -443,7 +443,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
       {!isSending ? (
         <div className="flex flex-col items-start gap-5 justify-start w-full">
           <section className="w-full ">
-            <div className="flex flex-row maxmd:flex-col items-center justify-between">
+            <div className="flex flex-row flex-wrap maxmd:flex-col items-center justify-between">
               <h1 className="w-full text-xl font-semibold text-black mb-8 font-EB_Garamond">
                 Nuevo Producto Con Variaciones
               </h1>
@@ -566,7 +566,9 @@ const NewVariationOptimized = ({ currentCookies }) => {
                   </i>
                 </div>
                 <div className="relative">
-                  <label className="block mb-1 font-EB_Garamond">www</label>
+                  <label className="block mb-1 font-EB_Garamond w-24">
+                    www
+                  </label>
                   <select
                     className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
                     name="onlineAvailability"
