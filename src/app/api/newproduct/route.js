@@ -108,20 +108,24 @@ export async function POST(request, res) {
 
       // Save the Product to the database
       await newProduct.save();
-      const response = NextResponse.json({
-        message: "Producto creado exitosamente",
-        success: true,
-      });
-
-      return response;
+      return new Response(
+        JSON.stringify({
+          message: "Producto creado exitosamente",
+          success: true,
+        }),
+        {
+          status: 200, // Use HTTP 200 to indicate success
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
     } catch (error) {
       console.log(error);
-      return NextResponse.json(
-        {
-          error: "Error al crear Producto",
-        },
-        { status: 500 }
-      );
+
+      return new Response("Error al crear Producto", {
+        status: 500,
+      });
     }
   } else {
     // Not Signed in
