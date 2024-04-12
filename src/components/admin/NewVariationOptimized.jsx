@@ -46,10 +46,15 @@ const NewVariationOptimized = ({ currentCookies }) => {
     "/images/product-placeholder-minimalist.jpg"
   );
 
+  const [mainVariation, setMainVariation] = useState(
+    "/images/product-placeholder-minimalist.jpg"
+  );
+
   const [variations, setVariations] = useState([
     {
       size: "",
       color: "",
+      colorHex: "",
       price: 0,
       cost: 0,
       stock: 1,
@@ -63,6 +68,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
       {
         size: "",
         color: "",
+        colorHex: "",
         price: prevVariations[0].price,
         cost: prevVariations[0].cost,
         stock: 1,
@@ -83,9 +89,10 @@ const NewVariationOptimized = ({ currentCookies }) => {
     setVariations(newVariations);
   };
 
-  const handleColorChange = (index, newColor) => {
+  const handleColorChange = (index, newColor, hex) => {
     const newVariations = [...variations];
     newVariations[index].color = newColor;
+    newVariations[index].colorHex = hex;
     setVariations(newVariations);
   };
 
@@ -264,18 +271,17 @@ const NewVariationOptimized = ({ currentCookies }) => {
         const newUrl = url.split("?");
         if (section === "selectorMain") {
           setMainImage(newUrl[0]);
-          console.log(variations);
-          setVariations(
-            variations.map((variation, index) => {
-              if (index === 0) {
-                // Check if it's the first item or any specific index
-                return {
-                  ...variation,
-                  image: newUrl[0],
-                };
-              }
-            })
-          );
+          setVariations([
+            {
+              size: "",
+              color: "",
+              colorHex: "",
+              price: 0,
+              cost: 0,
+              stock: 1,
+              image: `${newUrl[0]}`,
+            },
+          ]);
         }
         if (section === "selectorVarOne") {
           setMainVariation(newUrl[0]);
@@ -744,7 +750,9 @@ const NewVariationOptimized = ({ currentCookies }) => {
                   <select
                     name="color"
                     htmlFor="color"
-                    onChange={(e) => handleColorChange(0, e.target.value)}
+                    onChange={(e) =>
+                      handleColorChange(0, e.target.value, e.target.hex)
+                    }
                     className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 py-1 cursor-pointer focus:outline-none focus:border-gray-400 w-full"
                   >
                     {set_colors.map((option) => (
@@ -919,7 +927,11 @@ const NewVariationOptimized = ({ currentCookies }) => {
                       name={`color-${index + 1}`}
                       htmlFor={`color-${index + 1}`}
                       onChange={(e) =>
-                        handleColorChange(index + 1, e.target.value)
+                        handleColorChange(
+                          index + 1,
+                          e.target.value,
+                          e.target.hex
+                        )
                       }
                       className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 py-1 cursor-pointer focus:outline-none focus:border-gray-400 w-full"
                     >

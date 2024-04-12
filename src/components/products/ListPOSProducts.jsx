@@ -1,13 +1,19 @@
-'use client';
-import POSSearch from '../layout/POSearch';
-import POSProductCard from './POSProductCard';
+"use client";
+import { FaInstagram, FaStore } from "react-icons/fa6";
+import POSSearch from "../layout/POSearch";
+import POSProductCard from "./POSProductCard";
 
-const ListPOSProducts = ({ products }) => {
+const ListPOSProducts = ({ products, pageName }) => {
   const filteredProducts = products?.filter((product) => product.stock > 0);
   return (
     <section className="py-4 mx-auto maxlg:px-2 flex flex-col justify-center items-center">
-      <div>
-        <POSSearch />
+      <div className="flex flex-row items-center justify-between w-full px-3">
+        <h2 className="text-2xl flex items-center">
+          {" "}
+          Productos {pageName}{" "}
+          {pageName === "Instagram" ? <FaInstagram /> : <FaStore />}
+        </h2>
+        <POSSearch pageName={pageName} />
       </div>
 
       <div className=" mx-auto flex justify-center items-center w-full">

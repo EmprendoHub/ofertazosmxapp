@@ -1,19 +1,19 @@
-'use client';
-import Image from 'next/image';
-import 'react-toastify/dist/ReactToastify.css';
-import FormattedPrice from '@/backend/helpers/FormattedPrice';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { calculatePercentage } from '@/backend/helpers';
-import { usePathname } from 'next/navigation';
+"use client";
+import Image from "next/image";
+import "react-toastify/dist/ReactToastify.css";
+import FormattedPrice from "@/backend/helpers/FormattedPrice";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { calculatePercentage } from "@/backend/helpers";
+import { usePathname } from "next/navigation";
 
 const POSProductCard = ({ item }) => {
   const getPathname = usePathname();
   let pathname;
-  if (getPathname.includes('admin')) {
-    pathname = 'admin/pos';
-  } else if (getPathname.includes('puntodeventa')) {
-    pathname = 'puntodeventa';
+  if (getPathname.includes("admin")) {
+    pathname = "admin/pos";
+  } else if (getPathname.includes("puntodeventa")) {
+    pathname = "puntodeventa";
   }
   return (
     <motion.div
@@ -22,7 +22,7 @@ const POSProductCard = ({ item }) => {
       transition={{ duration: 1.0 }}
       className="border-[1px] rounded-sm max-w-[350px] maxmd:max-w-[100%] overflow-hidden relative"
     >
-      <Link href={`/${pathname}/tienda/producto/${item.slug}`}>
+      <Link href={`/${pathname}/producto/${item.slug}`}>
         <div className="w-[300px] h-[300px] group overflow-hidden relative">
           <Image
             src={item?.images[0].url}
@@ -55,14 +55,14 @@ const POSProductCard = ({ item }) => {
               </div>
             </div>
           ) : (
-            ''
+            ""
           )}
         </div>
       </Link>
       <div className=" px-4 py-4 flex flex-col bg-gray-100 rounded-b-sm">
         <div className="flex items-center justify-between gap-x-1">
           <p className="text-black tracking-widest text-lg">
-            {item?.title.substring(0, 15) + '...'}
+            {item?.title.substring(0, 15) + "..."}
           </p>
         </div>
 
@@ -74,7 +74,7 @@ const POSProductCard = ({ item }) => {
               ) : item?.variations[0].price > 0 ? (
                 <FormattedPrice amount={item?.variations[0].price} />
               ) : (
-                ''
+                ""
               )}
             </p>
           </div>
@@ -87,7 +87,7 @@ const POSProductCard = ({ item }) => {
               </div>
             </div>
           ) : (
-            ''
+            ""
           )}
         </div>
       </div>

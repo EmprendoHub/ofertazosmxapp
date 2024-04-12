@@ -1,25 +1,29 @@
-'use client';
-import { useEffect, useRef, useState } from 'react';
-import './productstyles.css';
-import { IoMdCart } from 'react-icons/io';
-import FormattedPrice from '@/backend/helpers/FormattedPrice';
-import { motion } from 'framer-motion';
-import { calculatePercentage } from '@/backend/helpers';
-import { useDispatch, useSelector } from 'react-redux';
-import { addToPOSCart } from '@/redux/shoppingSlice';
-import { Bounce, toast } from 'react-toastify';
-import { usePathname, useRouter } from 'next/navigation';
+"use client";
+import { useEffect, useRef, useState } from "react";
+import "./productstyles.css";
+import { IoMdCart } from "react-icons/io";
+import FormattedPrice from "@/backend/helpers/FormattedPrice";
+import { motion } from "framer-motion";
+import { calculatePercentage } from "@/backend/helpers";
+import { useDispatch, useSelector } from "react-redux";
+import { addToPOSCart } from "@/redux/shoppingSlice";
+import { Bounce, toast } from "react-toastify";
+import { usePathname, useRouter } from "next/navigation";
 
 const POSProductDetails = ({ product }) => {
+  const colorList = product?.variations.map((variation) => ({
+    value: variation.color,
+    colorHex: variation.colorHex,
+  }));
   const initialSizes = product?.variations
     .filter((variation) => variation.color === product?.variations[0].color)
     .map((variation) => variation.size);
   const getPathname = usePathname();
   let pathname;
-  if (getPathname.includes('admin')) {
-    pathname = 'admin/pos';
-  } else if (getPathname.includes('puntodeventa')) {
-    pathname = 'puntodeventa';
+  if (getPathname.includes("admin")) {
+    pathname = "admin/pos";
+  } else if (getPathname.includes("puntodeventa")) {
+    pathname = "puntodeventa";
   }
   const dispatch = useDispatch();
   const { productsPOS } = useSelector((state) => state?.compras);
@@ -56,7 +60,7 @@ const POSProductDetails = ({ product }) => {
 
     // Find the clicked item using imageId
     const clickedItem = Array.from(lists).find((item) => {
-      const itemId = item.getAttribute('data-image-id');
+      const itemId = item.getAttribute("data-image-id");
       return itemId === imageId;
     });
 
@@ -78,8 +82,8 @@ const POSProductDetails = ({ product }) => {
       `${product?.title.substring(0, 15)}... se agrego al carrito`,
       {
         position: toast.POSITION.TOP_CENTER,
-        className: 'foo-bar',
-        theme: 'dark',
+        className: "foo-bar",
+        theme: "dark",
         transition: Bounce,
       }
     );
@@ -148,7 +152,7 @@ const POSProductDetails = ({ product }) => {
                       key={image._id}
                       data-image-id={image._id}
                       onClick={() => clickImage(image._id)}
-                      className={`item ${index === 0 && 'active'}`}
+                      className={`item ${index === 0 && "active"}`}
                       style={{
                         backgroundImage: `url('${image.url}')`,
                       }}
@@ -192,7 +196,7 @@ const POSProductDetails = ({ product }) => {
                       </div>
                     </div>
                   ) : (
-                    ''
+                    ""
                   )}
                   <div>
                     <p className="font-semibold text-4xl text-black font-bodyFont">
@@ -201,7 +205,7 @@ const POSProductDetails = ({ product }) => {
                       ) : variation.price > 0 ? (
                         <FormattedPrice amount={variation.price} />
                       ) : (
-                        ''
+                        ""
                       )}
                     </p>
                     <p className="text-xs font-normal text-gray-600">
@@ -214,38 +218,41 @@ const POSProductDetails = ({ product }) => {
                 </motion.div>
 
                 <span>
-                  Existencias:{' '}
+                  Existencias:{" "}
                   <span className=" font-bodyFont">
                     <b>{variation.stock}</b>
                   </span>
                 </span>
                 {product?.stock <= 0 || alreadyCart ? (
-                  ''
+                  ""
                 ) : (
                   <div className="flex items-start gap-4">
-                    {' '}
+                    {" "}
                     <motion.div
                       initial={{ y: 50, opacity: 0 }}
                       whileInView={{ y: 0, opacity: 1 }}
                       transition={{ duration: 0.7 }}
                       className="text-sm text-lightText flex flex-col"
                     >
-                      <p className="text-slate-500 tracking-widest mb-2">
-                        Colores Disponibles:
-                      </p>
+                      <p className="text-slate-500 mb-2 text-xs">Colores:</p>
                       {product?.variations.length > 0 && (
                         <span className="text-black flex flex-row items-center gap-5">
-                          {colors?.map((c, index) => (
-                            <button
-                              value={c.value}
+                          {colorList?.map((c, index) => (
+                            <div
                               key={index}
-                              onClick={handleColorSelection}
-                              className={`flex cursor-pointer p-3 rounded-lg text-white ${
-                                color === c.value ? 'bg-black' : 'bg-slate-500'
-                              }`}
+                              className="flex-col justify-center items-center"
                             >
-                              {c.value}
-                            </button>
+                              <button
+                                style={{ backgroundColor: `${c.colorHex}` }}
+                                value={c.value}
+                                key={index}
+                                onClick={handleColorSelection}
+                                className={`flex rounded-full shadow-md cursor-pointer p-3  text-white `}
+                              ></button>
+                              <p className="text-[10px]">
+                                {c.value.substring(0, 8)}
+                              </p>
+                            </div>
                           ))}
                         </span>
                       )}
@@ -256,9 +263,7 @@ const POSProductDetails = ({ product }) => {
                       transition={{ duration: 0.7 }}
                       className="text-sm text-lightText flex flex-col"
                     >
-                      <p className="text-slate-500 tracking-widest mb-2">
-                        Tallas Disponibles:
-                      </p>
+                      <p className="text-slate-500 mb-2 text-xs">Tallas:</p>
                       {product?.variations.length > 1 ? (
                         <span className="flex items-center gap-5 justify-start mt-2 ">
                           {sizes?.map((s, index) => (
@@ -268,8 +273,8 @@ const POSProductDetails = ({ product }) => {
                               value={s}
                               className={`rounded-lg border border-slate-400 flex items-center justify-center px-2 py-1 ${
                                 size === s
-                                  ? ' bg-black text-white'
-                                  : 'border-slate-400'
+                                  ? " bg-black text-white"
+                                  : "border-slate-400"
                               }`}
                             >
                               {s}
@@ -278,7 +283,6 @@ const POSProductDetails = ({ product }) => {
                         </span>
                       ) : (
                         <div className="grid maxxsm:grid-cols-1 maxmd:grid-cols-2 grid-cols-4 gap-4 mt-2">
-                          <p>Talla:</p>
                           <p className="text-black">
                             {product?.variations[0].size}
                           </p>
@@ -310,20 +314,20 @@ const POSProductDetails = ({ product }) => {
                       whileTap={{ scale: 0.9 }}
                       className={`${
                         variation?.stock <= 0
-                          ? 'bg-slate-300 grayscale-0 text-slate-500 border-slate-300'
-                          : 'text-white border-black'
-                      } border  drop-shadow-md flex flex-row items-center justify-between px-6 py-3 text-sm gap-x-4 rounded-sm  bg-black  ease-in-out  duration-300 w-80 uppercase tracking-wider cursor-pointer `}
+                          ? "bg-slate-300 grayscale-0 text-slate-500 border-slate-300"
+                          : "text-white border-black"
+                      } border  drop-shadow-md flex flex-row items-center justify-between px-6 py-3 text-sm gap-x-4 rounded-sm  bg-black  ease-in-out  duration-300 w-auto uppercase tracking-wider cursor-pointer `}
                       onClick={handleClick}
                     >
                       {variation?.stock <= 0
-                        ? 'Out of Stock'
-                        : 'Agregar a carrito'}
+                        ? "Out of Stock"
+                        : "Agregar a carrito"}
 
                       <span
                         className={`${
                           variation?.stock <= 0
-                            ? 'bg-slate-300 grayscale-0 text-slate-500'
-                            : 'group-hover:bg-black hover:text-white duration-200 '
+                            ? "bg-slate-300 grayscale-0 text-slate-500"
+                            : "group-hover:bg-black hover:text-white duration-200 "
                         } text-xl text-slate-400 w-12 flex items-center justify-center  rounded-full py-2`}
                       >
                         <IoMdCart />
@@ -333,20 +337,20 @@ const POSProductDetails = ({ product }) => {
                 </motion.div>
                 <div className="flex flex-col">
                   <span>
-                    SKU:{' '}
+                    SKU:{" "}
                     <span className=" font-bodyFont">
                       <b>{product?._id}</b>
                     </span>
                   </span>
 
                   <span>
-                    Categoría:{' '}
+                    Categoría:{" "}
                     <span className="t font-bodyFont">
                       <b>{product?.category}</b>
                     </span>
                   </span>
                   <span>
-                    Genero:{' '}
+                    Genero:{" "}
                     <span className="t font-bodyFont">{product?.gender}</span>
                   </span>
                 </div>

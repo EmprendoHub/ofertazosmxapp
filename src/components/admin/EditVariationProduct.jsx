@@ -59,6 +59,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
       {
         size: "",
         color: "",
+        colorHex: "",
         price: prevVariations[0].price,
         cost: prevVariations[0].cost,
         stock: 1,
@@ -66,6 +67,8 @@ const EditVariationProduct = ({ product, currentCookies }) => {
       },
     ]);
   };
+
+  console.log(variations);
 
   const removeVariation = (indexToRemove) => {
     setVariations((prevVariations) =>
@@ -79,9 +82,11 @@ const EditVariationProduct = ({ product, currentCookies }) => {
     setVariations(newVariations);
   };
 
-  const handleColorChange = (index, newColor) => {
+  const handleColorChange = (index, newColor, hex) => {
+    console.log(hex, newColor);
     const newVariations = [...variations];
     newVariations[index].color = newColor;
+    newVariations[index].colorHex = hex;
     setVariations(newVariations);
   };
 
@@ -715,7 +720,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
             <div className="w-[300px]">
               <div
                 onClick={addVariation}
-                className="my-2 px-8 py-2 text-center inline-block text-white bg-black border border-transparent rounded-md hover:bg-slate-800 w-auto cursor-pointer"
+                className="my-4 px-8 py-2 text-center inline-block text-white bg-black border border-transparent rounded-md hover:bg-slate-800 w-auto cursor-pointer"
               >
                 Variación +
               </div>
@@ -751,13 +756,23 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                   <div className="relative">
                     <select
                       value={variations[0].color}
-                      name="color"
+                      name={variations[0].colorHex}
                       htmlFor="color"
-                      onChange={(e) => handleColorChange(0, e.target.value)}
+                      onChange={(e) => {
+                        const selectedOption =
+                          e.target.options[e.target.selectedIndex];
+                        const hexValue =
+                          selectedOption.getAttribute("data-hex");
+                        handleColorChange(0, e.target.value, hexValue);
+                      }}
                       className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 cursor-pointer focus:outline-none focus:border-gray-400 w-full"
                     >
                       {set_colors.map((option) => (
-                        <option key={option.value} value={option.value}>
+                        <option
+                          data-hex={option.hex}
+                          key={option.value}
+                          value={option.value}
+                        >
                           {option.value}
                         </option>
                       ))}
@@ -923,13 +938,25 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                         value={variation.color}
                         name={`color-${index + 1}`}
                         htmlFor={`color-${index + 1}`}
-                        onChange={(e) =>
-                          handleColorChange(index + 1, e.target.value)
-                        }
+                        onChange={(e) => {
+                          const selectedOption =
+                            e.target.options[e.target.selectedIndex];
+                          const hexValue =
+                            selectedOption.getAttribute("data-hex");
+                          handleColorChange(
+                            index + 1,
+                            e.target.value,
+                            hexValue
+                          );
+                        }}
                         className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 cursor-pointer  focus:outline-none focus:border-gray-400 w-full"
                       >
                         {set_colors.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option
+                            data-hex={option.hex}
+                            key={option.value}
+                            value={option.value}
+                          >
                             {option.value}
                           </option>
                         ))}

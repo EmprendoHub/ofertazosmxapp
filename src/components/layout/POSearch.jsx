@@ -1,25 +1,33 @@
-'use client';
-import { usePathname, useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+"use client";
+import { usePathname, useRouter } from "next/navigation";
+import React, { useState } from "react";
 
-const POSSearch = () => {
-  const [keyword, setKeyword] = useState('');
+const POSSearch = ({ pageName }) => {
+  const [keyword, setKeyword] = useState("");
   const pathname = usePathname();
   const router = useRouter();
   const submitHandler = (e) => {
     e.preventDefault();
 
-    if (pathname.includes('admin')) {
+    if (pathname.includes("admin")) {
       if (keyword) {
-        router.push(`/admin/pos/tienda/?keyword=${keyword}`);
+        if (pageName === "Instagram") {
+          router.push(`/admin/pos/instagram/?keyword=${keyword}`);
+        } else {
+          router.push(`/admin/pos/tienda/?keyword=${keyword}`);
+        }
       } else {
-        router.push('/admin/pos/tienda');
+        if (pageName === "Instagram") {
+          router.push("/admin/pos/instagram");
+        } else {
+          router.push("/admin/pos/tienda");
+        }
       }
     } else {
       if (keyword) {
         router.push(`/puntodeventa/tienda/?keyword=${keyword}`);
       } else {
-        router.push('/puntodeventa/tienda');
+        router.push("/puntodeventa/tienda");
       }
     }
   };

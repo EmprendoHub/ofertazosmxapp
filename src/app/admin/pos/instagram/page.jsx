@@ -1,6 +1,6 @@
 import ServerPagination from "@/components/pagination/ServerPagination";
 import ListPOSProducts from "@/components/products/ListPOSProducts";
-import { getAllPOSProduct } from "@/app/_actions";
+import { getAllPOSInstagramProduct } from "@/app/_actions";
 import { removeUndefinedAndPageKeys } from "@/backend/helpers";
 
 export const metadata = {
@@ -22,7 +22,7 @@ const TiendaPage = async ({ searchParams }) => {
   const queryUrlParams = removeUndefinedAndPageKeys(urlParams);
   const keywordQuery = new URLSearchParams(queryUrlParams).toString();
 
-  const data = await getAllPOSProduct(searchParams);
+  const data = await getAllPOSInstagramProduct(searchParams);
   //pagination
   let page = parseInt(searchParams.page, 20);
   page = !page || page < 1 ? 1 : page;
@@ -44,7 +44,7 @@ const TiendaPage = async ({ searchParams }) => {
   return (
     <div className="flex flex-col items-center justify-center gap-5">
       <ListPOSProducts
-        pageName={"Sucursal"}
+        pageName={"Instagram"}
         products={products}
         filteredProductsCount={filteredProductsCount}
       />

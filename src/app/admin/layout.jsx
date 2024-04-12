@@ -14,7 +14,7 @@ import {
 } from "react-icons/tb";
 import { LiaCashRegisterSolid, LiaStoreAltSolid } from "react-icons/lia";
 import { GiClothes } from "react-icons/gi";
-import { FaCartPlus } from "react-icons/fa6";
+import { FaCartPlus, FaInstagram } from "react-icons/fa6";
 
 export default function UserLayout({ children }) {
   const pathname = usePathname();
@@ -119,6 +119,12 @@ export default function UserLayout({ children }) {
                 url: "/admin/pos/tienda",
                 active: pathname === "/admin/pos/tienda" ? "true" : "false",
                 icon: <LiaStoreAltSolid size={20} />,
+              },
+              {
+                text: "Instagram",
+                url: "/admin/pos/instagram",
+                active: pathname === "/admin/pos/instagram" ? "true" : "false",
+                icon: <FaInstagram size={20} />,
               },
               {
                 text: "Caja",

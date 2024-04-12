@@ -1,18 +1,22 @@
-'use client';
-import { useEffect, useRef, useState } from 'react';
-import './productstyles.css';
-import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
-import ProductCard from './ProductCard';
-import { IoMdCart } from 'react-icons/io';
-import FormattedPrice from '@/backend/helpers/FormattedPrice';
-import { motion } from 'framer-motion';
-import { calculatePercentage } from '@/backend/helpers';
-import { useDispatch, useSelector } from 'react-redux';
-import { addToCart } from '@/redux/shoppingSlice';
-import { Bounce, toast } from 'react-toastify';
-import { useRouter } from 'next/navigation';
+"use client";
+import { useEffect, useRef, useState } from "react";
+import "./productstyles.css";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
+import ProductCard from "./ProductCard";
+import { IoMdCart } from "react-icons/io";
+import FormattedPrice from "@/backend/helpers/FormattedPrice";
+import { motion } from "framer-motion";
+import { calculatePercentage } from "@/backend/helpers";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "@/redux/shoppingSlice";
+import { Bounce, toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const ProductDetailsComponent = ({ product, trendingProducts }) => {
+  const colorList = product?.variations.map((variation) => ({
+    value: variation.color,
+    colorHex: variation.colorHex,
+  }));
   const initialSizes = product?.variations
     .filter((variation) => variation.color === product?.variations[0].color)
     .map((variation) => variation.size);
@@ -30,6 +34,7 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
     _id: product?.variations[0]._id,
     size: product?.variations[0].size,
     color: product?.variations[0].color,
+    colorHex: product?.variations[0].colorHex,
     price: product?.variations[0].price,
     stock: product?.variations[0].stock,
     image: product?.variations[0].image,
@@ -54,7 +59,7 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
 
     // Find the clicked item using imageId
     const clickedItem = Array.from(lists).find((item) => {
-      const itemId = item.getAttribute('data-image-id');
+      const itemId = item.getAttribute("data-image-id");
       return itemId === imageId;
     });
 
@@ -76,12 +81,12 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
       `${product?.title.substring(0, 15)}... se agrego al carrito`,
       {
         position: toast.POSITION.TOP_CENTER,
-        className: 'foo-bar',
-        theme: 'dark',
+        className: "foo-bar",
+        theme: "dark",
         transition: Bounce,
       }
     );
-    router.push('/carrito');
+    router.push("/carrito");
   };
 
   const handleColorSelection = (e) => {
@@ -148,7 +153,7 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
                       key={image._id}
                       data-image-id={image._id}
                       onClick={() => clickImage(image._id)}
-                      className={`item ${index === 0 && 'active'}`}
+                      className={`item ${index === 0 && "active"}`}
                       style={{
                         backgroundImage: `url('${image.url}')`,
                       }}
@@ -193,7 +198,7 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
                       </div>
                     </div>
                   ) : (
-                    ''
+                    ""
                   )}
                   <div>
                     <p className="font-semibold text-4xl text-black font-bodyFont">
@@ -202,7 +207,7 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
                       ) : variation.price > 0 ? (
                         <FormattedPrice amount={variation.price} />
                       ) : (
-                        ''
+                        ""
                       )}
                     </p>
                     <p className="text-xs font-normal text-gray-600">
@@ -220,16 +225,16 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
                   transition={{ duration: 0.6 }}
                   className="text-slate-600 description-class tracking-wider"
                 >
-                  {product?.description ? product?.description : ''}
+                  {product?.description ? product?.description : ""}
                 </motion.div>
                 <span>
-                  Existencias:{' '}
+                  Existencias:{" "}
                   <span className=" font-bodyFont">
                     <b>{variation.stock}</b>
                   </span>
                 </span>
                 {variation?.stock <= 0 ? (
-                  ''
+                  ""
                 ) : (
                   <div className="flex items-start gap-6">
                     <motion.div
@@ -243,17 +248,22 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
                       </p>
                       {product?.variations.length > 0 && (
                         <span className="text-black flex flex-row items-center gap-5">
-                          {colors?.map((c, index) => (
-                            <button
-                              value={c.value}
+                          {colorList?.map((c, index) => (
+                            <div
                               key={index}
-                              onClick={handleColorSelection}
-                              className={`flex cursor-pointer p-3  text-white ${
-                                color === c.value ? 'bg-black' : 'bg-slate-500'
-                              }`}
+                              className="flex-col justify-center items-center"
                             >
-                              {c.value}
-                            </button>
+                              <button
+                                style={{ backgroundColor: `${c.colorHex}` }}
+                                value={c.value}
+                                key={index}
+                                onClick={handleColorSelection}
+                                className={`flex rounded-full shadow-md cursor-pointer p-3  text-white `}
+                              ></button>
+                              <p className="text-[10px]">
+                                {c.value.substring(0, 8)}
+                              </p>
+                            </div>
                           ))}
                         </span>
                       )}
@@ -276,8 +286,8 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
                               value={s}
                               className={`rounded-full border border-slate-400 flex items-center justify-center px-2 py-1 ${
                                 size === s
-                                  ? ' bg-black text-white'
-                                  : 'border-slate-400'
+                                  ? " bg-black text-white"
+                                  : "border-slate-400"
                               }`}
                             >
                               {s}
@@ -318,20 +328,20 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
                       whileTap={{ scale: 0.9 }}
                       className={`${
                         variation?.stock <= 0
-                          ? 'bg-slate-300 grayscale-0 text-slate-500 border-slate-300'
-                          : 'text-white border-black'
-                      } border  drop-shadow-md flex flex-row items-center justify-between px-6 py-3 text-sm gap-x-4 rounded-sm  bg-black  ease-in-out  duration-300 w-80 uppercase tracking-wider cursor-pointer `}
+                          ? "bg-slate-300 grayscale-0 text-slate-500 border-slate-300"
+                          : "text-white border-black"
+                      } border  drop-shadow-md flex flex-row items-center justify-between px-6 py-3 text-sm gap-x-4 rounded-sm  bg-black  ease-in-out  duration-300 w-auto uppercase tracking-wider cursor-pointer `}
                       onClick={handleClick}
                     >
                       {variation?.stock <= 0
-                        ? 'Out of Stock'
-                        : 'Agregar a carrito'}
+                        ? "Out of Stock"
+                        : "Agregar a carrito"}
 
                       <span
                         className={`${
                           variation?.stock <= 0
-                            ? 'bg-slate-300 grayscale-0 text-slate-500'
-                            : 'group-hover:bg-black hover:text-white duration-200 '
+                            ? "bg-slate-300 grayscale-0 text-slate-500"
+                            : "group-hover:bg-black hover:text-white duration-200 "
                         } text-xl text-slate-400 w-12 flex items-center justify-center  rounded-full py-2`}
                       >
                         <IoMdCart />
@@ -341,13 +351,13 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
                 </motion.div>
                 <div className="flex flex-col">
                   <span>
-                    Categoría:{' '}
+                    Categoría:{" "}
                     <span className="t font-bodyFont">
                       <b>{product?.category}</b>
                     </span>
                   </span>
                   <span>
-                    Genero:{' '}
+                    Genero:{" "}
                     <span className="t font-bodyFont">{product?.gender}</span>
                   </span>
                 </div>
@@ -358,7 +368,7 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
 
         <div className=" maxsm:px-4 mb-10 mt-10 w-[90%] mx-auto h-full">
           <p className="text-5xl maxsm:text-4xl font-EB_Garamond pb-5 font-semibold">
-            {'Productos destacados'}
+            {"Productos destacados"}
           </p>
           <div className="grid maxxsm:grid-cols-1 maxmd:grid-cols-2 grid-cols-4 gap-4 mt-2">
             {trendingProducts?.map((product) => (
