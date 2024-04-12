@@ -1127,8 +1127,9 @@ const EditVariationProduct = ({ product, currentCookies }) => {
         </div>
       ) : (
         <section className="w-full min-h-screen">
-          <div className="flex flex-row maxmd:flex-col items-center justify-between min-h-full">
-            <h2>Actualizando producto...</h2>
+          <div className="flex flex-col items-center justify-center min-h-screen w-full">
+            <span class="loader"></span>
+            <h2 className="text-sm">Actualizando producto...</h2>
           </div>
         </section>
       )}

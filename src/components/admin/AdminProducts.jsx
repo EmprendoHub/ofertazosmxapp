@@ -42,11 +42,6 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
       cancelButtonText: "No, cancelar!",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: "Eliminado!",
-          text: "Tu producto ha sido Eliminado.",
-          icon: "success",
-        });
         deleteOneProduct(product_id);
       }
     });
