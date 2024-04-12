@@ -427,19 +427,22 @@ const NewVariationOptimized = ({ currentCookies }) => {
     // const result = await updateVariationProduct(formData);
     const endpoint = `/api/newproduct`;
     setIsSending(true);
-    const result = await fetch(endpoint, {
+    const response = await fetch(endpoint, {
       method: "POST",
       headers: {
         Cookie: currentCookies,
       },
       body: formData,
     });
-    if (result?.error) {
-      setValidationError(result.error);
+    console.log(response);
+    if (!response?.ok) {
+      if (response.status === 409) {
+        setValidationError("Este Titulo de producto ya esta en uso");
+      }
+
       setIsSending(false);
-    } else {
+    } else if (response?.ok) {
       setValidationError(null);
-      //reset the form
 
       await updateRevalidateProduct();
       router.push("/admin/productos");
@@ -516,6 +519,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
                   {" "}
                   Titulo
                 </label>
+                <p className="text-red-700"> {validationError}</p>
                 <input
                   type="text"
                   className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
