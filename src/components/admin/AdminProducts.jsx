@@ -13,8 +13,19 @@ import SearchProducts from "@/app/admin/productos/search";
 import { changeProductAvailability, deleteOneProduct } from "@/app/_actions";
 import { FaShop } from "react-icons/fa6";
 import { TbWorldWww } from "react-icons/tb";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const AdminProducts = ({ products, filteredProductsCount, search }) => {
+  const searchParams = useSearchParams();
+
+  const searchValue = searchParams.get("page");
+  const [currentPage, setCurrentPage] = useState("");
+
+  useEffect(() => {
+    setCurrentPage(searchValue);
+  }, [searchValue]);
+
   const deleteHandler = (product_id) => {
     Swal.fire({
       title: "¿Estas seguro(a) que quieres eliminar a este producto?",
@@ -222,7 +233,9 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
 
                 <td className="w-full px-6 maxsm:px-0 py-0 relative ">
                   <span className="relative flex items-center justify-center text-black w-20 h-20 maxsm:w-8 maxsm:h-8 shadow mt-2">
-                    <Link href={`/admin/productos/variacion/${product?.slug}`}>
+                    <Link
+                      href={`/admin/productos/variacion/${product?.slug}?&callback=${searchParams}`}
+                    >
                       <Image
                         src={product?.images[0]?.url}
                         alt="Title"
@@ -250,7 +263,7 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                 <td className="w-full px-1 py-0 ">{product?.stock}</td>
                 <td className="w-full px-1 py-0 flex flex-row items-center gap-x-1">
                   <Link
-                    href={`/admin/productos/variacion/${product?.slug}`}
+                    href={`/admin/productos/variacion/${product?.slug}?&callback=${currentPage}`}
                     className="p-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
                   >
                     <FaPencilAlt className="maxsm:text-[10px]" />

@@ -7,7 +7,7 @@ import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
 import { cstDateTimeClient } from "@/backend/helpers";
 import { updateRevalidateProduct } from "@/app/_actions";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   set_colors,
   sizes_prendas,
@@ -21,6 +21,15 @@ import MultiselectTagComponent from "../forms/MultiselectTagComponent";
 import ToggleSwitch from "../forms/ToggleSwitch";
 
 const EditVariationProduct = ({ product, currentCookies }) => {
+  const searchParams = useSearchParams();
+
+  const searchValue = searchParams.get("callback");
+  const [callBack, setCallBack] = useState("");
+
+  useEffect(() => {
+    setCallBack(searchValue);
+  }, [searchValue]);
+
   const router = useRouter();
   const [title, setTitle] = useState(product?.title);
   const [isSending, setIsSending] = useState(false);
@@ -67,8 +76,6 @@ const EditVariationProduct = ({ product, currentCookies }) => {
       },
     ]);
   };
-
-  console.log(variations);
 
   const removeVariation = (indexToRemove) => {
     setVariations((prevVariations) =>
@@ -372,7 +379,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
 
       //formRef.current.reset();
       await updateRevalidateProduct();
-      router.push("/admin/productos");
+      router.push(`/admin/productos?&page=${callBack}`);
     }
   }
 
