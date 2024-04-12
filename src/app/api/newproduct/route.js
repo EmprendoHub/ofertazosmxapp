@@ -207,11 +207,14 @@ export async function PUT(request, res) {
         _id: { $ne: _id },
       });
       if (slugExists) {
-        return {
-          error: {
-            title: { _errors: ["Este Titulo de producto ya esta en uso"] },
+        return NextResponse.json(
+          {
+            error: {
+              title: { _errors: ["Este Titulo de producto ya esta en uso"] },
+            },
           },
-        };
+          { status: 500 }
+        );
       }
 
       const availability = {
