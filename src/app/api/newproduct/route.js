@@ -44,8 +44,6 @@ export async function POST(request, res) {
       slugExists = await Product.findOne({ slug });
     }
 
-    console.log(slug, title);
-
     const user = { _id: token?.user?._id };
     // Parse variations JSON string with reviver function to convert numeric strings to numbers
     let colors = [];
@@ -169,7 +167,10 @@ export async function PUT(request, res) {
     } = Object.fromEntries(payload);
 
     let slug = generateUrlSafeTitle(title);
-    let slugExists = await Product.findOne({ slug });
+    let slugExists = await Product.findOne({
+      slug: slug,
+      _id: { $ne: _id },
+    });
 
     // Attempt to generate a new unique slug if the original one is already in use
     while (slugExists) {

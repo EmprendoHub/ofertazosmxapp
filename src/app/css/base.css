@@ -26,3 +26,35 @@
 .remove-arrow {
   -moz-appearance: textfield;
 }
+
+:root {
+  --color-one: green;
+  --color-two: rgb(202, 22, 193);
+  --color-three: rgb(221, 164, 8);
+  --color-four: rgb(64, 64, 223);
+  --color-five: rgb(163, 160, 11);
+  --color-six: rgb(0, 73, 156);
+  --color-seven: rgb(201, 84, 64);
+  --color-eight: rgb(43, 17, 116);
+}
+
+.dynamic-gradient {
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--color-one),
+    var(--color-two),
+    var(--color-three),
+    var(--color-four)
+  );
+}
+.dynamic-gradient-two {
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--color-five),
+    var(--color-six),
+    var(--color-seven),
+    var(--color-eight)
+  );
+}

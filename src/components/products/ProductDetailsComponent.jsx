@@ -254,14 +254,25 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
                               className="flex-col justify-center items-center"
                             >
                               <button
-                                style={{ backgroundColor: `${c.colorHex}` }}
+                                style={
+                                  c.value === "Multicolor" ||
+                                  c.value === "Multicolor Dos"
+                                    ? { margin: `0px` }
+                                    : { backgroundColor: `${c.colorHex}` }
+                                }
                                 value={c.value}
                                 key={index}
                                 onClick={handleColorSelection}
-                                className={`flex rounded-full shadow-md cursor-pointer p-3  text-white `}
+                                className={`${
+                                  c.value === "Multicolor"
+                                    ? "dynamic-gradient"
+                                    : c.value === "Multicolor Dos"
+                                    ? "dynamic-gradient-two"
+                                    : "rounded-full"
+                                } flex shadow-md cursor-pointer p-3  text-white `}
                               ></button>
                               <p className="text-[10px]">
-                                {c.value.substring(0, 8)}
+                                {c.value.substring(0, 15)}
                               </p>
                             </div>
                           ))}

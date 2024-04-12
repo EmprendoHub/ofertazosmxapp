@@ -86,6 +86,13 @@ export const set_colors = [
     hexThree: "#008f39",
   },
   {
+    value: "Multicolor Dos",
+    label: "MulticolorDos",
+    hex: "#800080",
+    hexTwo: "#360636",
+    hexThree: "#1e5296",
+  },
+  {
     value: "Naranja",
     label: "Naranja",
     hex: "#FF8000",
