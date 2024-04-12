@@ -27,7 +27,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
   const [brand, setBrand] = useState("");
   const [branchAvailability, setBranchAvailability] = useState(true);
   const [instagramAvailability, setInstagramAvailability] = useState(false);
-  const [onlineAvailability, setOnlineAvailability] = useState(true);
+  const [onlineAvailability, setOnlineAvailability] = useState(false);
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("Moda");
   const [tags, setTags] = useState([]);
@@ -441,74 +441,75 @@ const NewVariationOptimized = ({ currentCookies }) => {
   }
 
   return (
-    <main className="w-full p-4 maxsm:p-2 bg-slate-200">
+    <main className="w-full p-4 maxsm:p-2 bg-slate-200 text-sm">
       <div className="flex flex-col items-start gap-5 justify-start w-full">
         <section className={`w-full ${!isSending ? "" : "grayscale"}`}>
-          <div className="flex flex-row flex-wrap maxmd:flex-col items-center justify-between">
-            <h1 className="w-full text-xl font-semibold text-black mb-8 font-EB_Garamond">
-              Nuevo Producto Con Variaciones
-            </h1>
-            {/* Availability */}
-            <div className="mb-4 w-full flex flex-row gap-4 items-center uppercase">
-              <ToggleSwitch
-                label="Destacado"
-                enabled={featured}
-                setEnabled={setFeatured}
-              />
-              <ToggleSwitch
-                label="Instagram"
-                enabled={instagramAvailability}
-                setEnabled={setInstagramAvailability}
-              />
-              <ToggleSwitch
-                label="Sucursal"
-                enabled={branchAvailability}
-                setEnabled={setBranchAvailability}
-              />
-              <ToggleSwitch
-                label="WWW"
-                enabled={onlineAvailability}
-                setEnabled={setOnlineAvailability}
-              />
-            </div>
-          </div>
-
-          <div className="flex flex-row maxmd:flex-col items-start gap-5 justify-between w-full">
-            <div className="gap-y-1 flex-col flex px-2 w-full">
-              {/* Section 1 - Title, Image */}
-              <label className="block  font-EB_Garamond">
-                Imagen principal
-              </label>
-              <div className="relative aspect-video hover:opacity-80 bg-white border-4 border-gray-300">
-                <label htmlFor="selectorMain" className="cursor-pointer">
-                  <Image
-                    id="blogImage"
-                    alt="blogBanner"
-                    src={mainImage}
-                    width={1280}
-                    height={1280}
-                    className="w-full h-full object-cover z-20"
+          <h1 className="w-full text-xl font-semibold text-black mb-8 font-EB_Garamond">
+            Nuevo Producto Con Variaciones
+          </h1>
+          <div className="flex flex-row maxmd:flex-col items-start gap-2 justify-between w-full">
+            <div className="flex flex-col items-start justify-center">
+              <div className="flex flex-row maxmd:flex-col items-center justify-between w-full">
+                {/* Availability */}
+                <div className="mb-4 w-full flex flex-row gap-4 items-center pl-3 uppercase">
+                  <ToggleSwitch
+                    label="Destacado"
+                    enabled={featured}
+                    setEnabled={setFeatured}
                   />
-                  <input
-                    id="selectorMain"
-                    type="file"
-                    accept=".png, .jpg, .jpeg, .webp"
-                    hidden
-                    onChange={upload}
+                  <ToggleSwitch
+                    label="Instagram"
+                    enabled={instagramAvailability}
+                    setEnabled={setInstagramAvailability}
                   />
+                  <ToggleSwitch
+                    label="Sucursal"
+                    enabled={branchAvailability}
+                    setEnabled={setBranchAvailability}
+                  />
+                  <ToggleSwitch
+                    label="WWW"
+                    enabled={onlineAvailability}
+                    setEnabled={setOnlineAvailability}
+                  />
+                </div>
+              </div>
+              {/*  Imagen principal */}
+              <div className="gap-y-1 flex-col flex px-2 w-full">
+                <div className="relative aspect-video hover:opacity-80 bg-white border-4 border-gray-300">
+                  <label htmlFor="selectorMain" className="cursor-pointer">
+                    <Image
+                      id="blogImage"
+                      alt="blogBanner"
+                      src={mainImage}
+                      width={1280}
+                      height={1280}
+                      className="w-full h-full object-cover z-20"
+                    />
+                    <input
+                      id="selectorMain"
+                      type="file"
+                      accept=".png, .jpg, .jpeg, .webp"
+                      hidden
+                      onChange={upload}
+                    />
 
-                  {validationError?.mainImage && (
-                    <p className="text-sm text-red-400">
-                      {validationError.mainImage._errors.join(", ")}
-                    </p>
-                  )}
-                </label>
+                    {validationError?.mainImage && (
+                      <p className="text-sm text-red-400">
+                        {validationError.mainImage._errors.join(", ")}
+                      </p>
+                    )}
+                  </label>
+                </div>
               </div>
             </div>
 
-            <div className="w-full flex-col flex justify-start px-2 gap-y-5">
-              <div className="mb-4">
-                <label className="block mb-1  font-EB_Garamond"> Titulo</label>
+            <div className="w-full flex-col flex justify-start px-2 gap-y-2">
+              <div className="mb-1">
+                <label className="block mb-1  font-EB_Garamond text-xs">
+                  {" "}
+                  Titulo
+                </label>
                 <input
                   type="text"
                   className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
@@ -525,7 +526,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
                 )}
               </div>
               <div className="mb-4">
-                <label className="block mb-1  font-EB_Garamond">
+                <label className="block mb-1  font-EB_Garamond text-xs">
                   {" "}
                   Description Corta
                 </label>
@@ -544,116 +545,129 @@ const NewVariationOptimized = ({ currentCookies }) => {
                   </p>
                 )}
               </div>
-              <div className="mb-4">
-                <label className="block mb-1  font-EB_Garamond"> Marca</label>
-                <input
-                  type="text"
-                  className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
-                  placeholder="Marca del Producto"
-                  value={brand}
-                  onChange={(e) => setBrand(e.target.value)}
-                  name="brand"
-                  htmlFor="brand"
-                />
-                {validationError?.brand && (
-                  <p className="text-sm text-red-400">
-                    {validationError.brand._errors.join(", ")}
-                  </p>
-                )}
-              </div>
-              <div className="mb-4 w-full">
-                <label className="block mb-1 font-EB_Garamond"> Género </label>
-                <div className="relative">
-                  <select
-                    className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
-                    name="gender"
-                    htmlFor="gender"
-                    onChange={(e) => handleGenderChange(e.target.value)}
-                  >
-                    {genders?.map((gender) => (
-                      <option key={gender.es} value={gender.es}>
-                        {gender.es}
-                      </option>
-                    ))}
-                  </select>
-                  {validationError?.gender && (
-                    <p className="text-sm text-red-400">
-                      {validationError.gender._errors.join(", ")}
-                    </p>
-                  )}
-                  <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
-                    <svg
-                      width="22"
-                      height="22"
-                      className="fill-current"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M7 10l5 5 5-5H7z"></path>
-                    </svg>
-                  </i>
-                </div>
-              </div>
-
-              <div className="mb-4 w-full">
-                <label className="block mb-1 font-EB_Garamond">Etiquetas</label>
-                <div className="relative">
-                  <MultiselectTagComponent
-                    options={tagSelection}
-                    handleAddTagField={handleAddTagField}
+              {/* Marca y genero */}
+              <div className=" flex flex-row gap-1 items-center">
+                <div className="mb-1  w-full">
+                  <label className="block mb-1  font-EB_Garamond  text-xs">
+                    {" "}
+                    Marca
+                  </label>
+                  <input
+                    type="text"
+                    className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
+                    placeholder="Marca del Producto"
+                    value={brand}
+                    onChange={(e) => setBrand(e.target.value)}
+                    name="brand"
+                    htmlFor="brand"
                   />
-                  {validationError?.tags && (
+                  {validationError?.brand && (
                     <p className="text-sm text-red-400">
-                      {validationError.tags._errors.join(", ")}
+                      {validationError.brand._errors.join(", ")}
                     </p>
                   )}
                 </div>
-              </div>
-              <div className="mb-4 w-full">
-                <label className="block mb-1 font-EB_Garamond">
-                  {" "}
-                  Categoría{" "}
-                </label>
-                <div className="relative">
-                  <select
-                    className="block appearance-none border border-gray-400 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
-                    name="category"
-                    htmlFor="category"
-                    onChange={(e) => handleCategoryChange(e.target.value)}
-                  >
-                    {product_categories.map((category) => (
-                      <option key={category.es} value={category.es}>
-                        {category.es}
-                      </option>
-                    ))}
-                  </select>
-                  {validationError?.category && (
-                    <p className="text-sm text-red-400">
-                      {validationError.category._errors.join(", ")}
-                    </p>
-                  )}
-                  <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
-                    <svg
-                      width="22"
-                      height="22"
-                      className="fill-current"
-                      viewBox="0 0 20 20"
+                <div className="mb-1 w-full">
+                  <label className="block mb-1 font-EB_Garamond  text-xs">
+                    {" "}
+                    Género{" "}
+                  </label>
+                  <div className="relative">
+                    <select
+                      className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 cursor-pointer focus:outline-none focus:border-gray-400 w-full"
+                      name="gender"
+                      htmlFor="gender"
+                      onChange={(e) => handleGenderChange(e.target.value)}
                     >
-                      <path d="M7 10l5 5 5-5H7z"></path>
-                    </svg>
-                  </i>
+                      {genders?.map((gender) => (
+                        <option key={gender.es} value={gender.es}>
+                          {gender.es}
+                        </option>
+                      ))}
+                    </select>
+                    {validationError?.gender && (
+                      <p className="text-sm text-red-400">
+                        {validationError.gender._errors.join(", ")}
+                      </p>
+                    )}
+                    <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
+                      <svg
+                        width="22"
+                        height="22"
+                        className="fill-current"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M7 10l5 5 5-5H7z"></path>
+                      </svg>
+                    </i>
+                  </div>
+                </div>
+              </div>
+              {/* Etiquetas y Categoria */}
+              <div className=" flex flex-row gap-1 items-center">
+                <div className="mb-1 w-full">
+                  <label className="block mb-1 font-EB_Garamond  text-xs">
+                    Etiquetas
+                  </label>
+                  <div className="relative">
+                    <MultiselectTagComponent
+                      options={tagSelection}
+                      handleAddTagField={handleAddTagField}
+                    />
+                    {validationError?.tags && (
+                      <p className="text-sm text-red-400">
+                        {validationError.tags._errors.join(", ")}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div className="mb-1 w-full">
+                  <label className="block mb-1 font-EB_Garamond  text-xs">
+                    {" "}
+                    Categoría{" "}
+                  </label>
+                  <div className="relative">
+                    <select
+                      className="block appearance-none border border-gray-400 bg-gray-100 rounded-md pl-2 py-1 focus:outline-none focus:border-gray-400 w-full cursor-pointer"
+                      name="category"
+                      htmlFor="category"
+                      onChange={(e) => handleCategoryChange(e.target.value)}
+                    >
+                      {product_categories.map((category) => (
+                        <option key={category.es} value={category.es}>
+                          {category.es}
+                        </option>
+                      ))}
+                    </select>
+                    {validationError?.category && (
+                      <p className="text-sm text-red-400">
+                        {validationError.category._errors.join(", ")}
+                      </p>
+                    )}
+                    <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
+                      <svg
+                        width="22"
+                        height="22"
+                        className="fill-current"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M7 10l5 5 5-5H7z"></path>
+                      </svg>
+                    </i>
+                  </div>
                 </div>
               </div>
 
               <div className="mb-4 w-full flex gap-5 flex-row items-center justify-center">
                 <div className="flex w-full flex-col">
-                  <label className="block mb-1 font-EB_Garamond">
+                  <label className="block mb-1 font-EB_Garamond text-xs">
                     Precio de Oferta
                   </label>
                   <div className="relative">
                     <div className="col-span-2">
                       <input
                         type="number"
-                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3focus:outline-none focus:border-gray-400 w-full"
+                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-1 px-3 focus:outline-none focus:border-gray-400 w-full remove-arrow "
                         placeholder="0.00"
                         min="0"
                         value={salePrice}
@@ -669,17 +683,17 @@ const NewVariationOptimized = ({ currentCookies }) => {
                     </div>
                   </div>
                 </div>
-                <div className="mb-4 w-full h-full">
-                  <label className="block mb-1 font-EB_Garamond">
+                <div className="mb-1 w-full h-full">
+                  <label className="block mb-1 font-EB_Garamond text-xs">
                     Fecha de Fin de Oferta
                   </label>
                   <div className="flex flex-row items-center gap-x-3"></div>
                   <DateTimePicker
+                    calendarClassName={"appearance-none rounded-md"}
                     onChange={onChangeDate}
                     value={salePriceEndDate}
                     locale={"es-MX"}
                     minDate={cstDateTimeClient()}
-                    className={"h-full"}
                   />
                 </div>
               </div>
@@ -688,21 +702,25 @@ const NewVariationOptimized = ({ currentCookies }) => {
           <div className="w-[300px]">
             <div
               onClick={addVariation}
-              className="my-2 px-4 py-2 text-center inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 w-full cursor-pointer"
+              className="my-4 px-8 py-2 text-center inline-block text-white bg-black border border-transparent rounded-md hover:bg-slate-800 w-auto cursor-pointer"
             >
-              Agregar Variación +
+              Variación +
             </div>
           </div>
-          <div className="w-full main-variation">
-            <div className="flex flex-row maxsm:flex-col items-center gap-5">
+          {/* Main Variation */}
+          <div className="w-full main-variation flex maxsm:flex-col items-center">
+            <div className="flex flex-row items-center gap-3 w-2/3  maxsm:w-full">
               <div className="mb-4 w-full">
-                <label className="block mb-1 font-EB_Garamond"> Talla </label>
+                <label className="block mb-1 font-EB_Garamond text-xs">
+                  {" "}
+                  Talla{" "}
+                </label>
                 <div className="relative">
                   <select
                     onChange={(e) => handleSizeChange(0, e.target.value)}
                     name="size"
                     htmlFor="size"
-                    className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                    className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 py-1 cursor-pointer focus:outline-none focus:border-gray-400 w-full"
                   >
                     {sizeSelection.map((option) => (
                       <option key={option.value} value={option.value}>
@@ -718,13 +736,16 @@ const NewVariationOptimized = ({ currentCookies }) => {
                 </div>
               </div>
               <div className="mb-4 w-full">
-                <label className="block mb-1 font-EB_Garamond"> Color </label>
+                <label className="block mb-1 font-EB_Garamond text-xs">
+                  {" "}
+                  Color{" "}
+                </label>
                 <div className="relative">
                   <select
                     name="color"
                     htmlFor="color"
                     onChange={(e) => handleColorChange(0, e.target.value)}
-                    className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                    className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 py-1 cursor-pointer focus:outline-none focus:border-gray-400 w-full"
                   >
                     {set_colors.map((option) => (
                       <option key={option.value} value={option.value}>
@@ -740,12 +761,14 @@ const NewVariationOptimized = ({ currentCookies }) => {
                 </div>
               </div>
               <div className="mb-4 w-full">
-                <label className="block mb-1  font-EB_Garamond">Precio</label>
+                <label className="block mb-1  font-EB_Garamond text-xs">
+                  Precio
+                </label>
                 <div className="relative">
                   <div className="col-span-2">
                     <input
                       type="number"
-                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3focus:outline-none focus:border-gray-400 w-full"
+                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 py-1 remove-arrow focus:outline-none focus:border-gray-400 w-full"
                       placeholder="0.00"
                       min="1"
                       value={variations[0].price}
@@ -762,12 +785,15 @@ const NewVariationOptimized = ({ currentCookies }) => {
                 </div>
               </div>
               <div className="mb-4 w-full">
-                <label className="block mb-1 font-EB_Garamond"> Costo </label>
+                <label className="block mb-1 font-EB_Garamond text-xs">
+                  {" "}
+                  Costo{" "}
+                </label>
                 <div className="relative">
                   <div className="col-span-2">
                     <input
                       type="number"
-                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3focus:outline-none focus:border-gray-400 w-full"
+                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 py-1 remove-arrow focus:outline-none focus:border-gray-400 w-full"
                       placeholder="0.00"
                       min="1"
                       value={variations[0].cost}
@@ -784,7 +810,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
                 </div>
               </div>
               <div className="mb-4 w-full">
-                <label className="block mb-1 font-EB_Garamond">
+                <label className="block mb-1 font-EB_Garamond text-xs">
                   {" "}
                   Existencias{" "}
                 </label>
@@ -792,7 +818,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
                   <div className="col-span-2">
                     <input
                       type="number"
-                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 py-1 remove-arrow focus:outline-none focus:border-gray-400 w-full"
                       placeholder="1"
                       min="1"
                       value={variations[0].stock}
@@ -808,53 +834,58 @@ const NewVariationOptimized = ({ currentCookies }) => {
                   </div>
                 </div>
               </div>
+            </div>
+            <div className="mb-4 w-1/3 maxsm:w-full">
+              {/* Section 1 - Title, Image */}
+              <label className="block  font-EB_Garamond">Imagen # 1</label>
+              <div className="relative aspect-video hover:opacity-80 bg-white border-4 border-gray-300">
+                <label htmlFor="selectorVarOne" className="cursor-pointer">
+                  <Image
+                    id="MainVariation"
+                    alt="Main Variation"
+                    src={variations[0].image}
+                    width={500}
+                    height={500}
+                    className="w-full h-40 object-cover z-20"
+                  />
+                  <input
+                    id="selectorVarOne"
+                    type="file"
+                    accept=".png, .jpg, .jpeg, .webp"
+                    hidden
+                    onChange={(e) => handleVariationImageChange(e, 0)}
+                  />
 
-              <div className="mb-4 w-full flex-col flex">
-                {/* Section 1 - Title, Image */}
-                <label className="block  font-EB_Garamond">
-                  Imagen de Variación # 1
+                  {validationError?.mainImage && (
+                    <p className="text-sm text-red-400">
+                      {validationError.mainImage._errors.join(", ")}
+                    </p>
+                  )}
                 </label>
-                <div className="relative aspect-video hover:opacity-80 bg-white border-4 border-gray-300">
-                  <label htmlFor="selectorVarOne" className="cursor-pointer">
-                    <Image
-                      id="MainVariation"
-                      alt="Main Variation"
-                      src={variations[0].image}
-                      width={500}
-                      height={500}
-                      className="w-full h-40 object-cover z-20"
-                    />
-                    <input
-                      id="selectorVarOne"
-                      type="file"
-                      accept=".png, .jpg, .jpeg, .webp"
-                      hidden
-                      onChange={(e) => handleVariationImageChange(e, 0)}
-                    />
-
-                    {validationError?.mainImage && (
-                      <p className="text-sm text-red-400">
-                        {validationError.mainImage._errors.join(", ")}
-                      </p>
-                    )}
-                  </label>
-                </div>
               </div>
             </div>
           </div>
 
           {/* Render additional variations */}
           {variations.slice(1).map((variation, index) => (
-            <div key={index + 1} className={`w-full variation-${index + 1}`}>
-              <div className="relative flex flex-row maxsm:flex-col items-center gap-5">
+            <div
+              key={index + 1}
+              className={`w-full variation-${
+                index + 1
+              } flex maxsm:flex-col items-center`}
+            >
+              <div className="relative flex flex-row items-center gap-3 maxsm:gap-1 w-2/3  maxsm:w-full">
                 <div
                   onClick={() => removeVariation(index + 1)}
-                  className="absolute top-0 left-0 p-1 bg-red-500 text-white rounded-tr-md cursor-pointer"
+                  className="absolute top-0 -left-5 px-1 bg-red-500 text-white rounded-full cursor-pointer z-50 text-xs"
                 >
                   X
                 </div>
                 <div className="mb-4 w-full">
-                  <label className="block mb-1 font-EB_Garamond"> Talla </label>
+                  <label className="block mb-1 font-EB_Garamond text-xs">
+                    {" "}
+                    Talla{" "}
+                  </label>
                   <div className="relative">
                     <select
                       name={`size-${index + 1}`}
@@ -862,7 +893,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
                       onChange={(e) =>
                         handleSizeChange(index + 1, e.target.value)
                       }
-                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md  pl-2 py-1 cursor-pointer focus:outline-none focus:border-gray-400 w-full"
                     >
                       {sizeSelection.map((option) => (
                         <option key={option.value} value={option.value}>
@@ -879,7 +910,10 @@ const NewVariationOptimized = ({ currentCookies }) => {
                   </div>
                 </div>
                 <div className="mb-4 w-full">
-                  <label className="block mb-1 font-EB_Garamond"> Color </label>
+                  <label className="block mb-1 font-EB_Garamond text-xs">
+                    {" "}
+                    Color{" "}
+                  </label>
                   <div className="relative">
                     <select
                       name={`color-${index + 1}`}
@@ -887,7 +921,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
                       onChange={(e) =>
                         handleColorChange(index + 1, e.target.value)
                       }
-                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 py-1 cursor-pointer focus:outline-none focus:border-gray-400 w-full"
                     >
                       {set_colors.map((option) => (
                         <option key={option.value} value={option.value}>
@@ -903,7 +937,9 @@ const NewVariationOptimized = ({ currentCookies }) => {
                   </div>
                 </div>
                 <div className="mb-4 w-full">
-                  <label className="block mb-1 font-EB_Garamond">Precio</label>
+                  <label className="block mb-1 font-EB_Garamond text-xs">
+                    Precio
+                  </label>
                   <div className="relative">
                     <input
                       name={`price-${index + 1}`}
@@ -914,12 +950,15 @@ const NewVariationOptimized = ({ currentCookies }) => {
                       onChange={(e) =>
                         handlePriceChange(index + 1, e.target.value)
                       }
-                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md  pl-2 py-1 remove-arrow focus:outline-none focus:border-gray-400 w-full"
                     />
                   </div>
                 </div>
                 <div className="mb-4 w-full">
-                  <label className="block mb-1 font-EB_Garamond"> Costo </label>
+                  <label className="block mb-1 font-EB_Garamond text-xs">
+                    {" "}
+                    Costo{" "}
+                  </label>
                   <div className="relative">
                     <input
                       name={`cost-${index + 1}`}
@@ -930,12 +969,12 @@ const NewVariationOptimized = ({ currentCookies }) => {
                       onChange={(e) =>
                         handleCostChange(index + 1, e.target.value)
                       }
-                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 py-1 remove-arrow focus:outline-none focus:border-gray-400 w-full"
                     />
                   </div>
                 </div>
                 <div className="mb-4 w-full">
-                  <label className="block mb-1 font-EB_Garamond">
+                  <label className="block mb-1 font-EB_Garamond  text-xs">
                     {" "}
                     Existencias{" "}
                   </label>
@@ -949,46 +988,43 @@ const NewVariationOptimized = ({ currentCookies }) => {
                       onChange={(e) =>
                         handleStockChange(index + 1, e.target.value)
                       }
-                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 py-1 remove-arrow focus:outline-none focus:border-gray-400 w-full"
                     />
                   </div>
                 </div>
+              </div>
+              {/* Dynamic Image Variation */}
+              <div className="mb-4 w-1/3 maxsm:w-full">
+                <label className="block  font-EB_Garamond">
+                  Imagen # {index + 2}
+                </label>
+                <div className="relative aspect-video hover:opacity-80 bg-white border-4 border-gray-300">
+                  <label
+                    htmlFor={`selector${index + 1}`}
+                    className="cursor-pointer"
+                  >
+                    <Image
+                      id={`variation-${index + 1}`}
+                      alt={`image variation-${index + 1}`}
+                      src={variation.image}
+                      width={500}
+                      height={500}
+                      className="w-full h-40 object-cover z-20"
+                    />
+                    <input
+                      id={`selector${index + 1}`}
+                      type="file"
+                      accept=".png, .jpg, .jpeg, .webp"
+                      hidden
+                      onChange={(e) => handleVariationImageChange(e, index + 1)}
+                    />
 
-                <div className="mb-4 w-full flex-col flex">
-                  {/* Section 1 - Title, Image */}
-                  <label className="block  font-EB_Garamond">
-                    Imagen de Variación # {index + 2}
+                    {validationError?.mainImage && (
+                      <p className="text-sm text-red-400">
+                        {validationError.mainImage._errors.join(", ")}
+                      </p>
+                    )}
                   </label>
-                  <div className="relative aspect-video hover:opacity-80 bg-white border-4 border-gray-300">
-                    <label
-                      htmlFor={`selector${index + 1}`}
-                      className="cursor-pointer"
-                    >
-                      <Image
-                        id={`variation-${index + 1}`}
-                        alt={`image variation-${index + 1}`}
-                        src={variation.image}
-                        width={500}
-                        height={500}
-                        className="w-full h-40 object-cover z-20"
-                      />
-                      <input
-                        id={`selector${index + 1}`}
-                        type="file"
-                        accept=".png, .jpg, .jpeg, .webp"
-                        hidden
-                        onChange={(e) =>
-                          handleVariationImageChange(e, index + 1)
-                        }
-                      />
-
-                      {validationError?.mainImage && (
-                        <p className="text-sm text-red-400">
-                          {validationError.mainImage._errors.join(", ")}
-                        </p>
-                      )}
-                    </label>
-                  </div>
                 </div>
               </div>
             </div>
@@ -1001,7 +1037,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
               isSending ? "cursor-wait" : ""
             } my-2 cursor-pointer px-4 py-2 text-center inline-block text-white bg-black border border-transparent rounded-md hover:bg-slate-800 w-full`}
           >
-            {isSending ? "Guardando..." : "Guardar Producto"}
+            {isSending ? "Creando..." : "Crear Producto"}
           </button>
         </section>
       </div>

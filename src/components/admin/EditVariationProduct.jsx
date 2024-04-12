@@ -487,7 +487,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
               </div>
             </div>
 
-            <div className="flex flex-row maxmd:flex-col items-start gap-5 justify-between w-full">
+            <div className="flex flex-row maxmd:flex-col items-start gap-3 justify-between w-full">
               <div className="gap-y-1 flex-col flex px-2 w-full">
                 {/*  Imagen principal del Producto */}
                 <div className="relative hover:opacity-80 bg-white border-4 border-gray-300">
@@ -680,7 +680,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                       <div className="col-span-2">
                         <input
                           type="number"
-                          className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3focus:outline-none focus:border-gray-400 w-full"
+                          className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3focus:outline-none focus:border-gray-400 w-full remove-arrow "
                           placeholder="0.00"
                           min="0"
                           value={salePrice}
