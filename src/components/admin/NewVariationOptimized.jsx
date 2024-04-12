@@ -19,6 +19,7 @@ import {
 } from "@/backend/data/productData";
 import MultiselectTagComponent from "../forms/MultiselectTagComponent";
 import ToggleSwitch from "../forms/ToggleSwitch";
+import { toast } from "react-toastify";
 
 const NewVariationOptimized = ({ currentCookies }) => {
   const router = useRouter();
@@ -87,20 +88,47 @@ const NewVariationOptimized = ({ currentCookies }) => {
     );
   };
 
+  const isCombinationUnique = (size, color, index) => {
+    return !variations.some(
+      (variation, i) =>
+        i !== index && variation.size === size && variation.color === color
+    );
+  };
+
   const handleSizeChange = (index, newSize) => {
-    const newVariations = [...variations];
-    newVariations[index].size = newSize;
-    setVariations(newVariations);
+    const color = variations[index].color;
+    if (newSize && isCombinationUnique(newSize, color, index)) {
+      const newVariations = [...variations];
+      newVariations[index].size = newSize;
+      setVariations(newVariations);
+    } else {
+      const newVariations = [...variations];
+      newVariations[index].size = "";
+      setVariations(newVariations);
+      toast.error(
+        "Esta combinación de tamaño y color ya existe. Por favor, elija otra talla o color."
+      );
+    }
   };
 
   const handleColorChange = (index, newColor, hex, hexTwo, hexThree) => {
-    console.log(hex, newColor, hexTwo, hexThree);
-    const newVariations = [...variations];
-    newVariations[index].color = newColor;
-    newVariations[index].colorHex = hex;
-    newVariations[index].colorHexTwo = hexTwo;
-    newVariations[index].colorHexThree = hexThree;
-    setVariations(newVariations);
+    const size = variations[index].size;
+    if (newColor && isCombinationUnique(size, newColor, index)) {
+      const newVariations = [...variations];
+      newVariations[index].color = newColor;
+      newVariations[index].colorHex = hex;
+      newVariations[index].colorHexTwo = hexTwo;
+      newVariations[index].colorHexThree = hexThree;
+      setVariations(newVariations);
+    } else {
+      // Reset the color if the combination is not unique
+      const newVariations = [...variations];
+      newVariations[index].color = ""; // Reset to empty
+      setVariations(newVariations);
+      toast.error(
+        "Esta combinación de tamaño y color ya existe. Por favor, elija otro color o talla."
+      );
+    }
   };
 
   const handlePriceChange = (index, newPrice) => {
@@ -734,6 +762,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
                 </label>
                 <div className="relative">
                   <select
+                    value={variations[0].size}
                     onChange={(e) => handleSizeChange(0, e.target.value)}
                     name="size"
                     htmlFor="size"
@@ -759,6 +788,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
                 </label>
                 <div className="relative">
                   <select
+                    value={variations[0].color}
                     name="color"
                     htmlFor="color"
                     onChange={(e) => {
@@ -926,6 +956,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
                   </label>
                   <div className="relative">
                     <select
+                      value={variations[index + 1].size}
                       name={`size-${index + 1}`}
                       htmlFor={`size-${index + 1}`}
                       onChange={(e) =>
@@ -954,6 +985,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
                   </label>
                   <div className="relative">
                     <select
+                      value={variations[index + 1].color}
                       name={`color-${index + 1}`}
                       htmlFor={`color-${index + 1}`}
                       onChange={(e) => {

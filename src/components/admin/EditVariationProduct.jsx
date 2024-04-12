@@ -19,6 +19,7 @@ import {
 } from "@/backend/data/productData";
 import MultiselectTagComponent from "../forms/MultiselectTagComponent";
 import ToggleSwitch from "../forms/ToggleSwitch";
+import { toast } from "react-toastify";
 
 const EditVariationProduct = ({ product, currentCookies }) => {
   const searchParams = useSearchParams();
@@ -62,6 +63,14 @@ const EditVariationProduct = ({ product, currentCookies }) => {
   const [mainImage, setMainImage] = useState(product?.images[0].url);
 
   const [variations, setVariations] = useState(product?.variations);
+
+  const isCombinationUnique = (size, color, index) => {
+    return !variations.some(
+      (variation, i) =>
+        i !== index && variation.size === size && variation.color === color
+    );
+  };
+
   const addVariation = () => {
     setVariations((prevVariations) => [
       ...prevVariations,
@@ -86,19 +95,32 @@ const EditVariationProduct = ({ product, currentCookies }) => {
   };
 
   const handleSizeChange = (index, newSize) => {
-    const newVariations = [...variations];
-    newVariations[index].size = newSize;
-    setVariations(newVariations);
+    const color = variations[index].color;
+    if (isCombinationUnique(newSize, color, index)) {
+      const newVariations = [...variations];
+      newVariations[index].size = newSize;
+      setVariations(newVariations);
+    } else {
+      toast.error(
+        "Esta combinación de tamaño y color ya existe. Por favor, elija otra talla o color."
+      );
+    }
   };
 
   const handleColorChange = (index, newColor, hex, hexTwo, hexThree) => {
-    console.log(hex, newColor, hexTwo, hexThree);
-    const newVariations = [...variations];
-    newVariations[index].color = newColor;
-    newVariations[index].colorHex = hex;
-    newVariations[index].colorHexTwo = hexTwo;
-    newVariations[index].colorHexThree = hexThree;
-    setVariations(newVariations);
+    const size = variations[index].size;
+    if (isCombinationUnique(size, newColor, index)) {
+      const newVariations = [...variations];
+      newVariations[index].color = newColor;
+      newVariations[index].colorHex = hex;
+      newVariations[index].colorHexTwo = hexTwo;
+      newVariations[index].colorHexThree = hexThree;
+      setVariations(newVariations);
+    } else {
+      toast.error(
+        "Esta combinación de tamaño y color ya existe. Por favor, elija otro color o talla."
+      );
+    }
   };
 
   const handlePriceChange = (index, newPrice) => {

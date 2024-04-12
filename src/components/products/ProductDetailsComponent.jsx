@@ -93,9 +93,11 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
     e.preventDefault();
     const valueToCheck = e.target.value;
     setColor(valueToCheck);
+
     const pickedVariationByColor = product.variations.find(
       (variation) => variation.color === valueToCheck
     );
+
     const existingProduct = productsData.find(
       (variation) => variation._id === pickedVariationByColor._id
     );
