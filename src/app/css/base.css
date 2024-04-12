@@ -1,8 +1,8 @@
 @tailwind base;
 
 @font-face {
-  font-family: 'EB Garamond';
-  src: url('../../fonts/EB_Garamond.woff2');
+  font-family: "EB Garamond";
+  src: url("../../fonts/EB_Garamond.woff2");
   font-style: normal;
   font-display: swap;
   font-weight: 200 900;
@@ -10,10 +10,19 @@
 }
 
 @font-face {
-  font-family: 'Montserrat';
-  src: url('../../fonts/Montserrat.woff2');
+  font-family: "Montserrat";
+  src: url("../../fonts/Montserrat.woff2");
   font-style: normal;
   font-display: swap;
   font-weight: 200 900;
   font-stretch: 75% 12%;
+}
+
+.remove-arrow::-webkit-inner-spin-button,
+.remove-arrow::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.remove-arrow {
+  -moz-appearance: textfield;
 }

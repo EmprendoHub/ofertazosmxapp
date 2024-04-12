@@ -1,40 +1,40 @@
-'use client';
-import Link from 'next/link';
-import Image from 'next/image';
+"use client";
+import Link from "next/link";
+import Image from "next/image";
 import {
   FaPencilAlt,
   FaStar,
   FaInstagramSquare,
   FaExclamationCircle,
-} from 'react-icons/fa';
-import FormattedPrice from '@/backend/helpers/FormattedPrice';
-import Swal from 'sweetalert2';
-import SearchProducts from '@/app/admin/productos/search';
-import { changeProductAvailability, deleteOneProduct } from '@/app/_actions';
-import { FaShop } from 'react-icons/fa6';
-import { TbWorldWww } from 'react-icons/tb';
+} from "react-icons/fa";
+import FormattedPrice from "@/backend/helpers/FormattedPrice";
+import Swal from "sweetalert2";
+import SearchProducts from "@/app/admin/productos/search";
+import { changeProductAvailability, deleteOneProduct } from "@/app/_actions";
+import { FaShop } from "react-icons/fa6";
+import { TbWorldWww } from "react-icons/tb";
 
 const AdminProducts = ({ products, filteredProductsCount, search }) => {
   const deleteHandler = (product_id) => {
     Swal.fire({
-      title: '¿Estas seguro(a) que quieres eliminar a este producto?',
-      text: '¡Esta acción es permanente y no se podrá revertir!',
-      icon: 'error',
-      iconColor: '#fafafa',
-      background: '#d33',
-      color: '#fafafa',
+      title: "¿Estas seguro(a) que quieres eliminar a este producto?",
+      text: "¡Esta acción es permanente y no se podrá revertir!",
+      icon: "error",
+      iconColor: "#fafafa",
+      background: "#d33",
+      color: "#fafafa",
       focusCancel: true,
       showCancelButton: true,
-      confirmButtonColor: '#4E0000',
-      cancelButtonColor: '#000',
-      confirmButtonText: '¡Sí, Eliminar!',
-      cancelButtonText: 'No, cancelar!',
+      confirmButtonColor: "#4E0000",
+      cancelButtonColor: "#000",
+      confirmButtonText: "¡Sí, Eliminar!",
+      cancelButtonText: "No, cancelar!",
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
-          title: 'Eliminado!',
-          text: 'Tu producto ha sido Eliminado.',
-          icon: 'success',
+          title: "Eliminado!",
+          text: "Tu producto ha sido Eliminado.",
+          icon: "success",
         });
         deleteOneProduct(product_id);
       }
@@ -42,7 +42,7 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
   };
 
   const deactivateOnlineHandler = (product_id, active) => {
-    const location = 'Online';
+    const location = "Online";
     let title;
     let text;
     let confirmBtn;
@@ -51,22 +51,22 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
     let icon;
     let confirmBtnColor;
     if (active === true) {
-      icon = 'warning';
-      title = 'Estas seguro(a)?';
+      icon = "warning";
+      title = "Estas seguro(a)?";
       text =
-        '¡Estas a punto de desactivar a este producto en el Sitio Web y quedara sin acceso!';
-      confirmBtn = '¡Sí, desactivar producto!';
-      confirmBtnColor = '#CE7E00';
-      successTitle = 'Desactivar!';
-      successText = 'El producto ha sido desactivado.';
+        "¡Estas a punto de desactivar a este producto en el Sitio Web y quedara sin acceso!";
+      confirmBtn = "¡Sí, desactivar producto!";
+      confirmBtnColor = "#CE7E00";
+      successTitle = "Desactivar!";
+      successText = "El producto ha sido desactivado.";
     } else {
-      icon = 'success';
-      title = 'Estas seguro(a)?';
-      text = '¡Estas a punto de Activar a este producto en el Sitio Web!';
-      confirmBtn = '¡Sí, Activar producto!';
-      confirmBtnColor = '#228B22';
-      successTitle = 'Reactivado!';
-      successText = 'El producto ha sido Activado.';
+      icon = "success";
+      title = "Estas seguro(a)?";
+      text = "¡Estas a punto de Activar a este producto en el Sitio Web!";
+      confirmBtn = "¡Sí, Activar producto!";
+      confirmBtnColor = "#228B22";
+      successTitle = "Reactivado!";
+      successText = "El producto ha sido Activado.";
     }
     Swal.fire({
       title: title,
@@ -74,9 +74,9 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
       icon: icon,
       showCancelButton: true,
       confirmButtonColor: confirmBtnColor,
-      cancelButtonColor: '#000',
+      cancelButtonColor: "#000",
       confirmButtonText: confirmBtn,
-      cancelButtonText: 'No, cancelar!',
+      cancelButtonText: "No, cancelar!",
     }).then((result) => {
       if (result.isConfirmed) {
         changeProductAvailability(product_id, location);
@@ -85,7 +85,7 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
   };
 
   const deactivateBranchHandler = (product_id, active) => {
-    const location = 'Branch';
+    const location = "Branch";
     let title;
     let text;
     let confirmBtn;
@@ -94,22 +94,22 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
     let icon;
     let confirmBtnColor;
     if (active === true) {
-      icon = 'warning';
-      title = 'Estas seguro(a)?';
+      icon = "warning";
+      title = "Estas seguro(a)?";
       text =
-        '¡Estas a punto de desactivar a este producto de la sucursal física y quedara sin acceso!';
-      confirmBtn = '¡Sí, desactivar producto!';
-      confirmBtnColor = '#CE7E00';
-      successTitle = 'Desactivar!';
-      successText = 'El producto ha sido desactivado.';
+        "¡Estas a punto de desactivar a este producto de la sucursal física y quedara sin acceso!";
+      confirmBtn = "¡Sí, desactivar producto!";
+      confirmBtnColor = "#CE7E00";
+      successTitle = "Desactivar!";
+      successText = "El producto ha sido desactivado.";
     } else {
-      icon = 'success';
-      title = 'Estas seguro(a)?';
-      text = '¡Estas a punto de Activar a este producto a la sucursal física!';
-      confirmBtn = '¡Sí, Activar producto!';
-      confirmBtnColor = '#228B22';
-      successTitle = 'Reactivado!';
-      successText = 'El producto ha sido Activado.';
+      icon = "success";
+      title = "Estas seguro(a)?";
+      text = "¡Estas a punto de Activar a este producto a la sucursal física!";
+      confirmBtn = "¡Sí, Activar producto!";
+      confirmBtnColor = "#228B22";
+      successTitle = "Reactivado!";
+      successText = "El producto ha sido Activado.";
     }
     Swal.fire({
       title: title,
@@ -117,9 +117,9 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
       icon: icon,
       showCancelButton: true,
       confirmButtonColor: confirmBtnColor,
-      cancelButtonColor: '#000',
+      cancelButtonColor: "#000",
       confirmButtonText: confirmBtn,
-      cancelButtonText: 'No, cancelar!',
+      cancelButtonText: "No, cancelar!",
     }).then((result) => {
       if (result.isConfirmed) {
         changeProductAvailability(product_id, location);
@@ -128,7 +128,7 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
   };
 
   const deactivateInstagramHandler = (product_id, active) => {
-    const location = 'Instagram';
+    const location = "Instagram";
     let title;
     let text;
     let confirmBtn;
@@ -137,31 +137,31 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
     let icon;
     let confirmBtnColor;
     if (active === true) {
-      icon = 'warning';
-      title = 'Estas seguro(a)?';
-      text = '¡Estas a punto de desactivar a este producto en Instagram!';
-      confirmBtn = '¡Sí, desactivar producto!';
-      confirmBtnColor = '#CE7E00';
-      successTitle = 'Desactivar!';
-      successText = 'El producto ha sido desactivado en Instagram.';
+      icon = "warning";
+      title = "Estas seguro(a)?";
+      text = "¡Estas a punto de desactivar a este producto en Instagram!";
+      confirmBtn = "¡Sí, desactivar producto!";
+      confirmBtnColor = "#CE7E00";
+      successTitle = "Desactivar!";
+      successText = "El producto ha sido desactivado en Instagram.";
     } else {
-      icon = 'success';
-      title = 'Estas seguro(a)?';
-      text = '¡Estas a punto de Activar a este producto en Instagram!';
-      confirmBtn = '¡Sí, Activar producto en Instagram!';
-      confirmBtnColor = '#228B22';
-      successTitle = 'Reactivado!';
-      successText = 'El producto ha sido Activado en Instagram.';
+      icon = "success";
+      title = "Estas seguro(a)?";
+      text = "¡Estas a punto de Activar a este producto en Instagram!";
+      confirmBtn = "¡Sí, Activar producto en Instagram!";
+      confirmBtnColor = "#228B22";
+      successTitle = "Reactivado!";
+      successText = "El producto ha sido Activado en Instagram.";
     }
     Swal.fire({
       title: title,
       text: text,
-      imageUrl: '/images/instagram_logo_small.webp',
+      imageUrl: "/images/instagram_logo_small.webp",
       showCancelButton: true,
       confirmButtonColor: confirmBtnColor,
-      cancelButtonColor: '#000',
+      cancelButtonColor: "#000",
       confirmButtonText: confirmBtn,
-      cancelButtonText: 'No, cancelar!',
+      cancelButtonText: "No, cancelar!",
     }).then((result) => {
       if (result.isConfirmed) {
         changeProductAvailability(product_id, location);
@@ -209,8 +209,8 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
               <tr
                 className={`flex flex-row items-center ${
                   product?.active === true
-                    ? 'bg-slate-100'
-                    : 'bg-slate-200 text-slate-400'
+                    ? "bg-slate-100"
+                    : "bg-slate-200 text-slate-400"
                 }`}
                 key={product?._id}
               >
@@ -231,12 +231,13 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                         className="w-20 object-cover h-20 maxsm:w-20 rounded-md"
                       />
                     </Link>
-                    {product?.featured === 'Si' ? (
+
+                    {product?.featured ? (
                       <span className="absolute -top-3 -right-1 z-20">
                         <FaStar className="text-xl text-amber-600" />
                       </span>
                     ) : (
-                      ''
+                      ""
                     )}
                   </span>
                 </td>
@@ -267,8 +268,8 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                     <TbWorldWww
                       className={` ${
                         product?.availability?.online === true
-                          ? 'text-green-800 maxsm:text-[10px]'
-                          : 'text-slate-400 maxsm:text-[10px]'
+                          ? "text-green-800 maxsm:text-[10px]"
+                          : "text-slate-400 maxsm:text-[10px]"
                       }`}
                     />
                   </button>
@@ -285,8 +286,8 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                     <FaShop
                       className={` ${
                         product?.availability?.branch === true
-                          ? 'text-green-800 maxsm:text-[10px]'
-                          : 'text-slate-400 maxsm:text-[10px]'
+                          ? "text-green-800 maxsm:text-[10px]"
+                          : "text-slate-400 maxsm:text-[10px]"
                       }`}
                     />
                   </button>
@@ -302,8 +303,8 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                     <FaInstagramSquare
                       className={` ${
                         product?.availability.instagram === true
-                          ? 'bg-gradient-to-tr from-amber-700 to-pink-600 maxsm:text-[10px]'
-                          : 'text-slate-400 maxsm:text-[10px]'
+                          ? "bg-gradient-to-tr from-amber-700 to-pink-600 maxsm:text-[10px]"
+                          : "text-slate-400 maxsm:text-[10px]"
                       }`}
                     />
                   </button>

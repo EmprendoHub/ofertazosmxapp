@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const ProductSchema = new mongoose.Schema({
   type: {
@@ -153,8 +153,8 @@ const ProductSchema = new mongoose.Schema({
     default: true,
   },
   featured: {
-    type: String,
-    default: 'no',
+    type: Boolean,
+    default: false,
   },
   quantity: {
     type: Number,
@@ -162,14 +162,14 @@ const ProductSchema = new mongoose.Schema({
   },
   reviews: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Review',
+    ref: "Review",
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     require: true,
-    ref: 'User',
+    ref: "User",
   },
 });
 
 export default mongoose?.models?.Product ||
-  mongoose.model('Product', ProductSchema);
+  mongoose.model("Product", ProductSchema);

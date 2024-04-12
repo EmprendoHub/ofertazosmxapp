@@ -18,6 +18,7 @@ import {
   blog_categories,
 } from "@/backend/data/productData";
 import MultiselectTagComponent from "../forms/MultiselectTagComponent";
+import ToggleSwitch from "../forms/ToggleSwitch";
 
 const EditVariationProduct = ({ product, currentCookies }) => {
   const router = useRouter();
@@ -52,7 +53,6 @@ const EditVariationProduct = ({ product, currentCookies }) => {
   const [mainImage, setMainImage] = useState(product?.images[0].url);
 
   const [variations, setVariations] = useState(product?.variations);
-
   const addVariation = () => {
     setVariations((prevVariations) => [
       ...prevVariations,
@@ -348,7 +348,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
     formData.append("_id", product?._id);
     // write to database using server actions
 
-    // const result = await updateVariationProduct(formData);
+    setIsSending(true);
     const endpoint = `/api/newproduct`;
     const result = await fetch(endpoint, {
       method: "PUT",
@@ -360,10 +360,11 @@ const EditVariationProduct = ({ product, currentCookies }) => {
 
     if (result?.error) {
       setValidationError(result.error);
+      setIsSending(false);
     } else {
       setValidationError(null);
       //reset the form
-      setIsSending(true);
+
       //formRef.current.reset();
       await updateRevalidateProduct();
       router.push("/admin/productos");
@@ -461,172 +462,35 @@ const EditVariationProduct = ({ product, currentCookies }) => {
               <h1 className="w-full text-2xl font-semibold text-black mb-8 font-EB_Garamond">
                 Actualizar Producto Con Variaciones
               </h1>
-
+              {/* Availability */}
               <div className="mb-4 w-full flex flex-row gap-4 items-center uppercase">
-                <div className="relative">
-                  <label className="block mb-1 font-EB_Garamond">
-                    Destacado
-                  </label>
-                  <select
-                    className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
-                    name="featured"
-                    htmlFor="featured"
-                    onChange={(e) => setFeatured(e.target.value)}
-                    value={featured}
-                  >
-                    {[
-                      { value: false, name: "No", uniqueKey: "featuredNO" },
-                      { value: true, name: "Si", uniqueKey: "featuredYES" },
-                    ].map((opt) => (
-                      <option key={opt.uniqueKey} value={opt}>
-                        {opt.name}
-                      </option>
-                    ))}
-                  </select>
-                  {validationError?.featured && (
-                    <p className="text-sm text-red-400">
-                      {validationError.featured._errors.join(", ")}
-                    </p>
-                  )}
-                  <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
-                    <svg
-                      width="22"
-                      height="22"
-                      className="fill-current"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M7 10l5 5 5-5H7z"></path>
-                    </svg>
-                  </i>
-                </div>
-                <div className="relative">
-                  <label className="block mb-1 font-EB_Garamond">
-                    instagram
-                  </label>
-                  <select
-                    className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
-                    name="instagramAvailability"
-                    htmlFor="instagramAvailability"
-                    onChange={(e) => setInstagramAvailability(e.target.value)}
-                    value={instagramAvailability}
-                  >
-                    {[
-                      {
-                        value: false,
-                        name: "No",
-                        uniqueKey: "instagramNO",
-                      },
-                      {
-                        value: true,
-                        name: "Si",
-                        uniqueKey: "instagramYes",
-                      },
-                    ].map((opt) => (
-                      <option key={opt.uniqueKey} value={opt.value}>
-                        {opt.name}
-                      </option>
-                    ))}
-                  </select>
-
-                  <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
-                    <svg
-                      width="22"
-                      height="22"
-                      className="fill-current"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M7 10l5 5 5-5H7z"></path>
-                    </svg>
-                  </i>
-                </div>
-                <div className="relative">
-                  <label className="block mb-1 font-EB_Garamond">
-                    sucursal
-                  </label>
-                  <select
-                    className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
-                    name="branchAvailability"
-                    htmlFor="branchAvailability"
-                    onChange={(e) => setBranchAvailability(e.target.value)}
-                    value={branchAvailability}
-                  >
-                    {[
-                      {
-                        value: false,
-                        name: "No",
-                        uniqueKey: "branchNo",
-                      },
-                      {
-                        value: true,
-                        name: "Si",
-                        uniqueKey: "branchYes",
-                      },
-                    ].map((opt) => (
-                      <option key={opt.uniqueKey} value={opt.value}>
-                        {opt.name}
-                      </option>
-                    ))}
-                  </select>
-
-                  <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
-                    <svg
-                      width="22"
-                      height="22"
-                      className="fill-current"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M7 10l5 5 5-5H7z"></path>
-                    </svg>
-                  </i>
-                </div>
-                <div className="relative">
-                  <label className="block mb-1 font-EB_Garamond">www</label>
-                  <select
-                    className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
-                    name="onlineAvailability"
-                    htmlFor="onlineAvailability"
-                    onChange={(e) => setOnlineAvailability(e.target.value)}
-                    value={onlineAvailability}
-                  >
-                    {[
-                      {
-                        value: false,
-                        name: "No",
-                        uniqueKey: "onlineNo",
-                      },
-                      {
-                        value: true,
-                        name: "Si",
-                        uniqueKey: "onlineYes",
-                      },
-                    ].map((opt) => (
-                      <option key={opt.uniqueKey} value={opt.value}>
-                        {opt.name}
-                      </option>
-                    ))}
-                  </select>
-
-                  <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
-                    <svg
-                      width="22"
-                      height="22"
-                      className="fill-current"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M7 10l5 5 5-5H7z"></path>
-                    </svg>
-                  </i>
-                </div>
+                <ToggleSwitch
+                  label="Destacado"
+                  enabled={featured}
+                  setEnabled={setFeatured}
+                />
+                <ToggleSwitch
+                  label="Instagram"
+                  enabled={instagramAvailability}
+                  setEnabled={setInstagramAvailability}
+                />
+                <ToggleSwitch
+                  label="Sucursal"
+                  enabled={branchAvailability}
+                  setEnabled={setBranchAvailability}
+                />
+                <ToggleSwitch
+                  label="WWW"
+                  enabled={onlineAvailability}
+                  setEnabled={setOnlineAvailability}
+                />
               </div>
             </div>
 
             <div className="flex flex-row maxmd:flex-col items-start gap-5 justify-between w-full">
               <div className="gap-y-1 flex-col flex px-2 w-full">
-                {/* Section 1 - Title, Image */}
-                <label className="block  font-EB_Garamond">
-                  Imagen principal del Producto
-                </label>
-                <div className="relative aspect-video hover:opacity-80 bg-white border-4 border-gray-300">
+                {/*  Imagen principal del Producto */}
+                <div className="relative hover:opacity-80 bg-white border-4 border-gray-300">
                   <label htmlFor="selectorMain" className="cursor-pointer">
                     <Image
                       id="blogImage"
@@ -653,8 +517,8 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                 </div>
               </div>
 
-              <div className="w-full flex-col flex justify-start px-2 gap-y-5">
-                <div className="mb-4">
+              <div className="w-full flex-col flex justify-start px-2 gap-y-2">
+                <div className="mb-1">
                   <label className="block mb-1  font-EB_Garamond">
                     Titulo del Producto
                   </label>
@@ -673,7 +537,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                     </p>
                   )}
                 </div>
-                <div className="mb-4">
+                <div className="mb-1">
                   <label className="block mb-1  font-EB_Garamond">
                     {" "}
                     Description Corta
@@ -693,113 +557,117 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                     </p>
                   )}
                 </div>
-                <div className="mb-4">
-                  <label className="block mb-1  font-EB_Garamond">
-                    {" "}
-                    Marca del Producto
-                  </label>
-                  <input
-                    type="text"
-                    className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
-                    placeholder="Marca del Producto"
-                    value={brand}
-                    onChange={(e) => setBrand(e.target.value)}
-                    name="brand"
-                    htmlFor="brand"
-                  />
-                  {validationError?.brand && (
-                    <p className="text-sm text-red-400">
-                      {validationError.brand._errors.join(", ")}
-                    </p>
-                  )}
-                </div>
-                <div className="mb-4 w-full">
-                  <label className="block mb-1 font-EB_Garamond">
-                    {" "}
-                    Género{" "}
-                  </label>
-                  <div className="relative">
-                    <select
-                      value={gender}
-                      className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
-                      name="gender"
-                      htmlFor="gender"
-                      onChange={(e) => handleGenderChange(e.target.value)}
-                    >
-                      {genders?.map((gender) => (
-                        <option key={gender.es} value={gender.es}>
-                          {gender.es}
-                        </option>
-                      ))}
-                    </select>
-                    {validationError?.gender && (
-                      <p className="text-sm text-red-400">
-                        {validationError.gender._errors.join(", ")}
-                      </p>
-                    )}
-                    <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
-                      <svg
-                        width="22"
-                        height="22"
-                        className="fill-current"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M7 10l5 5 5-5H7z"></path>
-                      </svg>
-                    </i>
-                  </div>
-                </div>
 
-                <div className="mb-4 w-full">
-                  <label className="block mb-1 font-EB_Garamond">
-                    Etiquetas
-                  </label>
-                  <div className="relative">
-                    <MultiselectTagComponent
-                      values={tags}
-                      options={tagSelection}
-                      handleAddTagField={handleAddTagField}
+                {/* Marca y genero */}
+                <div className=" flex flex-row items-center">
+                  <div className="mb-4">
+                    <label className="block mb-1  font-EB_Garamond">
+                      Marca
+                    </label>
+                    <input
+                      type="text"
+                      className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
+                      placeholder="Marca del Producto"
+                      value={brand}
+                      onChange={(e) => setBrand(e.target.value)}
+                      name="brand"
+                      htmlFor="brand"
                     />
-                    {validationError?.tags && (
+                    {validationError?.brand && (
                       <p className="text-sm text-red-400">
-                        {validationError.tags._errors.join(", ")}
+                        {validationError.brand._errors.join(", ")}
                       </p>
                     )}
                   </div>
-                </div>
-                <div className="mb-4 w-full">
-                  <label className="block mb-1 font-EB_Garamond">
-                    Categoría
-                  </label>
-                  <div className="relative">
-                    <select
-                      value={category}
-                      className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
-                      name="category"
-                      htmlFor="category"
-                      onChange={(e) => handleCategoryChange(e.target.value)}
-                    >
-                      {product_categories.map((category) => (
-                        <option key={category.es} value={category.es}>
-                          {category.es}
-                        </option>
-                      ))}
-                    </select>
-                    {validationError?.category && (
-                      <p className="text-sm text-red-400">
-                        {validationError.category._errors.join(", ")}
-                      </p>
-                    )}
-                    <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
-                      <svg
-                        width="22"
-                        height="22"
-                        className="fill-current"
-                        viewBox="0 0 20 20"
+                  <div className="mb-4 w-full">
+                    <label className="block mb-1 font-EB_Garamond">
+                      Género
+                    </label>
+                    <div className="relative">
+                      <select
+                        value={gender}
+                        className="block appearance-none border border-gray-300 bg-gray-100 cursor-pointer rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                        name="gender"
+                        htmlFor="gender"
+                        onChange={(e) => handleGenderChange(e.target.value)}
                       >
-                        <path d="M7 10l5 5 5-5H7z"></path>
-                      </svg>
-                    </i>
+                        {genders?.map((gender) => (
+                          <option key={gender.es} value={gender.es}>
+                            {gender.es}
+                          </option>
+                        ))}
+                      </select>
+                      {validationError?.gender && (
+                        <p className="text-sm text-red-400">
+                          {validationError.gender._errors.join(", ")}
+                        </p>
+                      )}
+                      <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
+                        <svg
+                          width="22"
+                          height="22"
+                          className="fill-current"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M7 10l5 5 5-5H7z"></path>
+                        </svg>
+                      </i>
+                    </div>
+                  </div>
+                </div>
+                {/* Etiquetas y Categoria */}
+                <div className=" flex flex-row items-center">
+                  <div className="mb-1 w-full">
+                    <label className="block mb-1 font-EB_Garamond">
+                      Etiquetas
+                    </label>
+                    <div className="relative ">
+                      <MultiselectTagComponent
+                        values={tags}
+                        options={tagSelection}
+                        handleAddTagField={handleAddTagField}
+                      />
+                      {validationError?.tags && (
+                        <p className="text-sm text-red-400">
+                          {validationError.tags._errors.join(", ")}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="mb-4 w-full">
+                    <label className="block mb-1 font-EB_Garamond">
+                      Categoría
+                    </label>
+                    <div className="relative">
+                      <select
+                        value={category}
+                        className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full cursor-pointer"
+                        name="category"
+                        htmlFor="category"
+                        onChange={(e) => handleCategoryChange(e.target.value)}
+                      >
+                        {product_categories.map((category) => (
+                          <option key={category.es} value={category.es}>
+                            {category.es}
+                          </option>
+                        ))}
+                      </select>
+                      {validationError?.category && (
+                        <p className="text-sm text-red-400">
+                          {validationError.category._errors.join(", ")}
+                        </p>
+                      )}
+                      <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
+                        <svg
+                          width="22"
+                          height="22"
+                          className="fill-current"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M7 10l5 5 5-5H7z"></path>
+                        </svg>
+                      </i>
+                    </div>
                   </div>
                 </div>
 
@@ -847,13 +715,14 @@ const EditVariationProduct = ({ product, currentCookies }) => {
             <div className="w-[300px]">
               <div
                 onClick={addVariation}
-                className="my-2 px-4 py-2 text-center inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 w-full cursor-pointer"
+                className="my-2 px-8 py-2 text-center inline-block text-white bg-black border border-transparent rounded-md hover:bg-slate-800 w-auto cursor-pointer"
               >
-                Agregar Variación +
+                Variación +
               </div>
             </div>
-            <div className="w-full main-variation">
-              <div className="flex flex-row maxsm:flex-col items-center gap-5">
+            {/* Main Variation */}
+            <div className="w-full main-variation flex maxsm:flex-col items-center">
+              <div className="flex flex-row items-center gap-3 w-2/3  maxsm:w-full">
                 <div className="mb-4 w-full">
                   <label className="block mb-1 font-EB_Garamond"> Talla </label>
                   <div className="relative">
@@ -862,7 +731,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                       name="size"
                       htmlFor="size"
                       onChange={(e) => handleSizeChange(0, e.target.value)}
-                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 cursor-pointer focus:outline-none focus:border-gray-400 w-full"
                     >
                       {sizeSelection.map((option) => (
                         <option key={option.value} value={option.value}>
@@ -885,7 +754,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                       name="color"
                       htmlFor="color"
                       onChange={(e) => handleColorChange(0, e.target.value)}
-                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                      className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 cursor-pointer focus:outline-none focus:border-gray-400 w-full"
                     >
                       {set_colors.map((option) => (
                         <option key={option.value} value={option.value}>
@@ -906,7 +775,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                     <div className="col-span-2">
                       <input
                         type="number"
-                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3focus:outline-none focus:border-gray-400 w-full"
+                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 remove-arrow  focus:outline-none focus:border-gray-400 w-full"
                         placeholder="0.00"
                         min="1"
                         value={variations[0].price}
@@ -928,7 +797,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                     <div className="col-span-2">
                       <input
                         type="number"
-                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3focus:outline-none focus:border-gray-400 w-full"
+                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 remove-arrow focus:outline-none focus:border-gray-400 w-full"
                         placeholder="0.00"
                         min="1"
                         value={variations[0].cost}
@@ -953,7 +822,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                     <div className="col-span-2">
                       <input
                         type="number"
-                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 remove-arrow focus:outline-none focus:border-gray-400 w-full"
                         placeholder="1"
                         min="1"
                         value={variations[0].stock}
@@ -969,50 +838,49 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                     </div>
                   </div>
                 </div>
+              </div>
+              {/* Imagen de Variación # 1 */}
+              <div className="mb-4 w-1/3 maxsm:w-full">
+                <div className="relative flex min-w-full  hover:opacity-80 bg-white border-4 border-gray-300">
+                  <label htmlFor="selectorVarOne" className="cursor-pointer">
+                    <Image
+                      id="MainVariation"
+                      alt="Main Variation"
+                      src={variations[0].image}
+                      width={500}
+                      height={500}
+                      className="w-full h-full object-cover z-20"
+                    />
+                    <input
+                      id="selectorVarOne"
+                      type="file"
+                      accept=".png, .jpg, .jpeg, .webp"
+                      hidden
+                      onChange={(e) => handleImageChange(0, e.target.files[0])}
+                    />
 
-                <div className="mb-4 w-full flex-col flex">
-                  {/* Section 1 - Title, Image */}
-                  <label className="block  font-EB_Garamond">
-                    Imagen de Variación # 1
+                    {validationError?.mainImage && (
+                      <p className="text-sm text-red-400">
+                        {validationError.mainImage._errors.join(", ")}
+                      </p>
+                    )}
                   </label>
-                  <div className="relative aspect-video hover:opacity-80 bg-white border-4 border-gray-300">
-                    <label htmlFor="selectorVarOne" className="cursor-pointer">
-                      <Image
-                        id="MainVariation"
-                        alt="Main Variation"
-                        src={variations[0].image}
-                        width={500}
-                        height={500}
-                        className="w-full h-40 object-cover z-20"
-                      />
-                      <input
-                        id="selectorVarOne"
-                        type="file"
-                        accept=".png, .jpg, .jpeg, .webp"
-                        hidden
-                        onChange={(e) =>
-                          handleImageChange(0, e.target.files[0])
-                        }
-                      />
-
-                      {validationError?.mainImage && (
-                        <p className="text-sm text-red-400">
-                          {validationError.mainImage._errors.join(", ")}
-                        </p>
-                      )}
-                    </label>
-                  </div>
                 </div>
               </div>
             </div>
 
             {/* Render additional variations */}
             {variations.slice(1).map((variation, index) => (
-              <div key={index + 1} className={`w-full variation-${index + 1}`}>
-                <div className="relative flex flex-row maxsm:flex-col items-center gap-5">
+              <div
+                key={index + 1}
+                className={`w-full variation-${
+                  index + 1
+                } flex maxsm:flex-col items-center`}
+              >
+                <div className="relative flex flex-row items-center gap-3 maxsm:gap-1 w-2/3  maxsm:w-full">
                   <div
                     onClick={() => removeVariation(index + 1)}
-                    className="absolute top-0 left-0 p-1 bg-red-500 text-white rounded-tr-md cursor-pointer"
+                    className="absolute top-0 -left-5 px-1 bg-red-500 text-white rounded-full cursor-pointer z-50 text-xs"
                   >
                     X
                   </div>
@@ -1029,7 +897,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                         onChange={(e) =>
                           handleSizeChange(index + 1, e.target.value)
                         }
-                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 cursor-pointer focus:outline-none focus:border-gray-400 w-full"
                       >
                         {sizeSelection.map((option) => (
                           <option key={option.value} value={option.value}>
@@ -1058,7 +926,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                         onChange={(e) =>
                           handleColorChange(index + 1, e.target.value)
                         }
-                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 cursor-pointer  focus:outline-none focus:border-gray-400 w-full"
                       >
                         {set_colors.map((option) => (
                           <option key={option.value} value={option.value}>
@@ -1087,7 +955,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                         onChange={(e) =>
                           handlePriceChange(index + 1, e.target.value)
                         }
-                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 curs focus:outline-none focus:border-gray-400 w-full m-0 remove-arrow"
                       />
                     </div>
                   </div>
@@ -1106,7 +974,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                         onChange={(e) =>
                           handleCostChange(index + 1, e.target.value)
                         }
-                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 remove-arrow focus:outline-none focus:border-gray-400 w-full"
                       />
                     </div>
                   </div>
@@ -1125,57 +993,56 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                         onChange={(e) =>
                           handleStockChange(index + 1, e.target.value)
                         }
-                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
+                        className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 remove-arrow focus:outline-none focus:border-gray-400 w-full"
                       />
                     </div>
                   </div>
+                </div>
+                {/* Dynamic Image Variation */}
+                <div className="mb-4 w-1/3 maxsm:w-full">
+                  <div className="relative aspect-video hover:opacity-80 bg-white border-4 border-gray-300">
+                    <label
+                      htmlFor={`selector${index + 1}`}
+                      className="cursor-pointer"
+                    >
+                      <Image
+                        id={`variation-${index + 1}`}
+                        alt={`image variation-${index + 1}`}
+                        src={variation.image}
+                        width={500}
+                        height={500}
+                        className="w-full h-full object-cover z-20"
+                      />
+                      <input
+                        id={`selector${index + 1}`}
+                        type="file"
+                        accept=".png, .jpg, .jpeg, .webp"
+                        hidden
+                        onChange={(e) =>
+                          handleImageChange(index + 1, e.target.files[0])
+                        }
+                      />
 
-                  <div className="mb-4 w-full flex-col flex">
-                    {/* Section 1 - Title, Image */}
-                    <label className="block  font-EB_Garamond">
-                      Imagen de Variación # {index + 2}
+                      {validationError?.mainImage && (
+                        <p className="text-sm text-red-400">
+                          {validationError.mainImage._errors.join(", ")}
+                        </p>
+                      )}
                     </label>
-                    <div className="relative aspect-video hover:opacity-80 bg-white border-4 border-gray-300">
-                      <label
-                        htmlFor={`selector${index + 1}`}
-                        className="cursor-pointer"
-                      >
-                        <Image
-                          id={`variation-${index + 1}`}
-                          alt={`image variation-${index + 1}`}
-                          src={variation.image}
-                          width={500}
-                          height={500}
-                          className="w-full h-40 object-cover z-20"
-                        />
-                        <input
-                          id={`selector${index + 1}`}
-                          type="file"
-                          accept=".png, .jpg, .jpeg, .webp"
-                          hidden
-                          onChange={(e) =>
-                            handleImageChange(index + 1, e.target.files[0])
-                          }
-                        />
-
-                        {validationError?.mainImage && (
-                          <p className="text-sm text-red-400">
-                            {validationError.mainImage._errors.join(", ")}
-                          </p>
-                        )}
-                      </label>
-                    </div>
                   </div>
                 </div>
               </div>
             ))}
 
-            <div
+            <button
+              disabled={isSending}
               onClick={hanldeFormSubmit}
-              className="my-2 cursor-pointer px-4 py-2 text-center inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 w-full"
+              className={`${
+                isSending ? "cursor-wait" : ""
+              } my-2 cursor-pointer px-4 py-2 text-center inline-block text-white bg-black border border-transparent rounded-md hover:bg-slate-800 w-full`}
             >
-              Actualizar Producto
-            </div>
+              {isSending ? "Actualizando..." : "Actualizar"}
+            </button>
           </section>
         </div>
       ) : (

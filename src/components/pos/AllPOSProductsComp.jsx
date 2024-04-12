@@ -155,7 +155,7 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
                       height={200}
                       className="w-20 object-cover h-20 maxsm:w-20 rounded-md "
                     />
-                    {product?.featured === "Si" ? (
+                    {product?.featured ? (
                       <span className="absolute -top-3 -right-1 z-20">
                         <FaStar className="text-xl text-amber-600" />
                       </span>
