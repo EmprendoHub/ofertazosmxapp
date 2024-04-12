@@ -55,6 +55,8 @@ const NewVariationOptimized = ({ currentCookies }) => {
       size: "",
       color: "",
       colorHex: "",
+      colorHexTwo: "",
+      colorHexThree: "",
       price: 0,
       cost: 0,
       stock: 1,
@@ -69,6 +71,8 @@ const NewVariationOptimized = ({ currentCookies }) => {
         size: "",
         color: "",
         colorHex: "",
+        colorHexTwo: "",
+        colorHexThree: "",
         price: prevVariations[0].price,
         cost: prevVariations[0].cost,
         stock: 1,
@@ -89,10 +93,13 @@ const NewVariationOptimized = ({ currentCookies }) => {
     setVariations(newVariations);
   };
 
-  const handleColorChange = (index, newColor, hex) => {
+  const handleColorChange = (index, newColor, hex, hexTwo, hexThree) => {
+    console.log(hex, newColor, hexTwo, hexThree);
     const newVariations = [...variations];
     newVariations[index].color = newColor;
     newVariations[index].colorHex = hex;
+    newVariations[index].colorHexTwo = hexTwo;
+    newVariations[index].colorHexThree = hexThree;
     setVariations(newVariations);
   };
 
@@ -434,7 +441,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
       },
       body: formData,
     });
-    console.log(response);
+
     if (!response?.ok) {
       if (response.status === 409) {
         setValidationError("Este Titulo de producto ya esta en uso");
@@ -754,13 +761,32 @@ const NewVariationOptimized = ({ currentCookies }) => {
                   <select
                     name="color"
                     htmlFor="color"
-                    onChange={(e) =>
-                      handleColorChange(0, e.target.value, e.target.hex)
-                    }
+                    onChange={(e) => {
+                      const selectedOption =
+                        e.target.options[e.target.selectedIndex];
+                      const hexValue = selectedOption.getAttribute("data-hex");
+                      const hexTwoValue =
+                        selectedOption.getAttribute("data-hextwo");
+                      const hexThreeValue =
+                        selectedOption.getAttribute("data-hexthree");
+                      handleColorChange(
+                        0,
+                        e.target.value,
+                        hexValue,
+                        hexTwoValue,
+                        hexThreeValue
+                      );
+                    }}
                     className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 py-1 cursor-pointer focus:outline-none focus:border-gray-400 w-full"
                   >
                     {set_colors.map((option) => (
-                      <option key={option.value} value={option.value}>
+                      <option
+                        data-hex={option.hex}
+                        data-hextwo={option.hexTwo}
+                        data-hexthree={option.hexThree}
+                        key={option.value}
+                        value={option.value}
+                      >
                         {option.value}
                       </option>
                     ))}
@@ -930,13 +956,23 @@ const NewVariationOptimized = ({ currentCookies }) => {
                     <select
                       name={`color-${index + 1}`}
                       htmlFor={`color-${index + 1}`}
-                      onChange={(e) =>
+                      onChange={(e) => {
+                        const selectedOption =
+                          e.target.options[e.target.selectedIndex];
+                        const hexValue =
+                          selectedOption.getAttribute("data-hex");
+                        const hexTwoValue =
+                          selectedOption.getAttribute("data-hextwo");
+                        const hexThreeValue =
+                          selectedOption.getAttribute("data-hexthree");
                         handleColorChange(
                           index + 1,
                           e.target.value,
-                          e.target.hex
-                        )
-                      }
+                          hexValue,
+                          hexTwoValue,
+                          hexThreeValue
+                        );
+                      }}
                       className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 py-1 cursor-pointer focus:outline-none focus:border-gray-400 w-full"
                     >
                       {set_colors.map((option) => (

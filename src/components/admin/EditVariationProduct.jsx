@@ -69,6 +69,8 @@ const EditVariationProduct = ({ product, currentCookies }) => {
         size: "",
         color: "",
         colorHex: "",
+        colorHexTwo: "",
+        colorHexThree: "",
         price: prevVariations[0].price,
         cost: prevVariations[0].cost,
         stock: 1,
@@ -89,11 +91,13 @@ const EditVariationProduct = ({ product, currentCookies }) => {
     setVariations(newVariations);
   };
 
-  const handleColorChange = (index, newColor, hex) => {
-    console.log(hex, newColor);
+  const handleColorChange = (index, newColor, hex, hexTwo, hexThree) => {
+    console.log(hex, newColor, hexTwo, hexThree);
     const newVariations = [...variations];
     newVariations[index].color = newColor;
     newVariations[index].colorHex = hex;
+    newVariations[index].colorHexTwo = hexTwo;
+    newVariations[index].colorHexThree = hexThree;
     setVariations(newVariations);
   };
 
@@ -770,13 +774,25 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                           e.target.options[e.target.selectedIndex];
                         const hexValue =
                           selectedOption.getAttribute("data-hex");
-                        handleColorChange(0, e.target.value, hexValue);
+                        const hexTwoValue =
+                          selectedOption.getAttribute("data-hextwo");
+                        const hexThreeValue =
+                          selectedOption.getAttribute("data-hexthree");
+                        handleColorChange(
+                          0,
+                          e.target.value,
+                          hexValue,
+                          hexTwoValue,
+                          hexThreeValue
+                        );
                       }}
                       className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 cursor-pointer focus:outline-none focus:border-gray-400 w-full"
                     >
                       {set_colors.map((option) => (
                         <option
                           data-hex={option.hex}
+                          data-hextwo={option.hexTwo}
+                          data-hexthree={option.hexThree}
                           key={option.value}
                           value={option.value}
                         >
@@ -950,10 +966,16 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                             e.target.options[e.target.selectedIndex];
                           const hexValue =
                             selectedOption.getAttribute("data-hex");
+                          const hexTwoValue =
+                            selectedOption.getAttribute("data-hextwo");
+                          const hexThreeValue =
+                            selectedOption.getAttribute("data-hexthree");
                           handleColorChange(
                             index + 1,
                             e.target.value,
-                            hexValue
+                            hexValue,
+                            hexTwoValue,
+                            hexThreeValue
                           );
                         }}
                         className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 cursor-pointer  focus:outline-none focus:border-gray-400 w-full"
@@ -961,6 +983,8 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                         {set_colors.map((option) => (
                           <option
                             data-hex={option.hex}
+                            data-hextwo={option.hexTwo}
+                            data-hexthree={option.hexThree}
                             key={option.value}
                             value={option.value}
                           >

@@ -81,6 +81,12 @@ const ProductSchema = new mongoose.Schema({
       colorHex: {
         type: String,
       },
+      colorHexTwo: {
+        type: String,
+      },
+      colorHexThree: {
+        type: String,
+      },
       size: {
         type: String,
       },

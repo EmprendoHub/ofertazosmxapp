@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { FaPrint } from "react-icons/fa";
-import { formatDate, formatTime } from "@/backend/helpers";
+import { formatDate, formatSpanishDate, formatTime } from "@/backend/helpers";
 import { getTotalFromItems } from "@/backend/helpers";
 import FormattedPrice from "@/backend/helpers/FormattedPrice";
 import AdminOrderSearch from "@/components/layout/AdminOrderSearch";
@@ -100,11 +100,8 @@ const POSOrders = ({ orders, filteredOrdersCount }) => {
                 >
                   {order.branch}
                 </td>
-                <td className="px-6 py-2 maxsm:hidden">
-                  {order?.createdAt &&
-                    `${formatDate(
-                      order?.createdAt.substring(0, 24)
-                    )} a las ${formatTime(order?.createdAt)}`}
+                <td className="px-2 py-2 maxsm:hidden">
+                  {order?.createdAt && formatSpanishDate(order?.createdAt)}
                 </td>
                 <td className="px-1 py-2">
                   <div className="flex items-center ">

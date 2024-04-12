@@ -1,10 +1,11 @@
-'use client';
-import BranchSidebar, { SideBarItem } from '@/components/pos/BranchSidebar';
-import { usePathname } from 'next/navigation';
-import { TbDeviceIpadDollar, TbQrcode, TbScan } from 'react-icons/tb';
-import { TfiDashboard } from 'react-icons/tfi';
-import { LuReceipt } from 'react-icons/lu';
-import { LiaCashRegisterSolid, LiaStoreAltSolid } from 'react-icons/lia';
+"use client";
+import BranchSidebar, { SideBarItem } from "@/components/pos/BranchSidebar";
+import { usePathname } from "next/navigation";
+import { TbDeviceIpadDollar, TbQrcode, TbScan } from "react-icons/tb";
+import { TfiDashboard } from "react-icons/tfi";
+import { LuReceipt } from "react-icons/lu";
+import { LiaCashRegisterSolid, LiaStoreAltSolid } from "react-icons/lia";
+import { FaInstagram } from "react-icons/fa6";
 
 export default function UserLayout({ children }) {
   const pathname = usePathname();
@@ -15,61 +16,70 @@ export default function UserLayout({ children }) {
         <BranchSidebar>
           <SideBarItem
             icon={<TfiDashboard size={20} />}
-            text={'Tablero'}
-            active={pathname === '/puntodeventa' ?? true}
-            url={'/puntodeventa'}
+            text={"Tablero"}
+            active={pathname === "/puntodeventa" ?? true}
+            url={"/puntodeventa"}
           />
           <SideBarItem
             icon={<TbDeviceIpadDollar size={20} />}
-            text={'Pedidos'}
-            active={pathname === '/puntodeventa/pedidos' ?? true}
-            url={'/puntodeventa/pedidos'}
+            text={"Pedidos"}
+            active={pathname === "/puntodeventa/pedidos" ?? true}
+            url={"/puntodeventa/pedidos"}
           />
 
           <SideBarItem
             icon={<LuReceipt size={20} />}
-            text={'POS'}
+            text={"POS"}
             active={
-              pathname === '/puntodeventa/tienda' ||
-              (pathname === '/puntodeventa/tienda' && true)
+              pathname === "/puntodeventa/tienda" ||
+              (pathname === "/puntodeventa/tienda" && true)
             }
-            url={'/puntodeventa/tienda'}
+            url={"/puntodeventa/tienda"}
+          />
+          <SideBarItem
+            icon={<FaInstagram size={20} />}
+            text={"Instagram"}
+            active={
+              pathname === "/puntodeventa/instagram" ||
+              (pathname === "/puntodeventa/instagram" && true)
+            }
+            url={"/puntodeventa/instagram"}
           />
           <SideBarItem
             icon={<LiaCashRegisterSolid size={20} />}
-            text={'Caja'}
+            text={"Caja"}
             active={
-              pathname === '/puntodeventa/carrito' ||
-              (pathname === '/puntodeventa/carrito' && true)
+              pathname === "/puntodeventa/carrito" ||
+              (pathname === "/puntodeventa/carrito" && true)
             }
-            url={'/puntodeventa/carrito'}
+            url={"/puntodeventa/carrito"}
           />
           <SideBarItem
             icon={<TbScan size={20} />}
-            text={'Scanner'}
+            text={"Scanner"}
             active={
-              pathname === '/puntodeventa/qr/scanner' ||
-              (pathname === '/puntodeventa/qr/scanner' && true)
+              pathname === "/puntodeventa/qr/scanner" ||
+              (pathname === "/puntodeventa/qr/scanner" && true)
             }
-            url={'/puntodeventa/qr/scanner'}
+            url={"/puntodeventa/qr/scanner"}
           />
           <SideBarItem
             icon={<TbScan size={20} />}
-            text={'Scanner ID'}
+            text={"Scanner ID"}
             active={
-              pathname === '/puntodeventa/qr/idscanner' ||
-              (pathname === '/puntodeventa/qr/idscanner' && true)
+              pathname === "/puntodeventa/qr/idscanner" ||
+              (pathname === "/puntodeventa/qr/idscanner" && true)
             }
-            url={'/puntodeventa/qr/idscanner'}
+            url={"/puntodeventa/qr/idscanner"}
           />
           <SideBarItem
             icon={<TbQrcode size={20} />}
-            text={'Generar QRs'}
+            text={"Generar QRs"}
             active={
-              pathname === '/puntodeventa/productos' ||
-              (pathname === '/puntodeventa/productos' && true)
+              pathname === "/puntodeventa/productos" ||
+              (pathname === "/puntodeventa/productos" && true)
             }
-            url={'/puntodeventa/productos'}
+            url={"/puntodeventa/productos"}
           />
         </BranchSidebar>
         <div className="relative w-full mb-5 ">{children}</div>

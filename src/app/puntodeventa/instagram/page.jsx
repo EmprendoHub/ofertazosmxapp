@@ -1,12 +1,12 @@
-import { getCookiesName, removeUndefinedAndPageKeys } from "@/backend/helpers";
-import { cookies } from "next/headers";
 import ServerPagination from "@/components/pagination/ServerPagination";
 import ListPOSProducts from "@/components/products/ListPOSProducts";
-import { getAllPOSProduct } from "@/app/_actions";
+import { getAllPOSInstagramProduct } from "@/app/_actions";
+import { removeUndefinedAndPageKeys } from "@/backend/helpers";
 
 export const metadata = {
-  title: "POS Shopout Mx",
-  description: "Punto de Venta Shopout Mx",
+  title: "Tienda Shopout Mx",
+  description:
+    "Ven y explora nuestra tienda en linea y descubre modelos exclusivos de marcas de alta gama.",
 };
 
 const TiendaPage = async ({ searchParams }) => {
@@ -22,7 +22,7 @@ const TiendaPage = async ({ searchParams }) => {
   const queryUrlParams = removeUndefinedAndPageKeys(urlParams);
   const keywordQuery = new URLSearchParams(queryUrlParams).toString();
 
-  const data = await getAllPOSProduct(searchParams);
+  const data = await getAllPOSInstagramProduct(searchParams);
   //pagination
   let page = parseInt(searchParams.page, 20);
   page = !page || page < 1 ? 1 : page;
@@ -43,10 +43,8 @@ const TiendaPage = async ({ searchParams }) => {
 
   return (
     <div className="flex flex-col items-center justify-center gap-5">
-      {/* <StoreHeroComponent /> */}
-
       <ListPOSProducts
-        pageName={"Sucursal"}
+        pageName={"Instagram"}
         products={products}
         filteredProductsCount={filteredProductsCount}
       />
