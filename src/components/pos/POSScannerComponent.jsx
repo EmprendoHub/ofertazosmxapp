@@ -1,38 +1,74 @@
-'use client';
-import { addToPOSCart } from '@/redux/shoppingSlice';
-import { usePathname, useRouter } from 'next/navigation';
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import Swal from 'sweetalert2';
+"use client";
+import { addToPOSCart } from "@/redux/shoppingSlice";
+import { usePathname, useRouter } from "next/navigation";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
 
 const POSScannerComponent = ({ product, variation }) => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { productsPOS } = useSelector((state) => state?.compras);
   const pathname = usePathname();
+
   useEffect(() => {
-    if (variation?.stock > 0) {
-      dispatch(addToPOSCart(variation));
-      if (pathname.includes('admin')) {
-        router.push('/admin/pos/carrito');
+    const productExists = productsPOS.some(
+      (product) => product._id === variation._id
+    );
+
+    if (productExists) {
+      const cartProduct = productsPOS.find(
+        (product) => product._id === variation._id
+      );
+      if (variation?.stock <= cartProduct?.quantity) {
+        Swal.fire({
+          title: "¡Yas esta en Carrito!",
+          text: "Este producto ya esta en el carrito y no tiene mas existencias.",
+          icon: "error",
+          confirmButtonColor: "#008000",
+          confirmButtonText: "OK",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            if (pathname.includes("admin")) {
+              router.push("/admin/pos/carrito");
+            } else {
+              router.push("/puntodeventa/carrito");
+            }
+          }
+        });
       } else {
-        router.push('/puntodeventa/carrito');
+        dispatch(addToPOSCart(variation));
+        if (pathname.includes("admin")) {
+          router.push("/admin/pos/carrito");
+        } else {
+          router.push("/puntodeventa/carrito");
+        }
       }
     } else {
-      Swal.fire({
-        title: '¡Sin Existencias!',
-        text: 'Este producto se vendió en la tienda en linea.',
-        icon: 'error',
-        confirmButtonColor: '#008000',
-        confirmButtonText: 'OK',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          if (pathname.includes('admin')) {
-            router.push('/admin/pos/pedidos');
-          } else {
-            router.push('/puntodeventa/pedidos');
-          }
+      if (variation?.stock > 0) {
+        dispatch(addToPOSCart(variation));
+        if (pathname.includes("admin")) {
+          router.push("/admin/pos/carrito");
+        } else {
+          router.push("/puntodeventa/carrito");
         }
-      });
+      } else {
+        Swal.fire({
+          title: "¡Sin Existencias!",
+          text: "Este producto se vendió en la tienda en linea.",
+          icon: "error",
+          confirmButtonColor: "#008000",
+          confirmButtonText: "OK",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            if (pathname.includes("admin")) {
+              router.push("/admin/pos/qr/scanner");
+            } else {
+              router.push("/puntodeventa/qr/scanner");
+            }
+          }
+        });
+      }
     }
   }, [product]);
 

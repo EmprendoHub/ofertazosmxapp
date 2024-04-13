@@ -1,13 +1,20 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Html5QrcodeScanner } from "html5-qrcode";
+import { useDebounce } from "use-debounce";
 import { usePathname, useRouter } from "next/navigation";
 import "./qrstyles.scss";
+import { FaQrcode } from "react-icons/fa6";
 
 const QRScannerComponent = () => {
   const [scanResult, setScanResult] = useState(null);
   const pathname = usePathname();
   const router = useRouter();
+  const initialRender = useRef(true);
+  const inputRef = useRef(null);
+
+  const [text, setText] = useState("");
+  const [query] = useDebounce(text, 750);
   useEffect(() => {
     const scanner = new Html5QrcodeScanner("reader", {
       qrbox: {
@@ -31,6 +38,17 @@ const QRScannerComponent = () => {
   }, []);
 
   useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (initialRender.current) {
+      initialRender.current = false;
+      return;
+    }
+
     if (scanResult) {
       if (pathname.includes("admin")) {
         router.push(`/admin/pos/scan/${scanResult}`);
@@ -38,7 +56,18 @@ const QRScannerComponent = () => {
         router.push(`/puntodeventa/scan/${scanResult}`);
       }
     }
-  }, [scanResult]);
+
+    if (!query) {
+      console.log("no hay resultados");
+    } else {
+      const id_part = text.split("-")[0];
+      if (pathname.includes("admin")) {
+        router.push(`/admin/pos/scan/${id_part}`);
+      } else {
+        router.push(`/puntodeventa/scan/${id_part}`);
+      }
+    }
+  }, [scanResult, query]);
 
   return (
     <div className="container flex flex-col h-screen items-center justify-start mt-2  mx-auto">
@@ -46,6 +75,18 @@ const QRScannerComponent = () => {
         <h2 className=" text-slate-700 text-center w-full uppercase font-semibold tracking-wide text-2xl font-EB_Garamond">
           Scanner
         </h2>
+      </div>
+      <div className="relative rounded-md shadow-sm w-full">
+        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+          <FaQrcode className="h-5 w-5 text-gray-400" aria-hidden="true" />
+        </div>
+        <input
+          ref={inputRef}
+          value={text}
+          placeholder="Esperando Escaneo..."
+          onChange={(e) => setText(e.target.value)}
+          className="block w-full rounded-md border-0 py-1.5 pl-10 maxsm:pl-1 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
+        />
       </div>
 
       <div className=" flex flex-row  items-start justify-center text-center mt-8 gap-5 px-10">

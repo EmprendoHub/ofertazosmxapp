@@ -1,6 +1,6 @@
-import { getOnePOSProduct } from '@/app/_actions';
-import POSScannerComponent from '@/components/pos/POSScannerComponent';
-import React from 'react';
+import { getOnePOSProduct } from "@/app/_actions";
+import POSScannerComponent from "@/components/pos/POSScannerComponent";
+import React from "react";
 
 const ScanPOSProductPage = async ({ params }) => {
   const variationId = params.id;

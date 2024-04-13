@@ -1,19 +1,34 @@
-'use client';
-import React from 'react';
-import Image from 'next/image';
+"use client";
+import React, { useEffect } from "react";
+import Image from "next/image";
 import {
   decreasePOSQuantity,
   deletePOSProduct,
   increasePOSQuantity,
-} from '@/redux/shoppingSlice';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import { useDispatch, useSelector } from 'react-redux';
-import { AiOutlineClose } from 'react-icons/ai';
-import POSCheckOutForm from './POSCheckOutForm';
+} from "@/redux/shoppingSlice";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
+import { AiOutlineClose } from "react-icons/ai";
+import POSCheckOutForm from "./POSCheckOutForm";
+import { usePathname, useRouter } from "next/navigation";
 
 const POSCart = () => {
+  const router = useRouter();
   const { productsPOS } = useSelector((state) => state?.compras);
   const dispatch = useDispatch();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (productsPOS?.length > 0) {
+      console.log("all good");
+    } else {
+      if (pathname.includes("admin")) {
+        router.push("/admin/pos/qr/scanner");
+      } else {
+        router.push("/puntodeventa/qr/scanner");
+      }
+    }
+  }, [productsPOS]);
 
   return (
     <div className="w-full">
@@ -88,8 +103,8 @@ const POSCart = () => {
                                   cartItem?.quantity?.toFixed(2) || 1}
                               </p>
                               <small className="text-gray-400">
-                                {' '}
-                                ${cartItem?.price} / por articulo{' '}
+                                {" "}
+                                ${cartItem?.price} / por articulo{" "}
                               </small>
                             </div>
                           </div>
