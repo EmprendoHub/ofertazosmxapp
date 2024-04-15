@@ -37,6 +37,12 @@ const QRScanIdComponent = () => {
   }, []);
 
   useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
+  useEffect(() => {
     if (initialRender.current) {
       initialRender.current = false;
       return;

@@ -106,7 +106,7 @@ const POSOrders = ({ orders, filteredOrdersCount }) => {
                 <td className="px-1 py-2">
                   <div className="flex items-center ">
                     <Link
-                      href={`/puntodeventa/pedido/${order._id}`}
+                      href={`/puntodeventa/recibo/${order._id}`}
                       className="px-2 py-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
                     >
                       <FaPrint className="" />
