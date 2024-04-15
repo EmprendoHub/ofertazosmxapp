@@ -27,8 +27,7 @@ const QRScannerComponent = () => {
     scanner.render(success, error);
 
     function success(result) {
-      const parts = result.split("-");
-      const variationId = parts[0];
+      const variationId = result.split(/[-']/)[0];
       setScanResult(variationId);
       scanner.clear();
     }
@@ -60,9 +59,9 @@ const QRScannerComponent = () => {
     if (!query) {
       console.log("no hay resultados");
     } else {
-      const delimiters = / - | ' /;
-      const parts = text.split(delimiters);
-      const id_part = parts[0];
+      //const id_part = text.split(/[-']$/)[0];
+      const id_part = text.split(/[-']/)[0];
+      console.log(id_part, "id");
       if (pathname.includes("admin")) {
         router.push(`/admin/pos/scan/${id_part}`);
       } else {

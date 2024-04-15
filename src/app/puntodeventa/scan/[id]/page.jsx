@@ -4,6 +4,7 @@ import React from "react";
 
 const ScanPOSProductPage = async ({ params }) => {
   const variationId = params.id;
+  console.log(variationId, "varioation ID");
   const data = await getOnePOSProduct(variationId);
   const product = await JSON.parse(data.product);
   const variation = await JSON.parse(data.variation);
