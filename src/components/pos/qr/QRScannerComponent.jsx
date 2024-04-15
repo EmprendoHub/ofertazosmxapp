@@ -60,7 +60,9 @@ const QRScannerComponent = () => {
     if (!query) {
       console.log("no hay resultados");
     } else {
-      const id_part = text.split("-")[0];
+      const delimiters = / - | ' /;
+      const parts = text.split(delimiters);
+      const id_part = parts[0];
       if (pathname.includes("admin")) {
         router.push(`/admin/pos/scan/${id_part}`);
       } else {
