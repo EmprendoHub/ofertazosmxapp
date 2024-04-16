@@ -16,7 +16,7 @@ import { TbWorldWww } from "react-icons/tb";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const AdminProducts = ({ products, filteredProductsCount, search }) => {
+const InstagramProducts = ({ products, filteredProductsCount, search }) => {
   const getPathname = usePathname();
   let pathname;
   if (getPathname.includes("admin")) {
@@ -33,27 +33,6 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
   useEffect(() => {
     setCurrentPage(searchValue);
   }, [searchValue]);
-
-  const deleteHandler = (product_id) => {
-    Swal.fire({
-      title: "¿Estas seguro(a) que quieres eliminar a este producto?",
-      text: "¡Esta acción es permanente y no se podrá revertir!",
-      icon: "error",
-      iconColor: "#fafafa",
-      background: "#d33",
-      color: "#fafafa",
-      focusCancel: true,
-      showCancelButton: true,
-      confirmButtonColor: "#4E0000",
-      cancelButtonColor: "#000",
-      confirmButtonText: "¡Sí, Eliminar!",
-      cancelButtonText: "No, cancelar!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        deleteOneProduct(product_id);
-      }
-    });
-  };
 
   const deactivateOnlineHandler = (product_id, active) => {
     const location = "Online";
@@ -324,14 +303,6 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                       }`}
                     />
                   </button>
-                  <button
-                    onClick={() => deleteHandler(product?._id)}
-                    className="p-2 inline-block text-white hover:text-black bg-slate-300 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
-                  >
-                    <FaExclamationCircle
-                      className={`text-red-800 maxsm:text-[10px]`}
-                    />
-                  </button>
                 </td>
               </tr>
             ))}
@@ -344,4 +315,4 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
   );
 };
 
-export default AdminProducts;
+export default InstagramProducts;

@@ -1,8 +1,9 @@
-import React from 'react';
-import ServerPagination from '@/components/pagination/ServerPagination';
-import AdminProducts from '@/components/admin/AdminProducts';
-import { getAllProduct } from '@/app/_actions';
-import { removeUndefinedAndPageKeys } from '@/backend/helpers';
+import React from "react";
+import ServerPagination from "@/components/pagination/ServerPagination";
+import AdminProducts from "@/components/admin/AdminProducts";
+import { getAllProduct } from "@/app/_actions";
+import { removeUndefinedAndPageKeys } from "@/backend/helpers";
+import InstagramProducts from "@/components/admin/InstagramProducts";
 
 const AdminProductsPage = async ({ searchParams }) => {
   const urlParams = {
@@ -32,7 +33,7 @@ const AdminProductsPage = async ({ searchParams }) => {
   const pageNumbers = [];
   const offsetNumber = 3;
   const search =
-    typeof searchParams.search === 'string' ? searchParams.search : undefined;
+    typeof searchParams.search === "string" ? searchParams.search : undefined;
 
   for (let i = page - offsetNumber; i <= page + offsetNumber; i++) {
     if (i >= 1 && i <= totalPages) {
@@ -42,7 +43,7 @@ const AdminProductsPage = async ({ searchParams }) => {
 
   return (
     <>
-      <AdminProducts
+      <InstagramProducts
         products={products}
         search={search}
         filteredProductsCount={itemCount}
