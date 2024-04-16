@@ -851,15 +851,7 @@ export async function getDashboard() {
     const today = new Date(Date.now() + minusCstOffset);
     today.setUTCHours(0, 0, 0, 0); // Set time to midnight
     // Set start of the current year
-    const startOfYear = new Date(
-      today.getFullYear(),
-      0,
-      1,
-      0,
-      0,
-      0,
-      0 - cstOffset
-    );
+    const startOfYear = new Date(today.getFullYear(), 0, 1, 0, 0, 0, 0);
 
     // Set end of the current year
     const endOfYear = new Date(
@@ -869,7 +861,7 @@ export async function getDashboard() {
       23, // 23 hours
       59, // 59 minutes
       59, // 59 seconds
-      999 - cstOffset
+      999
     );
     // Set start of the current month
     const startOfMonth = new Date(
@@ -879,7 +871,7 @@ export async function getDashboard() {
       0,
       0,
       0,
-      0 - cstOffset
+      0
     );
 
     // Set end of the current month
@@ -890,7 +882,7 @@ export async function getDashboard() {
       23, // 23 hours
       59, // 59 minutes
       59, // 59 seconds
-      999 - cstOffset
+      999
     );
 
     const startOfCurrentWeek = new Date(today);
@@ -921,14 +913,25 @@ export async function getDashboard() {
     endOfLastWeek.setDate(startOfLastWeek.getDate() + 6); // Add six days to get to the end of the week
     endOfLastWeek.setUTCHours(23, 59, 59, 999); // Set time to the end of the day
 
-    const startOfLastMonth = new Date(today);
-    startOfLastMonth.setDate(today.getDate() - 60);
-    startOfLastMonth.setUTCHours(0, 0, 0, 0); // Set time to midnight
+    const startOfLastMonth = new Date(
+      today.getFullYear(),
+      today.getMonth() - 1,
+      1
+    );
+    startOfLastMonth.setUTCHours(0, 0, 0, 0); // Set time to midnight in UTC
 
     // Clone the start of the current week to avoid mutating it
     const endOfLastMonth = new Date(startOfLastMonth);
     endOfLastMonth.setDate(startOfLastMonth.getDate() + 30); // Add six days to get to the end of the week
     endOfLastMonth.setUTCHours(23, 59, 59, 999); // Set time to the end of the day
+
+    const startOfLastYear = new Date(today.getFullYear() - 1, 0, 1);
+    startOfLastYear.setUTCHours(0, 0, 0, 0); // Set time to midnight in UTC
+
+    // Clone the start of the current week to avoid mutating it
+    const endOfLastYear = new Date(startOfLastYear);
+    endOfLastYear.setDate(startOfLastYear.getDate() + 364); // Add six days to get to the end of the week
+    endOfLastYear.setUTCHours(23, 59, 59, 999); // Set time to the end of the day
 
     const startOfToday = new Date(
       today.getFullYear(),
@@ -937,7 +940,7 @@ export async function getDashboard() {
       0,
       0,
       0,
-      0 - cstOffset
+      0
     );
 
     const endOfToday = new Date(
@@ -947,7 +950,7 @@ export async function getDashboard() {
       23,
       59,
       59,
-      999 + minusCstOffset
+      999
     );
 
     // Calculate yesterday's date
@@ -962,7 +965,7 @@ export async function getDashboard() {
       23,
       59,
       59,
-      999 + minusCstOffset
+      999
     );
 
     orders = await Order.find({ orderStatus: { $ne: "Cancelado" } })
@@ -1134,6 +1137,24 @@ export async function getDashboard() {
       },
     ]);
 
+    // Perform aggregation to get last months totals
+    let lastYearsPaymentsTotals = await Payment.aggregate([
+      {
+        $match: {
+          pay_date: {
+            $gte: startOfLastYear,
+            $lt: endOfLastYear,
+          },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$amount" }, // Sum up the amount field for each payment
+        },
+      },
+    ]);
+
     thisWeeksOrder = await Order.aggregate([
       {
         $match: {
@@ -1276,6 +1297,7 @@ export async function getDashboard() {
     yearlyOrdersTotals = yearlyOrdersTotals[0]?.total;
     lastWeeksPaymentsTotals = lastWeeksPaymentsTotals[0]?.total;
     lastMonthsPaymentsTotals = lastMonthsPaymentsTotals[0]?.total;
+    lastYearsPaymentsTotals = lastYearsPaymentsTotals[0]?.total;
     return {
       dailyData: dailyData,
       weeklyData: weeklyData,
@@ -1298,6 +1320,7 @@ export async function getDashboard() {
       totalPostCount: totalPostCount,
       lastWeeksPaymentsTotals: lastWeeksPaymentsTotals,
       lastMonthsPaymentsTotals: lastMonthsPaymentsTotals,
+      lastYearsPaymentsTotals: lastYearsPaymentsTotals,
     };
   } catch (error) {
     console.log(error);

@@ -97,9 +97,9 @@ export function formatSpanishDate(inputDate) {
   const date = new Date(inputDate);
 
   // Adjust the date to the Central Standard Time (CST) timezone
-  const cstOffset = 6 * 60 * 60 * 1000; // CST is UTC-6
-  const cstDate = new Date(date.getTime() + cstOffset);
-
+  //const cstOffset = 6 * 60 * 60 * 1000; // CST is UTC-6
+  //const cstDate = new Date(date.getTime() + cstOffset);
+  const cstDate = new Date(date.getTime());
   // Define arrays for month names in Spanish and AM/PM labels
   const monthNames = [
     "enero",

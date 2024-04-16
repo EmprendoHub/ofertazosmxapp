@@ -22,7 +22,6 @@ const DashComponent = ({ data }) => {
     .sort((a, b) => new Date(a.item.date) - new Date(b.item.date))
     .map(({ index }) => weeklyData[index]);
   weeklyData.sort((a, b, c) => new Date(c) - new Date(c));
-  console.log(sortedData, "weeklyData");
   // Prepare the labels and data for the chart
   const chartLabels = sortedData.map((data) => data.date);
   const chartData = sortedData.map((data) => data.Total);
@@ -48,6 +47,7 @@ const DashComponent = ({ data }) => {
   const yearlyOrdersTotals = data?.yearlyOrdersTotals;
   const lastWeeksPaymentsTotals = data?.lastWeeksPaymentsTotals;
   const lastMonthsPaymentsTotals = data?.lastMonthsPaymentsTotals;
+  const lastYearsPaymentsTotals = data?.lastYearsPaymentsTotals;
   // Assuming `weeklyData` is your fetched dataset
 
   const weeklyDataWithColors = {
@@ -177,7 +177,7 @@ const DashComponent = ({ data }) => {
             <div className="flex  gap-2 text-sm">
               <span className="text-green-700 flex items-center">
                 <HiArrowNarrowUp />
-                <FormattedPrice amount={lastMonthsPaymentsTotals || 0} />
+                <FormattedPrice amount={lastYearsPaymentsTotals || 0} />
               </span>
               <div className="text-gray-500">Año Anterior</div>
             </div>
