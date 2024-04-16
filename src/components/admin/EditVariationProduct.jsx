@@ -7,7 +7,7 @@ import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
 import { cstDateTimeClient } from "@/backend/helpers";
 import { updateRevalidateProduct } from "@/app/_actions";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   set_colors,
   sizes_prendas,
@@ -22,8 +22,16 @@ import ToggleSwitch from "../forms/ToggleSwitch";
 import { toast } from "react-toastify";
 
 const EditVariationProduct = ({ product, currentCookies }) => {
+  const getPathname = usePathname();
+  let pathname;
+  if (getPathname.includes("admin")) {
+    pathname = "admin";
+  } else if (getPathname.includes("puntodeventa")) {
+    pathname = "puntodeventa";
+  } else if (getPathname.includes("instagram")) {
+    pathname = "instagram";
+  }
   const searchParams = useSearchParams();
-
   const searchValue = searchParams.get("callback");
   const [callBack, setCallBack] = useState("");
 
@@ -405,7 +413,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
 
       //formRef.current.reset();
       await updateRevalidateProduct();
-      router.push(`/admin/productos?&page=${callBack}`);
+      router.push(`/${pathname}/productos?&page=${callBack}`);
     }
   }
 

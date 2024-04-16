@@ -1,14 +1,14 @@
-'use client';
-import React from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import PayOrderComp from '../admin/PayOrderComp';
+"use client";
+import React from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import PayOrderComp from "../admin/PayOrderComp";
 
 const backdropVariants = {
   animate: { opacity: 1, scale: 1 },
   initial: { opacity: 0, scale: 0.5 },
   duration: { duration: 1.5 },
 };
-const Modal = ({ showModal, setShowModal, orderId, isPaid }) => {
+const Modal = ({ pathname, showModal, setShowModal, orderId, isPaid }) => {
   return (
     <AnimatePresence mode="wait">
       {showModal && (
@@ -22,6 +22,7 @@ const Modal = ({ showModal, setShowModal, orderId, isPaid }) => {
             setShowModal={setShowModal}
             orderId={orderId}
             isPaid={isPaid}
+            pathname={pathname}
           />
         </motion.div>
       )}

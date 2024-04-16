@@ -24,6 +24,8 @@ const POSProductDetails = ({ product }) => {
     pathname = "admin/pos";
   } else if (getPathname.includes("puntodeventa")) {
     pathname = "puntodeventa";
+  } else if (getPathname.includes("instagram")) {
+    pathname = "instagram";
   }
   const dispatch = useDispatch();
   const { productsPOS } = useSelector((state) => state?.compras);

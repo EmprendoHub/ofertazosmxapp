@@ -13,7 +13,6 @@ const QRGenerator = ({ products }) => {
   const [imageQR, setImageQR] = useState([]);
   const { qrListData } = useSelector((state) => state.compras);
   const dispatch = useDispatch();
-
   useEffect(() => {
     let qrArray;
     if (qrListData.length > 0) {

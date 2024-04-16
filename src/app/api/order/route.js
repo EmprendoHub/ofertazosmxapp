@@ -1,23 +1,23 @@
-import Address from '@/backend/models/Address';
-import Order from '@/backend/models/Order';
-import Product from '@/backend/models/Product';
-import User from '@/backend/models/User';
-import dbConnect from '@/lib/db';
-import { getToken } from 'next-auth/jwt';
-import { NextResponse } from 'next/server';
+import Address from "@/backend/models/Address";
+import Order from "@/backend/models/Order";
+import Product from "@/backend/models/Product";
+import User from "@/backend/models/User";
+import dbConnect from "@/lib/db";
+import { getToken } from "next-auth/jwt";
+import { NextResponse } from "next/server";
 
 export const GET = async (request) => {
-  const sessionRaw = await request.headers.get('session');
+  const sessionRaw = await request.headers.get("session");
   const session = JSON.parse(sessionRaw);
   if (!session) {
     // Not Signed in
-    return new Response('You are not authorized, eh eh eh, no no no', {
+    return new Response("You are not authorized, eh eh eh, no no no", {
       status: 400,
     });
   }
   try {
     await dbConnect();
-    const id = await request.headers.get('id');
+    const id = await request.headers.get("id");
     let order = await Order.findOne({ _id: id });
 
     let deliveryAddress = await Address.findOne(order.shippingInfo);
@@ -32,7 +32,7 @@ export const GET = async (request) => {
   } catch (error) {
     return NextResponse.json(
       {
-        error: 'Orders loading error',
+        error: "Orders loading error",
       },
       { status: 500 }
     );
@@ -42,7 +42,7 @@ export const GET = async (request) => {
 export async function PUT(req, res) {
   const token = await getToken({ req: req });
 
-  if (token && token.user.role === 'manager') {
+  if (token && token.user.role === "manager") {
     try {
       await dbConnect();
       const { payload } = await req.json();
@@ -57,7 +57,7 @@ export async function PUT(req, res) {
       const savedOrder = await updateOrder.save();
 
       const response = NextResponse.json({
-        message: 'Pedido actualizado exitosamente',
+        message: "Pedido actualizado exitosamente",
         success: true,
         post: savedOrder,
       });
@@ -67,25 +67,25 @@ export async function PUT(req, res) {
       console.log(error);
       return NextResponse.json(
         {
-          error: 'Error al crear Publicación',
+          error: "Error al actualizar pedido",
         },
         { status: 500 }
       );
     }
   } else {
     // Not Signed in
-    return new Response('You are not authorized, eh eh eh, no no no', {
+    return new Response("You are not authorized, eh eh eh, no no no", {
       status: 400,
     });
   }
 }
 
 export async function DELETE(request) {
-  const token = await request.headers.get('cookie');
+  const token = await request.headers.get("cookie");
 
   if (!token) {
     // Not Signed in
-    const notAuthorized = 'You are not authorized no no no';
+    const notAuthorized = "You are not authorized no no no";
     return new Response(JSON.stringify(notAuthorized), {
       status: 400,
     });
@@ -93,12 +93,12 @@ export async function DELETE(request) {
 
   try {
     await dbConnect();
-    const urlData = await request.url.split('?');
+    const urlData = await request.url.split("?");
     const id = urlData[1];
     const soonToDeleteOrder = await Order.findById(id);
 
     if (!soonToDeleteOrder) {
-      const notFoundResponse = 'Order not found';
+      const notFoundResponse = "Order not found";
       return new Response(JSON.stringify(notFoundResponse), { status: 404 });
     }
 

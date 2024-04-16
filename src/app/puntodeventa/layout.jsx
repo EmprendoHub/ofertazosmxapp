@@ -36,15 +36,7 @@ export default function UserLayout({ children }) {
             }
             url={"/puntodeventa/tienda"}
           />
-          <SideBarItem
-            icon={<FaInstagram size={20} />}
-            text={"Instagram"}
-            active={
-              pathname === "/puntodeventa/instagram" ||
-              (pathname === "/puntodeventa/instagram" && true)
-            }
-            url={"/puntodeventa/instagram"}
-          />
+
           <SideBarItem
             icon={<LiaCashRegisterSolid size={20} />}
             text={"Caja"}
@@ -76,10 +68,10 @@ export default function UserLayout({ children }) {
             icon={<TbQrcode size={20} />}
             text={"Generar QRs"}
             active={
-              pathname === "/puntodeventa/productos" ||
-              (pathname === "/puntodeventa/productos" && true)
+              pathname === "/puntodeventa/seleccionar" ||
+              (pathname === "/puntodeventa/seleccionar" && true)
             }
-            url={"/puntodeventa/productos"}
+            url={"/puntodeventa/seleccionar"}
           />
         </BranchSidebar>
         <div className="relative w-full mb-5 ">{children}</div>

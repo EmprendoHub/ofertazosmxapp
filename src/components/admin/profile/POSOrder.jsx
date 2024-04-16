@@ -9,8 +9,18 @@ import { formatDate, formatTime } from "@/backend/helpers";
 import ModalOrderUpdate from "@/components/modals/ModalOrderUpdate";
 import { FaComment } from "react-icons/fa6";
 import { FaCloudUploadAlt } from "react-icons/fa";
+import { usePathname } from "next/navigation";
 
 const POSOrder = ({ order, deliveryAddress, id, orderPayments, customer }) => {
+  const getPathname = usePathname();
+  let pathname;
+  if (getPathname.includes("admin")) {
+    pathname = "admin";
+  } else if (getPathname.includes("puntodeventa")) {
+    pathname = "puntodeventa";
+  } else if (getPathname.includes("instagram")) {
+    pathname = "instagram";
+  }
   const { updateOrder } = useContext(AuthContext);
   const [showModal, setShowModal] = useState(false);
   const [orderStatus, setOrderStatus] = useState("pendiente");
@@ -92,7 +102,7 @@ const POSOrder = ({ order, deliveryAddress, id, orderPayments, customer }) => {
       />
       <div className="pl-5 maxsm:pl-3 relative overflow-x-auto shadow-md maxsm:rounded-lg p-5 maxsm:p-1 ">
         <div className="flex flex-col items-start justify-start gap-x-5 ml-4 ">
-          <Link href={`/puntodeventa/cliente/${customer?._id}`}>
+          <Link href={`/${pathname}/cliente/${customer?._id}`}>
             <h2 className="text-3xl font-bold text-slate-700">
               {order?.customerName}{" "}
               <span className="text-sm text-red-800">
@@ -127,7 +137,7 @@ const POSOrder = ({ order, deliveryAddress, id, orderPayments, customer }) => {
             </h2>
           )}
         </div>
-        {order?.branch !== "Sucursal" ? (
+        {order?.branch !== "Sucursal" && order?.branch !== "Instagram" ? (
           <table className="w-full text-sm text-left flex flex-col maxsm:flex-row">
             <thead className="text-l text-gray-700 uppercase">
               <tr className="flex flex-row maxsm:flex-col">

@@ -9,8 +9,18 @@ import { TfiMoney } from "react-icons/tfi";
 import { useState } from "react";
 import Modal from "../modals/Modal";
 import { FaEye } from "react-icons/fa6";
+import { usePathname } from "next/navigation";
 
 const POSOrders = ({ orders, filteredOrdersCount }) => {
+  const getPathname = usePathname();
+  let pathname;
+  if (getPathname.includes("admin")) {
+    pathname = "admin";
+  } else if (getPathname.includes("puntodeventa")) {
+    pathname = "puntodeventa";
+  } else if (getPathname.includes("instagram")) {
+    pathname = "instagram";
+  }
   const [showModal, setShowModal] = useState(false);
   const [usedOrderId, setUsedOrderId] = useState("");
   const updateOrderStatus = async (orderId) => {
@@ -23,6 +33,7 @@ const POSOrders = ({ orders, filteredOrdersCount }) => {
         showModal={showModal}
         setShowModal={setShowModal}
         orderId={usedOrderId}
+        pathname={pathname}
       />
       <div className="relative overflow-x-auto shadow-md rounded-lg">
         <div className=" flex flex-row maxsm:flex-col maxsm:items-start items-center justify-between">
@@ -64,7 +75,7 @@ const POSOrders = ({ orders, filteredOrdersCount }) => {
             {orders?.map((order, index) => (
               <tr className="bg-white" key={index}>
                 <td className="px-6 maxsm:px-2 py-2">
-                  <Link key={index} href={`/puntodeventa/pedido/${order._id}`}>
+                  <Link key={index} href={`/${pathname}/pedido/${order._id}`}>
                     {order.orderId}
                   </Link>
                 </td>
@@ -94,7 +105,7 @@ const POSOrders = ({ orders, filteredOrdersCount }) => {
                 </td>
                 <td
                   className={`px-4 maxsm:px-0 py-2 font-bold ${
-                    order.branch === "Sahuayo"
+                    order.branch === "Sucursal"
                       ? "text-amber-700"
                       : "text-slate-600"
                   }`}
@@ -107,13 +118,13 @@ const POSOrders = ({ orders, filteredOrdersCount }) => {
                 <td className="px-1 py-2">
                   <div className="flex items-center ">
                     <Link
-                      href={`/puntodeventa/pedido/${order._id}`}
+                      href={`/${pathname}/pedido/${order._id}`}
                       className="px-2 py-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
                     >
                       <FaEye className="" />
                     </Link>
                     <Link
-                      href={`/puntodeventa/recibo/${order._id}`}
+                      href={`/${pathname}/recibo/${order._id}`}
                       className="px-2 py-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
                     >
                       <FaPrint className="" />

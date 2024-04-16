@@ -94,7 +94,7 @@ const BranchUserOrders = ({ orders, filteredOrdersCount, client }) => {
                 </td>
                 <td
                   className={`px-6 maxsm:px-0 py-2 font-bold ${
-                    order.branch === "Sahuayo"
+                    order.branch === "Sucursal"
                       ? "text-amber-700"
                       : "text-slate-600"
                   }`}

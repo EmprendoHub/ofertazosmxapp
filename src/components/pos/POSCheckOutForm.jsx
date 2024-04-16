@@ -1,12 +1,12 @@
-'use client';
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { AiOutlineUser } from 'react-icons/ai';
-import { useSession } from 'next-auth/react';
-import Image from 'next/image';
-import Link from 'next/link';
-import FormattedPrice from '@/backend/helpers/FormattedPrice';
-import { usePathname } from 'next/navigation';
+"use client";
+import React from "react";
+import { useSelector } from "react-redux";
+import { AiOutlineUser } from "react-icons/ai";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import Link from "next/link";
+import FormattedPrice from "@/backend/helpers/FormattedPrice";
+import { usePathname } from "next/navigation";
 
 const POSCheckOutForm = () => {
   const { data: session } = useSession();
@@ -16,7 +16,15 @@ const POSCheckOutForm = () => {
     (acc, cartItem) => acc + cartItem.quantity * cartItem.price,
     0
   );
-  const pathname = usePathname();
+  const getPathname = usePathname();
+  let pathname;
+  if (getPathname.includes("admin")) {
+    pathname = "/admin/pos";
+  } else if (getPathname.includes("puntodeventa")) {
+    pathname = "/puntodeventa";
+  } else if (getPathname.includes("instagram")) {
+    pathname = "/instagram";
+  }
   const shipAmount = 0;
   const layawayAmount = Number(amountTotal) * 0.3;
 
@@ -61,11 +69,7 @@ const POSCheckOutForm = () => {
           <div className="flex flex-col items-center gap-1">
             <div className="flex gap-5 w-full">
               <Link
-                href={`${
-                  pathname.includes('admin')
-                    ? '/admin/pos/carrito/caja'
-                    : '/puntodeventa/carrito/caja'
-                }`}
+                href={`${pathname}/caja`}
                 className="text-slate-100 text-center bg-emerald-700 border mt-4 py-3 px-6  hover:bg-slate-200 hover:border-slate-400 hover:border hover:text-black duration-300 ease-in-out cursor-pointer min-w-full"
               >
                 Continuar
@@ -73,11 +77,7 @@ const POSCheckOutForm = () => {
             </div>
 
             <Link
-              href={`${
-                pathname.includes('admin')
-                  ? '/admin/pos/qr/scanner'
-                  : '/puntodeventa/qr/scanner'
-              }`}
+              href={`${pathname}/qr/scanner`}
               className="px-4 mt-3 py-3 inline-block text-lg w-full text-center font-medium bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 text-white hover:text-black font-EB_Garamond duration-300 ease-in-out"
             >
               Escanear mas Productos
@@ -88,7 +88,7 @@ const POSCheckOutForm = () => {
             {/** Login/Register */}
             {!session && (
               <>
-                <Link href={'/iniciar'}>
+                <Link href={"/iniciar"}>
                   <div className=" w-full bg-black text-slate-100 mt-4 py-3 px-6 hover:bg-green-600 duration-500 cursor-pointer">
                     <div className="flex flex-row justify-center items-center gap-x-3 ">
                       <AiOutlineUser className="text-ld" />
@@ -97,7 +97,7 @@ const POSCheckOutForm = () => {
                   </div>
                 </Link>
                 <Link
-                  href="/puntodeventa/qr/scanner"
+                  href={`${pathname}/qr/scanner`}
                   className="px-4 py-3 inline-block text-lg w-full text-center font-medium bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 text-black font-EB_Garamond"
                 >
                   Escanear mas Productos
@@ -111,7 +111,7 @@ const POSCheckOutForm = () => {
         )}
         <div className="trustfactor-class">
           <Image
-            src={'/images/stripe-badge-transparente.webp'}
+            src={"/images/stripe-badge-transparente.webp"}
             width={500}
             height={200}
             alt="Stripe Payment"

@@ -25,9 +25,9 @@ const POSSearch = ({ pageName }) => {
       }
     } else {
       if (keyword) {
-        router.push(`/puntodeventa/tienda/?keyword=${keyword}`);
+        router.push(`/instagram/tienda/?keyword=${keyword}`);
       } else {
-        router.push("/puntodeventa/tienda");
+        router.push("/instagram/tienda");
       }
     }
   };

@@ -1,5 +1,4 @@
 "use client";
-import { addToPOSCart } from "@/redux/shoppingSlice";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,7 +8,6 @@ import ModalProductCard from "@/components/products/ModalProductCard";
 
 const POSModalScannerComponent = ({ product, variation, error }) => {
   const router = useRouter();
-  const dispatch = useDispatch();
   const { productsPOS } = useSelector((state) => state?.compras);
   const pathname = usePathname();
   const [showModal, setShowModal] = useState(false);
@@ -53,8 +51,10 @@ const POSModalScannerComponent = ({ product, variation, error }) => {
             if (result.isConfirmed) {
               if (pathname.includes("admin")) {
                 router.push("/admin/pos/qr/idscanner");
-              } else {
+              } else if (pathname.includes("puntodeventa")) {
                 router.push("/puntodeventa/qr/idscanner");
+              } else if (pathname.includes("instagram")) {
+                router.push("/instagram/qr/idscanner");
               }
             }
           });

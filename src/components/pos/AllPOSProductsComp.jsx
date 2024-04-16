@@ -38,10 +38,11 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
   }, [selectedProducts]); // Runs whenever selectedProducts changes
 
   const handleCheckBox = (product) => {
+    console.log(product);
     // If the product with the same ID doesn't exist, add it to the list
     const receiver = {
       id: product?._id,
-      name: product?.name,
+      name: product?.title,
       price: product?.variations[0].price,
     };
     dispatch(saveQRToPrint(receiver));
@@ -50,8 +51,10 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
   const handleGenerateQR = () => {
     if (pathname.includes("admin")) {
       router.push("/admin/pos/qr/generador");
-    } else {
+    } else if (pathname.includes("puntodeventa")) {
       router.push("/puntodeventa/qr/generador");
+    } else if (pathname.includes("instagram")) {
+      router.push("/instagram/qr/generador");
     }
   };
 

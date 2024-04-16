@@ -2,10 +2,10 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { FaCircleCheck, FaCircleExclamation } from "react-icons/fa6";
-import { updateOneOrder } from "@/app/_actions";
+import { updateOneInstagramOrder, updateOneOrder } from "@/app/_actions";
 import { newCSTDate } from "@/backend/helpers";
 
-const PayOrderComp = ({ setShowModal, orderId, isPaid }) => {
+const PayOrderComp = ({ pathname, setShowModal, orderId, isPaid }) => {
   const [transactionNo, setTransactionNo] = useState("EFECTIVO");
   const [amount, setAmount] = useState(0);
   const [note, setNote] = useState("");
@@ -30,7 +30,13 @@ const PayOrderComp = ({ setShowModal, orderId, isPaid }) => {
       formData.set("note", note);
       formData.set("orderId", orderId);
       try {
-        const res = await updateOneOrder(formData);
+        let res;
+        if (pathname === "puntodeventa" || pathname === "admin") {
+          res = await updateOneOrder(formData);
+        } else if (pathname === "instagram") {
+          res = await updateOneInstagramOrder(formData);
+        }
+
         setShowModal(false);
       } catch (error) {
         toast.error(

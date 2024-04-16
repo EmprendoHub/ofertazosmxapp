@@ -17,35 +17,22 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const AdminProducts = ({ products, filteredProductsCount, search }) => {
+  const getPathname = usePathname();
+  let pathname;
+  if (getPathname.includes("admin")) {
+    pathname = "admin";
+  } else if (getPathname.includes("puntodeventa")) {
+    pathname = "puntodeventa";
+  } else if (getPathname.includes("instagram")) {
+    pathname = "instagram";
+  }
   const searchParams = useSearchParams();
-
   const searchValue = searchParams.get("page");
   const [currentPage, setCurrentPage] = useState("");
 
   useEffect(() => {
     setCurrentPage(searchValue);
   }, [searchValue]);
-
-  const deleteHandler = (product_id) => {
-    Swal.fire({
-      title: "¿Estas seguro(a) que quieres eliminar a este producto?",
-      text: "¡Esta acción es permanente y no se podrá revertir!",
-      icon: "error",
-      iconColor: "#fafafa",
-      background: "#d33",
-      color: "#fafafa",
-      focusCancel: true,
-      showCancelButton: true,
-      confirmButtonColor: "#4E0000",
-      cancelButtonColor: "#000",
-      confirmButtonText: "¡Sí, Eliminar!",
-      cancelButtonText: "No, cancelar!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        deleteOneProduct(product_id);
-      }
-    });
-  };
 
   const deactivateOnlineHandler = (product_id, active) => {
     const location = "Online";
@@ -229,7 +216,7 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                 <td className="w-full px-6 maxsm:px-0 py-0 relative ">
                   <span className="relative flex items-center justify-center text-black w-20 h-20 maxsm:w-8 maxsm:h-8 shadow mt-2">
                     <Link
-                      href={`/admin/productos/variacion/${product?.slug}?&callback=${searchParams}`}
+                      href={`/${pathname}/productos/variacion/${product?.slug}?&callback=${searchParams}`}
                     >
                       <Image
                         src={product?.images[0]?.url}
@@ -258,7 +245,7 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                 <td className="w-full px-1 py-0 ">{product?.stock}</td>
                 <td className="w-full px-1 py-0 flex flex-row items-center gap-x-1">
                   <Link
-                    href={`/admin/productos/variacion/${product?.slug}?&callback=${currentPage}`}
+                    href={`/${pathname}/productos/variacion/${product?.slug}?&callback=${currentPage}`}
                     className="p-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
                   >
                     <FaPencilAlt className="maxsm:text-[10px]" />
@@ -314,14 +301,6 @@ const AdminProducts = ({ products, filteredProductsCount, search }) => {
                           ? "bg-gradient-to-tr from-amber-700 to-pink-600 maxsm:text-[10px]"
                           : "text-slate-400 maxsm:text-[10px]"
                       }`}
-                    />
-                  </button>
-                  <button
-                    onClick={() => deleteHandler(product?._id)}
-                    className="p-2 inline-block text-white hover:text-black bg-slate-300 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
-                  >
-                    <FaExclamationCircle
-                      className={`text-red-800 maxsm:text-[10px]`}
                     />
                   </button>
                 </td>

@@ -15,8 +15,10 @@ const ModalProductCard = ({ item, setShowModal }) => {
   function closeModal() {
     if (pathname.includes("admin")) {
       router.push(`/admin/pos/qr/idscanner`);
-    } else {
-      router.push(`/puntodeventa/qr/idscanner`);
+    } else if (pathname.includes("puntodeventa")) {
+      router.push("/puntodeventa/qr/idscanner");
+    } else if (pathname.includes("instagram")) {
+      router.push("/instagram/qr/idscanner");
     }
   }
   return (

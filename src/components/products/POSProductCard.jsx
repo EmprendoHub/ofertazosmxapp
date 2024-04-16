@@ -14,6 +14,8 @@ const POSProductCard = ({ item }) => {
     pathname = "admin/pos";
   } else if (getPathname.includes("puntodeventa")) {
     pathname = "puntodeventa";
+  } else if (getPathname.includes("instagram")) {
+    pathname = "instagram";
   }
   return (
     <motion.div

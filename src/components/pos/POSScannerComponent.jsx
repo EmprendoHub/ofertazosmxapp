@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 
 const POSScannerComponent = ({ product, variation }) => {
+  console.log(product);
   const router = useRouter();
   const dispatch = useDispatch();
   const { productsPOS } = useSelector((state) => state?.compras);
@@ -31,8 +32,10 @@ const POSScannerComponent = ({ product, variation }) => {
           if (result.isConfirmed) {
             if (pathname.includes("admin")) {
               router.push("/admin/pos/carrito");
-            } else {
+            } else if (pathname.includes("puntodeventa")) {
               router.push("/puntodeventa/carrito");
+            } else if (pathname.includes("instagram")) {
+              router.push("/instagram/carrito");
             }
           }
         });
@@ -40,8 +43,10 @@ const POSScannerComponent = ({ product, variation }) => {
         dispatch(addToPOSCart(variation));
         if (pathname.includes("admin")) {
           router.push("/admin/pos/carrito");
-        } else {
+        } else if (pathname.includes("puntodeventa")) {
           router.push("/puntodeventa/carrito");
+        } else if (pathname.includes("instagram")) {
+          router.push("/instagram/carrito");
         }
       }
     } else {
@@ -49,8 +54,10 @@ const POSScannerComponent = ({ product, variation }) => {
         dispatch(addToPOSCart(variation));
         if (pathname.includes("admin")) {
           router.push("/admin/pos/carrito");
-        } else {
+        } else if (pathname.includes("puntodeventa")) {
           router.push("/puntodeventa/carrito");
+        } else if (pathname.includes("instagram")) {
+          router.push("/instagram/carrito");
         }
       } else {
         Swal.fire({
@@ -63,8 +70,10 @@ const POSScannerComponent = ({ product, variation }) => {
           if (result.isConfirmed) {
             if (pathname.includes("admin")) {
               router.push("/admin/pos/qr/scanner");
-            } else {
+            } else if (pathname.includes("puntodeventa")) {
               router.push("/puntodeventa/qr/scanner");
+            } else if (pathname.includes("instagram")) {
+              router.push("/instagram/qr/scanner");
             }
           }
         });

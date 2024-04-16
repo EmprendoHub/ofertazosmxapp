@@ -1,11 +1,20 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useDebounce } from 'use-debounce';
-import { FaMagnifyingGlass } from 'react-icons/fa6';
+import { useEffect, useRef, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useDebounce } from "use-debounce";
+import { FaMagnifyingGlass } from "react-icons/fa6";
 
 const SearchProducts = ({ search }) => {
+  const getPathname = usePathname();
+  let pathname;
+  if (getPathname.includes("admin")) {
+    pathname = "admin";
+  } else if (getPathname.includes("puntodeventa")) {
+    pathname = "puntodeventa";
+  } else if (getPathname.includes("instagram")) {
+    pathname = "instagram";
+  }
   const router = useRouter();
   const initialRender = useRef(true);
 
@@ -19,9 +28,9 @@ const SearchProducts = ({ search }) => {
     }
 
     if (!query) {
-      router.push(`/admin/productos`);
+      router.push(`/${pathname}/productos`);
     } else {
-      router.push(`/admin/productos?keyword=${query}`);
+      router.push(`/${pathname}/productos?keyword=${query}`);
     }
   }, [query]);
 

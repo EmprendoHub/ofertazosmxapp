@@ -1,25 +1,29 @@
-'use client';
-import { usePathname, useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+"use client";
+import { usePathname, useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 const POSProductSearch = () => {
-  const [keyword, setKeyword] = useState('');
+  const [keyword, setKeyword] = useState("");
   const router = useRouter();
   const pathname = usePathname();
   const submitHandler = (e) => {
     e.preventDefault();
 
     if (keyword) {
-      if (pathname.includes('admin')) {
+      if (pathname.includes("admin")) {
         router.push(`/admin/pos/productos/?keyword=${keyword}`);
-      } else {
-        router.push(`/puntodeventa/productos/?keyword=${keyword}`);
+      } else if (pathname.includes("puntodeventa")) {
+        router.push(`/puntodeventa/seleccionar/?keyword=${keyword}`);
+      } else if (pathname.includes("instagram")) {
+        router.push(`/instagram/seleccionar/?keyword=${keyword}`);
       }
     } else {
-      if (pathname.includes('admin')) {
-        router.push('/admin/pos/productos');
-      } else {
-        router.push('/puntodeventa/productos');
+      if (pathname.includes("admin")) {
+        router.push("/admin/pos/productos");
+      } else if (pathname.includes("puntodeventa")) {
+        router.push(`/puntodeventa/seleccionar`);
+      } else if (pathname.includes("instagram")) {
+        router.push(`/instagram/seleccionar`);
       }
     }
   };

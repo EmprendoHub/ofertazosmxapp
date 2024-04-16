@@ -51,8 +51,10 @@ const QRScannerComponent = () => {
     if (scanResult) {
       if (pathname.includes("admin")) {
         router.push(`/admin/pos/scan/${scanResult}`);
-      } else {
+      } else if (pathname.includes("puntodeventa")) {
         router.push(`/puntodeventa/scan/${scanResult}`);
+      } else if (pathname.includes("instagram")) {
+        router.push(`/instagram/scan/${scanResult}`);
       }
     }
 
@@ -61,11 +63,12 @@ const QRScannerComponent = () => {
     } else {
       //const id_part = text.split(/[-']$/)[0];
       const id_part = text.split(/[-']/)[0];
-      console.log(id_part, "id");
       if (pathname.includes("admin")) {
         router.push(`/admin/pos/scan/${id_part}`);
-      } else {
+      } else if (pathname.includes("puntodeventa")) {
         router.push(`/puntodeventa/scan/${id_part}`);
+      } else if (pathname.includes("instagram")) {
+        router.push(`/instagram/scan/${id_part}`);
       }
     }
   }, [scanResult, query]);

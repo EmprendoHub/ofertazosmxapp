@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { payPOSDrawer } from "@/app/_actions";
+import { payPOSDrawer, payPOSInstagramDrawer } from "@/app/_actions";
 import { toast } from "react-toastify";
 import { FaCircleCheck, FaCircleExclamation } from "react-icons/fa6";
 import { resetPOSCart, savePOSOrder } from "@/redux/shoppingSlice";
@@ -14,6 +14,8 @@ const PayCartComp = ({ setShowModal, payType }) => {
     pathname = "admin";
   } else if (getPathname.includes("puntodeventa")) {
     pathname = "puntodeventa";
+  } else if (getPathname.includes("instagram")) {
+    pathname = "instagram";
   }
   const dispatch = useDispatch();
   const router = useRouter();
@@ -91,7 +93,12 @@ const PayCartComp = ({ setShowModal, payType }) => {
     formData.append("amountReceived", amountReceived);
     formData.append("payType", payType);
 
-    const result = await payPOSDrawer(formData);
+    let result;
+    if (pathname.includes("puntodeventa")) {
+      result = await payPOSDrawer(formData);
+    } else if (pathname.includes("instagram")) {
+      result = await payPOSInstagramDrawer(formData);
+    }
     if (result?.error) {
       console.log(result?.error);
       setValidationError(result.error);
