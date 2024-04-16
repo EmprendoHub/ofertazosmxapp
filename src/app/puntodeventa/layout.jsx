@@ -1,7 +1,7 @@
 "use client";
 import BranchSidebar, { SideBarItem } from "@/components/pos/BranchSidebar";
 import { usePathname } from "next/navigation";
-import { TbDeviceIpadDollar, TbScan, TbScanEye } from "react-icons/tb";
+import { TbDeviceIpadDollar, TbScanEye } from "react-icons/tb";
 import { TfiDashboard } from "react-icons/tfi";
 import { LuReceipt } from "react-icons/lu";
 import { LiaCashRegisterSolid } from "react-icons/lia";

@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import {
   TbDeviceIpadDollar,
   TbQrcode,
+  TbReport,
   TbScan,
   TbScanEye,
 } from "react-icons/tb";
@@ -104,12 +105,12 @@ export default function UserLayout({ children }) {
             active={pathname === "/admin/clientes" ? "true" : "false"}
             url={"/admin/clientes"}
           />
-          {/* <SideBarItem
-              icon={<TbAffiliate size={20} />}
-              text={'Afiliados'}
-              active={pathname === '/admin/asociados' ? "true" : "false"}
-              url={'/admin/asociados'}
-            /> */}
+          <SideBarItem
+            icon={<TbReport size={20} />}
+            text={"Reportes"}
+            active={pathname === "/admin/reportes" ? "true" : "false"}
+            url={"/admin/reportes"}
+          />
 
           <hr className="my-3 maxmd:my-1" />
           <SideBarItem

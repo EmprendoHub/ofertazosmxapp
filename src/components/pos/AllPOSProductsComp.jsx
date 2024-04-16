@@ -110,12 +110,6 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
               >
                 Titulo
               </th>
-              <th
-                scope="col"
-                className="w-full px-6 maxsm:px-0 py-3 maxsm:hidden"
-              >
-                ID
-              </th>
               <th scope="col" className="w-full px-6 maxsm:px-0 py-3 ">
                 Img
               </th>
@@ -152,9 +146,7 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
                 >
                   {product.title}
                 </td>
-                <td className="w-full px-6 maxsm:px-0 py-0 ">
-                  {product?.variations[0]._id}
-                </td>
+
                 <td className="w-full px-6 maxsm:px-0 py-0 relative">
                   <span
                     onClick={() => handleCheckBox(product)}

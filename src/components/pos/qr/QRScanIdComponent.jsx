@@ -77,7 +77,7 @@ const QRScanIdComponent = () => {
     <div className="container flex flex-col h-screen items-center justify-start mt-2  mx-auto">
       <div className=" flex flex-row w-full items-center justify-center">
         <h2 className=" text-slate-700 text-center w-full uppercase font-semibold tracking-wide text-2xl font-EB_Garamond">
-          Scanner
+          Identificador de Artículos
         </h2>
       </div>
       <div className="relative rounded-md shadow-sm w-full">
