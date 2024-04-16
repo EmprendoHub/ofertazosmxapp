@@ -1,20 +1,20 @@
-import HeaderComponent from '@/components/header/HeaderComponent';
-import CustomSessionProvider from './SessionProvider';
-import './css/globals.css';
-import FooterComponent from '@/components/footer/FooterComponent';
-import BackToTopButton from '@/components/buttons/BackToTopButton';
-import WhatsAppButton from '@/components/buttons/WhatsAppButton';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { getServerSession } from 'next-auth';
-import { options } from './api/auth/[...nextauth]/options';
-import CookieConsentComp from '@/components/cookies/CookieConsent';
-import { getCookiesName } from '@/backend/helpers';
-import { cookies } from 'next/headers';
+import HeaderComponent from "@/components/header/HeaderComponent";
+import CustomSessionProvider from "./SessionProvider";
+import "./css/globals.css";
+import FooterComponent from "@/components/footer/FooterComponent";
+import BackToTopButton from "@/components/buttons/BackToTopButton";
+import WhatsAppButton from "@/components/buttons/WhatsAppButton";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { getServerSession } from "next-auth";
+import { options } from "./api/auth/[...nextauth]/options";
+import CookieConsentComp from "@/components/cookies/CookieConsent";
+import { getCookiesName } from "@/backend/helpers";
+import { cookies } from "next/headers";
 
 export const metadata = {
-  title: 'Shopout Mx',
-  description: 'Ropa y accesorios de marca',
+  title: "Shopout Mx",
+  description: "Ropa y accesorios de marca",
 };
 
 export default async function RootLayout({ children }) {
@@ -33,9 +33,10 @@ export default async function RootLayout({ children }) {
           {/* <FooterComponent /> */}
         </CustomSessionProvider>
         <BackToTopButton />
-        {(session && session?.user?.role === 'manager') ||
-        session?.user?.role === 'sucursal' ? (
-          ''
+        {(session && session?.user?.role === "manager") ||
+        session?.user?.role === "sucursal" ||
+        session?.user?.role === "instagram" ? (
+          ""
         ) : (
           <WhatsAppButton />
         )}
