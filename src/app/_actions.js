@@ -941,7 +941,7 @@ export async function getDashboard() {
       0,
       0,
       0,
-      0
+      0 - cstOffset
     );
 
     const endOfToday = new Date(
@@ -951,7 +951,7 @@ export async function getDashboard() {
       23,
       59,
       59,
-      999
+      999 - cstOffset
     );
 
     // Calculate yesterday's date
@@ -966,7 +966,7 @@ export async function getDashboard() {
       23,
       59,
       59,
-      999
+      999 - cstOffset
     );
 
     orders = await Order.find({ orderStatus: { $ne: "Cancelado" } })
@@ -1083,7 +1083,7 @@ export async function getDashboard() {
         },
       },
     ]);
-
+    console.log(yesterday, endOfYesterday, "startOfToday, endOfToday");
     // Perform aggregation to get yesterday's totals
     let yesterdaysOrdersTotals = await Payment.aggregate([
       {
