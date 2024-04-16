@@ -14,6 +14,7 @@ import { LiaCashRegisterSolid } from "react-icons/lia";
 import { BsQrCodeScan } from "react-icons/bs";
 import { MdOutlineFactCheck } from "react-icons/md";
 import { GiClothes } from "react-icons/gi";
+import { FaCartPlus } from "react-icons/fa6";
 
 export default function UserLayout({ children }) {
   const pathname = usePathname();
@@ -34,6 +35,15 @@ export default function UserLayout({ children }) {
             active={pathname === "/instagram/productos" ?? true}
             url={"/instagram/productos"}
           />
+          <SideBarItem
+            icon={<FaCartPlus size={20} />}
+            text={"Producto +"}
+            active={
+              pathname === "/instagram/productos/nuevo/variaciones" ?? true
+            }
+            url={"/instagram/productos/nuevo/variaciones"}
+          />
+
           <SideBarItem
             icon={<TbDeviceIpadDollar size={20} />}
             text={"Pedidos"}

@@ -7,7 +7,7 @@ import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
 import { cstDateTimeClient } from "@/backend/helpers";
 import { updateRevalidateProduct } from "@/app/_actions";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   set_colors,
   sizes_prendas,
@@ -23,6 +23,7 @@ import { toast } from "react-toastify";
 
 const NewVariationOptimized = ({ currentCookies }) => {
   const router = useRouter();
+  const pathname = usePathname();
   const [title, setTitle] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [brand, setBrand] = useState("");
@@ -480,7 +481,11 @@ const NewVariationOptimized = ({ currentCookies }) => {
       setValidationError(null);
 
       await updateRevalidateProduct();
-      router.push("/admin/productos");
+      if (pathname.includes("instagram")) {
+        router.push("/instagram/productos");
+      } else if (pathname.includes("instagram")) {
+        router.push("/admin/productos");
+      }
     }
   }
 
