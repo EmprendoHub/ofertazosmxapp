@@ -5,7 +5,7 @@ import { Button } from "react-bootstrap";
 import { FaPrint } from "react-icons/fa6";
 import ReactToPrint from "react-to-print";
 import "./PosStyles.css";
-import { cstDateTime } from "@/backend/helpers";
+import { cstDateTime, formatSpanishDate } from "@/backend/helpers";
 
 const POSReceiptOneOrder = ({ order }) => {
   const ref = useRef();
@@ -122,7 +122,9 @@ const POSReceiptOneOrder = ({ order }) => {
               </li>
             </ul>
             <div className="text-xs text-black tracking-wide text-center  border-t-2 border-slate-300 ">
-              <p className="text-xs my-2 w-full text-center">{cstDateTime()}</p>
+              <p className="text-xs my-2 w-full text-center">
+                {formatSpanishDate(order?.createdAt)}
+              </p>
               <p>Gracias por tu compra</p>
               <p>Para descuentos y especiales visita www.shopout.com.mx</p>
             </div>

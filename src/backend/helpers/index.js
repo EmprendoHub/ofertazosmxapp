@@ -84,16 +84,16 @@ export function cstDateTime() {
   let cstTime;
   let cstDate;
   if (process.env.NODE_ENV === "development") {
-    cstTime = new Date(currentDate.getTime());
+    // Adjust the date object to the Central Standard Time (CST) time zone
+    const cstOffset = -6 * 60 * 60 * 1000; // CST is UTC-6
+    cstTime = new Date(currentDate.getTime() + cstOffset);
     cstDate = cstTime.toLocaleString("en-US", {
       timeZone: "America/Mexico_City",
     });
   }
 
   if (process.env.NODE_ENV === "production") {
-    // Adjust the date object to the Central Standard Time (CST) time zone
-    const cstOffset = -6 * 60 * 60 * 1000; // CST is UTC-6
-    cstTime = new Date(currentDate.getTime() + cstOffset);
+    cstTime = new Date(currentDate.getTime());
     cstDate = cstTime.toLocaleString("en-US", {
       timeZone: "America/Mexico_City",
     });
@@ -105,11 +105,11 @@ export function cstDateTime() {
 export function formatSpanishDate(inputDate) {
   // Parse the input date string
   const date = new Date(inputDate);
-
+  console.log(inputDate, "inmput date");
   // Adjust the date to the Central Standard Time (CST) timezone
-  //const cstOffset = 6 * 60 * 60 * 1000; // CST is UTC-6
-  //const cstDate = new Date(date.getTime() + cstOffset);
-  const cstDate = new Date(date.getTime());
+  const cstOffset = 6 * 60 * 60 * 1000; // CST is UTC-6
+  const cstDate = new Date(date.getTime() + cstOffset);
+  //const cstDate = new Date(date.getTime());
   // Define arrays for month names in Spanish and AM/PM labels
   const monthNames = [
     "enero",
