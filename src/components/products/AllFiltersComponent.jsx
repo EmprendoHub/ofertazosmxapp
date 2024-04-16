@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { AiOutlineClose } from 'react-icons/ai';
-import styles from './boxfilterstyle.module.scss';
-import { getPriceQueryParams } from '@/backend/helpers';
-import Search from '../layout/Search';
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { AiOutlineClose } from "react-icons/ai";
+import styles from "./boxfilterstyle.module.scss";
+import { getPriceQueryParams } from "@/backend/helpers";
+import Search from "../layout/Search";
 
 const AllFiltersComponent = ({
   allBrands,
@@ -11,13 +11,13 @@ const AllFiltersComponent = ({
   SetIsActive,
   isActive,
 }) => {
-  const [minAmount, setMinAmount] = useState('');
-  const [maxAmount, setMaxAmount] = useState('');
+  const [minAmount, setMinAmount] = useState("");
+  const [maxAmount, setMaxAmount] = useState("");
   const router = useRouter();
   let queryParams;
 
   function handleClick(checkbox) {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       queryParams = new URLSearchParams(window.location.search);
     }
 
@@ -39,12 +39,12 @@ const AllFiltersComponent = ({
         SetIsActive(!isActive);
       }
     }
-    const path = window.location.pathname + '?' + queryParams.toString();
+    const path = window.location.pathname + "?" + queryParams.toString();
     router.push(path);
   }
 
   function checkHandler(checkBoxType, checkBoxValue) {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       queryParams = new URLSearchParams(window.location.search);
 
       const value = queryParams.get(checkBoxType);
@@ -56,13 +56,13 @@ const AllFiltersComponent = ({
   }
 
   function handlePriceButtonClick() {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       queryParams = new URLSearchParams(window.location.search);
 
-      queryParams = getPriceQueryParams(queryParams, 'min', minAmount);
-      queryParams = getPriceQueryParams(queryParams, 'max', maxAmount);
+      queryParams = getPriceQueryParams(queryParams, "min", minAmount);
+      queryParams = getPriceQueryParams(queryParams, "max", maxAmount);
 
-      const path = window.location.pathname + '?' + queryParams.toString();
+      const path = window.location.pathname + "?" + queryParams.toString();
       SetIsActive(!isActive);
       router.push(path);
     }
@@ -78,7 +78,7 @@ const AllFiltersComponent = ({
             onClick={() => {
               SetIsActive(!isActive);
             }}
-            className={'button-class'}
+            className={"button-class"}
           >
             <AiOutlineClose />
           </div>
@@ -138,7 +138,7 @@ const AllFiltersComponent = ({
                     name="category"
                     type="checkbox"
                     value={category}
-                    defaultChecked={checkHandler('category', `${category}`)}
+                    defaultChecked={checkHandler("category", `${category}`)}
                     onClick={(e) => handleClick(e.target)}
                     className={`checkboxBipolarInput ${styles.checkboxBipolarInput}`}
                     id={category}
@@ -154,8 +154,8 @@ const AllFiltersComponent = ({
                       <span className={`off ${styles.off}`}>O</span>
                     </span>
                     <span className="brandName ml-2 text-gray-500 capitalize">
-                      {' '}
-                      {category}{' '}
+                      {" "}
+                      {category}{" "}
                     </span>
                   </label>
                 </div>
@@ -174,7 +174,7 @@ const AllFiltersComponent = ({
                     name="brand"
                     type="checkbox"
                     value={brand}
-                    defaultChecked={checkHandler('brand', `${brand}`)}
+                    defaultChecked={checkHandler("brand", `${brand}`)}
                     onClick={(e) => handleClick(e.target)}
                     className={`checkboxBipolarInput ${styles.checkboxBipolarInput}`}
                     id={brand}
@@ -190,8 +190,8 @@ const AllFiltersComponent = ({
                       <span className={`off ${styles.off}`}>O</span>
                     </span>
                     <span className="brandName ml-2 text-gray-500 capitalize">
-                      {' '}
-                      {brand}{' '}
+                      {" "}
+                      {brand}{" "}
                     </span>
                   </label>
                 </div>
