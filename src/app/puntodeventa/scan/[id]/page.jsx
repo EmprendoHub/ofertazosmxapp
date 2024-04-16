@@ -4,12 +4,22 @@ import React from "react";
 
 const ScanPOSProductPage = async ({ params }) => {
   const variationId = params.id;
-  console.log(variationId, "varioation ID");
   const data = await getOnePOSProduct(variationId);
+  const error = await JSON.parse(data.error);
   const product = await JSON.parse(data.product);
   const variation = await JSON.parse(data.variation);
 
-  return <POSScannerComponent product={product} variation={variation} />;
+  return (
+    <>
+      {
+        <POSScannerComponent
+          product={product}
+          variation={variation}
+          error={error}
+        />
+      }
+    </>
+  );
 };
 
 export default ScanPOSProductPage;

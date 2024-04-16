@@ -1942,13 +1942,24 @@ export async function getOnePOSProduct(variationId) {
       // convert to string
       product = JSON.stringify(product);
       variation = JSON.stringify(variation);
-      return { product: product, variation: variation };
+      return {
+        product: product,
+        variation: variation,
+        error: JSON.stringify("Producto no encontrado"),
+      };
     } else {
-      throw Error("Product not found");
+      return {
+        error: JSON.stringify("Producto no encontrado"),
+        product: JSON.stringify({ product: "" }),
+        variation: JSON.stringify({ variation: "" }),
+      };
     }
   } catch (error) {
-    console.log(error);
-    throw Error(error);
+    return {
+      error: JSON.stringify("Código Incorrecto"),
+      product: JSON.stringify({ product: "" }),
+      variation: JSON.stringify({ variation: "" }),
+    };
   }
 }
 

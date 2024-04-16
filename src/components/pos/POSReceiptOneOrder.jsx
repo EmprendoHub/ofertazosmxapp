@@ -1,13 +1,26 @@
-'use client';
-import FormattedPrice from '@/backend/helpers/FormattedPrice';
-import { useRef } from 'react';
-import { Button } from 'react-bootstrap';
-import { FaPrint } from 'react-icons/fa6';
-import ReactToPrint from 'react-to-print';
-import './PosStyles.css';
+"use client";
+import FormattedPrice from "@/backend/helpers/FormattedPrice";
+import { useEffect, useRef, useState } from "react";
+import { Button } from "react-bootstrap";
+import { FaPrint } from "react-icons/fa6";
+import ReactToPrint from "react-to-print";
+import "./PosStyles.css";
+import { cstDateTime } from "@/backend/helpers";
 
 const POSReceiptOneOrder = ({ order }) => {
   const ref = useRef();
+  const [loaded, setLoaded] = useState(false);
+  const printTriggerRef = useRef(null); // Referencing the print trigger button
+
+  useEffect(() => {
+    setTimeout(() => {
+      // Assume component is ready to print
+      setLoaded(true);
+      if (printTriggerRef.current) {
+        printTriggerRef.current.click(); // Automatically trigger print
+      }
+    }, 1000); // Adjust the delay as needed or immediately trigger if data is already present
+  }, []);
 
   function getQuantities(orderItems) {
     // Use reduce to sum up the 'quantity' fields
@@ -16,15 +29,6 @@ const POSReceiptOneOrder = ({ order }) => {
       0
     );
     return totalQuantity;
-  }
-
-  function getTotal(orderItems) {
-    // Use reduce to sum up the 'total' field
-    const totalAmount = orderItems?.reduce(
-      (acc, cartItem) => acc + cartItem.quantity * cartItem.price,
-      0
-    );
-    return totalAmount;
   }
 
   function subtotal() {
@@ -40,23 +44,20 @@ const POSReceiptOneOrder = ({ order }) => {
       <div className="flex flex-row justify-between items-center">
         <div className=" relative flex flex-col items-center justify-center max-w-fit">
           <h1 className="flex font-black font-EB_Garamond text-[1.5rem] maxmd:text-[1rem] leading-none">
-            SHOPOUT
+            SHOPOUT MX
           </h1>
         </div>
 
         <div className=" flex flex-col  items-end justify-end gap-x-1 overflow-hidden  ">
-          <h2 className="text-md font-bold text-slate-700 items-center">
+          <h2 className="text-md font-bold text-black items-center">
             #{order?.orderId}
           </h2>
-          <div className="text-xs text-slate-600 tracking-widest pb-1 border-b-2 border-slate-300">
-            {order?.branch}
-          </div>
         </div>
       </div>
 
       <div className="relative overflow-x-auto border-b-2 border-slate-300">
         <table className="w-full text-left">
-          <thead className="text-xs text-gray-700 uppercase">
+          <thead className="text-xs text-black uppercase">
             <tr className="flex flex-row items-center justify-between">
               <th scope="col" className="px-2 maxsm:px-0 py-1">
                 #
@@ -70,7 +71,7 @@ const POSReceiptOneOrder = ({ order }) => {
               </th>
             </tr>
           </thead>
-          <tbody className="text-sm">
+          <tbody className="text-sm overscroll-x-none overflow-hidden">
             {order?.orderItems?.map((item, index) => (
               <tr
                 key={index}
@@ -89,7 +90,7 @@ const POSReceiptOneOrder = ({ order }) => {
           </tbody>
         </table>
       </div>
-      <div className="relative flex flex-row maxmd:flex-col items-center justify-start overflow-x-auto gap-3 ">
+      <div className="relative flex flex-row maxmd:flex-col items-center justify-start overflow-x-hidden gap-3 ">
         <div className="w-full">
           <div className="container max-w-screen-xl mx-auto flex flex-col justify-between p-2">
             <ul className="mb-2 ">
@@ -100,8 +101,8 @@ const POSReceiptOneOrder = ({ order }) => {
                 </span>
               </li>
               <li className="flex justify-between gap-x-5 text-gray-950">
-                <span className="text-sm">Total de Artículos:</span>
-                <span className="text-green-700">
+                <span className="text-xs">Total de Artículos:</span>
+                <span className="text-black text-xs">
                   {getQuantities(order?.orderItems)} (Artículos)
                 </span>
               </li>
@@ -120,7 +121,8 @@ const POSReceiptOneOrder = ({ order }) => {
                 </span>
               </li>
             </ul>
-            <div className="text-xs text-slate-600 tracking-wide text-center  border-t-2 border-slate-300 ">
+            <div className="text-xs text-black tracking-wide text-center  border-t-2 border-slate-300 ">
+              <p className="text-xs my-2 w-full text-center">{cstDateTime()}</p>
               <p>Gracias por tu compra</p>
               <p>Para descuentos y especiales visita www.shopout.com.mx</p>
             </div>
@@ -134,15 +136,22 @@ const POSReceiptOneOrder = ({ order }) => {
         documentTitle={`#${order?.orderId}`}
         content={() => ref.current}
         trigger={() => (
-          <Button
-            className="print-btn w-full bg-black text-white p-4 rounded-sm"
-            type="primary"
-            icon={<FaPrint />}
-          >
-            Imprimir Recibo
+          <Button ref={printTriggerRef} style={{ display: "none" }}>
+            Print
           </Button>
         )}
       />
+      <Button
+        className="print-btn bg-black text-white w-full py-2"
+        onClick={() => {
+          if (printTriggerRef.current) {
+            printTriggerRef.current.click();
+          }
+        }}
+        icon={<FaPrint />}
+      >
+        Imprimir Recibo
+      </Button>
     </div>
   );
 };

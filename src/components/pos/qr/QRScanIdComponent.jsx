@@ -62,9 +62,9 @@ const QRScanIdComponent = () => {
       const id_part = text.split(/[-']/)[0];
       console.log(id_part);
       if (pathname.includes("admin")) {
-        router.push(`/admin/pos/scan/${id_part}`);
+        router.push(`/admin/pos/scanid/${id_part}`);
       } else {
-        router.push(`/puntodeventa/scan/${id_part}`);
+        router.push(`/puntodeventa/scanid/${id_part}`);
       }
     }
   }, [scanResult, query]);

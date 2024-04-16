@@ -1,27 +1,27 @@
-'use client';
-import React, { useState } from 'react';
-import { payPOSDrawer } from '@/app/_actions';
-import { toast } from 'react-toastify';
-import { FaCircleCheck, FaCircleExclamation } from 'react-icons/fa6';
-import { resetPOSCart, savePOSOrder } from '@/redux/shoppingSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { usePathname, useRouter } from 'next/navigation';
+"use client";
+import React, { useState } from "react";
+import { payPOSDrawer } from "@/app/_actions";
+import { toast } from "react-toastify";
+import { FaCircleCheck, FaCircleExclamation } from "react-icons/fa6";
+import { resetPOSCart, savePOSOrder } from "@/redux/shoppingSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { usePathname, useRouter } from "next/navigation";
 
 const PayCartComp = ({ setShowModal, payType }) => {
   const getPathname = usePathname();
   let pathname;
-  if (getPathname.includes('admin')) {
-    pathname = 'admin';
-  } else if (getPathname.includes('puntodeventa')) {
-    pathname = 'puntodeventa';
+  if (getPathname.includes("admin")) {
+    pathname = "admin";
+  } else if (getPathname.includes("puntodeventa")) {
+    pathname = "puntodeventa";
   }
   const dispatch = useDispatch();
   const router = useRouter();
-  const [transactionNo, setTransactionNo] = useState('EFECTIVO');
-  const [phone, setPhoneNo] = useState('');
-  const [note, setNote] = useState('');
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
+  const [transactionNo, setTransactionNo] = useState("EFECTIVO");
+  const [phone, setPhoneNo] = useState("");
+  const [note, setNote] = useState("");
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [savingPayment, setSavingPayment] = useState(false);
 
   const { productsPOS } = useSelector((state) => state.compras);
@@ -35,7 +35,7 @@ const PayCartComp = ({ setShowModal, payType }) => {
 
   const totalAmountCalc = Number(amountTotal);
   let amountPlaceHolder;
-  if (payType === 'layaway') {
+  if (payType === "layaway") {
     amountPlaceHolder = layawayAmount;
   } else {
     amountPlaceHolder = totalAmountCalc;
@@ -44,21 +44,21 @@ const PayCartComp = ({ setShowModal, payType }) => {
 
   const handleAmountReceived = async (inputValue) => {
     // Replace any non-digit characters with an empty string
-    const sanitizedValue = inputValue.replace(/\D/g, '');
+    const sanitizedValue = inputValue.replace(/\D/g, "");
     // Convert the sanitized value to an integer
     const integerValue = parseInt(sanitizedValue);
     // If the input is not empty and the parsed integer is a valid whole number,
     // update the state with the integer value, otherwise update with an empty string
-    setAmountReceived(isNaN(integerValue) ? '' : integerValue);
+    setAmountReceived(isNaN(integerValue) ? "" : integerValue);
   };
 
   const handleCheckout = async () => {
     setSavingPayment(true);
-    if (payType === 'layaway') {
+    if (payType === "layaway") {
       if (!amountReceived || layawayAmount > amountReceived) {
         setSavingPayment(false);
         toast.error(
-          'La cantidad que recibe es menor al minino de 30% que se require para apartar este pedido'
+          "La cantidad que recibe es menor al minino de 30% que se require para apartar este pedido"
         );
 
         return;
@@ -66,7 +66,7 @@ const PayCartComp = ({ setShowModal, payType }) => {
       if (!name || !phone) {
         setSavingPayment(false);
         toast.error(
-          'Se requiere un teléfono o correo electrónico para realizar un apartado.'
+          "Se requiere un teléfono o correo electrónico para realizar un apartado."
         );
 
         return;
@@ -74,7 +74,7 @@ const PayCartComp = ({ setShowModal, payType }) => {
     } else {
       if (!amountReceived || totalAmountCalc > amountReceived) {
         setSavingPayment(false);
-        toast.error('La cantidad que recibe es menor al total');
+        toast.error("La cantidad que recibe es menor al total");
 
         return;
       }
@@ -82,14 +82,14 @@ const PayCartComp = ({ setShowModal, payType }) => {
 
     const formData = new FormData();
     const items = JSON.stringify(productsPOS);
-    formData.append('items', items);
-    formData.append('name', name);
-    formData.append('phone', phone);
-    formData.append('note', note);
-    formData.append('email', email);
-    formData.append('transactionNo', transactionNo);
-    formData.append('amountReceived', amountReceived);
-    formData.append('payType', payType);
+    formData.append("items", items);
+    formData.append("name", name);
+    formData.append("phone", phone);
+    formData.append("note", note);
+    formData.append("email", email);
+    formData.append("transactionNo", transactionNo);
+    formData.append("amountReceived", amountReceived);
+    formData.append("payType", payType);
 
     const result = await payPOSDrawer(formData);
     if (result?.error) {
@@ -101,24 +101,24 @@ const PayCartComp = ({ setShowModal, payType }) => {
       dispatch(savePOSOrder({ order: order }));
       dispatch(resetPOSCart());
       setAmountReceived(0);
-      router.push(`/${pathname}/pedidos`);
+      router.push(`/${pathname}/recibo/${order._id}`);
     }
   };
 
   const handlePhoneChange = (e) => {
-    const inputPhone = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
-    let formattedPhone = '';
+    const inputPhone = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+    let formattedPhone = "";
 
     if (inputPhone.length <= 10) {
       formattedPhone = inputPhone.replace(
         /(\d{3})(\d{0,3})(\d{0,4})/,
-        '$1$2$3'
+        "$1$2$3"
       );
     } else {
       // If the phone number exceeds 10 digits, truncate it
       formattedPhone = inputPhone
         .slice(0, 10)
-        .replace(/(\d{3})(\d{0,3})(\d{0,4})/, '$1 $2 $3');
+        .replace(/(\d{3})(\d{0,3})(\d{0,4})/, "$1 $2 $3");
     }
 
     setPhoneNo(formattedPhone);
@@ -129,7 +129,7 @@ const PayCartComp = ({ setShowModal, payType }) => {
       <div className="w-1/2 maxmd:w-5/6 bg-white pl-4">
         <section className=" p-6 w-full">
           <h1 className="text-2xl maxmd:text-5xl font-semibold text-black mb-4 font-EB_Garamond text-center uppercase">
-            {payType === 'layaway' ? 'Apartar' : 'Pagar'}
+            {payType === "layaway" ? "Apartar" : "Pagar"}
           </h1>
           {validationError && (
             <p className="text-sm text-red-400">{validationError}</p>
@@ -137,7 +137,7 @@ const PayCartComp = ({ setShowModal, payType }) => {
           <div className="flex flex-col items-center gap-1">
             {validationError?.title && (
               <p className="text-sm text-red-400">
-                {validationError.title._errors.join(', ')}
+                {validationError.title._errors.join(", ")}
               </p>
             )}
             <div className="mb-4 text-center">
@@ -198,22 +198,22 @@ const PayCartComp = ({ setShowModal, payType }) => {
               />
               {validationError?.amount && (
                 <p className="text-sm text-red-400">
-                  {validationError.amount._errors.join(', ')}
+                  {validationError.amount._errors.join(", ")}
                 </p>
               )}
             </div>
             {!savingPayment && (
-              <div className="flex flex-row flex-wrap items-center gap-3">
+              <div className="flex flex-row flex-wrap items-center gap-3 w-full">
                 <div
                   onClick={() => setShowModal(false)}
-                  className="my-2 px-4 py-2 text-center text-white bg-red-700 border border-transparent rounded-md hover:bg-red-800 w-full flex flex-row items-center justify-center gap-1 cursor-pointer"
+                  className="my-2 px-4 py-2 text-center text-white bg-red-700 border border-transparent rounded-md hover:bg-red-800 w-[45%] flex flex-row items-center justify-center gap-1 cursor-pointer"
                 >
                   <FaCircleExclamation className="text-xl" />
                   Cancelar
                 </div>
                 <button
-                  onClick={() => handleCheckout('layaway')}
-                  className="my-2 px-4 py-2 text-center text-white bg-emerald-700 border border-transparent rounded-md hover:bg-emerald-900 w-full flex flex-row items-center justify-center gap-1"
+                  onClick={() => handleCheckout("layaway")}
+                  className="my-2 w-[45%] px-4 py-2 text-center text-white bg-emerald-700 border border-transparent rounded-md hover:bg-emerald-900 flex flex-row items-center justify-center gap-1"
                 >
                   <FaCircleCheck className="text-xl" /> Procesar
                 </button>
