@@ -105,11 +105,17 @@ export function cstDateTime() {
 export function formatSpanishDate(inputDate) {
   // Parse the input date string
   const date = new Date(inputDate);
+  let cstOffset;
+  let cstDate;
   console.log(inputDate, "inmput date");
-  // Adjust the date to the Central Standard Time (CST) timezone
-  const cstOffset = 6 * 60 * 60 * 1000; // CST is UTC-6
-  const cstDate = new Date(date.getTime() + cstOffset);
-  //const cstDate = new Date(date.getTime());
+  if (process.env.NODE_ENV === "development") {
+    cstOffset = 6 * 60 * 60 * 1000; // CST is UTC-6
+    cstDate = new Date(date.getTime() + cstOffset);
+  }
+  if (process.env.NODE_ENV === "production") {
+    cstDate = new Date(date.getTime());
+  }
+
   // Define arrays for month names in Spanish and AM/PM labels
   const monthNames = [
     "enero",
