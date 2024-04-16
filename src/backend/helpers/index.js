@@ -111,7 +111,7 @@ export function formatSpanishDate(inputDate) {
     cstOffset = 6 * 60 * 60 * 1000; // CST is UTC-6
     cstDate = new Date(date.getTime() + cstOffset);
   } else if (process.env.NODE_ENV === "production") {
-    cstOffset = -6 * 60 * 60 * 1000; // CST is UTC-6
+    cstOffset = 6 * 60 * 60 * 1000; // CST is UTC-6
     cstDate = new Date(date.getTime() - cstOffset);
   }
 
