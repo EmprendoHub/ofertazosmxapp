@@ -81,13 +81,23 @@ export function newCSTDate() {
 export function cstDateTime() {
   // Create a Date object from the given string
   const currentDate = new Date();
-  // Adjust the date object to the Central Standard Time (CST) time zone
-  //const cstOffset = -6 * 60 * 60 * 1000; // CST is UTC-6
-  //const cstTime = new Date(currentDate.getTime() + cstOffset);
-  const cstTime = new Date(currentDate.getTime());
-  const cstDate = cstTime.toLocaleString("en-US", {
-    timeZone: "America/Mexico_City",
-  });
+  let cstTime;
+  let cstDate;
+  if (process.env.NODE_ENV === "development") {
+    cstTime = new Date(currentDate.getTime());
+    cstDate = cstTime.toLocaleString("en-US", {
+      timeZone: "America/Mexico_City",
+    });
+  }
+
+  if (process.env.NODE_ENV === "production") {
+    // Adjust the date object to the Central Standard Time (CST) time zone
+    const cstOffset = -6 * 60 * 60 * 1000; // CST is UTC-6
+    cstTime = new Date(currentDate.getTime() + cstOffset);
+    cstDate = cstTime.toLocaleString("en-US", {
+      timeZone: "America/Mexico_City",
+    });
+  }
 
   return cstDate;
 }
@@ -126,7 +136,6 @@ export function formatSpanishDate(inputDate) {
 
   // Determine the period label (AM/PM) based on the hour value
   const period = hours < 12 ? 0 : 1;
-  console.log(hours, "hours", inputDate);
 
   // Convert hours to 12-hour format
   hours = hours % 12 || 12;
