@@ -851,6 +851,7 @@ export async function getDashboard() {
     const today = new Date(Date.now() + minusCstOffset);
     today.setUTCHours(0, 0, 0, 0); // Set time to midnight
     // Set start of the current year
+    console.log(today, "today with offset");
     const startOfYear = new Date(today.getFullYear(), 0, 1, 0, 0, 0, 0);
 
     // Set end of the current year
