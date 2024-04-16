@@ -31,6 +31,15 @@ const POSReceiptOneOrder = ({ order }) => {
     return totalQuantity;
   }
 
+  function getTotal(orderItems) {
+    // Use reduce to sum up the 'total' field
+    const totalAmount = orderItems?.reduce(
+      (acc, cartItem) => acc + cartItem.quantity * cartItem.price,
+      0
+    );
+    return totalAmount;
+  }
+
   function subtotal() {
     let sub = order?.paymentInfo?.amountPaid - order?.ship_cost;
     return sub;
@@ -90,14 +99,14 @@ const POSReceiptOneOrder = ({ order }) => {
           </tbody>
         </table>
       </div>
-      <div className="relative flex flex-row maxmd:flex-col items-center justify-start overflow-x-hidden gap-3 ">
+      <div className="relative flex flex-row maxmd:flex-col items-center justify-start overflow-x-hidden gap-2 ">
         <div className="w-full">
           <div className="container max-w-screen-xl mx-auto flex flex-col justify-center p-2">
             <ul className="mb-2 ">
               <li className="flex justify-between gap-x-5 text-gray-950">
-                <span className="text-sm">Sub-Total:</span>
-                <span>
-                  <FormattedPrice amount={subtotal() || 0} />
+                <span className="text-xs">Sub-Total:</span>
+                <span className="text-xs">
+                  <FormattedPrice amount={getTotal(order?.orderItems) || 0} />
                 </span>
               </li>
               <li className="flex justify-between gap-x-5 text-gray-950">
@@ -107,16 +116,33 @@ const POSReceiptOneOrder = ({ order }) => {
                 </span>
               </li>
               <li className="flex justify-between gap-x-5 text-gray-950">
-                <span className="text-sm">IVA:</span>
-                <span>
+                <span className="text-xs">IVA:</span>
+                <span className="text-xs">
                   <FormattedPrice amount={order?.ship_cost || 0} />
                 </span>
               </li>
-              <li className="text-xl font-bold border-t-2 border-slate-300  flex justify-between gap-x-1 pt-3">
+              <li className="text-base font-semibold border-t-1 border-slate-300  flex justify-between gap-x-1 pt-1">
                 <span>Total:</span>
                 <span>
+                  <FormattedPrice amount={getTotal(order?.orderItems) || 0} />
+                </span>
+              </li>
+              <li className="text-base font-bold border-t-1 border-slate-300  flex justify-between gap-x-1 pt-1">
+                <span>Pago:</span>
+                <span>
+                  <span>
+                    -<FormattedPrice amount={subtotal() || 0} />
+                  </span>
+                </span>
+              </li>
+              <li className="text-lg font-bold border-t-1 border-slate-300  flex justify-between gap-x-1 pt-1">
+                <span>Pendiente:</span>
+                <span>
                   <FormattedPrice
-                    amount={order?.paymentInfo?.amountPaid || 0}
+                    amount={
+                      getTotal(order?.orderItems) -
+                        order?.paymentInfo?.amountPaid || 0
+                    }
                   />
                 </span>
               </li>
