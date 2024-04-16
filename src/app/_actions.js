@@ -966,7 +966,7 @@ export async function getDashboard() {
       23,
       59,
       59,
-      999 - cstOffset
+      999
     );
 
     orders = await Order.find({ orderStatus: { $ne: "Cancelado" } })
@@ -1066,7 +1066,7 @@ export async function getDashboard() {
         },
       },
     ]);
-
+    console.log(startOfToday, endOfToday, "startOfToday, endOfToday");
     dailyPaymentsTotals = await Payment.aggregate([
       {
         $match: {
@@ -1083,7 +1083,7 @@ export async function getDashboard() {
         },
       },
     ]);
-    console.log(yesterday, endOfYesterday, "startOfToday, endOfToday");
+
     // Perform aggregation to get yesterday's totals
     let yesterdaysOrdersTotals = await Payment.aggregate([
       {
@@ -1292,7 +1292,9 @@ export async function getDashboard() {
     dailyData = JSON.stringify(dailyData);
     thisWeeksOrder = JSON.stringify(thisWeeksOrder);
     totalPaymentsThisWeek = totalPaymentsThisWeek[0]?.total;
+    console.log(dailyPaymentsTotals);
     dailyPaymentsTotals = dailyPaymentsTotals[0]?.total;
+
     yesterdaysOrdersTotals = yesterdaysOrdersTotals[0]?.total;
     monthlyOrdersTotals = monthlyOrdersTotals[0]?.total;
     yearlyOrdersTotals = yearlyOrdersTotals[0]?.total;
