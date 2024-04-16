@@ -1264,7 +1264,6 @@ export async function getDashboard() {
     dailyData = JSON.stringify(dailyData);
     thisWeeksOrder = JSON.stringify(thisWeeksOrder);
     totalPaymentsThisWeek = totalPaymentsThisWeek[0]?.total;
-    console.log(dailyPaymentsTotals);
     dailyPaymentsTotals = dailyPaymentsTotals[0]?.total;
 
     yesterdaysOrdersTotals = yesterdaysOrdersTotals[0]?.total;
