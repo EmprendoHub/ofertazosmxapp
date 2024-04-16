@@ -6,10 +6,14 @@ import {
   TbDeviceIpadDollar,
   TbQrcode,
   TbScan,
+  TbScanEye,
 } from "react-icons/tb";
 import { TfiDashboard } from "react-icons/tfi";
 import { LuReceipt } from "react-icons/lu";
 import { LiaCashRegisterSolid } from "react-icons/lia";
+import { BsQrCodeScan } from "react-icons/bs";
+import { MdOutlineFactCheck } from "react-icons/md";
+import { GiClothes } from "react-icons/gi";
 
 export default function UserLayout({ children }) {
   const pathname = usePathname();
@@ -25,7 +29,7 @@ export default function UserLayout({ children }) {
             url={"/instagram"}
           />
           <SideBarItem
-            icon={<TbClothesRack size={20} />}
+            icon={<GiClothes size={20} />}
             text={"Productos"}
             active={pathname === "/instagram/productos" ?? true}
             url={"/instagram/productos"}
@@ -57,7 +61,7 @@ export default function UserLayout({ children }) {
             url={"/instagram/carrito"}
           />
           <SideBarItem
-            icon={<TbScan size={20} />}
+            icon={<BsQrCodeScan size={20} />}
             text={"Scanner"}
             active={
               pathname === "/instagram/qr/scanner" ||
@@ -66,8 +70,8 @@ export default function UserLayout({ children }) {
             url={"/instagram/qr/scanner"}
           />
           <SideBarItem
-            icon={<TbScan size={20} />}
-            text={"Scanner ID"}
+            icon={<TbScanEye size={20} />}
+            text={"Revisa-Precio"}
             active={
               pathname === "/instagram/qr/idscanner" ||
               (pathname === "/instagram/qr/idscanner" && true)
@@ -75,7 +79,7 @@ export default function UserLayout({ children }) {
             url={"/instagram/qr/idscanner"}
           />
           <SideBarItem
-            icon={<TbQrcode size={20} />}
+            icon={<MdOutlineFactCheck size={20} />}
             text={"Generar QRs"}
             active={
               pathname === "/instagram/seleccionar" ||

@@ -1,11 +1,12 @@
 "use client";
 import BranchSidebar, { SideBarItem } from "@/components/pos/BranchSidebar";
 import { usePathname } from "next/navigation";
-import { TbDeviceIpadDollar, TbQrcode, TbScan } from "react-icons/tb";
+import { TbDeviceIpadDollar, TbScan, TbScanEye } from "react-icons/tb";
 import { TfiDashboard } from "react-icons/tfi";
 import { LuReceipt } from "react-icons/lu";
-import { LiaCashRegisterSolid, LiaStoreAltSolid } from "react-icons/lia";
-import { FaInstagram } from "react-icons/fa6";
+import { LiaCashRegisterSolid } from "react-icons/lia";
+import { MdOutlineFactCheck } from "react-icons/md";
+import { BsQrCodeScan } from "react-icons/bs";
 
 export default function UserLayout({ children }) {
   const pathname = usePathname();
@@ -47,7 +48,7 @@ export default function UserLayout({ children }) {
             url={"/puntodeventa/carrito"}
           />
           <SideBarItem
-            icon={<TbScan size={20} />}
+            icon={<BsQrCodeScan size={20} />}
             text={"Scanner"}
             active={
               pathname === "/puntodeventa/qr/scanner" ||
@@ -56,8 +57,8 @@ export default function UserLayout({ children }) {
             url={"/puntodeventa/qr/scanner"}
           />
           <SideBarItem
-            icon={<TbScan size={20} />}
-            text={"Scanner ID"}
+            icon={<TbScanEye size={20} />}
+            text={"Revisa-Precio"}
             active={
               pathname === "/puntodeventa/qr/idscanner" ||
               (pathname === "/puntodeventa/qr/idscanner" && true)
@@ -65,7 +66,7 @@ export default function UserLayout({ children }) {
             url={"/puntodeventa/qr/idscanner"}
           />
           <SideBarItem
-            icon={<TbQrcode size={20} />}
+            icon={<MdOutlineFactCheck size={20} />}
             text={"Generar QRs"}
             active={
               pathname === "/puntodeventa/seleccionar" ||

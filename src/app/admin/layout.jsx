@@ -1,11 +1,20 @@
 "use client";
 import AdminSidebar, { SideBarItem } from "@/components/admin/AdminSidebar";
 import { usePathname } from "next/navigation";
-import { TbDeviceIpadDollar, TbQrcode, TbScan } from "react-icons/tb";
+import {
+  TbDeviceIpadDollar,
+  TbQrcode,
+  TbScan,
+  TbScanEye,
+} from "react-icons/tb";
 import { PiUserListLight } from "react-icons/pi";
 import { CiGrid31 } from "react-icons/ci";
 import { TfiDashboard } from "react-icons/tfi";
-import { MdOutlineContactMail, MdOutlinePostAdd } from "react-icons/md";
+import {
+  MdOutlineContactMail,
+  MdOutlineFactCheck,
+  MdOutlinePostAdd,
+} from "react-icons/md";
 import { LuReceipt } from "react-icons/lu";
 import {
   TbAffiliate,
@@ -15,6 +24,7 @@ import {
 import { LiaCashRegisterSolid, LiaStoreAltSolid } from "react-icons/lia";
 import { GiClothes } from "react-icons/gi";
 import { FaCartPlus, FaInstagram } from "react-icons/fa6";
+import { BsQrCodeScan } from "react-icons/bs";
 
 export default function UserLayout({ children }) {
   const pathname = usePathname();
@@ -136,20 +146,20 @@ export default function UserLayout({ children }) {
                 text: "Scanner",
                 url: "/admin/pos/qr/scanner",
                 active: pathname === "/admin/pos/qr/scanner" ? "true" : "false",
-                icon: <TbScan size={20} />,
+                icon: <BsQrCodeScan size={20} />,
               },
               {
-                text: "Identificador",
+                text: "Revisa-Precio",
                 url: "/admin/pos/qr/idscanner",
                 active:
                   pathname === "/admin/pos/qr/idscanner" ? "true" : "false",
-                icon: <TbScan size={20} />,
+                icon: <TbScanEye size={20} />,
               },
               {
                 text: "Generador",
                 url: "/admin/pos/productos",
                 active: pathname === "/admin/pos/productos" ? "true" : "false",
-                icon: <TbQrcode size={20} />,
+                icon: <MdOutlineFactCheck size={20} />,
               },
               // Add more dropdown items as needed
             ]}
