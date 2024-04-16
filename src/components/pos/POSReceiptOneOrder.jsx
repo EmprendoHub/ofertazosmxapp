@@ -55,7 +55,7 @@ const POSReceiptOneOrder = ({ order }) => {
         </div>
       </div>
 
-      <div className="relative overflow-x-auto border-b-2 border-slate-300">
+      <div className="relative overflow-x-hidden border-b-2 border-slate-300">
         <table className="w-full text-left">
           <thead className="text-xs text-black uppercase">
             <tr className="flex flex-row items-center justify-between">
@@ -78,8 +78,8 @@ const POSReceiptOneOrder = ({ order }) => {
                 className="flex flex-row items-center justify-between"
               >
                 <td className="px-2 maxsm:px-0 pb-1">{item.quantity}</td>
-                <td className="px-2 maxsm:px-0 pb-1">
-                  {item.name.substring(0, 14)}...
+                <td className="px-2 maxsm:px-0 pb-1 text-clip">
+                  {item.name.substring(0, 10)}
                 </td>
 
                 <td className="px-2 maxsm:px-0 pb-1">

@@ -94,7 +94,9 @@ const PayCartComp = ({ setShowModal, payType }) => {
     formData.append("payType", payType);
 
     let result;
-    if (pathname.includes("puntodeventa")) {
+    if (pathname.includes("admin")) {
+      result = await payPOSDrawer(formData);
+    } else if (pathname.includes("puntodeventa")) {
       result = await payPOSDrawer(formData);
     } else if (pathname.includes("instagram")) {
       result = await payPOSInstagramDrawer(formData);
