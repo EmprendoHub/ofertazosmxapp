@@ -108,34 +108,6 @@ async function subtotal(order) {
   return sub;
 }
 
-// Function to get the document count for all orders from the previous month
-const getClientCountPreviousMonth = async () => {
-  const now = newCSTDate();
-  const firstDayOfPreviousMonth = new Date(
-    now.getFullYear(),
-    now.getMonth() - 1,
-    1
-  );
-  const lastDayOfPreviousMonth = new Date(now.getFullYear(), now.getMonth(), 0);
-
-  try {
-    const clientCount = await User.countDocuments(
-      {
-        createdAt: {
-          $gte: firstDayOfPreviousMonth,
-          $lte: lastDayOfPreviousMonth,
-        },
-      },
-      { role: "cliente" }
-    );
-
-    return clientCount;
-  } catch (error) {
-    console.error("Error counting clients from the previous month:", error);
-    throw error;
-  }
-};
-
 export async function payPOSDrawer(data) {
   try {
     let {
@@ -201,6 +173,7 @@ export async function payPOSDrawer(data) {
     const branchInfo = "Sucursal";
     const ship_cost = 0;
     const date = cstDateTime();
+    console.log("POS Drawer new payment date", date);
 
     let paymentInfo;
     let layAwayIntent;
@@ -547,6 +520,7 @@ export async function payPOSInstagramDrawer(data) {
     const branchInfo = "Instagram";
     const ship_cost = 0;
     const date = cstDateTime();
+    console.log("Instagram Drawer new payment date", date);
 
     let paymentInfo;
     let layAwayIntent;
