@@ -107,12 +107,11 @@ export function formatSpanishDate(inputDate) {
   const date = new Date(inputDate);
   let cstOffset;
   let cstDate;
-  console.log(inputDate, "inmput date", process.env.NODE_ENV, "NODE");
   if (process.env.NODE_ENV === "development") {
     cstOffset = 6 * 60 * 60 * 1000; // CST is UTC-6
     cstDate = new Date(date.getTime() + cstOffset);
-  } else {
-    cstDate = new Date(date.getTime());
+  } else if (process.env.NODE_ENV === "production") {
+    cstDate = new Date(date.getTime() - cstOffset);
   }
 
   // Define arrays for month names in Spanish and AM/PM labels
