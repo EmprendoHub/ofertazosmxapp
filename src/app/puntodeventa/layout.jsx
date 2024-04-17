@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { TbDeviceIpadDollar, TbScanEye } from "react-icons/tb";
 import { TfiDashboard } from "react-icons/tfi";
 import { LuReceipt } from "react-icons/lu";
-import { LiaCashRegisterSolid } from "react-icons/lia";
+import { LiaCashRegisterSolid, LiaReceiptSolid } from "react-icons/lia";
 import { MdOutlineFactCheck } from "react-icons/md";
 import { BsQrCodeScan } from "react-icons/bs";
 
@@ -46,6 +46,15 @@ export default function UserLayout({ children }) {
               (pathname === "/puntodeventa/carrito" && true)
             }
             url={"/puntodeventa/carrito"}
+          />
+          <SideBarItem
+            icon={<LiaReceiptSolid size={20} />}
+            text={"Corte"}
+            active={
+              pathname === "/puntodeventa/corte" ||
+              (pathname === "/puntodeventa/corte" && true)
+            }
+            url={"/puntodeventa/corte"}
           />
           <SideBarItem
             icon={<BsQrCodeScan size={20} />}

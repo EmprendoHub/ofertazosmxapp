@@ -151,6 +151,86 @@ export function formatSpanishDate(inputDate) {
   return formattedDate;
 }
 
+export function formatCorteDate(inputDate) {
+  // Parse the input date string
+  const date = new Date(inputDate);
+  let cstOffset;
+  let cstDate;
+  if (process.env.NODE_ENV === "development") {
+    cstOffset = 6 * 60 * 60 * 1000; // CST is UTC-6
+    cstDate = new Date(date.getTime() + cstOffset);
+  } else if (process.env.NODE_ENV === "production") {
+    cstOffset = -6 * 60 * 60 * 1000; // CST is UTC-6
+    cstDate = new Date(date.getTime() - cstOffset);
+  }
+
+  // Define arrays for month names in Spanish and AM/PM labels
+  const monthNames = [
+    "enero",
+    "febrero",
+    "marzo",
+    "abril",
+    "mayo",
+    "junio",
+    "julio",
+    "agosto",
+    "septiembre",
+    "octubre",
+    "noviembre",
+    "diciembre",
+  ];
+
+  // Get the day, month, year, hours, and minutes from the adjusted date object
+  const day = cstDate.getDate();
+  const month = monthNames[cstDate.getMonth()];
+  const year = cstDate.getFullYear();
+
+  // Construct the formatted string
+  const formattedDate = `${day} de ${month} de ${year}`;
+
+  return formattedDate;
+}
+
+export function formatSimpleDate(inputDate) {
+  // Parse the input date string
+  const date = new Date(inputDate);
+  let cstOffset;
+  let cstDate;
+  if (process.env.NODE_ENV === "development") {
+    cstOffset = 6 * 60 * 60 * 1000; // CST is UTC-6
+    cstDate = new Date(date.getTime() + cstOffset);
+  } else if (process.env.NODE_ENV === "production") {
+    cstOffset = -6 * 60 * 60 * 1000; // CST is UTC-6
+    cstDate = new Date(date.getTime() - cstOffset);
+  }
+
+  // Define arrays for month names in Spanish and AM/PM labels
+  const monthNames = [
+    "enero",
+    "febrero",
+    "marzo",
+    "abril",
+    "mayo",
+    "junio",
+    "julio",
+    "agosto",
+    "septiembre",
+    "octubre",
+    "noviembre",
+    "diciembre",
+  ];
+
+  // Get the day, month, year, hours, and minutes from the adjusted date object
+  const day = cstDate.getDate();
+  const month = monthNames[cstDate.getMonth()];
+  const year = cstDate.getFullYear();
+
+  // Construct the formatted string
+  const formattedDate = `${day}/${month.substring(0, 3)}/${year}`;
+
+  return formattedDate;
+}
+
 export function cstDateTimeClient() {
   // Create a Date object from the given string
   const date = new Date();
