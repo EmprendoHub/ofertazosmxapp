@@ -13,23 +13,23 @@ export const GET = async (request, res) => {
   }
   try {
     await dbConnect();
-    // // Get today's date at midnight
-    // const startOfDay = new Date();
-    // startOfDay.setHours(0, 0, 0, 0);
-
-    // // Get tomorrow's date at midnight
-    // const endOfDay = new Date();
-    // endOfDay.setHours(23, 59, 59, 999);
-
-    // Get yesterday's date at midnight
+    // Get today's date at midnight
     const startOfDay = new Date();
-    startOfDay.setDate(startOfDay.getDate() - 1);
     startOfDay.setHours(0, 0, 0, 0);
 
-    // Get today's date at midnight (end of yesterday)
+    // Get tomorrow's date at midnight
     const endOfDay = new Date();
-    endOfDay.setDate(endOfDay.getDate() - 1);
     endOfDay.setHours(23, 59, 59, 999);
+
+    // // Get yesterday's date at midnight
+    // const startOfDay = new Date();
+    // startOfDay.setDate(startOfDay.getDate() - 1);
+    // startOfDay.setHours(0, 0, 0, 0);
+
+    // // Get today's date at midnight (end of yesterday)
+    // const endOfDay = new Date();
+    // endOfDay.setDate(endOfDay.getDate() - 1);
+    // endOfDay.setHours(23, 59, 59, 999);
 
     // Find payments between startOfDay and endOfDay
     const paymentQuery = await Payment.aggregate([
