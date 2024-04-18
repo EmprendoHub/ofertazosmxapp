@@ -151,7 +151,6 @@ const NewVariationOptimized = ({ currentCookies }) => {
   };
 
   // handle image variations change
-
   const handleVariationImageChange = async (e, index) => {
     // Get selected files from the input element.
     let files = e?.target.files;
@@ -239,7 +238,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
       });
   }
 
-  // ***************** main images //
+  // *******main images**********  //
   // functions
   const upload = async (e) => {
     // Get selected files from the input element.
@@ -309,12 +308,14 @@ const NewVariationOptimized = ({ currentCookies }) => {
           setMainImage(newUrl[0]);
           setVariations([
             {
-              size: "",
-              color: "",
-              colorHex: "",
-              price: 0,
-              cost: 0,
-              stock: 1,
+              size: variations[0].size,
+              color: variations[0].color,
+              colorHex: variations[0].colorHex,
+              colorHexTwo: variations[0].colorHexTwo,
+              colorHexThree: variations[0].colorHexThree,
+              price: variations[0].price,
+              cost: variations[0].cost,
+              stock: variations[0].stock,
               image: `${newUrl[0]}`,
             },
           ]);
