@@ -483,7 +483,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
       await updateRevalidateProduct();
       if (pathname.includes("instagram")) {
         router.push("/instagram/productos");
-      } else if (pathname.includes("instagram")) {
+      } else if (pathname.includes("admin")) {
         router.push("/admin/productos");
       }
     }
