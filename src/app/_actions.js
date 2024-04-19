@@ -915,7 +915,7 @@ export async function getDashboard() {
       0,
       0,
       0,
-      0 - cstOffset
+      0
     );
 
     const endOfToday = new Date(
@@ -1056,7 +1056,7 @@ export async function getDashboard() {
         },
       },
     ]);
-    console.log(startOfToday, startOfToday, "startOfToday");
+    console.log(startOfToday, "startOfToday,", endOfToday, "endOfToday");
     console.log(dailyPaymentsTotals, "dailyPaymentsTotals");
 
     // Perform aggregation to get yesterday's totals
