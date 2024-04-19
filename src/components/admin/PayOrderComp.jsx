@@ -30,13 +30,12 @@ const PayOrderComp = ({ pathname, setShowModal, orderId, isPaid }) => {
       formData.set("note", note);
       formData.set("orderId", orderId);
       try {
-        let res;
-        console.log(pathname, "pathname");
-        if (pathname === "puntodeventa" || pathname === "admin") {
-          res = await updateOneOrder(formData);
-        } else if (pathname === "instagram") {
-          res = await updateOneInstagramOrder(formData);
-        }
+        const res = await fetch(`/api/order`, {
+          method: "PUT",
+          body: formData,
+        });
+
+        console.log(res);
 
         setShowModal(false);
       } catch (error) {

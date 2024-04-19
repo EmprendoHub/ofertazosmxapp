@@ -1,9 +1,12 @@
+import { getTotalFromItems, newCSTDate } from "@/backend/helpers";
 import Address from "@/backend/models/Address";
 import Order from "@/backend/models/Order";
+import Payment from "@/backend/models/Payment";
 import Product from "@/backend/models/Product";
 import User from "@/backend/models/User";
 import dbConnect from "@/lib/db";
 import { getToken } from "next-auth/jwt";
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 export const GET = async (request) => {
@@ -42,41 +45,84 @@ export const GET = async (request) => {
 export async function PUT(req, res) {
   const token = await getToken({ req: req });
 
-  if (token && token.user.role === "manager") {
-    try {
-      await dbConnect();
-      const { payload } = await req.json();
-      let { orderStatus, _id } = payload;
-
-      const oid = _id;
-
-      const updateOrder = await Order.findOne({ _id: oid });
-      updateOrder.orderStatus = orderStatus;
-
-      // Save the Post to the database
-      const savedOrder = await updateOrder.save();
-
-      const response = NextResponse.json({
-        message: "Pedido actualizado exitosamente",
-        success: true,
-        post: savedOrder,
-      });
-
-      return response;
-    } catch (error) {
-      console.log(error);
-      return NextResponse.json(
-        {
-          error: "Error al actualizar pedido",
-        },
-        { status: 500 }
-      );
-    }
-  } else {
+  if (!token) {
     // Not Signed in
     return new Response("You are not authorized, eh eh eh, no no no", {
       status: 400,
     });
+  }
+  try {
+    const payload = await req.formData();
+    let { transactionNo, paidOn, note, amount, orderId } =
+      Object.fromEntries(payload);
+
+    // Define the model name with the suffix appended with the lottery ID
+    await dbConnect();
+    // Retrieve the dynamically created Ticket model
+    const order = await Order.findOne({ _id: orderId });
+    // Calculate total amount based on items
+    const date = newCSTDate();
+    const orderTotal = await getTotalFromItems(order?.orderItems);
+
+    if (order.paymentInfo.amountPaid + Number(amount) >= orderTotal) {
+      order.orderStatus = "Entregado";
+      order.paymentInfo.status = "Pagado";
+    } else {
+      order.orderStatus = "Apartado";
+      order.paymentInfo.status = "Pendiente";
+    }
+
+    order.paymentInfo.amountPaid =
+      Number(order.paymentInfo.amountPaid) + Number(amount);
+
+    await order.save();
+
+    let payMethod;
+    if (transactionNo === "EFECTIVO") {
+      payMethod = "EFECTIVO";
+    } else if (!isNaN(transactionNo)) {
+      payMethod = "TERMINAL";
+    } else {
+      payMethod = "EFECTIVO";
+    }
+
+    let paymentTransactionData = {
+      type: "sucursal",
+      paymentIntent: "",
+      amount: amount,
+      comment: note,
+      reference: transactionNo,
+      pay_date: date,
+      method: payMethod,
+      order: order?._id,
+      user: order?.user,
+    };
+
+    try {
+      const newPaymentTransaction = await new Payment(paymentTransactionData);
+
+      await newPaymentTransaction.save();
+    } catch (error) {
+      console.log("dBberror", error);
+    }
+    revalidatePath(`/admin/pedidos`);
+    revalidatePath(`/admin/pedido/${order?._id}`);
+    revalidatePath(`/puntodeventa/pedidos`);
+    revalidatePath(`/puntodeventa/pedido/${order?._id}`);
+    return NextResponse.json(
+      {
+        error: "pedido actualizado ",
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(
+      {
+        error: "Error al actualizar pedido",
+      },
+      { status: 500 }
+    );
   }
 }
 
