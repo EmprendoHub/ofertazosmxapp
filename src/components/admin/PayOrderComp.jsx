@@ -7,7 +7,7 @@ import { newCSTDate } from "@/backend/helpers";
 
 const PayOrderComp = ({ pathname, setShowModal, orderId, isPaid }) => {
   const [transactionNo, setTransactionNo] = useState("EFECTIVO");
-  const [amount, setAmount] = useState(null);
+  const [amount, setAmount] = useState(0);
   const [note, setNote] = useState("");
 
   const handleSubmit = async (e) => {
@@ -59,7 +59,6 @@ const PayOrderComp = ({ pathname, setShowModal, orderId, isPaid }) => {
           <form
             onSubmit={handleSubmit}
             className="flex flex-col items-start gap-5 justify-start w-full "
-            autoComplete="off"
           >
             <div className="flex-col flex justify-start px-2 gap-y-5 w-full">
               <div className="gap-y-5 flex-col flex px-2 w-full">
@@ -81,10 +80,9 @@ const PayOrderComp = ({ pathname, setShowModal, orderId, isPaid }) => {
                     type="text"
                     className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
                     placeholder="0.00"
-                    name="amount"
-                    min="1"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
+                    name="amount"
                   />
                 </div>
               </div>
