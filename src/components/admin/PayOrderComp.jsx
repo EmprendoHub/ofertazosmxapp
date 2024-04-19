@@ -59,6 +59,7 @@ const PayOrderComp = ({ pathname, setShowModal, orderId, isPaid }) => {
           <form
             onSubmit={handleSubmit}
             className="flex flex-col items-start gap-5 justify-start w-full "
+            autoComplete="off"
           >
             <div className="flex-col flex justify-start px-2 gap-y-5 w-full">
               <div className="gap-y-5 flex-col flex px-2 w-full">
@@ -70,7 +71,6 @@ const PayOrderComp = ({ pathname, setShowModal, orderId, isPaid }) => {
                     placeholder="No de Transacción"
                     onChange={(e) => setTransactionNo(e.target.value)}
                     name="transactionNo"
-                    autoComplete="new"
                   />
                 </div>
               </div>
@@ -82,7 +82,6 @@ const PayOrderComp = ({ pathname, setShowModal, orderId, isPaid }) => {
                     className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
                     placeholder="0.00"
                     min="1"
-                    autoComplete="new"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                   />
@@ -98,7 +97,6 @@ const PayOrderComp = ({ pathname, setShowModal, orderId, isPaid }) => {
                     value={note}
                     onChange={(e) => setNote(e.target.value)}
                     name="note"
-                    autoComplete="new"
                   />
                 </div>
               </div>
