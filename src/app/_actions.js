@@ -824,6 +824,7 @@ export async function getDashboard() {
     // Create a new date with the offset applied
     const today = new Date(Date.now() + minusCstOffset);
     today.setUTCHours(0, 0, 0, 0); // Set time to midnight
+    console.log(today, "TODAAAAAAAAAAAAAYYYYYYYYYY");
     // Set start of the current year
     const startOfYear = new Date(today.getFullYear(), 0, 1, 0, 0, 0, 0);
 
@@ -1055,6 +1056,8 @@ export async function getDashboard() {
         },
       },
     ]);
+    console.log(startOfToday, startOfToday, "startOfToday");
+    console.log(dailyPaymentsTotals, "dailyPaymentsTotals");
 
     // Perform aggregation to get yesterday's totals
     let yesterdaysOrdersTotals = await Payment.aggregate([
