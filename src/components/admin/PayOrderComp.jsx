@@ -31,6 +31,7 @@ const PayOrderComp = ({ pathname, setShowModal, orderId, isPaid }) => {
       formData.set("orderId", orderId);
       try {
         let res;
+        console.log(pathname, "pathname");
         if (pathname === "puntodeventa" || pathname === "admin") {
           res = await updateOneOrder(formData);
         } else if (pathname === "instagram") {

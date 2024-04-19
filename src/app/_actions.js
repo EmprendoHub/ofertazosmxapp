@@ -2101,6 +2101,8 @@ export async function updateOneOrder(data) {
       }
     );
 
+    console.log(updatedOrder, "updatedOrder");
+
     const lastOrder = await Order.findById(orderId);
 
     let paymentTransactionData = {
