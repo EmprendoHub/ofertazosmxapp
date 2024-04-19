@@ -93,19 +93,27 @@ const PayCartComp = ({ setShowModal, payType }) => {
     formData.append("amountReceived", amountReceived);
     formData.append("payType", payType);
 
-    let result;
     if (pathname.includes("admin")) {
-      result = await payPOSDrawer(formData);
+      formData.append("pathname", "Sucursal");
+      // result = await payPOSDrawer(formData);
     } else if (pathname.includes("puntodeventa")) {
-      result = await payPOSDrawer(formData);
+      formData.append("pathname", "Sucursal");
+      // result = await payPOSDrawer(formData);
     } else if (pathname.includes("instagram")) {
-      result = await payPOSInstagramDrawer(formData);
+      formData.append("pathname", "Instagram");
+      // result = await payPOSInstagramDrawer(formData);
     }
+    const result = await fetch(`/api/payment`, {
+      method: "POST",
+      body: formData,
+    });
     if (result?.error) {
       console.log(result?.error);
       setValidationError(result.error);
     } else {
-      const order = await JSON.parse(result.newOrder);
+      const data = await result.json();
+      const order = JSON.parse(data.newOrder);
+      console.log(order);
       setValidationError(null);
       dispatch(savePOSOrder({ order: order }));
       dispatch(resetPOSCart());

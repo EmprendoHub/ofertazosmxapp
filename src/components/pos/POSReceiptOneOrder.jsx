@@ -101,7 +101,7 @@ const POSReceiptOneOrder = ({ order }) => {
       </div>
       <div className="relative flex flex-row maxmd:flex-col items-center justify-start overflow-x-hidden gap-2 ">
         <div className="w-full">
-          <div className="container max-w-screen-xl mx-auto flex flex-col justify-center p-2">
+          <div className="container  mx-auto flex flex-col p-2">
             <ul className="mb-2 ">
               <li className="flex justify-between gap-x-5 text-gray-950">
                 <span className="text-xs">Sub-Total:</span>

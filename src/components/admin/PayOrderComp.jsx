@@ -35,8 +35,6 @@ const PayOrderComp = ({ pathname, setShowModal, orderId, isPaid }) => {
           body: formData,
         });
 
-        console.log(res);
-
         setShowModal(false);
       } catch (error) {
         toast.error(
