@@ -73,7 +73,7 @@ export function newCSTDate() {
   const currentDate = new Date();
   // Adjust the date object to the Central Standard Time (CST) time zone
   const cstOffset = -6 * 60 * 60 * 1000; // CST is UTC-6
-  const cstDateTime = new Date(currentDate.getTime() + cstOffset);
+  const cstDateTime = new Date(currentDate.getTime());
 
   return cstDateTime;
 }

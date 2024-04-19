@@ -7,7 +7,7 @@ import { newCSTDate } from "@/backend/helpers";
 
 const PayOrderComp = ({ pathname, setShowModal, orderId, isPaid }) => {
   const [transactionNo, setTransactionNo] = useState("EFECTIVO");
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState(null);
   const [note, setNote] = useState("");
 
   const handleSubmit = async (e) => {
@@ -77,9 +77,10 @@ const PayOrderComp = ({ pathname, setShowModal, orderId, isPaid }) => {
                 <div className="mb-4">
                   <label className="block mb-1"> Cantidad </label>
                   <input
-                    type="text"
+                    type="number"
                     className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
                     placeholder="0.00"
+                    min="1"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     name="amount"
