@@ -2067,22 +2067,26 @@ export async function updateOneOrder(data) {
   try {
     let { transactionNo, paidOn, note, amount, orderId } =
       Object.fromEntries(data);
-    let newOrderStatus;
-    let newOrderPaymentStatus;
     // Define the model name with the suffix appended with the lottery ID
     await dbConnect();
     // Retrieve the dynamically created Ticket model
     const order = await Order.findOne({ _id: orderId });
     // Calculate total amount based on items
-    const date = cstDateTime();
+    const date = newCSTDate();
     const orderTotal = await getTotalFromItems(order?.orderItems);
+
     if (order.paymentInfo.amountPaid + Number(amount) >= orderTotal) {
-      newOrderStatus = "Entregado";
-      newOrderPaymentStatus = "Pagado";
+      order.orderStatus = "Entregado";
+      order.paymentInfo.status = "Pagado";
     } else {
-      newOrderStatus = "Apartado";
-      newOrderPaymentStatus = "Pendiente";
+      order.orderStatus = "Apartado";
+      order.paymentInfo.status = "Pendiente";
     }
+
+    order.paymentInfo.amountPaid =
+      Number(order.paymentInfo.amountPaid) + Number(amount);
+
+    await order.save();
 
     let payMethod;
     if (transactionNo === "EFECTIVO") {
@@ -2092,18 +2096,8 @@ export async function updateOneOrder(data) {
     } else {
       payMethod = "EFECTIVO";
     }
-    const updatedOrder = await Order.updateOne(
-      { _id: orderId },
-      {
-        orderStatus: newOrderStatus,
-        "paymentInfo.status": newOrderPaymentStatus,
-        $inc: { "paymentInfo.amountPaid": Number(amount) },
-      }
-    );
 
-    console.log(updatedOrder, "updatedOrder");
-
-    const lastOrder = await Order.findById(orderId);
+    console.log(order, "updatedOrder");
 
     let paymentTransactionData = {
       type: "sucursal",
@@ -2113,8 +2107,8 @@ export async function updateOneOrder(data) {
       reference: transactionNo,
       pay_date: date,
       method: payMethod,
-      order: lastOrder?._id,
-      user: lastOrder?.user,
+      order: order?._id,
+      user: order?.user,
     };
 
     try {
@@ -2125,7 +2119,7 @@ export async function updateOneOrder(data) {
       console.log("dBberror", error);
     }
     revalidatePath(`/admin/pedidos`);
-    revalidatePath(`/admin/pedido/${lastOrder?._id}`);
+    revalidatePath(`/admin/pedido/${order?._id}`);
   } catch (error) {
     console.log(error);
     throw Error(error);
