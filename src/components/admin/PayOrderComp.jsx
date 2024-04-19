@@ -70,7 +70,7 @@ const PayOrderComp = ({ pathname, setShowModal, orderId, isPaid }) => {
                     placeholder="No de Transacción"
                     onChange={(e) => setTransactionNo(e.target.value)}
                     name="transactionNo"
-                    autoComplete="off"
+                    autoComplete="new"
                   />
                 </div>
               </div>
@@ -82,10 +82,9 @@ const PayOrderComp = ({ pathname, setShowModal, orderId, isPaid }) => {
                     className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
                     placeholder="0.00"
                     min="1"
-                    autoComplete="off"
+                    autoComplete="new"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    name="amount"
                   />
                 </div>
               </div>
@@ -99,7 +98,7 @@ const PayOrderComp = ({ pathname, setShowModal, orderId, isPaid }) => {
                     value={note}
                     onChange={(e) => setNote(e.target.value)}
                     name="note"
-                    autoComplete="off"
+                    autoComplete="new"
                   />
                 </div>
               </div>
