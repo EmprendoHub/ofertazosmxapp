@@ -78,9 +78,10 @@ const PayOrderComp = ({ pathname, setShowModal, orderId, isPaid }) => {
                 <div className="mb-4">
                   <label className="block mb-1"> Cantidad </label>
                   <input
-                    type="number"
+                    type="text"
                     className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
                     placeholder="0.00"
+                    name="amount"
                     min="1"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
