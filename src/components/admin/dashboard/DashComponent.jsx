@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { MdAttachMoney } from "react-icons/md";
+import { MdAttachMoney, MdOutlineSavings } from "react-icons/md";
 import { IoArrowRedoSharp } from "react-icons/io5";
 import {
   HiArrowNarrowUp,
@@ -88,7 +88,7 @@ const DashComponent = ({ data }) => {
       },
       title: {
         display: true,
-        text: "Ventas de los últimos 7 días",
+        text: "Ventas de La Semana",
       },
     },
   };
@@ -183,7 +183,7 @@ const DashComponent = ({ data }) => {
       <div className="w-full min-h-[400px] bg-slate-300 p-5  mt-4">
         {/* Chart to display daily totals for the last 7 days */}
         <div className="chart-container h-[400px] maxsm:h-[200px]">
-          <h2>Totales diarios de los últimos 7 días</h2>
+          <h2>Totales diarios de la semana</h2>
           <Bar data={weeklyDataWithColors} options={options} />
         </div>
       </div>
@@ -294,11 +294,11 @@ const DashComponent = ({ data }) => {
                           alt="client"
                           width={400}
                           height={400}
-                          className="w-10 h-10 rounded-full bg-gray-500"
+                          className="w-5 h-5 rounded-full bg-gray-500"
                         />
                       </td>
-                      <td className="capitalize text-slate-700">
-                        {client.name.substring(0, 14)}...
+                      <td className="capitalize text-slate-800 text-sm">
+                        {client.name.substring(0, 11)}...
                       </td>
                       <td>
                         <Link href={`/admin/cliente/${client._id}`}>
@@ -329,13 +329,21 @@ const DashComponent = ({ data }) => {
               {orders &&
                 orders.map((order) => (
                   <tbody key={order._id} className="divide-y">
-                    <tr className=" flex justify-between dark:border-gray-700 dark:bg-slate-300 mb-4">
+                    <tr className=" flex justify-between text-sm dark:border-gray-700 dark:bg-slate-300 mb-4">
                       <td>{order.orderId}</td>
-                      <td>{order.orderStatus}</td>
-                      <td>{order.customerName}</td>
+                      <td>
+                        {order.orderStatus === "Apartado" ? (
+                          <MdOutlineSavings />
+                        ) : order.orderStatus === "Pagado" ? (
+                          <MdAttachMoney />
+                        ) : (
+                          order.orderStatus
+                        )}
+                      </td>
+                      <td>{order.customerName.substring(0, 11)}...</td>
                       <td>
                         <Link href={`/admin/pedido/${order._id}`}>
-                          <IoArrowRedoSharp className=" text-teal-600 " />
+                          <IoArrowRedoSharp className=" text-teal-800 " />
                         </Link>
                       </td>
                     </tr>
@@ -374,7 +382,7 @@ const DashComponent = ({ data }) => {
                           alt="producto"
                           width={400}
                           height={400}
-                          className="w-10 h-10 rounded-full bg-gray-500"
+                          className="w-5 h-5 rounded-md bg-gray-500"
                         />
                       </td>
                       <td>
@@ -384,7 +392,7 @@ const DashComponent = ({ data }) => {
                       </td>
                       <td>
                         <Link href={`/admin/productos/editar/${product.slug}`}>
-                          <IoArrowRedoSharp className=" text-indigo-500 " />
+                          <IoArrowRedoSharp className=" text-indigo-700 " />
                         </Link>
                       </td>
                     </tr>
@@ -417,13 +425,13 @@ const DashComponent = ({ data }) => {
                           alt="user"
                           width={400}
                           height={400}
-                          className="w-14 h-10 rounded-md bg-gray-500"
+                          className="w-5 h-5 rounded-md bg-gray-500"
                         />
                       </td>
                       <td>{post.mainTitle.substring(0, 20)}...</td>
                       <td>
                         <Link href={`/admin/blog/editar/${post.slug}`}>
-                          <IoArrowRedoSharp className=" text-orange-500 " />
+                          <IoArrowRedoSharp className=" text-orange-700 " />
                         </Link>
                       </td>
                     </tr>
