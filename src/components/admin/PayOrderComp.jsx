@@ -2,16 +2,24 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { FaCircleCheck, FaCircleExclamation } from "react-icons/fa6";
-import { updateOneInstagramOrder, updateOneOrder } from "@/app/_actions";
 import { newCSTDate } from "@/backend/helpers";
+import { runRevalidationTo } from "@/app/_actions";
 
-const PayOrderComp = ({ pathname, setShowModal, orderId, isPaid }) => {
+const PayOrderComp = ({
+  pathname,
+  setShowModal,
+  orderId,
+  isPaid,
+  pendingTotal,
+}) => {
   const [transactionNo, setTransactionNo] = useState("EFECTIVO");
   const [amount, setAmount] = useState(0);
   const [note, setNote] = useState("");
-
+  const [isSending, setIsSending] = useState(false);
+  console.log(pathname, "pathname");
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (Number(amount) <= 0) {
       toast.error("Por favor agrega la cantidad del pedido para continuar.");
       return;
@@ -21,6 +29,7 @@ const PayOrderComp = ({ pathname, setShowModal, orderId, isPaid }) => {
       toast.error("Por favor agregar una referencia de pago para continuar.");
       return;
     }
+    setIsSending(true);
 
     try {
       const formData = new FormData();
@@ -34,7 +43,7 @@ const PayOrderComp = ({ pathname, setShowModal, orderId, isPaid }) => {
           method: "PUT",
           body: formData,
         });
-
+        await runRevalidationTo(`/${pathname}/pedidos`);
         setShowModal(false);
       } catch (error) {
         toast.error(
@@ -50,10 +59,13 @@ const PayOrderComp = ({ pathname, setShowModal, orderId, isPaid }) => {
     <div className="flex flex-col w-full h-full items-center justify-center">
       <div className="w-1/2 maxmd:w-5/6 bg-white pl-4">
         <section className=" p-6 w-full">
-          <h1 className="text-xl maxmd:text-5xl font-semibold text-black mb-8 font-EB_Garamond">
+          <h2 className="text-xl maxmd:text-5xl font-semibold text-black mb-8 font-EB_Garamond">
             Recibir Pago
-          </h1>
-
+          </h2>
+          <div className="w-ful flex flex-col items-center justify-center">
+            <p>Pendiente:</p>
+            <p className="text-4xl">{pendingTotal}</p>
+          </div>
           <form
             onSubmit={handleSubmit}
             className="flex flex-col items-start gap-5 justify-start w-full "
@@ -98,21 +110,29 @@ const PayOrderComp = ({ pathname, setShowModal, orderId, isPaid }) => {
                 </div>
               </div>
             </div>
-            <div className="flex flex-row items-center justify-between w-full gap-2">
-              <div
-                onClick={() => setShowModal(false)}
-                className="my-2 px-4 py-2 text-center text-white bg-red-700 border border-transparent rounded-md hover:bg-red-800 w-full flex flex-row items-center justify-center gap-1 cursor-pointer"
-              >
-                <FaCircleExclamation className="text-xl" />
-                Cancelar
+            {/* Buttons */}
+
+            {!isSending ? (
+              <div className="flex flex-row items-center justify-between w-full gap-2">
+                <div
+                  onClick={() => setShowModal(false)}
+                  className="my-2 px-4 py-2 text-center text-white bg-red-700 border border-transparent rounded-md hover:bg-red-800 w-full flex flex-row items-center justify-center gap-1 cursor-pointer"
+                >
+                  <FaCircleExclamation className="text-xl" />
+                  Cancelar
+                </div>
+                <button
+                  type="submit"
+                  className="my-2 px-4 py-2 text-center text-white bg-emerald-700 border border-transparent rounded-md hover:bg-emerald-900 w-full flex flex-row items-center justify-center gap-1"
+                >
+                  <FaCircleCheck className="text-xl" /> Aceptar
+                </button>
               </div>
-              <button
-                type="submit"
-                className="my-2 px-4 py-2 text-center text-white bg-emerald-700 border border-transparent rounded-md hover:bg-emerald-900 w-full flex flex-row items-center justify-center gap-1"
-              >
-                <FaCircleCheck className="text-xl" /> Aceptar
-              </button>
-            </div>
+            ) : (
+              <div className="flex flex-row items-center justify-center w-full gap-2">
+                <div className="loader flex self-center" />
+              </div>
+            )}
           </form>
         </section>
       </div>

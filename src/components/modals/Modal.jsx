@@ -8,7 +8,14 @@ const backdropVariants = {
   initial: { opacity: 0, scale: 0.5 },
   duration: { duration: 1.5 },
 };
-const Modal = ({ pathname, showModal, setShowModal, orderId, isPaid }) => {
+const Modal = ({
+  pathname,
+  showModal,
+  setShowModal,
+  orderId,
+  isPaid,
+  pendingTotal,
+}) => {
   return (
     <AnimatePresence mode="wait">
       {showModal && (
@@ -23,6 +30,7 @@ const Modal = ({ pathname, showModal, setShowModal, orderId, isPaid }) => {
             orderId={orderId}
             isPaid={isPaid}
             pathname={pathname}
+            pendingTotal={pendingTotal}
           />
         </motion.div>
       )}

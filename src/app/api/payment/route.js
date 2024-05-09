@@ -75,7 +75,6 @@ export async function POST(req, res) {
       customerEmail = email;
     } else {
       if (phone.length > 3 || name.length > 3) {
-        console.log("if phone or name", phone, name);
         customerEmail =
           phone + name.replace(/\s/g, "").substring(0, 8) + "@noemail.com";
       } else {

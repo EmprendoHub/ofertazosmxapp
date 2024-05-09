@@ -108,6 +108,15 @@ async function subtotal(order) {
   return sub;
 }
 
+export async function runRevalidationTo(path) {
+  try {
+    revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+    throw Error(error);
+  }
+}
+
 export async function payPOSDrawer(data) {
   try {
     let {
@@ -132,7 +141,6 @@ export async function payPOSDrawer(data) {
       customerEmail = email;
     } else {
       if (phone.length > 3 || name.length > 3) {
-        console.log("if phone or name", phone, name);
         customerEmail =
           phone + name.replace(/\s/g, "").substring(0, 8) + "@noemail.com";
       } else {
@@ -479,7 +487,6 @@ export async function payPOSInstagramDrawer(data) {
       customerEmail = email;
     } else {
       if (phone.length > 3 || name.length > 3) {
-        console.log("if phone or name", phone, name);
         customerEmail =
           phone + name.replace(/\s/g, "").substring(0, 8) + "@noemail.com";
       } else {

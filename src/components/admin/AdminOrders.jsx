@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { FaEye } from "react-icons/fa";
-import { formatDate, formatSpanishDate, formatTime } from "@/backend/helpers";
+import { formatSpanishDate } from "@/backend/helpers";
 import { getTotalFromItems } from "@/backend/helpers";
 import FormattedPrice from "@/backend/helpers/FormattedPrice";
 import AdminOrderSearch from "@/components/layout/AdminOrderSearch";
@@ -9,12 +9,27 @@ import { TfiMoney } from "react-icons/tfi";
 import { useState } from "react";
 import Modal from "../modals/Modal";
 import { FaPrint } from "react-icons/fa6";
+import { usePathname } from "next/navigation";
 
 const AdminOrders = ({ orders, filteredOrdersCount }) => {
+  const getPathname = usePathname();
+  let pathname;
+  if (getPathname.includes("admin")) {
+    pathname = "admin";
+  } else if (getPathname.includes("puntodeventa")) {
+    pathname = "puntodeventa";
+  } else if (getPathname.includes("instagram")) {
+    pathname = "instagram";
+  }
+
   const [showModal, setShowModal] = useState(false);
   const [usedOrderId, setUsedOrderId] = useState("");
-  const updateOrderStatus = async (orderId) => {
-    setUsedOrderId(orderId);
+  const [pendingTotal, setPendingTotal] = useState(0);
+  const updateOrderStatus = async (order) => {
+    const calcPending =
+      getTotalFromItems(order.orderItems) - order?.paymentInfo?.amountPaid;
+    setPendingTotal(calcPending);
+    setUsedOrderId(order._id);
     setShowModal(true);
   };
   return (
@@ -23,6 +38,8 @@ const AdminOrders = ({ orders, filteredOrdersCount }) => {
         showModal={showModal}
         setShowModal={setShowModal}
         orderId={usedOrderId}
+        pathname={pathname}
+        pendingTotal={pendingTotal}
       />
       <div className="pl-5 maxsm:pl-3 relative overflow-x-auto shadow-md maxsm:rounded-lg">
         <div className=" flex flex-row maxsm:flex-col maxsm:items-start items-center justify-between">
@@ -124,7 +141,7 @@ const AdminOrders = ({ orders, filteredOrdersCount }) => {
                       ""
                     ) : (
                       <button
-                        onClick={() => updateOrderStatus(order._id)}
+                        onClick={() => updateOrderStatus(order)}
                         className={`px-2 py-2 inline-block text-black hover:text-black ${
                           order?.paymentInfo?.amountPaid >=
                             getTotalFromItems(order.orderItems) ===

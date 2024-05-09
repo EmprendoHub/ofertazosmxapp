@@ -6,12 +6,28 @@ import { useState } from "react";
 import { FaEye } from "react-icons/fa6";
 import { TfiMoney } from "react-icons/tfi";
 import Modal from "../modals/Modal";
+import { usePathname } from "next/navigation";
 
 const BranchUserOrders = ({ orders, filteredOrdersCount, client }) => {
+  const getPathname = usePathname();
+  let pathname;
+  if (getPathname.includes("admin")) {
+    pathname = "admin";
+  } else if (getPathname.includes("puntodeventa")) {
+    pathname = "puntodeventa";
+  } else if (getPathname.includes("instagram")) {
+    pathname = "instagram";
+  }
+
   const [showModal, setShowModal] = useState(false);
   const [usedOrderId, setUsedOrderId] = useState("");
-  const updateOrderStatus = async (orderId) => {
-    setUsedOrderId(orderId);
+  const [pendingTotal, setPendingTotal] = useState(0);
+
+  const updateOrderStatus = async (order) => {
+    const calcPending =
+      getTotalFromItems(order.orderItems) - order?.paymentInfo?.amountPaid;
+    setPendingTotal(calcPending);
+    setUsedOrderId(order._id);
     setShowModal(true);
   };
   return (
@@ -20,6 +36,8 @@ const BranchUserOrders = ({ orders, filteredOrdersCount, client }) => {
         showModal={showModal}
         setShowModal={setShowModal}
         orderId={usedOrderId}
+        pathname={pathname}
+        pendingTotal={pendingTotal}
       />
       <div className="pl-3 relative overflow-x-auto shadow-md sm:rounded-lg">
         <h1 className="text-3xl my-5 ml-4 font-bold font-EB_Garamond">
@@ -121,7 +139,7 @@ const BranchUserOrders = ({ orders, filteredOrdersCount, client }) => {
                       ""
                     ) : (
                       <button
-                        onClick={() => updateOrderStatus(order._id)}
+                        onClick={() => updateOrderStatus(order)}
                         className={`px-2 py-2 inline-block text-black hover:text-black ${
                           order?.paymentInfo?.amountPaid >=
                             getTotalFromItems(order.orderItems) ===
