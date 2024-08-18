@@ -165,19 +165,6 @@ export default function UserLayout({ children }) {
               // Add more dropdown items as needed
             ]}
           />
-
-          <SideBarItem
-            icon={<TbMessage2Question size={20} />}
-            text={"Editar Nosotros"}
-            active={pathname === "/admin/config/nosotros" ? "true" : "false"}
-            url={"/admin/config/nosotros"}
-          />
-          <SideBarItem
-            icon={<MdOutlineContactMail size={20} />}
-            text={"Editar Contacto"}
-            active={pathname === "/admin/config/contacto" ? "true" : "false"}
-            url={"/admin/config/contacto"}
-          />
         </AdminSidebar>
         <div className="relative w-full mb-5 ">{children}</div>
       </div>
