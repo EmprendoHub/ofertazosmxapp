@@ -1,45 +1,45 @@
-'use client';
-import React, { useRef, useState } from 'react';
-import AnimationWrapper from '@/components/motions/AnimationWrapper';
-import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { cstDateTimeClient } from '@/backend/helpers';
-import { addNewPage, updatePage } from '@/app/_actions';
-import { useRouter } from 'next/navigation';
+"use client";
+import React, { useRef, useState } from "react";
+import AnimationWrapper from "@/components/motions/AnimationWrapper";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { cstDateTimeClient } from "@/backend/helpers";
+import { addNewPage, updatePage } from "@/app/_actions";
+import { useRouter } from "next/navigation";
 
 const NewAboutPageComponent = ({ acerca }) => {
   const router = useRouter();
   const formRef = useRef();
   // Main section
-  const [mainTitle, setMainTitle] = useState(acerca?.mainTitle || '');
+  const [mainTitle, setMainTitle] = useState(acerca?.mainTitle || "");
   const [mainImage, setMainImage] = useState(
-    acerca?.mainImage || '/images/shopout_about_us_cover.jpg'
+    acerca?.mainImage || "/images/shopout_about_us_cover.jpg"
   );
   const [preTitle, setPreTitle] = useState(acerca?.preTitle);
   const [subTitle, setSubTitle] = useState(acerca?.subTitle);
   // section 2
   const [sectionTwoColOneImage, setSectionTwoColOneImage] = useState(
     acerca?.sections[1].boxes[1].images[0].url ||
-      '/images/shopout_about_us_cover.jpg'
+      "/images/shopout_about_us_cover.jpg"
   );
   const [sectionTwoColTwoImage, setSectionTwoColTwoImage] = useState(
     acerca?.sections[1].boxes[2].images[0].url ||
-      '/images/shopout_about_us_cover.jpg'
+      "/images/shopout_about_us_cover.jpg"
   );
 
   const [sectionTwoColThreeImage, setSectionTwoColThreeImage] = useState(
     acerca?.sections[1].boxes[3].images[0].url ||
-      '/images/shopout_about_us_cover.jpg'
+      "/images/shopout_about_us_cover.jpg"
   );
   // section 3
   const [sectionThreeImage, setSectionThreeImage] = useState(
     acerca?.sections[2].boxes[0].images[0].url ||
-      '/images/shopout_about_us_cover.jpg'
+      "/images/shopout_about_us_cover.jpg"
   );
   // section 4
   const [sectionFourImage, setSectionFourImage] = useState(
     acerca?.sections[3].boxes[0].images[0].url ||
-      '/images/shopout_about_us_cover.jpg'
+      "/images/shopout_about_us_cover.jpg"
   );
   // sections
   let currentData = [];
@@ -54,20 +54,20 @@ const NewAboutPageComponent = ({ acerca }) => {
           {
             id: 0,
             index: 0,
-            preTitle: '',
-            title: '',
-            subTitle: '',
+            preTitle: "",
+            title: "",
+            subTitle: "",
             images: [
               {
-                url: '/images/blog_placeholder.jpeg',
+                url: "/images/blog_placeholder.jpeg",
               },
             ],
             paragraphs: [
               {
-                text: '',
+                text: "",
               },
             ],
-            button: '',
+            button: "",
           },
         ],
       },
@@ -103,7 +103,7 @@ const NewAboutPageComponent = ({ acerca }) => {
   async function retrieveNewURL(file, cb) {
     const endpoint = `/api/minio`;
     fetch(endpoint, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
         Name: file.name,
       },
@@ -121,7 +121,7 @@ const NewAboutPageComponent = ({ acerca }) => {
   // to upload this file to S3 at `https://minio.salvawebpro.com:9000` using the URL:
   async function uploadFile(file, url, section) {
     fetch(url, {
-      method: 'PUT',
+      method: "PUT",
       body: file,
     })
       .then(() => {
@@ -129,23 +129,23 @@ const NewAboutPageComponent = ({ acerca }) => {
         // document.querySelector(
         //   '#status'
         // ).innerHTML += `<br>Uploaded ${file.name}.`;
-        const newUrl = url.split('?');
-        if (section === 'mainImageSelector') {
+        const newUrl = url.split("?");
+        if (section === "mainImageSelector") {
           setMainImage(newUrl[0]);
         }
-        if (section === 'sectionTwoColOneImageSelector') {
+        if (section === "sectionTwoColOneImageSelector") {
           setSectionTwoColOneImage(newUrl[0]);
         }
-        if (section === 'sectionTwoColTwoImageSelector') {
+        if (section === "sectionTwoColTwoImageSelector") {
           setSectionTwoColTwoImage(newUrl[0]);
         }
-        if (section === 'sectionTwoColThreeImageSelector') {
+        if (section === "sectionTwoColThreeImageSelector") {
           setSectionTwoColThreeImage(newUrl[0]);
         }
-        if (section === 'sectionThreeImageSelector') {
+        if (section === "sectionThreeImageSelector") {
           setSectionThreeImage(newUrl[0]);
         }
-        if (section === 'sectionFourImageSelector') {
+        if (section === "sectionFourImageSelector") {
           setSectionFourImage(newUrl[0]);
         }
       })
@@ -157,8 +157,8 @@ const NewAboutPageComponent = ({ acerca }) => {
   const handleInputChange = (event, sectionIndex, boxIndex, key, paraIndex) => {
     const { value } = event.target;
     const input = event.target;
-    input.style.height = 'auto';
-    input.style.height = input.scrollHeight + 'px';
+    input.style.height = "auto";
+    input.style.height = input.scrollHeight + "px";
 
     setSections((prevSections) => {
       const section = prevSections[sectionIndex];
@@ -190,12 +190,12 @@ const NewAboutPageComponent = ({ acerca }) => {
           images:
             paraIndex !== undefined
               ? [{ url: value }]
-              : [{ url: '/images/blog_placeholder.jpeg' }],
+              : [{ url: "/images/blog_placeholder.jpeg" }],
         };
         section.boxes.push(newBox);
       } else {
         // If the box exists, update its content
-        if (key === 'paragraphs') {
+        if (key === "paragraphs") {
           const updatedParagraphs =
             paraIndex !== undefined ? [...box.paragraphs] : [{ text: value }];
           if (paraIndex !== undefined) {
@@ -215,54 +215,54 @@ const NewAboutPageComponent = ({ acerca }) => {
     const { name, value } = event.target;
 
     const input = event.target;
-    input.style.height = 'auto';
-    input.style.height = input.scrollHeight + 'px';
-    if (name === 'preTitle') {
+    input.style.height = "auto";
+    input.style.height = input.scrollHeight + "px";
+    if (name === "preTitle") {
       setPreTitle(value);
     }
-    if (name === 'mainTitle') {
+    if (name === "mainTitle") {
       setMainTitle(value);
     }
-    if (name === 'subTitle') {
+    if (name === "subTitle") {
       setSubTitle(value);
     }
   };
 
   // send form
   async function action() {
-    if (mainImage === '/images/blog_placeholder.jpeg') {
+    if (mainImage === "/images/blog_placeholder.jpeg") {
       const noFileError = {
-        mainImage: { _errors: ['Se requiere una imagen Principal'] },
+        mainImage: { _errors: ["Se requiere una imagen Principal"] },
       };
       setValidationError(noFileError);
       return;
     }
     if (!mainTitle) {
       const noTitleError = {
-        mainTitle: { _errors: ['Se requiere un titulo para el Blog'] },
+        mainTitle: { _errors: ["Se requiere un titulo para el Blog"] },
       };
       setValidationError(noTitleError);
       return;
     }
 
     const formData = new FormData();
-    formData.append('category', 'acerca');
-    formData.append('preTitle', preTitle);
-    formData.append('mainTitle', mainTitle);
-    formData.append('subTitle', subTitle);
-    formData.append('mainImage', mainImage);
+    formData.append("category", "acerca");
+    formData.append("preTitle", preTitle);
+    formData.append("mainTitle", mainTitle);
+    formData.append("subTitle", subTitle);
+    formData.append("mainImage", mainImage);
     sections[1].boxes[1].images[0].url = sectionTwoColOneImage;
     sections[1].boxes[2].images[0].url = sectionTwoColTwoImage;
     sections[1].boxes[3].images[0].url = sectionTwoColThreeImage;
     sections[2].boxes[0].images[0].url = sectionThreeImage;
     sections[3].boxes[0].images[0].url = sectionFourImage;
     const sectionsJson = JSON.stringify(sections);
-    formData.append('sections', sectionsJson);
-    formData.append('createdAt', createdAt);
+    formData.append("sections", sectionsJson);
+    formData.append("createdAt", createdAt);
     // write to database using server actions
     let result;
     if (acerca?.sections) {
-      formData.append('_id', acerca._id);
+      formData.append("_id", acerca._id);
       result = await updatePage(formData);
     } else {
       result = await addNewPage(formData);
@@ -274,7 +274,7 @@ const NewAboutPageComponent = ({ acerca }) => {
       setValidationError(null);
       //reset the form
       formRef.current.reset();
-      router.push('/nosotros');
+      router.push("/nosotros");
     }
   }
 
@@ -319,7 +319,7 @@ const NewAboutPageComponent = ({ acerca }) => {
               />
               {validationError?.preTitle && (
                 <p className="text-sm text-red-400">
-                  {validationError.preTitle._errors.join(', ')}
+                  {validationError.preTitle._errors.join(", ")}
                 </p>
               )}
 
@@ -327,13 +327,13 @@ const NewAboutPageComponent = ({ acerca }) => {
                 name="mainTitle"
                 value={mainTitle}
                 onChange={handleMainSectionChange}
-                placeholder="Shopout MX"
+                placeholder="Ofertazos MX"
                 className="font-bold font-EB_Garamond uppercase text-5xl maxsm:text-3xl  z-20  text-white text-center  outline-none bg-white bg-opacity-0 leading-none resize-none py-0"
                 onKeyDown={handleInputKeyDown}
               />
               {validationError?.mainTitle && (
                 <p className="text-sm text-red-400">
-                  {validationError.mainTitle._errors.join(', ')}
+                  {validationError.mainTitle._errors.join(", ")}
                 </p>
               )}
 
@@ -346,7 +346,7 @@ const NewAboutPageComponent = ({ acerca }) => {
               />
               {validationError?.subTitle && (
                 <p className="text-sm text-red-400">
-                  {validationError.subTitle._errors.join(', ')}
+                  {validationError.subTitle._errors.join(", ")}
                 </p>
               )}
 
@@ -384,13 +384,13 @@ const NewAboutPageComponent = ({ acerca }) => {
                       <input
                         name="sectionOneTitle"
                         value={sections[0]?.boxes[0]?.title}
-                        onChange={(e) => handleInputChange(e, 0, 0, 'title')}
+                        onChange={(e) => handleInputChange(e, 0, 0, "title")}
                         placeholder="Experiencia Personalizada"
                         className="font-bold bg-white bg-opacity-10 w-full text-center outline-none"
                       />
                       {validationError?.sectionOneTitle && (
                         <p className="text-sm text-red-400">
-                          {validationError.sectionOneTitle._errors.join(', ')}
+                          {validationError.sectionOneTitle._errors.join(", ")}
                         </p>
                       )}
                     </motion.h2>
@@ -403,17 +403,17 @@ const NewAboutPageComponent = ({ acerca }) => {
                       <textarea
                         rows="5"
                         className="appearance-none  bg-gray-100 rounded-md py-2 px-3  w-full text-center outline-none resize-none"
-                        placeholder="En Shopout MX, nos enorgullece ofrecer una experiencia de compra en línea única, donde la elegancia se encuentra con la conveniencia. Nos especializamos en llevar lo último de las marcas de lujo más codiciadas del mundo, como Gucci, Versace, Fendi y muchas más, directamente a tu puerta."
+                        placeholder="En Ofertazos MX, nos enorgullece ofrecer una experiencia de compra en línea única, donde la elegancia se encuentra con la conveniencia. Nos especializamos en llevar lo último de las marcas de lujo más codiciadas del mundo, como Gucci, Versace, Fendi y muchas más, directamente a tu puerta."
                         value={sections[0]?.boxes[0]?.paragraphs[0].text}
                         onChange={(e) =>
-                          handleInputChange(e, 0, 0, 'paragraphs', 0)
+                          handleInputChange(e, 0, 0, "paragraphs", 0)
                         }
                         name="sectionOneParagraph"
                       ></textarea>
                       {validationError?.sectionOneParagraph && (
                         <p className="text-sm text-red-400">
                           {validationError.sectionOneParagraph._errors.join(
-                            ', '
+                            ", "
                           )}
                         </p>
                       )}
@@ -431,12 +431,12 @@ const NewAboutPageComponent = ({ acerca }) => {
                     className="appearance-none bg-gray-100 bg-opacity-0 leading-none outline-none  w-full text-center resize-none"
                     placeholder="¿Por qué elegirnos?"
                     value={sections[1]?.boxes[0]?.title}
-                    onChange={(e) => handleInputChange(e, 1, 0, 'title')}
+                    onChange={(e) => handleInputChange(e, 1, 0, "title")}
                     name="sectionTwoTitle"
                   />
                   {validationError?.sectionTwoTitle && (
                     <p className="text-sm text-red-400">
-                      {validationError.sectionTwoTitle._errors.join(', ')}
+                      {validationError.sectionTwoTitle._errors.join(", ")}
                     </p>
                   )}
                 </h3>
@@ -444,14 +444,14 @@ const NewAboutPageComponent = ({ acerca }) => {
                   <textarea
                     type="text"
                     className="appearance-none bg-gray-100 bg-opacity-0 leading-none py-0 outline-none w-full text-center resize-none"
-                    placeholder="En Shopout MX, nos dedicamos a brindar:"
+                    placeholder="En Ofertazos MX, nos dedicamos a brindar:"
                     value={sections[1]?.boxes[0]?.subTitle}
-                    onChange={(e) => handleInputChange(e, 1, 0, 'subTitle')}
+                    onChange={(e) => handleInputChange(e, 1, 0, "subTitle")}
                     name="sectionTwoSubTitle"
                   />
                   {validationError?.sectionTwoSubTitle && (
                     <p className="text-sm text-red-400">
-                      {validationError.sectionTwoSubTitle._errors.join(', ')}
+                      {validationError.sectionTwoSubTitle._errors.join(", ")}
                     </p>
                   )}
                 </p>
@@ -494,14 +494,14 @@ const NewAboutPageComponent = ({ acerca }) => {
                             placeholder="1. Autenticidad Garantizada: "
                             value={sections[1]?.boxes[1]?.title}
                             onChange={(e) =>
-                              handleInputChange(e, 1, 1, 'title')
+                              handleInputChange(e, 1, 1, "title")
                             }
                             name="sectionTwoColOneTitle"
                           />
                           {validationError?.sectionTwoColOneTitle && (
                             <p className="text-sm text-red-400">
                               {validationError.sectionTwoColOneTitle._errors.join(
-                                ', '
+                                ", "
                               )}
                             </p>
                           )}
@@ -518,14 +518,14 @@ const NewAboutPageComponent = ({ acerca }) => {
                             placeholder="Cada producto que vendemos es auténtico y directamente adquirido de las casas de moda más prestigiosas del mundo. Puedes comprar con confianza, sabiendo que estás recibiendo productos genuinos y de alta calidad."
                             value={sections[1]?.boxes[1]?.paragraphs[0]?.text}
                             onChange={(e) =>
-                              handleInputChange(e, 1, 1, 'paragraphs', 0)
+                              handleInputChange(e, 1, 1, "paragraphs", 0)
                             }
                             name="sectionTwoColOneParagraph"
                           ></textarea>
                           {validationError?.sectionTwoColOneParagraph && (
                             <p className="text-sm text-red-400">
                               {validationError.sectionTwoColOneParagraph._errors.join(
-                                ', '
+                                ", "
                               )}
                             </p>
                           )}
@@ -570,14 +570,14 @@ const NewAboutPageComponent = ({ acerca }) => {
                             placeholder="2. Variedad Exclusiva: "
                             value={sections[1]?.boxes[2]?.title}
                             onChange={(e) =>
-                              handleInputChange(e, 1, 2, 'title')
+                              handleInputChange(e, 1, 2, "title")
                             }
                             name="sectionTwoColTwoTitle"
                           />
                           {validationError?.sectionTwoColTwoTitle && (
                             <p className="text-sm text-red-400">
                               {validationError.sectionTwoColTwoTitle._errors.join(
-                                ', '
+                                ", "
                               )}
                             </p>
                           )}
@@ -594,14 +594,14 @@ const NewAboutPageComponent = ({ acerca }) => {
                             placeholder="Nuestra selección de marcas de lujo es cuidadosamente curada para ofrecer una variedad exclusiva de productos de moda. Desde elegantes bolsos hasta ropa de diseñador, tenemos todo lo que necesitas para expresar tu estilo único."
                             value={sections[1]?.boxes[2]?.paragraphs[0]?.text}
                             onChange={(e) =>
-                              handleInputChange(e, 1, 2, 'paragraphs', 0)
+                              handleInputChange(e, 1, 2, "paragraphs", 0)
                             }
                             name="sectionTwoColTwoParagraph"
                           ></textarea>
                           {validationError?.sectionTwoColTwoParagraph && (
                             <p className="text-sm text-red-400">
                               {validationError.sectionTwoColTwoParagraph._errors.join(
-                                ', '
+                                ", "
                               )}
                             </p>
                           )}
@@ -647,14 +647,14 @@ const NewAboutPageComponent = ({ acerca }) => {
                             placeholder="3. Atención Personalizada: "
                             value={sections[1]?.boxes[3]?.title}
                             onChange={(e) =>
-                              handleInputChange(e, 1, 3, 'title')
+                              handleInputChange(e, 1, 3, "title")
                             }
                             name="sectionTwoColThreeTitle"
                           />
                           {validationError?.sectionTwoColThreeTitle && (
                             <p className="text-sm text-red-400">
                               {validationError.sectionTwoColThreeTitle._errors.join(
-                                ', '
+                                ", "
                               )}
                             </p>
                           )}
@@ -668,17 +668,17 @@ const NewAboutPageComponent = ({ acerca }) => {
                           <textarea
                             rows="5"
                             className="appearance-none bg-gray-100 bg-opacity-0  py-0 outline-none w-full text-center resize-none"
-                            placeholder="En Shopout MX, valoramos a cada cliente y nos esforzamos por brindar un servicio personalizado. Nuestro equipo de atención al cliente está siempre dispuesto a ayudarte con cualquier pregunta o inquietud que puedas tener."
+                            placeholder="En Ofertazos MX, valoramos a cada cliente y nos esforzamos por brindar un servicio personalizado. Nuestro equipo de atención al cliente está siempre dispuesto a ayudarte con cualquier pregunta o inquietud que puedas tener."
                             value={sections[1]?.boxes[3]?.paragraphs[0]?.text}
                             onChange={(e) =>
-                              handleInputChange(e, 1, 3, 'paragraphs', 0)
+                              handleInputChange(e, 1, 3, "paragraphs", 0)
                             }
                             name="sectionTwoColThreeParagraph"
                           ></textarea>
                           {validationError?.sectionTwoColThreeParagraph && (
                             <p className="text-sm text-red-400">
                               {validationError.sectionTwoColThreeParagraph._errors.join(
-                                ', '
+                                ", "
                               )}
                             </p>
                           )}
@@ -705,14 +705,14 @@ const NewAboutPageComponent = ({ acerca }) => {
                         <textarea
                           name="sectionThreeTitle"
                           value={sections[2]?.boxes[0]?.title}
-                          onChange={(e) => handleInputChange(e, 2, 0, 'title')}
+                          onChange={(e) => handleInputChange(e, 2, 0, "title")}
                           placeholder="Nuestra Misión"
                           className="appearance-none bg-gray-100 bg-opacity-0 leading-none py-0 outline-none w-full text-center resize-none"
                         />
                         {validationError?.sectionThreeTitle && (
                           <p className="text-sm text-red-400">
                             {validationError.sectionThreeTitle._errors.join(
-                              ', '
+                              ", "
                             )}
                           </p>
                         )}
@@ -729,14 +729,14 @@ const NewAboutPageComponent = ({ acerca }) => {
                           placeholder="Nuestra misión es hacer que cada cliente se sienta como una estrella de la moda al proporcionar acceso a productos de alta calidad y estilo incomparable."
                           value={sections[2]?.boxes[0]?.paragraphs[0]?.text}
                           onChange={(e) =>
-                            handleInputChange(e, 2, 0, 'paragraphs', 0)
+                            handleInputChange(e, 2, 0, "paragraphs", 0)
                           }
                           name="sectionThreeParagraph"
                         ></textarea>
                         {validationError?.sectionThreeParagraph && (
                           <p className="text-sm text-red-400">
                             {validationError.sectionThreeParagraph._errors.join(
-                              ', '
+                              ", "
                             )}
                           </p>
                         )}
@@ -750,17 +750,17 @@ const NewAboutPageComponent = ({ acerca }) => {
                         <textarea
                           rows="2"
                           className="appearance-none bg-gray-100 bg-opacity-0 py-0 outline-none w-full text-center resize-none"
-                          placeholder="En Shopout MX, no solo vendemos ropa y accesorios de lujo, sino que también ofrecemos un servicio excepcional que eleva tu experiencia de compra a un nivel superior."
+                          placeholder="En Ofertazos MX, no solo vendemos ropa y accesorios de lujo, sino que también ofrecemos un servicio excepcional que eleva tu experiencia de compra a un nivel superior."
                           value={sections[2]?.boxes[0]?.paragraphs[1]?.text}
                           onChange={(e) =>
-                            handleInputChange(e, 2, 0, 'paragraphs', 1)
+                            handleInputChange(e, 2, 0, "paragraphs", 1)
                           }
                           name="sectionThreeParagraphTwo"
                         ></textarea>
                         {validationError?.sectionThreeParagraphTwo && (
                           <p className="text-sm text-red-400">
                             {validationError.sectionThreeParagraphTwo._errors.join(
-                              ', '
+                              ", "
                             )}
                           </p>
                         )}
@@ -777,7 +777,7 @@ const NewAboutPageComponent = ({ acerca }) => {
                             name="sectionThreeButton"
                             value={sections[2]?.boxes[0]?.button}
                             onChange={(e) =>
-                              handleInputChange(e, 2, 0, 'button')
+                              handleInputChange(e, 2, 0, "button")
                             }
                             placeholder="Ponte en Contacto"
                             className="text-white appearance-none bg-gray-100 bg-opacity-0 leading-none py-0 outline-none w-full text-center resize-none"
@@ -785,7 +785,7 @@ const NewAboutPageComponent = ({ acerca }) => {
                           {validationError?.sectionThreeButton && (
                             <p className="text-sm text-red-400">
                               {validationError.sectionThreeButton._errors.join(
-                                ', '
+                                ", "
                               )}
                             </p>
                           )}
@@ -835,26 +835,26 @@ const NewAboutPageComponent = ({ acerca }) => {
               <textarea
                 name="sectionFourTitle"
                 value={sections[3]?.boxes[0]?.title}
-                onChange={(e) => handleInputChange(e, 3, 0, 'title')}
+                onChange={(e) => handleInputChange(e, 3, 0, "title")}
                 placeholder="Únete a la experiencia de compra de lujo"
                 className="font-bold font-EB_Garamond text-6xl appearance-none bg-gray-100 bg-opacity-0 leading-none py-0 outline-none text-center resize-none z-20  text-white bg-transparent"
               />
               {validationError?.sectionFourTitle && (
                 <p className="text-sm text-red-400">
-                  {validationError.sectionFourTitle._errors.join(', ')}
+                  {validationError.sectionFourTitle._errors.join(", ")}
                 </p>
               )}
 
               <textarea
                 name="sectionFourSubTitle"
                 value={sections[3]?.boxes[0]?.subTitle}
-                onChange={(e) => handleInputChange(e, 3, 0, 'subTitle')}
+                onChange={(e) => handleInputChange(e, 3, 0, "subTitle")}
                 placeholder="Descubre la moda de alta gama con solo un clic."
                 className="font-bold font-EB_Garamond text-xl appearance-none bg-gray-100 bg-opacity-0 leading-none py-0 outline-none text-center resize-none z-20 text-white bg-transparent w-4/6"
               />
               {validationError?.sectionFourSubTitle && (
                 <p className="text-sm text-red-400">
-                  {validationError.sectionFourSubTitle._errors.join(', ')}
+                  {validationError.sectionFourSubTitle._errors.join(", ")}
                 </p>
               )}
               {/* button */}
@@ -862,13 +862,13 @@ const NewAboutPageComponent = ({ acerca }) => {
               <input
                 name="sectionFourButton"
                 value={sections[3]?.boxes[0]?.button}
-                onChange={(e) => handleInputChange(e, 3, 0, 'button')}
+                onChange={(e) => handleInputChange(e, 3, 0, "button")}
                 placeholder="Tienda en Linea"
                 className="font-bold bg-black text-white items-center gap-1 w-[350px] mb-3 text-center z-20 p-3 outline-none"
               />
               {validationError?.sectionFourButton && (
                 <p className="text-sm text-red-400">
-                  {validationError.sectionFourButton._errors.join(', ')}
+                  {validationError.sectionFourButton._errors.join(", ")}
                 </p>
               )}
 

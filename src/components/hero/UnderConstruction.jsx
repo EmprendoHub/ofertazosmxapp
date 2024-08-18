@@ -1,6 +1,6 @@
-import React from 'react';
-import ImageOpacityMotion from '../motions/ImageOpacityMotion';
-import TextUnderConstruction from '../motions/TextUnderConstruction';
+import React from "react";
+import ImageOpacityMotion from "../motions/ImageOpacityMotion";
+import TextUnderConstruction from "../motions/TextUnderConstruction";
 
 const UnderConstruction = () => {
   return (
@@ -9,15 +9,15 @@ const UnderConstruction = () => {
     >
       <div className="z-20 w-full">
         <TextUnderConstruction
-          title={'SHOPOUT MX'}
-          subtitle={'¡Muy Pronto...!'}
+          title={"Ofertazos MX"}
+          subtitle={"¡Muy Pronto...!"}
         />
       </div>
       <ImageOpacityMotion
-        imgSrc={'/images/main_stylish_model.png'}
+        imgSrc={"/images/main_stylish_model.png"}
         imgWidth={650}
         imgHeight={650}
-        className={'grayscale absolute bottom-0 z-10'}
+        className={"grayscale absolute bottom-0 z-10"}
       />
 
       <div className="h-full flex flex-wrap bg-gray-300 w-1/2 absolute bottom-0 right-0 z-0" />

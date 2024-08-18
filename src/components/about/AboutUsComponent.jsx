@@ -1,12 +1,12 @@
-'use client';
-import React from 'react';
-import Image from 'next/image';
-import { motion } from 'framer-motion';
-import SectionTextComponent from '../texts/SectionTextComponent';
-import HeroTextComponent from '../texts/HeroTextComponent';
+"use client";
+import React from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import SectionTextComponent from "../texts/SectionTextComponent";
+import HeroTextComponent from "../texts/HeroTextComponent";
 // Placeholder images
-import InnerSectionTextComponent from '../texts/InnerSectionTextComponent';
-import HeroColTextComponent from '../texts/HeroColTextComponent';
+import InnerSectionTextComponent from "../texts/InnerSectionTextComponent";
+import HeroColTextComponent from "../texts/HeroColTextComponent";
 
 const AboutUsComponent = ({ acerca }) => {
   return (
@@ -121,7 +121,7 @@ const AboutUsComponent = ({ acerca }) => {
                 src={acerca?.sections[2].boxes[0].images[0].url}
                 width={400}
                 height={400}
-                alt="Shopout MX"
+                alt="Ofertazos MX"
                 className="mx-auto mb-4 w-full h-full grayscale"
               />
             </div>

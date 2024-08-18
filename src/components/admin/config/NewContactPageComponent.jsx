@@ -1,20 +1,20 @@
-'use client';
-import React, { useRef, useState } from 'react';
-import AnimationWrapper from '@/components/motions/AnimationWrapper';
-import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { cstDateTimeClient } from '@/backend/helpers';
-import { addNewPage, updatePage } from '@/app/_actions';
-import { useRouter } from 'next/navigation';
-import { IoMdAt, IoMdLocate, IoMdPhonePortrait } from 'react-icons/io';
+"use client";
+import React, { useRef, useState } from "react";
+import AnimationWrapper from "@/components/motions/AnimationWrapper";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { cstDateTimeClient } from "@/backend/helpers";
+import { addNewPage, updatePage } from "@/app/_actions";
+import { useRouter } from "next/navigation";
+import { IoMdAt, IoMdLocate, IoMdPhonePortrait } from "react-icons/io";
 
 const NewContactPageComponent = ({ contacto }) => {
   const router = useRouter();
   const formRef = useRef();
   // Main section
-  const [mainTitle, setMainTitle] = useState(contacto?.mainTitle || '');
+  const [mainTitle, setMainTitle] = useState(contacto?.mainTitle || "");
   const [mainImage, setMainImage] = useState(
-    contacto?.mainImage || '/images/medium-shot-woman-wardrobe-renovation.jpg'
+    contacto?.mainImage || "/images/medium-shot-woman-wardrobe-renovation.jpg"
   );
   const [preTitle, setPreTitle] = useState(contacto?.preTitle);
   const [subTitle, setSubTitle] = useState(contacto?.subTitle);
@@ -22,7 +22,7 @@ const NewContactPageComponent = ({ contacto }) => {
   // section 3
   const [sectionFourImage, setSectionFourImage] = useState(
     contacto?.sections[4].boxes[0].images[0].url ||
-      '/images/shopout_about_us_cover.jpg'
+      "/images/shopout_about_us_cover.jpg"
   );
 
   // sections
@@ -38,20 +38,20 @@ const NewContactPageComponent = ({ contacto }) => {
           {
             id: 0,
             index: 0,
-            preTitle: '',
-            title: '',
-            subTitle: '',
+            preTitle: "",
+            title: "",
+            subTitle: "",
             images: [
               {
-                url: '/images/blog_placeholder.jpeg',
+                url: "/images/blog_placeholder.jpeg",
               },
             ],
             paragraphs: [
               {
-                text: '',
+                text: "",
               },
             ],
-            button: '',
+            button: "",
           },
         ],
       },
@@ -87,7 +87,7 @@ const NewContactPageComponent = ({ contacto }) => {
   async function retrieveNewURL(file, cb) {
     const endpoint = `/api/minio`;
     fetch(endpoint, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
         Name: file.name,
       },
@@ -105,7 +105,7 @@ const NewContactPageComponent = ({ contacto }) => {
   // to upload this file to S3 at `https://minio.salvawebpro.com:9000` using the URL:
   async function uploadFile(file, url, section) {
     fetch(url, {
-      method: 'PUT',
+      method: "PUT",
       body: file,
     })
       .then(() => {
@@ -113,11 +113,11 @@ const NewContactPageComponent = ({ contacto }) => {
         // document.querySelector(
         //   '#status'
         // ).innerHTML += `<br>Uploaded ${file.name}.`;
-        const newUrl = url.split('?');
-        if (section === 'mainImageSelector') {
+        const newUrl = url.split("?");
+        if (section === "mainImageSelector") {
           setMainImage(newUrl[0]);
         }
-        if (section === 'sectionFourImageSelector') {
+        if (section === "sectionFourImageSelector") {
           setSectionFourImage(newUrl[0]);
         }
       })
@@ -129,8 +129,8 @@ const NewContactPageComponent = ({ contacto }) => {
   const handleInputChange = (event, sectionIndex, boxIndex, key, paraIndex) => {
     const { value } = event.target;
     const input = event.target;
-    input.style.height = 'auto';
-    input.style.height = input.scrollHeight + 'px';
+    input.style.height = "auto";
+    input.style.height = input.scrollHeight + "px";
 
     setSections((prevSections) => {
       const section = prevSections[sectionIndex];
@@ -142,11 +142,11 @@ const NewContactPageComponent = ({ contacto }) => {
           index: boxIndex,
           [key]: paraIndex !== undefined ? [{ text: value }] : value,
           paragraphs:
-            paraIndex !== undefined ? [{ text: value }] : [{ text: '' }],
+            paraIndex !== undefined ? [{ text: value }] : [{ text: "" }],
           images:
             paraIndex !== undefined
               ? [{ url: value }]
-              : [{ url: '/images/blog_placeholder.jpeg' }],
+              : [{ url: "/images/blog_placeholder.jpeg" }],
         };
         const newSection = {
           id: boxIndex, // You can set the ID to the same as boxIndex
@@ -169,7 +169,7 @@ const NewContactPageComponent = ({ contacto }) => {
         section.boxes.push(newBox);
       } else {
         // If the box exists, update its content
-        if (key === 'paragraphs') {
+        if (key === "paragraphs") {
           const updatedParagraphs =
             paraIndex !== undefined ? [...box.paragraphs] : [{ text: value }];
           if (paraIndex !== undefined) {
@@ -189,50 +189,50 @@ const NewContactPageComponent = ({ contacto }) => {
     const { name, value } = event.target;
 
     const input = event.target;
-    input.style.height = 'auto';
-    input.style.height = input.scrollHeight + 'px';
-    if (name === 'preTitle') {
+    input.style.height = "auto";
+    input.style.height = input.scrollHeight + "px";
+    if (name === "preTitle") {
       setPreTitle(value);
     }
-    if (name === 'mainTitle') {
+    if (name === "mainTitle") {
       setMainTitle(value);
     }
-    if (name === 'subTitle') {
+    if (name === "subTitle") {
       setSubTitle(value);
     }
   };
 
   // send form
   async function action(e) {
-    if (mainImage === '/images/blog_placeholder.jpeg') {
+    if (mainImage === "/images/blog_placeholder.jpeg") {
       const noFileError = {
-        mainImage: { _errors: ['Se requiere una imagen Principal'] },
+        mainImage: { _errors: ["Se requiere una imagen Principal"] },
       };
       setValidationError(noFileError);
       return;
     }
     if (!mainTitle) {
       const noTitleError = {
-        mainTitle: { _errors: ['Se requiere un titulo para el Blog'] },
+        mainTitle: { _errors: ["Se requiere un titulo para el Blog"] },
       };
       setValidationError(noTitleError);
       return;
     }
 
     const formData = new FormData();
-    formData.append('category', 'contacto');
-    formData.append('preTitle', preTitle);
-    formData.append('mainTitle', mainTitle);
-    formData.append('subTitle', subTitle);
-    formData.append('mainImage', mainImage);
+    formData.append("category", "contacto");
+    formData.append("preTitle", preTitle);
+    formData.append("mainTitle", mainTitle);
+    formData.append("subTitle", subTitle);
+    formData.append("mainImage", mainImage);
     sections[4].boxes[0].images[0].url = sectionFourImage;
     const sectionsJson = JSON.stringify(sections);
-    formData.append('sections', sectionsJson);
-    formData.append('createdAt', createdAt);
+    formData.append("sections", sectionsJson);
+    formData.append("createdAt", createdAt);
     // write to database using server actions
     let result;
     if (contacto?.sections) {
-      formData.append('_id', contacto._id);
+      formData.append("_id", contacto._id);
       result = await updatePage(formData);
     } else {
       result = await addNewPage(formData);
@@ -245,7 +245,7 @@ const NewContactPageComponent = ({ contacto }) => {
       setValidationError(null);
       //reset the form
       formRef.current.reset();
-      router.push('/contacto');
+      router.push("/contacto");
     }
   }
 
@@ -291,12 +291,12 @@ const NewContactPageComponent = ({ contacto }) => {
                   name="preTitle"
                   value={preTitle}
                   onChange={handleMainSectionChange}
-                  placeholder="Bienvenido a Shopout MX"
+                  placeholder="Bienvenido a Ofertazos MX"
                   className="font-bold font-EB_Garamond text-xl uppercase  z-20 flex flex-wrap items-center gap-1  mb-5 text-center text-white bg-white bg-opacity-0 leading-none py-0 outline-none"
                 />
                 {validationError?.preTitle && (
                   <p className="text-sm text-red-400">
-                    {validationError.preTitle._errors.join(', ')}
+                    {validationError.preTitle._errors.join(", ")}
                   </p>
                 )}
               </motion.p>
@@ -317,7 +317,7 @@ const NewContactPageComponent = ({ contacto }) => {
                 />
                 {validationError?.mainTitle && (
                   <p className="text-sm text-red-400">
-                    {validationError.mainTitle._errors.join(', ')}
+                    {validationError.mainTitle._errors.join(", ")}
                   </p>
                 )}
               </motion.h2>
@@ -337,7 +337,7 @@ const NewContactPageComponent = ({ contacto }) => {
                 />
                 {validationError?.subTitle && (
                   <p className="text-sm text-red-400">
-                    {validationError.subTitle._errors.join(', ')}
+                    {validationError.subTitle._errors.join(", ")}
                   </p>
                 )}
               </motion.p>
@@ -374,7 +374,7 @@ const NewContactPageComponent = ({ contacto }) => {
                             name="sectionOneTitle"
                             value={sections[0]?.boxes[0]?.title}
                             onChange={(e) =>
-                              handleInputChange(e, 0, 0, 'title')
+                              handleInputChange(e, 0, 0, "title")
                             }
                             placeholder="Información de Contacto"
                             className="font-bold bg-white bg-opacity-10 w-full outline-none"
@@ -382,7 +382,7 @@ const NewContactPageComponent = ({ contacto }) => {
                           {validationError?.sectionOneTitle && (
                             <p className="text-sm text-red-400">
                               {validationError.sectionOneTitle._errors.join(
-                                ', '
+                                ", "
                               )}
                             </p>
                           )}
@@ -403,7 +403,7 @@ const NewContactPageComponent = ({ contacto }) => {
                                   name="sectionOneBoxOneTitle"
                                   value={sections[1]?.boxes[0]?.title}
                                   onChange={(e) =>
-                                    handleInputChange(e, 1, 0, 'title')
+                                    handleInputChange(e, 1, 0, "title")
                                   }
                                   placeholder="Teléfono"
                                   className="font-bold bg-white bg-opacity-10 w-full  outline-none"
@@ -411,7 +411,7 @@ const NewContactPageComponent = ({ contacto }) => {
                                 {validationError?.sectionOneBoxOneTitle && (
                                   <p className="text-sm text-red-400">
                                     {validationError.sectionOneBoxOneTitle._errors.join(
-                                      ', '
+                                      ", "
                                     )}
                                   </p>
                                 )}
@@ -429,14 +429,14 @@ const NewContactPageComponent = ({ contacto }) => {
                                   placeholder="Platiquemos marca ahora mismo"
                                   value={sections[1]?.boxes[0]?.subTitle}
                                   onChange={(e) =>
-                                    handleInputChange(e, 1, 0, 'subTitle')
+                                    handleInputChange(e, 1, 0, "subTitle")
                                   }
                                   name="sectionOneParagraph"
                                 ></textarea>
                                 {validationError?.sectionOneParagraph && (
                                   <p className="text-sm text-red-400">
                                     {validationError.sectionOneParagraph._errors.join(
-                                      ', '
+                                      ", "
                                     )}
                                   </p>
                                 )}
@@ -456,14 +456,14 @@ const NewContactPageComponent = ({ contacto }) => {
                                   sections[1]?.boxes[0]?.paragraphs[0].text
                                 }
                                 onChange={(e) =>
-                                  handleInputChange(e, 1, 0, 'paragraphs', 0)
+                                  handleInputChange(e, 1, 0, "paragraphs", 0)
                                 }
                                 name="sectionOneParagraph"
                               />
                               {validationError?.sectionOneParagraphTwo && (
                                 <p className="text-sm text-red-400">
                                   {validationError.sectionOneParagraphTwo._errors.join(
-                                    ', '
+                                    ", "
                                   )}
                                 </p>
                               )}
@@ -486,7 +486,7 @@ const NewContactPageComponent = ({ contacto }) => {
                                   name="sectionOneBoxTwoTitle"
                                   value={sections[2]?.boxes[0]?.title}
                                   onChange={(e) =>
-                                    handleInputChange(e, 2, 0, 'title')
+                                    handleInputChange(e, 2, 0, "title")
                                   }
                                   placeholder="Correo Electrónico"
                                   className="font-bold bg-white bg-opacity-10 w-full  outline-none"
@@ -494,7 +494,7 @@ const NewContactPageComponent = ({ contacto }) => {
                                 {validationError?.sectionOneBoxTwoTitle && (
                                   <p className="text-sm text-red-400">
                                     {validationError.sectionOneBoxTwoTitle._errors.join(
-                                      ', '
+                                      ", "
                                     )}
                                   </p>
                                 )}
@@ -512,14 +512,14 @@ const NewContactPageComponent = ({ contacto }) => {
                                   placeholder="Manda un mensaje para resolver tus dudas"
                                   value={sections[2]?.boxes[0]?.subTitle}
                                   onChange={(e) =>
-                                    handleInputChange(e, 2, 0, 'subTitle')
+                                    handleInputChange(e, 2, 0, "subTitle")
                                   }
                                   name="sectionOneBoxTwoSubTitle"
                                 ></textarea>
                                 {validationError?.sectionOneBoxTwoSubTitle && (
                                   <p className="text-sm text-red-400">
                                     {validationError.sectionOneBoxTwoSubTitle._errors.join(
-                                      ', '
+                                      ", "
                                     )}
                                   </p>
                                 )}
@@ -534,19 +534,19 @@ const NewContactPageComponent = ({ contacto }) => {
                             >
                               <input
                                 className="appearance-none  bg-gray-100 rounded-md py-2 px-3  w-full outline-none resize-none"
-                                placeholder="contacto@shopout.com.mx"
+                                placeholder="ofertazosmx@gmail.com.mx"
                                 value={
                                   sections[2]?.boxes[0]?.paragraphs[0].text
                                 }
                                 onChange={(e) =>
-                                  handleInputChange(e, 2, 0, 'paragraphs', 0)
+                                  handleInputChange(e, 2, 0, "paragraphs", 0)
                                 }
                                 name="sectionOneBoxTwoParagraph"
                               />
                               {validationError?.sectionOneBoxTwoParagraph && (
                                 <p className="text-sm text-red-400">
                                   {validationError.sectionOneBoxTwoParagraph._errors.join(
-                                    ', '
+                                    ", "
                                   )}
                                 </p>
                               )}
@@ -569,7 +569,7 @@ const NewContactPageComponent = ({ contacto }) => {
                                   name="sectionOneBoxThreeTitle"
                                   value={sections[3]?.boxes[0]?.title}
                                   onChange={(e) =>
-                                    handleInputChange(e, 3, 0, 'title')
+                                    handleInputChange(e, 3, 0, "title")
                                   }
                                   placeholder="Oficinas"
                                   className="font-bold bg-white bg-opacity-10 w-full  outline-none"
@@ -577,7 +577,7 @@ const NewContactPageComponent = ({ contacto }) => {
                                 {validationError?.sectionOneBoxThreeTitle && (
                                   <p className="text-sm text-red-400">
                                     {validationError.sectionOneBoxThreeTitle._errors.join(
-                                      ', '
+                                      ", "
                                     )}
                                   </p>
                                 )}
@@ -595,14 +595,14 @@ const NewContactPageComponent = ({ contacto }) => {
                                   placeholder="No contamos con existencias en oficinas"
                                   value={sections[3]?.boxes[0]?.subTitle}
                                   onChange={(e) =>
-                                    handleInputChange(e, 3, 0, 'subTitle')
+                                    handleInputChange(e, 3, 0, "subTitle")
                                   }
                                   name="sectionOneBoxThreeSubtitle"
                                 ></textarea>
                                 {validationError?.sectionOneBoxThreeSubtitle && (
                                   <p className="text-sm text-red-400">
                                     {validationError.sectionOneBoxThreeSubtitle._errors.join(
-                                      ', '
+                                      ", "
                                     )}
                                   </p>
                                 )}
@@ -622,14 +622,14 @@ const NewContactPageComponent = ({ contacto }) => {
                                   sections[3]?.boxes[0]?.paragraphs[0].text
                                 }
                                 onChange={(e) =>
-                                  handleInputChange(e, 3, 0, 'paragraphs', 0)
+                                  handleInputChange(e, 3, 0, "paragraphs", 0)
                                 }
                                 name="sectionOneBoxThreeParagraph"
                               />
                               {validationError?.sectionOneBoxThreeParagraph && (
                                 <p className="text-sm text-red-400">
                                   {validationError.sectionOneBoxThreeParagraph._errors.join(
-                                    ', '
+                                    ", "
                                   )}
                                 </p>
                               )}
@@ -669,14 +669,14 @@ const NewContactPageComponent = ({ contacto }) => {
                       <input
                         name="sectionThreeBoxOneTitle"
                         value={sections[4]?.boxes[0]?.title}
-                        onChange={(e) => handleInputChange(e, 4, 0, 'title')}
+                        onChange={(e) => handleInputChange(e, 4, 0, "title")}
                         placeholder="Envía un mensaje"
                         className="font-bold bg-white bg-opacity-10 w-full  outline-none text-7xl font-EB_Garamond"
                       />
                       {validationError?.sectionThreeBoxOneTitle && (
                         <p className="text-sm text-red-400">
                           {validationError.sectionThreeBoxOneTitle._errors.join(
-                            ', '
+                            ", "
                           )}
                         </p>
                       )}
@@ -691,13 +691,13 @@ const NewContactPageComponent = ({ contacto }) => {
                         className="appearance-none  bg-gray-100 rounded-md py-2 px-3  w-full outline-none resize-none leading-none h-10"
                         placeholder="Mándanos un mensaje y en corto nos comunicaremos"
                         value={sections[4]?.boxes[0]?.subTitle}
-                        onChange={(e) => handleInputChange(e, 4, 0, 'subTitle')}
+                        onChange={(e) => handleInputChange(e, 4, 0, "subTitle")}
                         name="sectionThreeBoxOneSubtitle"
                       ></textarea>
                       {validationError?.sectionThreeBoxOneSubtitle && (
                         <p className="text-sm text-red-400">
                           {validationError.sectionThreeBoxOneSubtitle._errors.join(
-                            ', '
+                            ", "
                           )}
                         </p>
                       )}
@@ -723,7 +723,7 @@ const NewContactPageComponent = ({ contacto }) => {
                           src={sectionFourImage}
                           width={1000}
                           height={1000}
-                          alt="Contactar al equipo de Shopout MX"
+                          alt="Contactar al equipo de Ofertazos MX"
                         />
 
                         <input

@@ -13,7 +13,7 @@ import { getCookiesName } from "@/backend/helpers";
 import { cookies } from "next/headers";
 
 export const metadata = {
-  title: "Shopout Mx",
+  title: "Ofertazos MX",
   description: "Ropa y accesorios de marca",
 };
 

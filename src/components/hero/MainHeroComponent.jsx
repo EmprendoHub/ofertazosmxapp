@@ -1,9 +1,9 @@
-import React from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import ImageUpMotion from '../motions/ImageUpMotion';
-import ImageOpacityMotion from '../motions/ImageOpacityMotion';
-import TextOpacityMotion from '../motions/TextOpacityMotion';
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
+import ImageUpMotion from "../motions/ImageUpMotion";
+import ImageOpacityMotion from "../motions/ImageOpacityMotion";
+import TextOpacityMotion from "../motions/TextOpacityMotion";
 
 const MainHeroComponent = () => {
   return (
@@ -12,17 +12,17 @@ const MainHeroComponent = () => {
     >
       <div className="z-10 w-full">
         <TextOpacityMotion
-          title={'Alta Moda'}
+          title={"Alta Moda"}
           subtitle={
-            '¡Bienvenido a Shopout MX, tu destino exclusivo para el lujo y la moda de clase mundial!'
+            "¡Bienvenido a Ofertazos MX, tu destino exclusivo para el lujo y la moda de clase mundial!"
           }
         />
       </div>
       <ImageOpacityMotion
-        imgSrc={'/images/main_stylish_model.png'}
+        imgSrc={"/images/main_stylish_model.png"}
         imgWidth={650}
         imgHeight={650}
-        className={'grayscale absolute bottom-0 z-10'}
+        className={"grayscale absolute bottom-0 z-10"}
       />
 
       <div className="h-full flex flex-wrap bg-gray-300 w-1/2 absolute bottom-0 right-0 z-0" />

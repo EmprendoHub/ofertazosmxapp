@@ -1,9 +1,9 @@
-import React from 'react';
-import Link from 'next/link';
-import { getCookiesName } from '@/backend/helpers';
-import { cookies } from 'next/headers';
-import EmailVerification from '@/components/email/EmailVerification';
-import GoogleCaptchaWrapper from '@/components/forms/GoogleCaptchaWrapper';
+import React from "react";
+import Link from "next/link";
+import { getCookiesName } from "@/backend/helpers";
+import { cookies } from "next/headers";
+import EmailVerification from "@/components/email/EmailVerification";
+import GoogleCaptchaWrapper from "@/components/forms/GoogleCaptchaWrapper";
 
 const verifyEmail = async (token) => {
   const nextCookies = cookies();
@@ -14,13 +14,13 @@ const verifyEmail = async (token) => {
     const res = await fetch(
       URL,
       {
-        method: 'POST',
+        method: "POST",
         headers: {
           Cookie: `${cookieName}=${nextAuthSessionToken?.value}`,
           Token: token,
         },
       },
-      { cache: 'no-cache' }
+      { cache: "no-cache" }
     );
     const data = res.json();
     return data;
@@ -32,12 +32,12 @@ const verifyEmail = async (token) => {
 const SuccessPage = async ({ searchParams }) => {
   const token = searchParams?.token;
   const res = await verifyEmail(token);
-  const isVerified = res?.message === 'Email verificado';
+  const isVerified = res?.message === "Email verificado";
   return (
     <>
       <div
         className={
-          'bg-white h-[80vh] flex items-center justify-center text-center mx-auto'
+          "bg-white h-[80vh] flex items-center justify-center text-center mx-auto"
         }
       >
         {isVerified ? (
@@ -48,18 +48,18 @@ const SuccessPage = async ({ searchParams }) => {
             <h2 className="text-7xl font-EB_Garamond">Gracias</h2>
 
             <h3 className="font-EB_Garamond text-2xl mt-3">
-              Por registrarte En Shopout MX
+              Por registrarte En Ofertazos MX
             </h3>
             <p className="text-base text-slate-600 mt-5">
               Ya puedes iniciar tu session.
             </p>
             <div className="flex maxsm:flex-col gap-4 items-center gap-x-5 justify-center mt-10">
-              <Link href={'/iniciar'}>
+              <Link href={"/iniciar"}>
                 <button className="bg-black text-slate-100 hover:text-black w-44 h-12 rounded-full text-base font-semibold hover:bg-gray-200 duration-500">
                   iniciar tu session.
                 </button>
               </Link>
-              <Link href={'/tienda'}>
+              <Link href={"/tienda"}>
                 <button className="bg-black text-slate-100 hover:text-black w-44 h-12 rounded-full text-base font-semibold hover:bg-gray-200 duration-500">
                   Explorar Tienda
                 </button>

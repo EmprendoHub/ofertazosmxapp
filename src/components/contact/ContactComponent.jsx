@@ -1,7 +1,7 @@
-import React from 'react';
-import ContactUsComponent from './ContactUsComponent';
-import IconListSectionComponent from './IconListSectionComponent';
-import HeroColTextComponent from '../texts/HeroColTextComponent';
+import React from "react";
+import ContactUsComponent from "./ContactUsComponent";
+import IconListSectionComponent from "./IconListSectionComponent";
+import HeroColTextComponent from "../texts/HeroColTextComponent";
 
 const ContactComponent = ({ contacto }) => {
   return (
@@ -30,12 +30,12 @@ const ContactComponent = ({ contacto }) => {
                 linkOneText={`(+52)353-133-2430`}
                 textTitleTwo={contacto?.sections[2].boxes[0].title}
                 textTwo={contacto?.sections[2].boxes[0].subTitle}
-                linkTwo={'mailto:contacto@shopout.com.mx'}
+                linkTwo={"mailto:ofertazosmx@gmail.com.mx"}
                 linkTwoText={contacto?.sections[2].boxes[0].paragraphs[0].text}
                 textTitleThree={contacto?.sections[3].boxes[0].title}
                 textThree={contacto?.sections[3].boxes[0].subTitle}
                 linkThree={
-                  'https://www.google.com/maps/dir//36.1584611,-115.140488/@36.158461,-115.140488,15z?hl=en-MX'
+                  "https://www.google.com/maps/dir//36.1584611,-115.140488/@36.158461,-115.140488,15z?hl=en-MX"
                 }
                 linkThreeText={
                   contacto?.sections[3].boxes[0].paragraphs[0].text

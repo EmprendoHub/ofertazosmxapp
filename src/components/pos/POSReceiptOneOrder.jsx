@@ -53,7 +53,7 @@ const POSReceiptOneOrder = ({ order }) => {
       <div className="flex flex-row justify-between items-center">
         <div className=" relative flex flex-col items-center justify-center max-w-fit">
           <h1 className="flex font-black font-EB_Garamond text-[1.5rem] maxmd:text-[1rem] leading-none">
-            SHOPOUT MX
+            Ofertazos MX
           </h1>
         </div>
 
@@ -152,7 +152,7 @@ const POSReceiptOneOrder = ({ order }) => {
                 {formatSpanishDate(order?.createdAt)}
               </p>
               <p>Gracias por tu compra</p>
-              <p>Para descuentos y especiales visita www.shopout.com.mx</p>
+              <p>Para descuentos y especiales visita www.ofertazosmx.xyz</p>
             </div>
           </div>
         </div>

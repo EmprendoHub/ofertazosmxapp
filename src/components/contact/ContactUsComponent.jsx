@@ -1,7 +1,7 @@
-import React from 'react';
-import BoxesSectionTitle from '../texts/BoxesSectionTitle';
-import Image from 'next/image';
-import EmailForm from '../forms/EmailForm';
+import React from "react";
+import BoxesSectionTitle from "../texts/BoxesSectionTitle";
+import Image from "next/image";
+import EmailForm from "../forms/EmailForm";
 
 const ContactUsComponent = ({ contactTitle, contactSubTitle }) => {
   //email js service Ids
@@ -28,10 +28,10 @@ const ContactUsComponent = ({ contactTitle, contactSubTitle }) => {
       </div>
       <div className="w-1/2 maxmd:w-full z-10 justify-center mx-auto items-center flex">
         <Image
-          src={'/images/shopout_about_us_cover.jpg'}
+          src={"/images/shopout_about_us_cover.jpg"}
           width={1000}
           height={100}
-          alt="Contactar al equipo de Shopout MX"
+          alt="Contactar al equipo de Ofertazos MX"
           className="grayscale"
         />
       </div>

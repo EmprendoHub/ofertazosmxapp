@@ -5,8 +5,8 @@ import ListPOSProducts from "@/components/products/ListPOSProducts";
 import { getAllPOSProduct } from "@/app/_actions";
 
 export const metadata = {
-  title: "POS Shopout Mx",
-  description: "Punto de Venta Shopout Mx",
+  title: "POS Ofertazos MX",
+  description: "Punto de Venta Ofertazos MX",
 };
 
 const TiendaPage = async ({ searchParams }) => {

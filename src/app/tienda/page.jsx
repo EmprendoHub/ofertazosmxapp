@@ -1,22 +1,22 @@
-import ListProducts from '@/components/products/ListProducts';
-import { getCookiesName, removeUndefinedAndPageKeys } from '@/backend/helpers';
-import { cookies } from 'next/headers';
-import ServerPagination from '@/components/pagination/ServerPagination';
-import StoreMainHero from '@/components/store/StoreMainHero';
+import ListProducts from "@/components/products/ListProducts";
+import { getCookiesName, removeUndefinedAndPageKeys } from "@/backend/helpers";
+import { cookies } from "next/headers";
+import ServerPagination from "@/components/pagination/ServerPagination";
+import StoreMainHero from "@/components/store/StoreMainHero";
 
 export const metadata = {
-  title: 'Tienda Shopout Mx',
+  title: "Tienda Ofertazos MX",
   description:
-    'Ven y explora nuestra tienda en linea y descubre modelos exclusivos de marcas de alta gama.',
+    "Ven y explora nuestra tienda en linea y descubre modelos exclusivos de marcas de alta gama.",
 };
 
 const getAllProducts = async (searchQuery, currentCookies, perPage) => {
   try {
     const URL = `${process.env.NEXTAUTH_URL}/api/products?${searchQuery}`;
     const res = await fetch(URL, {
-      credentials: 'include',
+      credentials: "include",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Cookie: currentCookies,
         perPage: perPage,
       },
@@ -39,9 +39,9 @@ const TiendaPage = async ({ searchParams }) => {
     page: searchParams.page,
     category: searchParams.category,
     brand: searchParams.brand,
-    'rating[gte]': searchParams.rating,
-    'price[lte]': searchParams.max,
-    'price[gte]': searchParams.min,
+    "rating[gte]": searchParams.rating,
+    "price[lte]": searchParams.max,
+    "price[gte]": searchParams.min,
   };
   // Filter out undefined values
   const filteredUrlParams = Object.fromEntries(
@@ -72,7 +72,7 @@ const TiendaPage = async ({ searchParams }) => {
   const allCategories = data?.allCategories;
   const filteredProductsCount = data?.filteredProductsCount;
   const search =
-    typeof searchParams.search === 'string' ? searchParams.search : undefined;
+    typeof searchParams.search === "string" ? searchParams.search : undefined;
   for (let i = page - offsetNumber; i <= page + offsetNumber; i++) {
     if (i >= 1 && i <= totalPages) {
       pageNumbers.push(i);

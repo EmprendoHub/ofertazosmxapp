@@ -29,7 +29,7 @@ const AdminSidebar = ({ children }) => {
         <div className="p-4 maxmd:pl-3 pb-2 flex justify-between maxmd:justify-center items-center">
           <Image
             alt="image"
-            src={"/images/Main_shopout_logo.webp"}
+            src={"/images/horizontal_logo.png"}
             width={500}
             height={500}
             className={`overflow-hidden transition-all ease-in-out ${

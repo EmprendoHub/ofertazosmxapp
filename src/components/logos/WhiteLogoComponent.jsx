@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from "next/image";
 
 const WhiteLogoComponent = ({ className }) => {
   return (
@@ -6,7 +6,7 @@ const WhiteLogoComponent = ({ className }) => {
       <div className=" flex justify-between maxmd:justify-center items-center">
         <Image
           alt="image"
-          src={'/images/Main_shopout_logo.webp'}
+          src={"/images/horizontal_logo.png"}
           width={500}
           height={500}
           className={`overflow-hidden transition-all ease-in-out w-36 h-auto`}

@@ -39,7 +39,7 @@ export async function POST(request, res) {
 
         await writeFile(path, buffer);
         const fileName = "/posts/" + String(file.name);
-        await uploadToBucket("shopout", fileName, path);
+        await uploadToBucket("ofertazosmx", fileName, path);
         const imageUrl = { url: `${process.env.MINIO_URL}${fileName}` };
         savedImagesResults.push(imageUrl);
       }

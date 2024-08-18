@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 
 export const metadata = {
-  title: 'Política de privacidad de Shopout MX',
-  description: 'Explora la Política de privacidad de Shopout MX',
+  title: "Política de privacidad de Ofertazos MX",
+  description: "Explora la Política de privacidad de Ofertazos MX",
 };
 
 const PoliticaPage = () => {
@@ -11,7 +11,7 @@ const PoliticaPage = () => {
       <section className="hero bg-gray-100 text-center py-20 border border-slate-400 drop-shadow-md mb-10">
         <div className="container mx-auto">
           <h1 className="text-4xl font-extrabold font-EB_Garamond text-black">
-            Política de privacidad de Shopout MX
+            Política de privacidad de Ofertazos MX
           </h1>
           <p className="text-lg mt-4 font-raleway font-semibold">
             Los compradores aceptan que el pedido se puede utilizar en el
@@ -179,7 +179,7 @@ const PoliticaPage = () => {
           <h2 className="text-2xl font-semibold  font-EB_Garamond">COOKIES</h2>
           <p className="mt-2 font-raleway font-semibold">
             {
-              'Si deja un comentario en nuestro sitio, puede optar por guardar su nombre, dirección de correo electrónico y sitio web en cookies. Esto es para tu comodidad para que no tengas que volver a completar tus datos cuando dejes otro comentario. Estas cookies tendrán una duración de un año.'
+              "Si deja un comentario en nuestro sitio, puede optar por guardar su nombre, dirección de correo electrónico y sitio web en cookies. Esto es para tu comodidad para que no tengas que volver a completar tus datos cuando dejes otro comentario. Estas cookies tendrán una duración de un año."
             }
           </p>
 
@@ -337,7 +337,9 @@ const PoliticaPage = () => {
             Para obtener más información sobre nuestras prácticas de privacidad,
             si tiene preguntas o si desea presentar una queja, comuníquese con
             nosotros por correo electrónico a
-            <a href="mailto:contacto@shopout.com.mx">contacto@shopout.com.mx</a>
+            <a href="mailto:ofertazosmx@gmail.com.mx">
+              ofertazosmx@gmail.com.mx
+            </a>
           </p>
 
           <address className="mt-2 font-raleway font-semibold ">

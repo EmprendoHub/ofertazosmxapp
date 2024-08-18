@@ -1,21 +1,21 @@
-import Post from '@/backend/models/Post';
-import { NextResponse } from 'next/server';
-import dbConnect from '@/lib/db';
-import { getToken } from 'next-auth/jwt';
-import { join } from 'path';
-import { writeFile } from 'fs/promises';
-import { mc } from '@/lib/minio';
-import Product from '@/backend/models/Product';
+import Post from "@/backend/models/Post";
+import { NextResponse } from "next/server";
+import dbConnect from "@/lib/db";
+import { getToken } from "next-auth/jwt";
+import { join } from "path";
+import { writeFile } from "fs/promises";
+import { mc } from "@/lib/minio";
+import Product from "@/backend/models/Product";
 
 // Put a file in bucket my-bucketname.
 const uploadToBucket = async (folder, filename, file) => {
   return new Promise((resolve, reject) => {
     mc.fPutObject(folder, filename, file, function (err, result) {
       if (err) {
-        console.log('Error from minio', err);
+        console.log("Error from minio", err);
         reject(err);
       } else {
-        console.log('Success uploading images to minio');
+        console.log("Success uploading images to minio");
         resolve({
           _id: result._id, // Make sure _id and url are properties of the result object
           url: result.url,
@@ -26,10 +26,10 @@ const uploadToBucket = async (folder, filename, file) => {
 };
 
 export const GET = async (request) => {
-  const cookie = await request.headers.get('cookie');
+  const cookie = await request.headers.get("cookie");
   if (!cookie) {
     // Not Signed in
-    const notAuthorized = 'You are not authorized no no no';
+    const notAuthorized = "You are not authorized no no no";
     return new Response(JSON.stringify(notAuthorized), {
       status: 400,
     });
@@ -37,16 +37,16 @@ export const GET = async (request) => {
 
   try {
     await dbConnect();
-    const id = await request.headers.get('id');
+    const id = await request.headers.get("id");
     //const _id = await request.url.split('?')[1];
     const post = await Post?.findOne({ _id: id });
     // Find products matching any of the tag values
     const trendingProducts = await Product.find({
-      'tags.value': post.category,
+      "tags.value": post.category,
     }).limit(4);
 
     const response = NextResponse.json({
-      message: 'One Post fetched successfully',
+      message: "One Post fetched successfully",
       success: true,
       post,
       trendingProducts,
@@ -56,7 +56,7 @@ export const GET = async (request) => {
     console.log(error);
     return NextResponse.json(
       {
-        error: 'Post loading error',
+        error: "Post loading error",
       },
       { status: 500 }
     );
@@ -65,7 +65,7 @@ export const GET = async (request) => {
 
 export async function POST(req, res) {
   const token = await getToken({ req: req });
-  if (token && token.user.role === 'manager') {
+  if (token && token.user.role === "manager") {
     try {
       await dbConnect();
       const { payload } = await req.json();
@@ -84,7 +84,7 @@ export async function POST(req, res) {
       images?.map(async (image, index) => {
         let image_url = image.i_file;
         let p_images = {
-          url: `https://minio.salvawebpro.com:9000/shopout/posts/${image_url}`,
+          url: `https://minio.salvawebpro.com:9000/ofertazosmx/posts/${image_url}`,
         };
         if (index === 0) {
           mainImage = p_images;
@@ -119,17 +119,17 @@ export async function POST(req, res) {
       // upload images to bucket
       savedPostMinioBucketImages?.map(async (image) => {
         // Remove the data URI prefix (e.g., "data:image/jpeg;base64,")
-        const base64Image = image.i_filePreview?.split(';base64,').pop();
+        const base64Image = image.i_filePreview?.split(";base64,").pop();
         // Create a buffer from the base64 string
-        const buffer = Buffer.from(base64Image, 'base64');
-        const path = join('/', 'tmp', image.i_file);
+        const buffer = Buffer.from(base64Image, "base64");
+        const path = join("/", "tmp", image.i_file);
         await writeFile(path, buffer);
-        const fileName = '/posts/' + String(image.i_file);
+        const fileName = "/posts/" + String(image.i_file);
 
-        await uploadToBucket('shopout', fileName, path);
+        await uploadToBucket("ofertazosmx", fileName, path);
       });
       const response = NextResponse.json({
-        message: 'Publicación creada exitosamente',
+        message: "Publicación creada exitosamente",
         success: true,
         post: savedPost,
       });
@@ -138,14 +138,14 @@ export async function POST(req, res) {
     } catch (error) {
       return NextResponse.json(
         {
-          error: 'Error al crear Publicación',
+          error: "Error al crear Publicación",
         },
         { status: 500 }
       );
     }
   } else {
     // Not Signed in
-    return new Response('You are not authorized, eh eh eh, no no no', {
+    return new Response("You are not authorized, eh eh eh, no no no", {
       status: 400,
     });
   }
@@ -154,7 +154,7 @@ export async function POST(req, res) {
 export async function PUT(req, res) {
   const token = await getToken({ req: req });
 
-  if (token && token.user.role === 'manager') {
+  if (token && token.user.role === "manager") {
     try {
       await dbConnect();
       const { payload } = await req.json();
@@ -176,7 +176,7 @@ export async function PUT(req, res) {
         if (image.i_filePreview) {
           image_url = image.i_file;
           p_images = {
-            url: `https://minio.salvawebpro.com:9000/shopout/posts/${image_url}`,
+            url: `https://minio.salvawebpro.com:9000/ofertazosmx/posts/${image_url}`,
           };
           if (index === 0) {
             mainImage = p_images;
@@ -212,17 +212,17 @@ export async function PUT(req, res) {
       // upload images to bucket
       savedPostMinioBucketImages?.map(async (image) => {
         // Remove the data URI prefix (e.g., "data:image/jpeg;base64,")
-        const base64Image = image.i_filePreview?.split(';base64,').pop();
+        const base64Image = image.i_filePreview?.split(";base64,").pop();
         // Create a buffer from the base64 string
-        const buffer = Buffer.from(base64Image, 'base64');
-        const path = join('/', 'tmp', image.i_file);
+        const buffer = Buffer.from(base64Image, "base64");
+        const path = join("/", "tmp", image.i_file);
         await writeFile(path, buffer);
-        const fileName = '/posts/' + String(image.i_file);
+        const fileName = "/posts/" + String(image.i_file);
 
-        await uploadToBucket('shopout', fileName, path);
+        await uploadToBucket("ofertazosmx", fileName, path);
       });
       const response = NextResponse.json({
-        message: 'Publicación actualizado exitosamente',
+        message: "Publicación actualizado exitosamente",
         success: true,
         post: savedPost,
       });
@@ -232,14 +232,14 @@ export async function PUT(req, res) {
       console.log(error);
       return NextResponse.json(
         {
-          error: 'Error al crear Publicación',
+          error: "Error al crear Publicación",
         },
         { status: 500 }
       );
     }
   } else {
     // Not Signed in
-    return new Response('You are not authorized, eh eh eh, no no no', {
+    return new Response("You are not authorized, eh eh eh, no no no", {
       status: 400,
     });
   }
@@ -247,10 +247,10 @@ export async function PUT(req, res) {
 
 export async function DELETE(req) {
   const token = await getToken({ req: req });
-  if (token && token.user.role === 'manager') {
+  if (token && token.user.role === "manager") {
     try {
       await dbConnect();
-      const urlData = await req.url.split('?');
+      const urlData = await req.url.split("?");
       const id = urlData[1];
       const deletePost = await Post.findByIdAndDelete(id);
       return new Response(JSON.stringify(deletePost), { status: 201 });
@@ -259,7 +259,7 @@ export async function DELETE(req) {
     }
   } else {
     // Not Signed in
-    return new Response('You are not authorized, eh eh eh, no no no', {
+    return new Response("You are not authorized, eh eh eh, no no no", {
       status: 400,
     });
   }

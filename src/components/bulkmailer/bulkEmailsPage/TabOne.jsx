@@ -1,25 +1,25 @@
-'use client';
-import { useState, useEffect } from 'react';
-import { Alert, Badge, Checkbox, LinearProgress } from '@mui/material';
-import UploadOne from './upload/uploadOne';
-import Feedback from './Feedback';
-import Result from './Results';
-import { useDispatch, useSelector } from 'react-redux';
-import { sleep } from '@/backend/helpers';
-import { resetEmailReceiver } from '@/redux/shoppingSlice';
-import { useRouter } from 'next/navigation';
+"use client";
+import { useState, useEffect } from "react";
+import { Alert, Badge, Checkbox, LinearProgress } from "@mui/material";
+import UploadOne from "./upload/uploadOne";
+import Feedback from "./Feedback";
+import Result from "./Results";
+import { useDispatch, useSelector } from "react-redux";
+import { sleep } from "@/backend/helpers";
+import { resetEmailReceiver } from "@/redux/shoppingSlice";
+import { useRouter } from "next/navigation";
 
 export default function TabOne() {
   // Form States
   const router = useRouter();
   const dispatch = useDispatch();
-  const [senderName, setSenderName] = useState('');
-  const [greeting, setGreeting] = useState('');
-  const [subject, setSubject] = useState('');
-  const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
+  const [senderName, setSenderName] = useState("");
+  const [greeting, setGreeting] = useState("");
+  const [subject, setSubject] = useState("");
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
   const [error, setError] = useState(false);
-  const [bestRegards, setBestRegards] = useState('');
+  const [bestRegards, setBestRegards] = useState("");
   const [loading, setLoading] = useState(false);
   const [counter, setCounter] = useState(0);
   const [success, setSuccess] = useState(false);
@@ -31,7 +31,7 @@ export default function TabOne() {
   const { emailListData } = useSelector((state) => state?.compras);
   useEffect(() => {
     if (emailListData.length <= 0) {
-      return router.push('/admin/clientes');
+      return router.push("/admin/clientes");
     }
   }, [emailListData]);
 
@@ -47,13 +47,13 @@ export default function TabOne() {
 
     if (!subject || !body) {
       setError(
-        'Asegúrate de agregar el asunto y un mensaje antes de enviar el correo.'
+        "Asegúrate de agregar el asunto y un mensaje antes de enviar el correo."
       );
     }
 
     if (emailListData.length === 0) {
       setError(
-        'Asegúrate de agregar clientes o afiliados antes de enviar el correo.'
+        "Asegúrate de agregar clientes o afiliados antes de enviar el correo."
       );
     }
 
@@ -69,9 +69,9 @@ export default function TabOne() {
         setCounter(i + 1);
         const URL = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/bulkemail`;
         const response = await fetch(URL, {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             subject: checked ? senderName : emailListData[i].name,
@@ -80,7 +80,7 @@ export default function TabOne() {
             greeting,
             bestRegards,
             recipient_email: emailListData[i].email,
-            sender_email: 'contacto@shopout.com.mx',
+            sender_email: "ofertazosmx@gmail.com.mx",
             name: senderName,
           }),
         });
@@ -134,7 +134,7 @@ export default function TabOne() {
               <Checkbox
                 checked={checked}
                 onChange={handleChange}
-                inputProps={{ 'aria-label': 'controlled' }}
+                inputProps={{ "aria-label": "controlled" }}
               />
               <span className="ml-1 my-2 maxsm:text-[10px]">
                 Usar el nombre del Remitente como el Asunto

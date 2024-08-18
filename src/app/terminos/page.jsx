@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 
 export const metadata = {
-  title: 'Términos de servicio de Shopout MX',
-  description: 'Explora los Términos de servicio de Shopout MX',
+  title: "Términos de servicio de Ofertazos MX",
+  description: "Explora los Términos de servicio de Ofertazos MX",
 };
 
 const TerminosPage = () => {
@@ -14,9 +14,9 @@ const TerminosPage = () => {
             Términos de servicio
           </h1>
           <p className="text-lg text-gray-600 mt-4 font-raleway font-semibold ">
-            Este sitio web es operado por Shopout MX. En todo el sitio, los
-            términos (nosotros), (nos) y (nuestro) se refieren a Shopout MX.
-            Shopout MX ofrece este sitio web, incluida toda la información,
+            Este sitio web es operado por Ofertazos MX. En todo el sitio, los
+            términos (nosotros), (nos) y (nuestro) se refieren a Ofertazos MX.
+            Ofertazos MX ofrece este sitio web, incluida toda la información,
             herramientas y servicios disponibles en este sitio para usted, el
             usuario, condicionado a la aceptación de todos los términos,
             condiciones, políticas y avisos aquí establecidos.
@@ -442,7 +442,7 @@ const TerminosPage = () => {
           </p>
 
           <p className="mt-2 font-raleway font-semibold">
-            En ningún caso Shopout MX, nuestros directores, funcionarios,
+            En ningún caso Ofertazos MX, nuestros directores, funcionarios,
             empleados, afiliados, agentes, contratistas, pasantes, proveedores,
             prestadores de servicios o licenciantes serán responsables de
             cualquier lesión, pérdida, reclamo o cualquier daño directo,
@@ -472,7 +472,7 @@ const TerminosPage = () => {
           </h2>
           <p className="mt-2 font-raleway font-semibold">
             Usted acepta indemnizar, defender y eximir de responsabilidad a
-            Shopout MX y a nuestra matriz, subsidiarias, afiliados, socios,
+            Ofertazos MX y a nuestra matriz, subsidiarias, afiliados, socios,
             funcionarios, directores, agentes, contratistas, licenciantes,
             proveedores de servicios, subcontratistas, proveedores, pasantes y
             empleados, indemnes de cualquier reclamo o demanda, incluyendo
@@ -592,7 +592,7 @@ const TerminosPage = () => {
           </h2>
           <p className="mt-2 font-raleway font-semibold">
             Preguntas sobre los Términos de Servicio deben enviarnos a
-            contacto@shopout.com.mx
+            ofertazosmx@gmail.com.mx
           </p>
         </section>
       </div>

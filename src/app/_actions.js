@@ -145,7 +145,7 @@ export async function payPOSDrawer(data) {
           phone + name.replace(/\s/g, "").substring(0, 8) + "@noemail.com";
       } else {
         console.log("if sucursal");
-        customerEmail = "sucursal@shopout.com";
+        customerEmail = "ofertazosmx@gmail.com";
       }
     }
 
@@ -300,7 +300,7 @@ export async function payPOSDrawer(data) {
     // send email after order is confirmed
     if (
       customerEmail.includes("@noemail.com") ||
-      customerEmail === "sucursal@shopout.com"
+      customerEmail === "ofertazosmx@gmail.com"
     ) {
       console.log("did not send email");
     } else {
@@ -310,11 +310,11 @@ export async function payPOSDrawer(data) {
         const bodyTwo = `Tu apoyo significa mucho para nosotros y nos comprometemos a brindarte la mejor experiencia posible. Si tienes alguna pregunta o necesitas asistencia adicional, no dudes en ponerte en contacto con nuestro equipo de atención al cliente. Estamos aquí para ayudarte en cualquier momento.`;
         const title = "Recibo de compra";
         const greeting = `Estimado/a ${customer?.name}`;
-        const senderName = "www.shopout.com.mx";
+        const senderName = "www.ofertazosmx.xyz";
         const bestRegards = "¡Que tengas un excelente día!";
         const recipient_email = customer?.email;
-        const sender_email = "contacto@shopout.com.mx";
-        const fromName = "Shopout Mx";
+        const sender_email = "ofertazosmx@gmail.com.mx";
+        const fromName = "Ofertazos MX";
 
         var transporter = nodemailer.createTransport({
           service: "gmail",
@@ -491,7 +491,7 @@ export async function payPOSInstagramDrawer(data) {
           phone + name.replace(/\s/g, "").substring(0, 8) + "@noemail.com";
       } else {
         console.log("if sucursal");
-        customerEmail = "sucursal@shopout.com";
+        customerEmail = "ofertazosmx@gmail.com";
       }
     }
 
@@ -646,7 +646,7 @@ export async function payPOSInstagramDrawer(data) {
     // send email after order is confirmed
     if (
       customerEmail.includes("@noemail.com") ||
-      customerEmail === "sucursal@shopout.com"
+      customerEmail === "ofertazosmx@gmail.com"
     ) {
       console.log("did not send email");
     } else {
@@ -656,11 +656,11 @@ export async function payPOSInstagramDrawer(data) {
         const bodyTwo = `Tu apoyo significa mucho para nosotros y nos comprometemos a brindarte la mejor experiencia posible. Si tienes alguna pregunta o necesitas asistencia adicional, no dudes en ponerte en contacto con nuestro equipo de atención al cliente. Estamos aquí para ayudarte en cualquier momento.`;
         const title = "Recibo de compra";
         const greeting = `Estimado/a ${customer?.name}`;
-        const senderName = "www.shopout.com.mx";
+        const senderName = "www.ofertazosmx.xyz";
         const bestRegards = "¡Que tengas un excelente día!";
         const recipient_email = customer?.email;
-        const sender_email = "contacto@shopout.com.mx";
-        const fromName = "Shopout Mx";
+        const sender_email = "ofertazosmx@gmail.com.mx";
+        const fromName = "Ofertazos MX";
 
         var transporter = nodemailer.createTransport({
           service: "gmail",
@@ -3798,8 +3798,8 @@ export async function resendEmail(data) {
           const action = "CONFIRMAR EMAIL";
           const bestRegards = "Gracias por unirte a nuestro sitio.";
           const recipient_email = email;
-          const sender_email = "contacto@shopout.com.mx";
-          const fromName = "Shopout Mx";
+          const sender_email = "ofertazosmx@gmail.com.mx";
+          const fromName = "Ofertazos MX";
 
           const transporter = nodemailer.createTransport({
             host: "smtp.gmail.com",
@@ -3908,16 +3908,16 @@ export async function resetAccountEmail(data) {
       }
       if (user?._id) {
         try {
-          const subject = "Desbloquear Cuenta Shopout Mx";
+          const subject = "Desbloquear Cuenta Ofertazos MX";
           const body = `Por favor da click en desbloquear para reactivar tu cuenta`;
           const title = "Desbloquear Cuenta";
           const btnAction = "DESBLOQUEAR";
           const greeting = `Saludos ${user?.name}`;
           const bestRegards =
-            "¿Problemas? Ponte en contacto contacto@shopout.com.mx";
+            "¿Problemas? Ponte en contacto ofertazosmx@gmail.com.mx";
           const recipient_email = email;
-          const sender_email = "contacto@shopout.com.mx";
-          const fromName = "Shopout Mx";
+          const sender_email = "ofertazosmx@gmail.com.mx";
+          const fromName = "Ofertazos MX";
 
           const transporter = nodemailer.createTransport({
             host: "smtp.gmail.com",

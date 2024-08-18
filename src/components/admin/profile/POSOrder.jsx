@@ -106,7 +106,7 @@ const POSOrder = ({ order, deliveryAddress, id, orderPayments, customer }) => {
             <h2 className="text-3xl font-bold text-slate-700">
               {order?.customerName}{" "}
               <span className="text-sm text-red-800">
-                {order?.email === "sucursal@shopout.com"
+                {order?.email === "ofertazosmx@gmail.com"
                   ? "(Sucursal)"
                   : "Cliente"}
               </span>

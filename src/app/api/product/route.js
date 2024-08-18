@@ -1,17 +1,17 @@
-import { NextResponse } from 'next/server';
-import dbConnect from '@/lib/db';
-import Product from '@/backend/models/Product';
-import { getToken } from 'next-auth/jwt';
-import { join } from 'path';
-import { writeFile } from 'fs/promises';
-import { mc } from '@/lib/minio';
+import { NextResponse } from "next/server";
+import dbConnect from "@/lib/db";
+import Product from "@/backend/models/Product";
+import { getToken } from "next-auth/jwt";
+import { join } from "path";
+import { writeFile } from "fs/promises";
+import { mc } from "@/lib/minio";
 
 // Put a file in bucket my-bucketname.
 const uploadToBucket = async (folder, filename, file) => {
   return new Promise((resolve, reject) => {
     mc.fPutObject(folder, filename, file, function (err, result) {
       if (err) {
-        console.log('Error from minio', err);
+        console.log("Error from minio", err);
         reject(err);
       } else {
         resolve({
@@ -24,10 +24,10 @@ const uploadToBucket = async (folder, filename, file) => {
 };
 
 export const GET = async (request) => {
-  const token = await request.headers.get('cookie');
+  const token = await request.headers.get("cookie");
   if (!token) {
     // Not Signed in
-    const notAuthorized = 'You are not authorized no no no';
+    const notAuthorized = "You are not authorized no no no";
     return new Response(JSON.stringify(notAuthorized), {
       status: 400,
     });
@@ -35,8 +35,8 @@ export const GET = async (request) => {
 
   try {
     await dbConnect();
-    const id = await request.headers.get('id');
-    const slug = await request.headers.get('slug');
+    const id = await request.headers.get("id");
+    const slug = await request.headers.get("slug");
     let product;
     if (id) {
       product = await Product?.findOne({ _id: id });
@@ -48,7 +48,7 @@ export const GET = async (request) => {
       category: product.category,
     }).limit(4);
     const response = NextResponse.json({
-      message: 'One Product fetched successfully',
+      message: "One Product fetched successfully",
       success: true,
       product,
       trendingProducts,
@@ -57,7 +57,7 @@ export const GET = async (request) => {
   } catch (error) {
     return NextResponse.json(
       {
-        error: 'Product loading error',
+        error: "Product loading error",
       },
       { status: 500 }
     );
@@ -103,7 +103,7 @@ export async function POST(req, res) {
       images?.map(async (image) => {
         let image_url = image.i_file;
         let p_images = {
-          url: `https://minio.salvawebpro.com:9000/shopout/products/${image_url}`,
+          url: `https://minio.salvawebpro.com:9000/ofertazosmx/products/${image_url}`,
           color: image.i_color,
         };
         let minio_image = {
@@ -112,7 +112,7 @@ export async function POST(req, res) {
         };
         savedProductMinioBucketImages.push(minio_image);
         savedProductImages.push(p_images);
-        let tempColor = { value: image.i_color, hex: '#001001' };
+        let tempColor = { value: image.i_color, hex: "#001001" };
 
         savedProductColors.push(tempColor);
         // upload images to bucket
@@ -146,17 +146,17 @@ export async function POST(req, res) {
       // upload images to bucket
       savedProductMinioBucketImages?.map(async (image) => {
         // Remove the data URI prefix (e.g., "data:image/jpeg;base64,")
-        const base64Image = image.i_filePreview?.split(';base64,').pop();
+        const base64Image = image.i_filePreview?.split(";base64,").pop();
         // Create a buffer from the base64 string
-        const buffer = Buffer.from(base64Image, 'base64');
-        const path = join('/', 'tmp', image.i_file);
+        const buffer = Buffer.from(base64Image, "base64");
+        const path = join("/", "tmp", image.i_file);
         await writeFile(path, buffer);
-        const fileName = '/products/' + String(image.i_file);
+        const fileName = "/products/" + String(image.i_file);
 
-        await uploadToBucket('shopout', fileName, path);
+        await uploadToBucket("ofertazosmx", fileName, path);
       });
       const response = NextResponse.json({
-        message: 'Producto creado exitosamente',
+        message: "Producto creado exitosamente",
         success: true,
         product: savedProduct,
       });
@@ -165,14 +165,14 @@ export async function POST(req, res) {
     } catch (error) {
       return NextResponse.json(
         {
-          error: 'Error al crear Producto',
+          error: "Error al crear Producto",
         },
         { status: 500 }
       );
     }
   } else {
     // Not Signed in
-    return new Response('You are not authorized, eh eh eh, no no no', {
+    return new Response("You are not authorized, eh eh eh, no no no", {
       status: 400,
     });
   }
@@ -223,7 +223,7 @@ export async function PUT(req, res) {
         if (image.i_file) {
           image_url = image.i_file;
           p_images = {
-            url: `https://minio.salvawebpro.com:9000/shopout/products/${image_url}`,
+            url: `https://minio.salvawebpro.com:9000/ofertazosmx/products/${image_url}`,
             color: image.i_color,
           };
           let minio_image = {
@@ -232,7 +232,7 @@ export async function PUT(req, res) {
           };
           savedProductMinioBucketImages.push(minio_image);
           savedProductImages.push(p_images);
-          tempColor = { value: image.i_color, hex: '#001001' };
+          tempColor = { value: image.i_color, hex: "#001001" };
           savedProductColors.push(tempColor);
         } else {
           p_images = {
@@ -240,7 +240,7 @@ export async function PUT(req, res) {
             color: image.color,
           };
           savedProductImages.push(p_images);
-          tempColor = { value: image.i_color, hex: '#001001' };
+          tempColor = { value: image.i_color, hex: "#001001" };
           savedProductColors.push(tempColor);
         }
       });
@@ -272,17 +272,17 @@ export async function PUT(req, res) {
       // upload images to bucket
       savedProductMinioBucketImages?.map(async (image) => {
         // Remove the data URI prefix (e.g., "data:image/jpeg;base64,")
-        const base64Image = image.i_filePreview?.split(';base64,').pop();
+        const base64Image = image.i_filePreview?.split(";base64,").pop();
         // Create a buffer from the base64 string
-        const buffer = Buffer.from(base64Image, 'base64');
-        const path = join('/', 'tmp', image.i_file);
+        const buffer = Buffer.from(base64Image, "base64");
+        const path = join("/", "tmp", image.i_file);
         await writeFile(path, buffer);
-        const fileName = '/products/' + String(image.i_file);
+        const fileName = "/products/" + String(image.i_file);
 
-        await uploadToBucket('shopout', fileName, path);
+        await uploadToBucket("ofertazosmx", fileName, path);
       });
       const response = NextResponse.json({
-        message: 'Producto actualizado exitosamente',
+        message: "Producto actualizado exitosamente",
         success: true,
         product: savedProduct,
       });
@@ -291,26 +291,26 @@ export async function PUT(req, res) {
     } catch (error) {
       return NextResponse.json(
         {
-          error: 'Error al crear Producto',
+          error: "Error al crear Producto",
         },
         { status: 500 }
       );
     }
   } else {
     // Not Signed in
-    return new Response('You are not authorized, eh eh eh, no no no', {
+    return new Response("You are not authorized, eh eh eh, no no no", {
       status: 400,
     });
   }
 }
 
 export async function DELETE(req) {
-  const sessionData = req.headers.get('x-mysession-key');
+  const sessionData = req.headers.get("x-mysession-key");
   const session = JSON.parse(sessionData);
   if (session) {
     try {
       await dbConnect();
-      const urlData = await req.url.split('?');
+      const urlData = await req.url.split("?");
       const id = urlData[1];
       const deleteProduct = await Product.findByIdAndDelete(id);
       return new Response(JSON.stringify(deleteProduct), { status: 201 });
@@ -319,7 +319,7 @@ export async function DELETE(req) {
     }
   } else {
     // Not Signed in
-    return new Response('You are not authorized, eh eh eh, no no no', {
+    return new Response("You are not authorized, eh eh eh, no no no", {
       status: 400,
     });
   }

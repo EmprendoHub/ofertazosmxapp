@@ -1,18 +1,18 @@
-import { mc } from '@/lib/minio';
-import { writeFile } from 'fs/promises';
-import { join } from 'path';
+import { mc } from "@/lib/minio";
+import { writeFile } from "fs/promises";
+import { join } from "path";
 
 // Put a file in bucket my-bucketname.
 export const uploadToBucket = async (file, fileLocation) => {
   const buffer = Buffer.from(await file.arrayBuffer());
-  const path = join('/', 'tmp', file.name);
+  const path = join("/", "tmp", file.name);
 
   await writeFile(path, buffer);
 
   return new Promise((resolve, reject) => {
-    mc.fPutObject('shopout', fileLocation, path, function (err, result) {
+    mc.fPutObject("ofertazosmx", fileLocation, path, function (err, result) {
       if (err) {
-        console.log('Error from minio', err);
+        console.log("Error from minio", err);
         reject(err);
       } else {
         // console.log('Success uploading images to minio');

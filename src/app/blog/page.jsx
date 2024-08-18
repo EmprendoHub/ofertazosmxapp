@@ -1,11 +1,11 @@
-import BlogCoverSection from '@/components/blog/BlogCoverSection';
-import FeaturedPosts from '@/components/blog/FeaturedPosts';
-import RecentPosts from '@/components/blog/RecentPosts';
-import { getAllPost } from '../_actions';
+import BlogCoverSection from "@/components/blog/BlogCoverSection";
+import FeaturedPosts from "@/components/blog/FeaturedPosts";
+import RecentPosts from "@/components/blog/RecentPosts";
+import { getAllPost } from "../_actions";
 
 export const metadata = {
-  title: 'Blog Shopout Mx',
-  description: 'Ven y explora nuestro blog y descubre artículos de moda.',
+  title: "Blog Ofertazos MX",
+  description: "Ven y explora nuestro blog y descubre artículos de moda.",
 };
 
 const BlogPage = async ({ searchParams }) => {

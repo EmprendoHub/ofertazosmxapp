@@ -1,24 +1,24 @@
-'use client';
-import React, { useState } from 'react';
+"use client";
+import React, { useState } from "react";
 import {
   AiOutlineMenu,
   AiOutlineClose,
   AiOutlineLogout,
   AiOutlineLogin,
-} from 'react-icons/ai';
-import { AnimatePresence, motion } from 'framer-motion';
-import Link from 'next/link';
-import { BsFacebook, BsInstagram } from 'react-icons/bs';
-import { signOut, useSession } from 'next-auth/react';
-import MiniMenuComponent from './MiniMenuComponent';
-import DarkModeLogo from '../logos/WhiteLogoNoLink';
+} from "react-icons/ai";
+import { AnimatePresence, motion } from "framer-motion";
+import Link from "next/link";
+import { BsFacebook, BsInstagram } from "react-icons/bs";
+import { signOut, useSession } from "next-auth/react";
+import MiniMenuComponent from "./MiniMenuComponent";
+import DarkModeLogo from "../logos/WhiteLogoNoLink";
 
 const navLinks = [
-  { title: 'Inicio', url: '/' },
-  { title: 'Blog', url: '/blog' },
-  { title: 'Nosotros', url: '/nosotros' },
-  { title: 'Contacto', url: '/contacto' },
-  { title: 'Tienda', url: '/tienda' },
+  { title: "Inicio", url: "/" },
+  { title: "Blog", url: "/blog" },
+  { title: "Nosotros", url: "/nosotros" },
+  { title: "Contacto", url: "/contacto" },
+  { title: "Tienda", url: "/tienda" },
 ];
 
 const MobileMenuComponent = () => {
@@ -90,7 +90,7 @@ const MobileMenuComponent = () => {
           >
             <div className="flex h-full flex-col">
               <div className="flex relative  min-h-full justify-between items-center pb-5">
-                <DarkModeLogo className={'ml-5 mt-4 w-[200px] sm:w-[120px]'} />
+                <DarkModeLogo className={"ml-5 mt-4 w-[200px] sm:w-[120px]"} />
                 <p
                   onClick={toggleMobileMenu}
                   className="cursor-pointer text-md text-white"
@@ -133,7 +133,7 @@ const MobileMenuComponent = () => {
               </div>
             ) : (
               <Link
-                href={'/iniciar'}
+                href={"/iniciar"}
                 onClick={() => setOpen((prevOpen) => !prevOpen)}
                 className="pt-10 cursor-pointer flex justify-center items-center gap-x-1"
               >
@@ -144,7 +144,7 @@ const MobileMenuComponent = () => {
             {/* Contact Links */}
             <div className="flex fle-row items-center justify-center gap-x-4 pt-10">
               <Link
-                href={'tel:3535323421'}
+                href={"tel:3535323421"}
                 className="maxmd:hidden flex flex-row justify-between items-center gap-x-2 cursor-pointer"
               >
                 <span className="text-base">353-532-3421</span>
@@ -153,7 +153,7 @@ const MobileMenuComponent = () => {
                 <motion.a
                   whileHover={{ scale: 1.3 }}
                   whileTap={{ scale: 0.9 }}
-                  href="https://www.instagram.com/shopoutmx/"
+                  href="https://www.instagram.com/ofertazosmx/"
                   target="_blank"
                 >
                   <span className="socialLink">
@@ -163,7 +163,7 @@ const MobileMenuComponent = () => {
                 <motion.a
                   whileHover={{ scale: 1.3 }}
                   whileTap={{ scale: 0.9 }}
-                  href="https://www.facebook.com/shopoutmx/"
+                  href="https://www.facebook.com/ofertazosmx/"
                   target="_blank"
                 >
                   <span className="socialLink">
@@ -183,7 +183,7 @@ export default MobileMenuComponent;
 
 const mobileNavLinksVariants = {
   initial: {
-    y: '30vh',
+    y: "30vh",
     transition: {
       duration: 0.5,
       ease: [0.37, 0, 0.63, 1],

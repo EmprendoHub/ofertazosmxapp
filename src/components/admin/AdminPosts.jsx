@@ -1,31 +1,31 @@
-'use client';
-import React, { useContext } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import AuthContext from '@/context/AuthContext';
-import { FaTrash, FaPencilAlt } from 'react-icons/fa';
-import Swal from 'sweetalert2';
-import { formatDate } from '@/backend/helpers';
+"use client";
+import React, { useContext } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import AuthContext from "@/context/AuthContext";
+import { FaTrash, FaPencilAlt } from "react-icons/fa";
+import Swal from "sweetalert2";
+import { formatDate } from "@/backend/helpers";
 
 const AdminPosts = ({ posts }) => {
   const { deletePost } = useContext(AuthContext);
 
   const deleteHandler = (post_id) => {
     Swal.fire({
-      title: 'Estas seguro(a)?',
-      text: '¡No podrás revertir esta acción!',
-      icon: 'warning',
+      title: "Estas seguro(a)?",
+      text: "¡No podrás revertir esta acción!",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#000',
-      confirmButtonText: '¡Sí, eliminar!',
-      cancelButtonText: 'No, cancelar!',
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#000",
+      confirmButtonText: "¡Sí, eliminar!",
+      cancelButtonText: "No, cancelar!",
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
-          title: 'Eliminado!',
-          text: 'Tu publicación ha sido eliminada.',
-          icon: 'success',
+          title: "Eliminado!",
+          text: "Tu publicación ha sido eliminada.",
+          icon: "success",
         });
         deletePost(post_id);
       }

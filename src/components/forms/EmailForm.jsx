@@ -1,12 +1,12 @@
-'use client';
-import React from 'react';
-import { useState } from 'react';
-import emailjs from '@emailjs/browser';
+"use client";
+import React from "react";
+import { useState } from "react";
+import emailjs from "@emailjs/browser";
 
 const EmailForm = ({ templateID, serviceID, publicKEY }) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
   const [activeButton, setActiveButton] = useState(false);
   //email js service Ids
   const templateId = templateID;
@@ -21,7 +21,7 @@ const EmailForm = ({ templateID, serviceID, publicKEY }) => {
     const templateParams = {
       from_name: name,
       from_email: email,
-      to_name: 'Shopout MX',
+      to_name: "Ofertazos MX",
       message: message,
     };
 
@@ -29,12 +29,12 @@ const EmailForm = ({ templateID, serviceID, publicKEY }) => {
     emailjs
       .send(serviceId, templateId, templateParams, publicKey)
       .then((response) => {
-        setName('');
-        setEmail('');
-        setMessage('');
+        setName("");
+        setEmail("");
+        setMessage("");
       })
       .catch((error) => {
-        console.error('Error sending email:', error);
+        console.error("Error sending email:", error);
       });
   };
 
@@ -43,14 +43,14 @@ const EmailForm = ({ templateID, serviceID, publicKEY }) => {
       <form onSubmit={handleSubmit} className="flex flex-col w-full gap-y-4">
         <input
           type="text"
-          placeholder={'Tu nombre aquí'}
+          placeholder={"Tu nombre aquí"}
           value={name}
           onChange={(e) => setName(e.target.value)}
           className="p-2 border-black border-b font-playfair-display"
         />
         <input
           type="email"
-          placeholder={'Correo Electrónico'}
+          placeholder={"Correo Electrónico"}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="p-2 border-black border-b font-playfair-display"
@@ -64,7 +64,7 @@ const EmailForm = ({ templateID, serviceID, publicKEY }) => {
           className="p-2 border-black border-b font-playfair-display"
         ></textarea>
         <button type="submit" className="mt-5" disabled={activeButton}>
-          <p className="bg-black  text-white py-3">{'Enviar Mensaje'}</p>
+          <p className="bg-black  text-white py-3">{"Enviar Mensaje"}</p>
         </button>
       </form>
     </div>
