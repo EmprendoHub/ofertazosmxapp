@@ -5,7 +5,6 @@ import React, { createContext, useContext, useState } from "react";
 import { BsChevronBarLeft, BsChevronBarRight } from "react-icons/bs";
 import { FiLogOut } from "react-icons/fi";
 import { signOut, useSession } from "next-auth/react";
-import AuthContext from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
