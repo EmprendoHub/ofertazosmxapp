@@ -1,19 +1,19 @@
-'use client';
-import React, { useRef, useState, useContext } from 'react';
-import { Bounce, toast } from 'react-toastify';
-import { motion } from 'framer-motion';
-import { IoIosStar } from 'react-icons/io';
-import Image from 'next/image';
-import FormattedPrice from '@/backend/helpers/FormattedPrice';
-import { calculatePercentage, cstDateTimeClient } from '@/backend/helpers';
-import DateTimePicker from 'react-datetime-picker';
-import 'react-datetime-picker/dist/DateTimePicker.css';
-import 'react-calendar/dist/Calendar.css';
-import 'react-clock/dist/Clock.css';
-import { FaImage, FaExchangeAlt } from 'react-icons/fa';
-import MultiselectComponent from '../forms/MultiselectComponent';
-import AuthContext from '@/context/AuthContext';
-import { useRouter } from 'next/navigation';
+"use client";
+import React, { useRef, useState, useContext } from "react";
+import { Bounce, toast } from "react-toastify";
+import { motion } from "framer-motion";
+import { IoIosStar } from "react-icons/io";
+import Image from "next/image";
+import FormattedPrice from "@/backend/helpers/FormattedPrice";
+import { calculatePercentage, cstDateTimeClient } from "@/backend/helpers";
+import DateTimePicker from "react-datetime-picker";
+import "react-datetime-picker/dist/DateTimePicker.css";
+import "react-calendar/dist/Calendar.css";
+import "react-clock/dist/Clock.css";
+import { FaImage, FaExchangeAlt } from "react-icons/fa";
+import MultiselectComponent from "../forms/MultiselectComponent";
+import AuthContext from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 const UpdateProductDetails = ({ product }) => {
   const imageRef = useRef(null);
@@ -44,60 +44,60 @@ const UpdateProductDetails = ({ product }) => {
   };
 
   const available_categories = [
-    'Bolsas',
-    'Calzado',
-    'Accesorios',
-    'Prendas',
-    'Belleza',
-    'Joyeria',
+    "Bolsas",
+    "Calzado",
+    "Accesorios",
+    "Prendas",
+    "Belleza",
+    "Joyeria",
   ];
-  const available_genders = ['Damas', 'Caballeros'];
+  const available_genders = ["Damas", "Caballeros"];
   const available_colores = [
-    'Negro',
-    'Rojo',
-    'Cafe',
-    'Beige',
-    'Blanco',
-    'Azul',
-    'Verde',
-    'Amarillo',
-    'Multicolor',
-    'Lila',
+    "Negro",
+    "Rojo",
+    "Cafe",
+    "Beige",
+    "Blanco",
+    "Azul",
+    "Verde",
+    "Amarillo",
+    "Multicolor",
+    "Lila",
   ];
   const available_sizes_prendas = [
-    { value: 'XCH', label: 'XCH' },
-    { value: 'CH', label: 'CH' },
-    { value: 'M', label: 'M' },
-    { value: 'G', label: 'G' },
-    { value: 'XG', label: 'XG' },
-    { value: 'XXG', label: 'XXG' },
+    { value: "XCH", label: "XCH" },
+    { value: "CH", label: "CH" },
+    { value: "M", label: "M" },
+    { value: "G", label: "G" },
+    { value: "XG", label: "XG" },
+    { value: "XXG", label: "XXG" },
   ];
   const available_sizes_shoes_men = [
-    { value: '26', label: '26' },
-    { value: '26.5', label: '26.5' },
-    { value: '27', label: '27' },
-    { value: '27.5', label: '27.5' },
-    { value: '28', label: '28' },
-    { value: '28.5', label: '28.5' },
-    { value: '29', label: '29' },
-    { value: '29.5', label: '29.5' },
+    { value: "26", label: "26" },
+    { value: "26.5", label: "26.5" },
+    { value: "27", label: "27" },
+    { value: "27.5", label: "27.5" },
+    { value: "28", label: "28" },
+    { value: "28.5", label: "28.5" },
+    { value: "29", label: "29" },
+    { value: "29.5", label: "29.5" },
   ];
 
   const available_sizes_shoes_woman = [
-    { value: '22', label: '22' },
-    { value: '22.5', label: '22.5' },
-    { value: '23', label: '23' },
-    { value: '23.5', label: '23.5' },
-    { value: '24', label: '24' },
-    { value: '24.5', label: '24.5' },
-    { value: '25', label: '25' },
-    { value: '25.5', label: '25.5' },
-    { value: '26', label: '26' },
-    { value: '26.5', label: '26.5' },
-    { value: '27', label: '27' },
-    { value: '27.5', label: '27.5' },
-    { value: '28', label: '28' },
-    { value: '28.5', label: '28.5' },
+    { value: "22", label: "22" },
+    { value: "22.5", label: "22.5" },
+    { value: "23", label: "23" },
+    { value: "23.5", label: "23.5" },
+    { value: "24", label: "24" },
+    { value: "24.5", label: "24.5" },
+    { value: "25", label: "25" },
+    { value: "25.5", label: "25.5" },
+    { value: "26", label: "26" },
+    { value: "26.5", label: "26.5" },
+    { value: "27", label: "27" },
+    { value: "27.5", label: "27.5" },
+    { value: "28", label: "28" },
+    { value: "28.5", label: "28.5" },
   ];
 
   const { updateProduct } = useContext(AuthContext);
@@ -123,99 +123,99 @@ const UpdateProductDetails = ({ product }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (title === '') {
-      toast.error('Por favor complete el nombre del producto para continuar.');
+    if (title === "") {
+      toast.error("Por favor complete el nombre del producto para continuar.");
       return;
     }
-    if (brand === '') {
-      toast.error('Por favor complete la marca del producto para continuar.');
+    if (brand === "") {
+      toast.error("Por favor complete la marca del producto para continuar.");
       return;
     }
-    if (gender === '') {
-      toast.error('Por favor agrega el genero del producto para continuar.');
+    if (gender === "") {
+      toast.error("Por favor agrega el genero del producto para continuar.");
       return;
     }
-    if (description === '') {
-      toast.error('Por favor agregue una description para continuar.');
+    if (description === "") {
+      toast.error("Por favor agregue una description para continuar.");
       return;
     }
-    if (sizes === '') {
-      toast.error('Por favor agrega los tamaños del producto para continuar.');
+    if (sizes === "") {
+      toast.error("Por favor agrega los tamaños del producto para continuar.");
       return;
     }
 
-    if (category === '') {
-      toast.error('Por favor agrega la categoría del producto para continuar.');
+    if (category === "") {
+      toast.error("Por favor agrega la categoría del producto para continuar.");
       return;
     }
     if (price <= 0) {
-      toast.error('Por favor agrega el precio del producto para continuar.');
+      toast.error("Por favor agrega el precio del producto para continuar.");
       return;
     }
     if (stock <= 0) {
-      toast.error('Por favor agrega el costo por producto para continuar.');
+      toast.error("Por favor agrega el costo por producto para continuar.");
       return;
     }
     if (cost <= 0) {
-      toast.error('Por favor agrega el costo por producto para continuar.');
+      toast.error("Por favor agrega el costo por producto para continuar.");
       return;
     }
 
     if (inputImageFields > 0) {
       inputImageFields.map((field) => {
-        if (field.i_color === '') {
-          toast.error('Por favor agrega nombre al bono(s) para continuar.');
+        if (field.i_color === "") {
+          toast.error("Por favor agrega nombre al bono(s) para continuar.");
           return;
         }
 
-        if (field.i_file === '') {
-          toast.error('Por favor agrega imágenes al bono(s) para continuar.');
+        if (field.i_file === "") {
+          toast.error("Por favor agrega imágenes al bono(s) para continuar.");
           return;
         }
       });
     } else {
-      if (inputImageFields[0].i_color === '') {
-        toast.error('Por favor agrega nombre al bono(s) para continuar.');
+      if (inputImageFields[0].i_color === "") {
+        toast.error("Por favor agrega nombre al bono(s) para continuar.");
         return;
       }
 
-      if (inputImageFields[0].i_file === '') {
-        toast.error('Por favor agrega imágenes al bono(s) para continuar.');
+      if (inputImageFields[0].i_file === "") {
+        toast.error("Por favor agrega imágenes al bono(s) para continuar.");
         return;
       }
     }
 
     try {
       const formData = new FormData();
-      formData.set('title', title);
-      formData.set('description', description);
-      formData.set('stock', stock);
-      formData.set('category', category);
-      formData.set('price', price);
-      formData.set('featured', featured);
-      formData.set('brand', brand);
-      formData.set('gender', gender);
+      formData.set("title", title);
+      formData.set("description", description);
+      formData.set("stock", stock);
+      formData.set("category", category);
+      formData.set("price", price);
+      formData.set("featured", featured);
+      formData.set("brand", brand);
+      formData.set("gender", gender);
       // Convert arrays to JSON strings
       const imagesJson = JSON.stringify(inputImageFields);
       const sizesJson = JSON.stringify(sizes);
 
       // Append JSON strings to FormData
-      formData.set('cost', cost);
-      formData.set('sizes', sizesJson);
-      formData.set('images', imagesJson);
-      formData.set('salePrice', salePrice);
-      formData.set('salePriceEndDate', salePriceEndDate);
-      formData.set('_id', product?._id);
+      formData.set("cost", cost);
+      formData.set("sizes", sizesJson);
+      formData.set("images", imagesJson);
+      formData.set("salePrice", salePrice);
+      formData.set("salePriceEndDate", salePriceEndDate);
+      formData.set("_id", product?._id);
 
       try {
         const res = await updateProduct(formData);
         if (res.ok) {
-          toast.success('El producto se actualizo exitosamente');
+          toast.success("El producto se actualizo exitosamente");
           router.refresh();
           return;
         }
       } catch (error) {
-        toast.error('Error actualizando Producto. Por favor Intenta de nuevo.');
+        toast.error("Error actualizando Producto. Por favor Intenta de nuevo.");
       }
     } catch (error) {
       console.log(error);
@@ -224,18 +224,18 @@ const UpdateProductDetails = ({ product }) => {
 
   const handleCategoryChange = async (e) => {
     setCategory(e);
-    if (e === 'Calzado' && gender == 'Damas') {
+    if (e === "Calzado" && gender == "Damas") {
       setSizeSelection(available_sizes_shoes_woman);
     } else {
       setSizeSelection(available_sizes_shoes_men);
     }
 
     if (
-      e === 'Prendas' ||
-      e === 'Bolsas' ||
-      e === 'Accesorios' ||
-      e === 'Belleza' ||
-      e === 'Joyeria'
+      e === "Prendas" ||
+      e === "Bolsas" ||
+      e === "Accesorios" ||
+      e === "Belleza" ||
+      e === "Joyeria"
     ) {
       setSizeSelection(available_sizes_prendas);
     }
@@ -243,18 +243,18 @@ const UpdateProductDetails = ({ product }) => {
 
   const handleGenderChange = async (e) => {
     setGender(e);
-    if (category === 'Calzado' && e == 'Damas') {
+    if (category === "Calzado" && e == "Damas") {
       setSizeSelection(available_sizes_shoes_woman);
     } else {
       setSizeSelection(available_sizes_shoes_men);
     }
 
     if (
-      category === 'Prendas' ||
-      category === 'Bolsas' ||
-      category === 'Accesorios' ||
-      category === 'Belleza' ||
-      category === 'Joyeria'
+      category === "Prendas" ||
+      category === "Bolsas" ||
+      category === "Accesorios" ||
+      category === "Belleza" ||
+      category === "Joyeria"
     ) {
       setSizeSelection(available_sizes_prendas);
     }
@@ -272,27 +272,27 @@ const UpdateProductDetails = ({ product }) => {
     setInputImageFields([
       ...inputImageFields,
       {
-        i_color: '',
-        i_file: '',
-        i_filePreview: '/images/shopout_clothing_placeholder.webp',
+        i_color: "",
+        i_file: "",
+        i_filePreview: "/images/shopout_clothing_placeholder.webp",
       },
     ]);
   };
 
   const handleImageInputChange = (index, fieldName, event) => {
     const newInputImageFields = [...inputImageFields];
-    if (fieldName === 'i_file') {
+    if (fieldName === "i_file") {
       const reader = new FileReader();
       reader.onload = () => {
         if (reader.readyState === 2) {
-          newInputImageFields[index]['url'] = reader.result;
+          newInputImageFields[index]["url"] = reader.result;
           setInputImageFields(newInputImageFields); // Update state after setting filePreview
         }
       };
       if (event.target.files?.[0]) {
         reader.readAsDataURL(event.target.files[0]);
         newInputImageFields[index][fieldName] = event.target.files[0];
-        newInputImageFields[index]['i_file'] = event.target.files[0].name;
+        newInputImageFields[index]["i_file"] = event.target.files[0].name;
       }
     } else {
       newInputImageFields[index][fieldName] = event.target.value;
@@ -309,7 +309,7 @@ const UpdateProductDetails = ({ product }) => {
   return (
     <div className="container-class maxsm:pb-8">
       <main className="bg-gray-100 flex  flex-col items-center justify-between">
-        <div className="w-full mx-auto wrapper-class gap-5 bg-slate-100 text-black bg-opacity-80 rounded-lg">
+        <div className="w-full mx-auto wrapper-class gap-5 bg-slate-100 text-foreground bg-opacity-80 rounded-lg">
           <div className="flex flex-row maxsm:flex-col-reverse items-start justify-start gap-x-5  maxmd:py-4 maxmd:px-5 maxsm:px-0">
             <div className="image-class w-1/2 maxsm:w-full flex flex-col items-end justify-end">
               <motion.div
@@ -323,7 +323,7 @@ const UpdateProductDetails = ({ product }) => {
                   src={
                     product?.images[0]
                       ? product?.images[0].url
-                      : '/images/shopout_clothing_placeholder.webp'
+                      : "/images/shopout_clothing_placeholder.webp"
                   }
                   alt="product image"
                   className="rounded-lg object-cover h-[500px] ease-in-out duration-500"
@@ -334,7 +334,7 @@ const UpdateProductDetails = ({ product }) => {
             </div>
             <div className="description-class w-1/2 maxsm:w-full h-full ">
               <div className="flex flex-col items-start justify-start pt-10 maxsm:pt-2 gap-y-10 w-[90%] maxmd:w-full pb-10">
-                <h1 className="text-xl maxmd:text-3xl font-semibold font-EB_Garamond text-black">
+                <h1 className="text-xl maxmd:text-3xl font-semibold font-EB_Garamond text-foreground">
                   Actualizar Producto
                 </h1>
 
@@ -356,7 +356,7 @@ const UpdateProductDetails = ({ product }) => {
                   </div>
                   {product?.sale_price ? (
                     <div className="flex flex-row items-center justify-between">
-                      <div className="border-[1px] border-yellow-600 w-fit py-1 px-4 rounded-full text-xs text-black">
+                      <div className="border-[1px] border-yellow-600 w-fit py-1 px-4 rounded-full text-xs text-foreground">
                         <p>
                           {calculatePercentage(
                             product?.price,
@@ -372,22 +372,22 @@ const UpdateProductDetails = ({ product }) => {
                       </div>
                     </div>
                   ) : (
-                    ''
+                    ""
                   )}
                   <div>
-                    <p className="font-semibold text-4xl text-black font-bodyFont">
+                    <p className="font-semibold text-4xl text-foreground font-bodyFont">
                       {product?.sale_price > 0 ? (
                         <FormattedPrice amount={product?.sale_price} />
                       ) : product?.price > 0 ? (
                         <FormattedPrice amount={product?.price} />
                       ) : (
-                        ''
+                        ""
                       )}
                     </p>
                     <p className="text-xs font-normal text-gray-600">
                       Apártalo con solo 30%:
                     </p>
-                    <p className="text-xl text-black font-bodyFont">
+                    <p className="text-xl text-foreground font-bodyFont">
                       <FormattedPrice amount={product?.price * 0.3} />
                     </p>
                   </div>
@@ -399,7 +399,7 @@ const UpdateProductDetails = ({ product }) => {
                   transition={{ duration: 0.6 }}
                   className=" font-bodyFont description-class"
                 >
-                  {product?.description ? product?.description : ''}
+                  {product?.description ? product?.description : ""}
                 </motion.div>
                 <motion.div
                   initial={{ y: 50, opacity: 0 }}
@@ -411,19 +411,19 @@ const UpdateProductDetails = ({ product }) => {
                     SKU: <span className=" font-bodyFont">{product?._id}</span>
                   </span>
                   <span>
-                    Existencias:{' '}
+                    Existencias:{" "}
                     <span className=" font-bodyFont">{product?.stock}</span>
                   </span>
                   <span>
-                    Categoría:{' '}
+                    Categoría:{" "}
                     <span className="t font-bodyFont">{product?.category}</span>
                   </span>
                   <span>
-                    Marca:{' '}
+                    Marca:{" "}
                     <span className="t font-bodyFont">{product?.brand}</span>
                   </span>
                   <span>
-                    Colores:{' '}
+                    Colores:{" "}
                     {product?.colors.map((color, index) => (
                       <span key={index} className="t font-bodyFont">
                         {color?.value},
@@ -431,7 +431,7 @@ const UpdateProductDetails = ({ product }) => {
                     ))}
                   </span>
                   <span>
-                    Tallas:{' '}
+                    Tallas:{" "}
                     {product?.sizes.map((size, index) => (
                       <span key={index} className="t font-bodyFont">
                         {size?.value},
@@ -453,7 +453,7 @@ const UpdateProductDetails = ({ product }) => {
             <div className="gap-y-5 flex-col flex px-2 w-1/2 maxsm:w-full">
               <div className="mb-4">
                 <label className="block mb-1 text-slate-500">
-                  {' '}
+                  {" "}
                   Titulo del Producto
                 </label>
                 <input
@@ -467,7 +467,7 @@ const UpdateProductDetails = ({ product }) => {
               </div>
               <div className="mb-4">
                 <label className="block mb-1  text-slate-500">
-                  {' '}
+                  {" "}
                   Description Corta
                 </label>
                 <textarea
@@ -481,7 +481,7 @@ const UpdateProductDetails = ({ product }) => {
               </div>
               <div className="mb-4">
                 <label className="block mb-1 text-slate-500">
-                  {' '}
+                  {" "}
                   Marca del Producto
                 </label>
                 <input
@@ -496,7 +496,7 @@ const UpdateProductDetails = ({ product }) => {
               <div className="flex flex-row maxsm:flex-col items-center gap-5">
                 <div className="mb-4 w-full">
                   <label className="block mb-1  text-slate-500">
-                    Precio de Venta{' '}
+                    Precio de Venta{" "}
                   </label>
                   <div className="relative">
                     <div className="col-span-2">
@@ -528,8 +528,8 @@ const UpdateProductDetails = ({ product }) => {
                 </div>
                 <div className="mb-4 w-full">
                   <label className="block mb-1 text-slate-500">
-                    {' '}
-                    Existencias{' '}
+                    {" "}
+                    Existencias{" "}
                   </label>
                   <div className="relative">
                     <div className="col-span-2">
@@ -546,8 +546,8 @@ const UpdateProductDetails = ({ product }) => {
                 </div>
                 <div className="mb-4 w-full">
                   <label className="block mb-1 text-slate-500">
-                    {' '}
-                    Destacado{' '}
+                    {" "}
+                    Destacado{" "}
                   </label>
                   <div className="relative">
                     <select
@@ -556,7 +556,7 @@ const UpdateProductDetails = ({ product }) => {
                       onChange={(e) => setFeatured(e.target.value)}
                       value={featured}
                     >
-                      {['No', 'Si'].map((opt) => (
+                      {["No", "Si"].map((opt) => (
                         <option key={opt} value={opt}>
                           {opt}
                         </option>
@@ -646,8 +646,8 @@ const UpdateProductDetails = ({ product }) => {
               </div>
               <div className="mb-4">
                 <label className="block mb-1 text-slate-500">
-                  {' '}
-                  Precio de Oferta{' '}
+                  {" "}
+                  Precio de Oferta{" "}
                 </label>
                 <div className="relative">
                   <div className="col-span-2">
@@ -664,14 +664,14 @@ const UpdateProductDetails = ({ product }) => {
               </div>
               <div className="mb-4">
                 <label className="block mb-1 text-slate-500">
-                  {' '}
-                  Finalización de Oferta{' '}
+                  {" "}
+                  Finalización de Oferta{" "}
                 </label>
                 <div className="  cursor-pointer">
                   <DateTimePicker
                     onChange={onChangeDate}
                     value={salePriceEndDate}
-                    locale={'es-MX'}
+                    locale={"es-MX"}
                     minDate={cstDateTimeClient()}
                   />
                 </div>
@@ -722,26 +722,26 @@ const UpdateProductDetails = ({ product }) => {
                             <div className="min-h-[100%] absolute z-[1] min-w-[100%] top-0 left-0 bg-black bg-opacity-30" />
 
                             <input
-                              className="form-control block w-40 overflow-hidden  text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none  cursor-pointer z-20 min-h-full top-0 absolute opacity-0"
+                              className="form-control block w-40 overflow-hidden  text-base font-normal text-gray-700 bg-background bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-background focus:border-blue-600 focus:outline-none  cursor-pointer z-20 min-h-full top-0 absolute opacity-0"
                               type="file"
                               id="i_file"
                               name="i_file"
                               onChange={(e) =>
-                                handleImageInputChange(index, 'i_file', e)
+                                handleImageInputChange(index, "i_file", e)
                               }
                             />
                           </div>
                         </div>
                         <label className="block mb-1 text-slate-500">
-                          {' '}
-                          Color{' '}
+                          {" "}
+                          Color{" "}
                         </label>
                         <div className="relative">
                           <select
                             className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full cursor-pointer"
                             name="i_color-${index + 1}"
                             onChange={(e) =>
-                              handleImageInputChange(index, 'i_color', e)
+                              handleImageInputChange(index, "i_color", e)
                             }
                           >
                             {available_colores.map((color, index) => (

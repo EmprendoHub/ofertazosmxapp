@@ -24,7 +24,7 @@ export default function Elementthree() {
           tabIndex={0}
           className="dropdown-content menu shadow bg-base-100 space-y-3 rounded-box w-52"
         >
-          <div className="items-start bg-white p-2 mx-2 h-[100%]">
+          <div className="items-start bg-background p-2 mx-2 h-[100%]">
             <SidebarMenuItem link="" text="Home" Icon={HomeIcon} active />
 
             <SidebarMenuItem

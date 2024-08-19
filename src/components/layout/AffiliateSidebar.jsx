@@ -1,21 +1,21 @@
-'use client';
-import React from 'react';
-import Link from 'next/link';
-import { signOut } from 'next-auth/react';
-import { RiLockPasswordLine, RiLogoutCircleRFill } from 'react-icons/ri';
-import { PiUserListLight, PiUserCircleGearLight } from 'react-icons/pi';
-import { SiAmazonsimpleemailservice } from 'react-icons/si';
+"use client";
+import React from "react";
+import Link from "next/link";
+import { signOut } from "next-auth/react";
+import { RiLockPasswordLine, RiLogoutCircleRFill } from "react-icons/ri";
+import { PiUserListLight, PiUserCircleGearLight } from "react-icons/pi";
+import { SiAmazonsimpleemailservice } from "react-icons/si";
 import {
   MdOutlineDashboard,
   MdOutlineAddBusiness,
   MdOutlinePostAdd,
-} from 'react-icons/md';
+} from "react-icons/md";
 import {
   TfiLayoutListThumb,
   TfiList,
   TfiLayoutListPost,
-} from 'react-icons/tfi';
-import { useRouter } from 'next/navigation';
+} from "react-icons/tfi";
+import { useRouter } from "next/navigation";
 
 const AffiliateSidebar = () => {
   const router = useRouter();
@@ -32,17 +32,17 @@ const AffiliateSidebar = () => {
           className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
         >
           <li className="flex flex-row items-center gap-x-3 ">
-            <MdOutlineDashboard className="text-2xl text-black" />
+            <MdOutlineDashboard className="text-2xl text-foreground" />
 
             <div className="maxmd:hidden">Panel de Afiliado</div>
           </li>
         </Link>
         <button
-          onClick={() => handleClickLink('/afiliado/pedidos')}
+          onClick={() => handleClickLink("/afiliado/pedidos")}
           className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
         >
           <li className="flex flex-row items-center gap-x-3">
-            <TfiList className="text-2xl text-black" />
+            <TfiList className="text-2xl text-foreground" />
 
             <div className="maxmd:hidden">Pedidos</div>
           </li>
@@ -53,7 +53,7 @@ const AffiliateSidebar = () => {
           className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
         >
           <li className="flex flex-row items-center gap-x-3">
-            <MdOutlineAddBusiness className="text-2xl text-black" />
+            <MdOutlineAddBusiness className="text-2xl text-foreground" />
 
             <div className="maxmd:hidden">Nuevo Enlace</div>
           </li>
@@ -63,7 +63,7 @@ const AffiliateSidebar = () => {
           className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
         >
           <li className="flex flex-row items-center gap-x-3">
-            <MdOutlineAddBusiness className="text-2xl text-black" />
+            <MdOutlineAddBusiness className="text-2xl text-foreground" />
 
             <div className="maxmd:hidden">Enlaces de Afiliado</div>
           </li>
@@ -76,7 +76,7 @@ const AffiliateSidebar = () => {
           className="block px-3 maxsm:px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
         >
           <li className="flex flex-row items-center gap-x-3">
-            <PiUserCircleGearLight className="text-2xl text-black" />
+            <PiUserCircleGearLight className="text-2xl text-foreground" />
 
             <div className="maxmd:hidden">Actualizar Perfil</div>
           </li>
@@ -87,7 +87,7 @@ const AffiliateSidebar = () => {
             className=" px-3 maxsm:px-1 py-2 text-red-800 hover:bg-red-100 hover:text-white-500 rounded-md cursor-pointer flex flex-row items-center gap-x-3"
             onClick={() => signOut()}
           >
-            <RiLogoutCircleRFill className="text-2xl text-black" />
+            <RiLogoutCircleRFill className="text-2xl text-foreground" />
 
             <div className="maxmd:hidden">Cerrar Session</div>
           </div>

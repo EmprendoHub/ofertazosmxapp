@@ -1,6 +1,6 @@
-'use client';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
+"use client";
+import { motion } from "framer-motion";
+import Link from "next/link";
 
 const HeroTextComponent = ({ title, subtitle, btnText, btnUrl }) => {
   return (
@@ -30,7 +30,7 @@ const HeroTextComponent = ({ title, subtitle, btnText, btnUrl }) => {
             className="flex gap-x-4 mt-2 justify-center"
           >
             <Link href={btnUrl}>
-              <p className="py-3 px-8 rounded-full bg-black text-white hover:bg-white hover:text-black duration-700 text-sm uppercase font-semibold w-full">
+              <p className="py-3 px-8 rounded-full bg-black text-white hover:bg-background hover:text-foreground duration-700 text-sm uppercase font-semibold w-full">
                 {btnText}
               </p>
             </Link>

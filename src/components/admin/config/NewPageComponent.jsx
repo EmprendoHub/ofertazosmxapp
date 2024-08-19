@@ -315,7 +315,7 @@ const NewAboutPageComponent = ({ acerca }) => {
                 value={preTitle}
                 onChange={handleMainSectionChange}
                 placeholder="Bienvenido a "
-                className="font-bold font-EB_Garamond text-xl uppercase  z-20 flex flex-wrap items-center gap-1  mb-5 text-center text-white bg-white bg-opacity-0 leading-none py-0 outline-none"
+                className="font-bold font-EB_Garamond text-xl uppercase  z-20 flex flex-wrap items-center gap-1  mb-5 text-center text-white bg-background bg-opacity-0 leading-none py-0 outline-none"
               />
               {validationError?.preTitle && (
                 <p className="text-sm text-red-400">
@@ -328,7 +328,7 @@ const NewAboutPageComponent = ({ acerca }) => {
                 value={mainTitle}
                 onChange={handleMainSectionChange}
                 placeholder="Ofertazos MX"
-                className="font-bold font-EB_Garamond uppercase text-5xl maxsm:text-3xl  z-20  text-white text-center  outline-none bg-white bg-opacity-0 leading-none resize-none py-0"
+                className="font-bold font-EB_Garamond uppercase text-5xl maxsm:text-3xl  z-20  text-white text-center  outline-none bg-background bg-opacity-0 leading-none resize-none py-0"
                 onKeyDown={handleInputKeyDown}
               />
               {validationError?.mainTitle && (
@@ -342,7 +342,7 @@ const NewAboutPageComponent = ({ acerca }) => {
                 value={subTitle}
                 onChange={handleMainSectionChange}
                 placeholder="Tu destino exclusivo para la moda de lujo! "
-                className="font-bold font-EB_Garamond text-xl text-white w-1/2 z-20  mb-5 text-center bg-white bg-opacity-0 outline-none resize-none"
+                className="font-bold font-EB_Garamond text-xl text-white w-1/2 z-20  mb-5 text-center bg-background bg-opacity-0 outline-none resize-none"
               />
               {validationError?.subTitle && (
                 <p className="text-sm text-red-400">
@@ -386,7 +386,7 @@ const NewAboutPageComponent = ({ acerca }) => {
                         value={sections[0]?.boxes[0]?.title}
                         onChange={(e) => handleInputChange(e, 0, 0, "title")}
                         placeholder="Experiencia Personalizada"
-                        className="font-bold bg-white bg-opacity-10 w-full text-center outline-none"
+                        className="font-bold bg-background bg-opacity-10 w-full text-center outline-none"
                       />
                       {validationError?.sectionOneTitle && (
                         <p className="text-sm text-red-400">
@@ -457,7 +457,7 @@ const NewAboutPageComponent = ({ acerca }) => {
                 </p>
 
                 <div className="grid grid-cols-3 maxsm:grid-cols-1 gap-4 mt-5">
-                  <div className="bg-white rounded-lg p-8 maxmd:p-2 shadow-md">
+                  <div className="bg-background rounded-lg p-8 maxmd:p-2 shadow-md">
                     <label
                       htmlFor="sectionTwoColOneImageSelector"
                       className="cursor-pointer"
@@ -533,7 +533,7 @@ const NewAboutPageComponent = ({ acerca }) => {
                       </div>
                     </div>
                   </div>
-                  <div className="bg-white rounded-lg p-8 shadow-md maxmd:p-2">
+                  <div className="bg-background rounded-lg p-8 shadow-md maxmd:p-2">
                     <label
                       htmlFor="sectionTwoColTwoImageSelector"
                       className="cursor-pointer"
@@ -610,7 +610,7 @@ const NewAboutPageComponent = ({ acerca }) => {
                     </div>
                     <div className="mt-10" />
                   </div>
-                  <div className="bg-white rounded-lg p-8 shadow-md maxmd:p-2">
+                  <div className="bg-background rounded-lg p-8 shadow-md maxmd:p-2">
                     <label
                       htmlFor="sectionTwoColThreeImageSelector"
                       className="cursor-pointer"
@@ -804,7 +804,7 @@ const NewAboutPageComponent = ({ acerca }) => {
                   transition={{ duration: 1.2 }}
                   className="flex gap-x-4 mt-2 justify-center"
                 >
-                  <div className="bg-white rounded-lg p-4 shadow-md">
+                  <div className="bg-background rounded-lg p-4 shadow-md">
                     <label
                       htmlFor="sectionThreeImageSelector"
                       className="cursor-pointer"

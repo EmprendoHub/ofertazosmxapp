@@ -143,9 +143,9 @@ const PayCartComp = ({ setShowModal, payType }) => {
 
   return (
     <div className="flex flex-col w-full h-full items-center justify-center">
-      <div className="w-1/2 maxmd:w-5/6 bg-white pl-4">
+      <div className="w-1/2 maxmd:w-5/6 bg-background pl-4">
         <section className=" p-6 w-full">
-          <h1 className="text-2xl maxmd:text-5xl font-semibold text-black mb-4 font-EB_Garamond text-center uppercase">
+          <h1 className="text-2xl maxmd:text-5xl font-semibold text-foreground mb-4 font-EB_Garamond text-center uppercase">
             {payType === "layaway" ? "Apartar" : "Pagar"}
           </h1>
           {validationError && (

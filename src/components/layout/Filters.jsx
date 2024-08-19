@@ -1,18 +1,18 @@
-'use client';
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { getPriceQueryParams } from '@/backend/helpers/index';
-import { IoIosStar } from 'react-icons/io';
-import Search from './Search';
+"use client";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { getPriceQueryParams } from "@/backend/helpers/index";
+import { IoIosStar } from "react-icons/io";
+import Search from "./Search";
 
 const Filters = ({ allCategories }) => {
-  const [minAmount, setMinAmount] = useState('');
-  const [maxAmount, setMaxAmount] = useState('');
+  const [minAmount, setMinAmount] = useState("");
+  const [maxAmount, setMaxAmount] = useState("");
   const router = useRouter();
   let queryParams;
 
   function handleClick(checkbox) {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       queryParams = new URLSearchParams(window.location.search);
     }
 
@@ -33,24 +33,24 @@ const Filters = ({ allCategories }) => {
         queryParams.append(checkbox.name, checkbox.value);
       }
     }
-    const path = window.location.pathname + '?' + queryParams.toString();
+    const path = window.location.pathname + "?" + queryParams.toString();
     router.push(path);
   }
 
   function handlePriceButtonClick() {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       queryParams = new URLSearchParams(window.location.search);
 
-      queryParams = getPriceQueryParams(queryParams, 'max', maxAmount);
-      queryParams = getPriceQueryParams(queryParams, 'min', minAmount);
+      queryParams = getPriceQueryParams(queryParams, "max", maxAmount);
+      queryParams = getPriceQueryParams(queryParams, "min", minAmount);
 
-      const path = window.location.pathname + '?' + queryParams.toString();
+      const path = window.location.pathname + "?" + queryParams.toString();
       router.push(path);
     }
   }
 
   function checkHandler(checkBoxType, checkBoxValue) {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       queryParams = new URLSearchParams(window.location.search);
 
       const value = queryParams.get(checkBoxType);
@@ -86,19 +86,19 @@ const Filters = ({ allCategories }) => {
   return (
     <aside className="maxmd:w-1/3 lg:w-1/4 px-4">
       <a
-        className="maxmd:hidden mb-5  w-full text-center px-4 py-2 inline-block text-lg text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:text-blue-600"
+        className="maxmd:hidden mb-5  w-full text-center px-4 py-2 inline-block text-lg text-gray-700 bg-background shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:text-blue-600"
         href="#"
       >
         Filtrar por
       </a>
       {/* Search Filter */}
 
-      <div className=" px-6 py-4 border border-gray-200 bg-white rounded shadow-sm">
+      <div className=" px-6 py-4 border border-gray-200 bg-background rounded shadow-sm">
         <Search />
       </div>
       {/* Price Filter */}
 
-      <div className=" px-6 py-4 border border-gray-200 bg-white rounded shadow-sm">
+      <div className=" px-6 py-4 border border-gray-200 bg-background rounded shadow-sm">
         <h3 className="font-semibold mb-2">Price ($)</h3>
 
         <div className="grid sm:grid-cols-3 gap-x-2">
@@ -135,7 +135,7 @@ const Filters = ({ allCategories }) => {
         </div>
       </div>
 
-      <div className="hidden maxmd:block px-6 py-4 border border-gray-200 bg-white rounded shadow-sm">
+      <div className="hidden maxmd:block px-6 py-4 border border-gray-200 bg-background rounded shadow-sm">
         <h3 className="font-semibold mb-2">Category</h3>
 
         <ul className="space-y-1">
@@ -147,7 +147,7 @@ const Filters = ({ allCategories }) => {
                   type="checkbox"
                   value={category}
                   className="h-4 w-4"
-                  defaultChecked={checkHandler('category', `${category}`)}
+                  defaultChecked={checkHandler("category", `${category}`)}
                   onClick={(e) => handleClick(e.target)}
                 />
                 <span className="ml-2 text-gray-500"> {category} </span>
@@ -168,7 +168,7 @@ const Filters = ({ allCategories }) => {
                   type="checkbox"
                   value={rating}
                   className="h-4 w-4"
-                  defaultChecked={checkHandler('rating', `${rating}`)}
+                  defaultChecked={checkHandler("rating", `${rating}`)}
                   onClick={(e) => handleClick(e.target)}
                 />
                 <span className="ml-2 text-gray-500">{starRating(rating)}</span>

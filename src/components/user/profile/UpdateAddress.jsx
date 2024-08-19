@@ -1,9 +1,9 @@
-'use client';
-import React, { useContext, useEffect, useState } from 'react';
-import { countries } from 'countries-list';
-import AuthContext from '@/context/AuthContext';
-import { MdCancel } from 'react-icons/md';
-import Swal from 'sweetalert2';
+"use client";
+import React, { useContext, useEffect, useState } from "react";
+import { countries } from "countries-list";
+import AuthContext from "@/context/AuthContext";
+import { MdCancel } from "react-icons/md";
+import Swal from "sweetalert2";
 
 const UpdateAddress = ({ id }) => {
   const {
@@ -43,20 +43,20 @@ const UpdateAddress = ({ id }) => {
   const deleteHandler = (e) => {
     e.preventDefault();
     Swal.fire({
-      title: 'Estas seguro(a)?',
-      text: '¡No podrás revertir esta acción!',
-      icon: 'warning',
+      title: "Estas seguro(a)?",
+      text: "¡No podrás revertir esta acción!",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#000',
-      confirmButtonText: '¡Sí, eliminar!',
-      cancelButtonText: 'No, cancelar!',
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#000",
+      confirmButtonText: "¡Sí, eliminar!",
+      cancelButtonText: "No, cancelar!",
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
-          title: 'Eliminado!',
-          text: 'El Domicilio ha sido eliminado.',
-          icon: 'success',
+          title: "Eliminado!",
+          text: "El Domicilio ha sido eliminado.",
+          icon: "success",
         });
         deleteAddress(address_id);
       }
@@ -81,12 +81,12 @@ const UpdateAddress = ({ id }) => {
 
   return (
     <>
-      <div className="mt-1 mb-20 p-4 md:p-7 mx-auto rounded bg-white shadow-lg max-w-[580px]">
+      <div className="mt-1 mb-20 p-4 md:p-7 mx-auto rounded bg-background shadow-lg max-w-[580px]">
         <form onSubmit={submitHandler}>
           {error && (
             <div
               onClick={clearErrors}
-              className="absolute drop-shadow-lg border border-slate-300 top-1/3 left-1/3 bg-white p-10 w-[350px] z-40"
+              className="absolute drop-shadow-lg border border-slate-300 top-1/3 left-1/3 bg-background p-10 w-[350px] z-40"
             >
               <MdCancel className="absolute top-2 right-2 text-red-500 cursor-pointer" />
               <h3 className="text-xl text-red-600 ">Error:</h3>

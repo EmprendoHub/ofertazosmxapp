@@ -59,7 +59,7 @@ const AllOrders = ({ data, itemCount }) => {
           </thead>
           <tbody>
             {orders?.map((order, index) => (
-              <tr className="bg-white" key={index}>
+              <tr className="bg-background" key={index}>
                 <td className="px-2 maxsm:px-2 py-2">{order.orderId}</td>
                 <td className="px-2 py-2 maxmd:hidden">
                   {order?.customerName}
@@ -108,7 +108,7 @@ const AllOrders = ({ data, itemCount }) => {
             ))}
           </tbody>
         </table>
-        <table className="w-1/2 text-sm maxmd:text-xs text-left p-4 bg-white ">
+        <table className="w-1/2 text-sm maxmd:text-xs text-left p-4 bg-background ">
           <thead className=" text-gray-700 uppercase">
             <tr>
               <th scope="col" className="px-2 maxsm:px-1 py-3">
@@ -123,7 +123,7 @@ const AllOrders = ({ data, itemCount }) => {
             </tr>
           </thead>
           <tbody>
-            <tr className="bg-white">
+            <tr className="bg-background">
               <td className="px-2 maxsm:px-2 py-2 text-xl">{itemCount}</td>
               <td className="px-2 py-2 text-2xl font-semibold">
                 <FormattedPrice amount={paymentTotals} />

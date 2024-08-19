@@ -10,7 +10,7 @@ const TerminosPage = () => {
     <div className="p-6 px-20 md:px-10">
       <section className="hero mb-10 bg-gray-100 text-center py-20 border border-slate-400 drop-shadow-md">
         <div className="container mx-auto">
-          <h1 className="text-4xl font-EB_Garamond font-extrabold font-playfair-display text-black">
+          <h1 className="text-4xl font-EB_Garamond font-extrabold font-playfair-display text-foreground">
             Términos de servicio
           </h1>
           <p className="text-lg text-gray-600 mt-4 font-raleway font-semibold ">

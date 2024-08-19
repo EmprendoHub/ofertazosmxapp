@@ -1,9 +1,9 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import React from 'react';
-import { MdAttachMoney } from 'react-icons/md';
-import { IoArrowRedoSharp } from 'react-icons/io5';
-import FormattedPrice from '@/backend/helpers/FormattedPrice';
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
+import { MdAttachMoney } from "react-icons/md";
+import { IoArrowRedoSharp } from "react-icons/io5";
+import FormattedPrice from "@/backend/helpers/FormattedPrice";
 
 const POSDashComponent = ({ clients, orders, dailyOrdersTotals, products }) => {
   return (
@@ -35,7 +35,7 @@ const POSDashComponent = ({ clients, orders, dailyOrdersTotals, products }) => {
             <div className="flex justify-between py-3 text-base font-black font-EB_Garamond">
               <h1>Pedidos recientes</h1>
               <button>
-                <Link href={'/admin/pedidos'}>Ver todos</Link>
+                <Link href={"/admin/pedidos"}>Ver todos</Link>
               </button>
             </div>
             <table>
@@ -49,7 +49,7 @@ const POSDashComponent = ({ clients, orders, dailyOrdersTotals, products }) => {
               {orders &&
                 orders.map((order) => (
                   <tbody key={order._id} className="divide-y">
-                    <tr className="bg-white flex justify-between dark:border-gray-700 dark:bg-slate-300 mb-4">
+                    <tr className="bg-background flex justify-between dark:border-gray-700 dark:bg-slate-300 mb-4">
                       <td>{order.orderId}</td>
                       <td>{order.orderStatus}</td>
                       <td>

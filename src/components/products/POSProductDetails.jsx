@@ -139,7 +139,7 @@ const POSProductDetails = ({ product }) => {
   return (
     <div className="container-class maxsm:py-8 h-full">
       <main className="bg-gray-100 flex min-h-screen flex-col items-center justify-between">
-        <div className="w-full mx-auto wrapper-class gap-3 text-black  rounded-lg">
+        <div className="w-full mx-auto wrapper-class gap-3 text-foreground  rounded-lg">
           <div className="flex flex-row maxsm:flex-col items-start justify-start gap-x-3 px-3 py-8 maxmd:py-4 ">
             <div className="image-class w-1/2 maxsm:w-full flex flex-col items-center justify-center ">
               <motion.div
@@ -182,7 +182,7 @@ const POSProductDetails = ({ product }) => {
                   </div>
                   {product?.sale_price ? (
                     <div className="flex flex-row items-center justify-between">
-                      <div className="border-[1px] border-yellow-600 w-fit py-1 px-4 rounded-full text-xs text-black">
+                      <div className="border-[1px] border-yellow-600 w-fit py-1 px-4 rounded-full text-xs text-foreground">
                         <p>
                           {calculatePercentage(
                             variation.price,
@@ -201,7 +201,7 @@ const POSProductDetails = ({ product }) => {
                     ""
                   )}
                   <div>
-                    <p className="font-semibold text-4xl text-black font-bodyFont">
+                    <p className="font-semibold text-4xl text-foreground font-bodyFont">
                       {product?.sale_price > 0 ? (
                         <FormattedPrice amount={product?.sale_price} />
                       ) : variation.price > 0 ? (
@@ -213,7 +213,7 @@ const POSProductDetails = ({ product }) => {
                     <p className="text-xs font-normal text-gray-600">
                       Apártalo con solo 30%:
                     </p>
-                    <p className="text-xl text-black font-bodyFont">
+                    <p className="text-xl text-foreground font-bodyFont">
                       <FormattedPrice amount={variation.price * 0.3} />
                     </p>
                   </div>
@@ -238,7 +238,7 @@ const POSProductDetails = ({ product }) => {
                     >
                       <p className="text-slate-500 mb-2 text-xs">Colores:</p>
                       {product?.variations.length > 0 && (
-                        <span className="text-black flex flex-row items-center gap-5">
+                        <span className="text-foreground flex flex-row items-center gap-5">
                           {colorList?.map((c, index) => (
                             <div
                               key={index}
@@ -296,7 +296,7 @@ const POSProductDetails = ({ product }) => {
                         </span>
                       ) : (
                         <div className="grid maxxsm:grid-cols-1 maxmd:grid-cols-2 grid-cols-4 gap-4 mt-2">
-                          <p className="text-black">
+                          <p className="text-foreground">
                             {product?.variations[0].size}
                           </p>
                         </div>

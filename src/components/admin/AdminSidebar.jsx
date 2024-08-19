@@ -25,7 +25,7 @@ const AdminSidebar = ({ children }) => {
   }
   return (
     <aside className="h-screen print:hidden ">
-      <nav className="h-full flex flex-col bg-white border-r border-r-slate-300 shadow-sm">
+      <nav className="h-full flex flex-col bg-background border-r border-r-foreground shadow-sm">
         <div className="p-4 maxmd:pl-3 pb-2 flex justify-between maxmd:justify-center items-center">
           <Image
             alt="image"
@@ -38,7 +38,7 @@ const AdminSidebar = ({ children }) => {
           />
           <button
             onClick={() => setExpandSidebar((currentState) => !currentState)}
-            className="p-1.5 rounded-lg bg-gray-50"
+            className="p-1.5 rounded-lg text-foreground"
           >
             {expandSidebar ? (
               <BsChevronBarLeft size={20} />
@@ -121,9 +121,7 @@ export function SideBarItem({ icon, text, active, alert, url, dropdownItems }) {
   return (
     <li
       className={`relative flex flex-col items-center py-2 pl-2 pr-3 maxmd:pr-1 my-1 font-medium rounded-md cursor-pointer gap-x-1 transition-colors ${
-        active === "true"
-          ? " text-indigo-800"
-          : "hover:bg-indigo-50 text-gray-600"
+        active === "true" ? " text-primary" : "hover:bg-indigo-50 text-gray-600"
       }`}
       onClick={handleDropdownToggle}
       onMouseEnter={() => setHoveredIndex("main")} // Set hoveredIndex to 'main' for the main item
@@ -142,7 +140,7 @@ export function SideBarItem({ icon, text, active, alert, url, dropdownItems }) {
 
       {/* Conditional rendering for main item hover text */}
       {!expandSidebar && hoveredIndex === "main" && (
-        <div className="absolute z-50 left-full rounded-md px-2 py-1 ml-0 bg-indigo-100 text-indigo-800 text-sm opacity-100 min-w-[250px]">
+        <div className="absolute z-50 left-full rounded-md px-2 py-1 ml-0 bg-indigo-100 text-primary text-sm opacity-100 min-w-[250px]">
           {text}
         </div>
       )}
@@ -152,14 +150,14 @@ export function SideBarItem({ icon, text, active, alert, url, dropdownItems }) {
           variants={backdropVariants}
           initial="initial"
           animate="animate"
-          className="relative flex flex-col gap-1 mt-1 w-full bg-white"
+          className="relative flex flex-col gap-1 mt-1 w-full bg-background"
         >
           {dropdownItems.map((item, index) => (
             <Link href={item.url} key={index} className="min-w-full">
               <li
                 className={`p-2 cursor-pointer flex items-center justify-center rounded-md ${
                   item.active === "true"
-                    ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800"
+                    ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-primary"
                     : "hover:bg-indigo-50 text-gray-600 bg-opacity-0"
                 }`}
                 onMouseEnter={() => setHoveredIndex(index)} // Set hoveredIndex to the current item's index
@@ -175,7 +173,7 @@ export function SideBarItem({ icon, text, active, alert, url, dropdownItems }) {
                 </span>
                 {/* Conditional rendering for dropdown item hover text */}
                 {!expandSidebar && hoveredIndex === index && (
-                  <div className="absolute z-50 left-full rounded-md px-2 py-1 ml-0 bg-indigo-100 text-indigo-800 text-sm opacity-100 min-w-[250px]">
+                  <div className="absolute z-50 left-full rounded-md px-2 py-1 ml-0 bg-indigo-100 text-primary text-sm opacity-100 min-w-[250px]">
                     {item.text}
                   </div>
                 )}

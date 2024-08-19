@@ -1,13 +1,13 @@
-'use client';
-import React, { useContext, useEffect, useState } from 'react';
-import Image from 'next/image';
-import { addToCart, deleteFavorite } from '@/redux/shoppingSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { AiOutlineClose } from 'react-icons/ai';
-import { Bounce, toast } from 'react-toastify';
-import { useRouter } from 'next/navigation';
-import AuthContext from '@/context/AuthContext';
-import { IoMdCart } from 'react-icons/io';
+"use client";
+import React, { useContext, useEffect, useState } from "react";
+import Image from "next/image";
+import { addToCart, deleteFavorite } from "@/redux/shoppingSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { AiOutlineClose } from "react-icons/ai";
+import { Bounce, toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import AuthContext from "@/context/AuthContext";
+import { IoMdCart } from "react-icons/io";
 
 const FavoritesComp = ({ session }) => {
   //import CartContext and assign to addItemToCart
@@ -30,11 +30,11 @@ const FavoritesComp = ({ session }) => {
       dispatch(deleteFavorite(item?._id)) &&
       toast.success(`${item?.title.substring(0, 15)}... se agrego al carrito`, {
         position: toast.POSITION.TOP_CENTER,
-        className: 'foo-bar',
-        theme: 'dark',
+        className: "foo-bar",
+        theme: "dark",
         transition: Bounce,
       }) &&
-      router.push('/carrito');
+      router.push("/carrito");
   }
 
   return (
@@ -49,7 +49,7 @@ const FavoritesComp = ({ session }) => {
 
       {favorites?.length > 0 && (
         <section className="pb-10 bg-gray-100">
-          <div className="container max-w-screen-xl mx-auto bg-white p-5">
+          <div className="container max-w-screen-xl mx-auto bg-background p-5">
             <div className="flex flex-col md:flex-row gap-4">
               <main className="md:w-3/4">
                 <article className="border border-gray-200  shadow-sm rounded mb-5 p-3 lg:p-5">
@@ -78,7 +78,7 @@ const FavoritesComp = ({ session }) => {
                                 </a>
                               </p>
                               <p className="mt-1 text-gray-400">
-                                {' '}
+                                {" "}
                                 Marca: {item?.brand}
                               </p>
                             </figcaption>

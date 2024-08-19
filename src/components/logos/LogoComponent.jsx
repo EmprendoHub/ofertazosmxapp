@@ -1,17 +1,14 @@
-import Link from 'next/link';
-import Image from 'next/image';
+import Image from "next/image";
 
-const LogoComponent = () => {
+const LogoComponent = ({ className }) => {
   return (
-    <Link href={`/`}>
-      <Image
-        width={250}
-        height={250}
-        src={'/images/rifas_bac_motors_white_text_logo.webp'}
-        alt="central Medica de Especialidades"
-        className="main-logo-class w-[200px] sm:w-[120px]"
-      />
-    </Link>
+    <Image
+      width={250}
+      height={250}
+      src={"/images/horizontal_logo.png"}
+      alt="OfertazosMX"
+      className={`main-logo-class ${className}`}
+    />
   );
 };
 

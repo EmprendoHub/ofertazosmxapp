@@ -1,9 +1,9 @@
-'use client';
-import React from 'react';
-import { formatDate, formatTime } from '@/backend/helpers';
-import { getTotalFromItems } from '@/backend/helpers';
-import FormattedPrice from '@/backend/helpers/FormattedPrice';
-import AdminOrderSearch from '@/components/layout/AdminOrderSearch';
+"use client";
+import React from "react";
+import { formatDate, formatTime } from "@/backend/helpers";
+import { getTotalFromItems } from "@/backend/helpers";
+import FormattedPrice from "@/backend/helpers/FormattedPrice";
+import AdminOrderSearch from "@/components/layout/AdminOrderSearch";
 
 const AfiliadoOrders = ({ orders, filteredOrdersCount }) => {
   return (
@@ -39,7 +39,7 @@ const AfiliadoOrders = ({ orders, filteredOrdersCount }) => {
         </thead>
         <tbody>
           {orders?.map((order, index) => (
-            <tr className="bg-white" key={index}>
+            <tr className="bg-background" key={index}>
               <td className="px-6 maxsm:px-2 py-2">{order.orderId}</td>
               <td className="px-6 py-2 maxmd:hidden">
                 <FormattedPrice amount={getTotalFromItems(order.orderItems)} />
@@ -56,13 +56,13 @@ const AfiliadoOrders = ({ orders, filteredOrdersCount }) => {
               </td>
               <td
                 className={`px-6 maxsm:px-0 py-2 font-bold ${
-                  order.orderStatus === 'Apartado'
-                    ? 'text-amber-700'
-                    : order.orderStatus === 'En Camino'
-                    ? 'text-blue-700'
-                    : order.orderStatus === 'Entregado'
-                    ? 'text-green-700'
-                    : 'text-slate-600'
+                  order.orderStatus === "Apartado"
+                    ? "text-amber-700"
+                    : order.orderStatus === "En Camino"
+                    ? "text-blue-700"
+                    : order.orderStatus === "Entregado"
+                    ? "text-green-700"
+                    : "text-slate-600"
                 }`}
               >
                 {order.orderStatus}

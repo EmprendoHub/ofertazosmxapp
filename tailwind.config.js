@@ -1,82 +1,122 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: ["class"],
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    "./pages/**/*.{js,jsx}",
+    "./components/**/*.{js,jsx}",
+    "./app/**/*.{js,jsx}",
+    "./src/**/*.{js,jsx}",
   ],
+  prefix: "",
   theme: {
-    extend: {
-      backgroundColor: {
-        'primary-bg': '#1984b1',
-        'second-bg': '#395C9C',
-        'popPrimary-bg': '#F15733',
-        'popSecondary-bg': '#F0AA44',
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
       },
-      fontFamily: {
-        raleway: 'Raleway',
-        EB_Garamond: ['EB Garamond', 'sans-serif'],
+    },
+    extend: {
+      colors: {
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
       },
 
-      colors: {
-        primaryColor: '#bfbfbf',
-        secondColor: '#395C9C',
-        popPrimary: '#F15733',
-        popSecondary: '#F0AA44',
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
       },
-      backgroundImage: {
-        'main-gradient':
-          'linear-gradient(to bottom right, #0D121B 0%,  #395C9C 30%, #1984b1 60%,  #0D121B 100%)',
-        'secondary-gradient':
-          'linear-gradient(to bottom right, #f8f8f8 0%, #f3f3f3 30%, #f5f5f5 60%, #f8f8f8 100%)',
-        'neutral-gradient':
-          'linear-gradient(to bottom right, #f8f8f8 0%, #f3f3f3 30%, #f5f5f5 60%, #f8f8f8 100%)',
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
       },
       screens: {
         maxxlg: {
-          max: '1400px',
+          max: "1400px",
         },
         maxlg: {
-          max: '1200px',
+          max: "1200px",
         },
         maxmd: {
-          max: '960px',
+          max: "960px",
         },
         maxmdsm: {
-          max: '700px',
+          max: "700px",
         },
         maxsm: {
-          max: '521px',
+          max: "521px",
         },
         maxxsm: {
-          max: '420px',
+          max: "420px",
         },
         maxxxs: {
-          max: '374px',
+          max: "374px",
         },
         minxlg: {
-          min: '1400px',
+          min: "1400px",
         },
         minlg: {
-          min: '1200px',
+          min: "1200px",
         },
         minmd: {
-          min: '960px',
+          min: "960px",
         },
         minmdsm: {
-          min: '700px',
+          min: "700px",
         },
         minsm: {
-          min: '521px',
+          min: "521px",
         },
         minxsm: {
-          min: '420px',
+          min: "420px",
         },
         minxxs: {
-          min: '374px',
+          min: "374px",
         },
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 };

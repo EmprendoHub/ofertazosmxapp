@@ -1,33 +1,33 @@
-'use client';
-import React, { useContext, useEffect, useState } from 'react';
-import AuthContext from '@/context/AuthContext';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { updateClientPassword } from '@/app/_actions';
-import { cstDateTimeClient } from '@/backend/helpers';
+"use client";
+import React, { useContext, useEffect, useState } from "react";
+import AuthContext from "@/context/AuthContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { updateClientPassword } from "@/app/_actions";
+import { cstDateTimeClient } from "@/backend/helpers";
 
 const UpdatePassword = () => {
   const { user } = useContext(AuthContext);
   const [loading, setLoading] = useState(null);
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [updatedAt, setUpdatedAt] = useState(cstDateTimeClient());
   const [validationError, setValidationError] = useState(null);
 
   const handlePhoneChange = (e) => {
-    const inputPhone = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
-    let formattedPhone = '';
+    const inputPhone = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+    let formattedPhone = "";
 
     if (inputPhone.length <= 10) {
       formattedPhone = inputPhone.replace(
         /(\d{3})(\d{0,3})(\d{0,4})/,
-        '$1 $2 $3'
+        "$1 $2 $3"
       );
     } else {
       // If the phone number exceeds 10 digits, truncate it
       formattedPhone = inputPhone
         .slice(0, 10)
-        .replace(/(\d{3})(\d{0,3})(\d{0,4})/, '$1 $2 $3');
+        .replace(/(\d{3})(\d{0,3})(\d{0,4})/, "$1 $2 $3");
     }
 
     setPhone(formattedPhone);
@@ -37,20 +37,20 @@ const UpdatePassword = () => {
     setLoading(true);
     e.preventDefault();
 
-    if (currentPassword === '') {
-      toast.error('Por favor tu contraseña actual.');
+    if (currentPassword === "") {
+      toast.error("Por favor tu contraseña actual.");
       return;
     }
-    if (newPassword === '') {
-      toast.error('Por favor una contraseña nueva.');
+    if (newPassword === "") {
+      toast.error("Por favor una contraseña nueva.");
       return;
     }
 
     const formData = new FormData();
-    formData.set('_id', user?._id);
-    formData.set('newPassword', newPassword);
-    formData.set('currentPassword', currentPassword);
-    formData.set('updatedAt', updatedAt);
+    formData.set("_id", user?._id);
+    formData.set("newPassword", newPassword);
+    formData.set("currentPassword", currentPassword);
+    formData.set("updatedAt", updatedAt);
 
     const result = await updateClientPassword(formData);
     if (result?.error) {
@@ -59,13 +59,13 @@ const UpdatePassword = () => {
     } else {
       setValidationError(null);
       setLoading(null);
-      toast.success('La contraseña se actualizo exitosamente');
+      toast.success("La contraseña se actualizo exitosamente");
     }
   };
 
   return (
     <>
-      <div className="mt-1 mb-20 p-4 md:p-7 mx-auto rounded bg-white max-w-[580px]">
+      <div className="mt-1 mb-20 p-4 md:p-7 mx-auto rounded bg-background max-w-[580px]">
         <form onSubmit={submitHandler}>
           <h2 className="mb-5 text-2xl font-semibold font-EB_Garamond">
             Actualizar contraseña
@@ -85,7 +85,7 @@ const UpdatePassword = () => {
             />
             {validationError?.currentPassword && (
               <p className="text-sm text-red-400">
-                {validationError.currentPassword._errors.join(', ')}
+                {validationError.currentPassword._errors.join(", ")}
               </p>
             )}
           </div>
@@ -104,7 +104,7 @@ const UpdatePassword = () => {
             />
             {validationError?.newPassword && (
               <p className="text-sm text-red-400">
-                {validationError.newPassword._errors.join(', ')}
+                {validationError.newPassword._errors.join(", ")}
               </p>
             )}
           </div>
@@ -114,7 +114,7 @@ const UpdatePassword = () => {
             className="my-2 px-4 py-2 text-center w-full inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
             disabled={loading ? true : false}
           >
-            {loading ? 'Actualizando...' : 'Actualizar'}
+            {loading ? "Actualizando..." : "Actualizar"}
           </button>
         </form>
       </div>

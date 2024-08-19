@@ -63,7 +63,7 @@ const FooterMenu = () => {
                 whileHover={{ y: -4 }}
                 whileTap={{ y: 1 }}
                 transition={{ duration: 0.15 }}
-                className="hover:text-black  cursor-pointer duration-200"
+                className="hover:text-foreground  cursor-pointer duration-200"
               >
                 {"Accesorios"}
               </motion.li>
@@ -118,7 +118,7 @@ const FooterMenu = () => {
                 whileHover={{ y: -4 }}
                 whileTap={{ y: 1 }}
                 transition={{ duration: 0.15 }}
-                className="hover:text-black cursor-pointer duration-200"
+                className="hover:text-foreground cursor-pointer duration-200"
               >
                 {"Acerca de Nosotros"}
               </motion.li>
@@ -128,7 +128,7 @@ const FooterMenu = () => {
                 whileHover={{ y: -4 }}
                 whileTap={{ y: 1 }}
                 transition={{ duration: 0.15 }}
-                className="hover:text-black  cursor-pointer duration-200"
+                className="hover:text-foreground  cursor-pointer duration-200"
               >
                 {"Blog de Moda"}
               </motion.li>
@@ -138,7 +138,7 @@ const FooterMenu = () => {
                 whileHover={{ y: -4 }}
                 whileTap={{ y: 1 }}
                 transition={{ duration: 0.15 }}
-                className="hover:text-black cursor-pointer duration-200"
+                className="hover:text-foreground cursor-pointer duration-200"
               >
                 {"Contacto"}
               </motion.li>
@@ -148,7 +148,7 @@ const FooterMenu = () => {
                 whileHover={{ y: -4 }}
                 whileTap={{ y: 1 }}
                 transition={{ duration: 0.15 }}
-                className="hover:text-black  cursor-pointer duration-200"
+                className="hover:text-foreground  cursor-pointer duration-200"
               >
                 {"Tienda en Linea"}
               </motion.li>
@@ -163,7 +163,7 @@ const FooterMenu = () => {
                 whileHover={{ y: -4 }}
                 whileTap={{ y: 1 }}
                 transition={{ duration: 0.15 }}
-                className="hover:text-black  cursor-pointer duration-200"
+                className="hover:text-foreground  cursor-pointer duration-200"
               >
                 {"Términos de Uso"}
               </motion.li>
@@ -174,7 +174,7 @@ const FooterMenu = () => {
                 whileHover={{ y: -4 }}
                 whileTap={{ y: 1 }}
                 transition={{ duration: 0.15 }}
-                className="hover:text-black cursor-pointer duration-200"
+                className="hover:text-foreground cursor-pointer duration-200"
               >
                 {"Política de privacidad"}
               </motion.li>

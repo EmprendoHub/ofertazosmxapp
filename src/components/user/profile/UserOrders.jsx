@@ -1,25 +1,25 @@
-'use client';
-import React, { useEffect } from 'react';
-import Link from 'next/link';
-import { formatDate, formatTime } from '@/backend/helpers';
-import { resetCart } from '@/redux/shoppingSlice';
-import { FaEye } from 'react-icons/fa';
-import { getTotalFromItems } from '@/backend/helpers';
-import OrderSearch from '@/components/layout/OrderSearch';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useDispatch } from 'react-redux';
+"use client";
+import React, { useEffect } from "react";
+import Link from "next/link";
+import { formatDate, formatTime } from "@/backend/helpers";
+import { resetCart } from "@/redux/shoppingSlice";
+import { FaEye } from "react-icons/fa";
+import { getTotalFromItems } from "@/backend/helpers";
+import OrderSearch from "@/components/layout/OrderSearch";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useDispatch } from "react-redux";
 
 const UserOrders = ({ orders, filteredOrdersCount }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const params = useSearchParams();
 
-  const orderSuccess = params.get('pedido_exitoso');
+  const orderSuccess = params.get("pedido_exitoso");
 
   useEffect(() => {
-    if (orderSuccess === 'true') {
+    if (orderSuccess === "true") {
       dispatch(resetCart());
-      router.replace('/perfil/pedidos');
+      router.replace("/perfil/pedidos");
     }
   }, [orderSuccess]);
 
@@ -57,9 +57,9 @@ const UserOrders = ({ orders, filteredOrdersCount }) => {
         </thead>
         <tbody>
           {orders?.map((order, index) => (
-            <tr className="bg-white" key={index}>
+            <tr className="bg-background" key={index}>
               <td className="px-6 maxsm:px-1 py-2">
-                {' '}
+                {" "}
                 <Link
                   href={`/perfil/pedido/${order._id}`}
                   className="cursor-pointer "
@@ -75,19 +75,19 @@ const UserOrders = ({ orders, filteredOrdersCount }) => {
               </td>
               <td
                 className={`px-6 maxsm:px-1 py-2 font-bold ${
-                  order.orderStatus === 'Apartado'
-                    ? 'text-amber-700'
-                    : order.orderStatus === 'En Camino'
-                    ? 'text-blue-700'
-                    : order.orderStatus === 'Entregado'
-                    ? 'text-green-700'
-                    : 'text-slate-600'
+                  order.orderStatus === "Apartado"
+                    ? "text-amber-700"
+                    : order.orderStatus === "En Camino"
+                    ? "text-blue-700"
+                    : order.orderStatus === "Entregado"
+                    ? "text-green-700"
+                    : "text-slate-600"
                 }`}
               >
                 {order.orderStatus}
               </td>
               <td className="px-6 maxsm:px-1 py-2  maxsm:hidden">
-                {' '}
+                {" "}
                 <p>
                   {order?.createdAt &&
                     `${formatDate(
@@ -100,7 +100,7 @@ const UserOrders = ({ orders, filteredOrdersCount }) => {
                 <div>
                   <Link
                     href={`/perfil/pedido/${order._id}`}
-                    className="px-2 py-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
+                    className="px-2 py-2 inline-block text-white hover:text-foreground bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
                   >
                     <FaEye className="" />
                   </Link>

@@ -1,14 +1,14 @@
-'use client';
-import React from 'react';
-import Image from 'next/image';
+"use client";
+import React from "react";
+import Image from "next/image";
 import {
   decreasePOSQuantity,
   deletePOSProduct,
   increasePOSQuantity,
-} from '@/redux/shoppingSlice';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import { useDispatch, useSelector } from 'react-redux';
-import { AiOutlineClose } from 'react-icons/ai';
+} from "@/redux/shoppingSlice";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
+import { AiOutlineClose } from "react-icons/ai";
 
 const POSIdResults = () => {
   const { productsPOS } = useSelector((state) => state?.compras);
@@ -26,7 +26,7 @@ const POSIdResults = () => {
 
       {productsPOS?.length > 0 && (
         <section className="pb-10 bg-gray-100">
-          <div className="container  mx-auto bg-white p-5">
+          <div className="container  mx-auto bg-background p-5">
             <div className="flex flex-col md:flex-row gap-4">
               <main className="w-full">
                 <article className="border border-gray-200  shadow-sm rounded p-3 lg:p-5"></article>
@@ -59,7 +59,7 @@ const POSIdResults = () => {
                             </figure>
                           </div>
                           <div className="w-24">
-                            <div className="flex items-center text-lg text-black  w-20 justify-between">
+                            <div className="flex items-center text-lg text-foreground  w-20 justify-between">
                               <span
                                 onClick={() =>
                                   dispatch(decreasePOSQuantity(cartItem))
@@ -87,8 +87,8 @@ const POSIdResults = () => {
                                   cartItem?.quantity?.toFixed(2) || 1}
                               </p>
                               <small className="text-gray-400">
-                                {' '}
-                                ${cartItem?.price} / por articulo{' '}
+                                {" "}
+                                ${cartItem?.price} / por articulo{" "}
                               </small>
                             </div>
                           </div>

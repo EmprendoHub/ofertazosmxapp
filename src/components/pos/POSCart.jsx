@@ -45,7 +45,7 @@ const POSCart = () => {
 
       {productsPOS?.length > 0 && (
         <section className="pb-10 bg-gray-100">
-          <div className="container  mx-auto bg-white p-5">
+          <div className="container  mx-auto bg-background p-5">
             <div className="flex flex-col md:flex-row gap-4">
               <main className="w-full">
                 <article className="border border-gray-200  shadow-sm rounded p-3 lg:p-5"></article>
@@ -78,7 +78,7 @@ const POSCart = () => {
                             </figure>
                           </div>
                           <div className="w-24">
-                            <div className="flex items-center text-lg text-black  w-20 justify-between">
+                            <div className="flex items-center text-lg text-foreground  w-20 justify-between">
                               <span
                                 onClick={() =>
                                   dispatch(decreasePOSQuantity(cartItem))

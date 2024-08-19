@@ -262,7 +262,7 @@ const NewProduct = () => {
   return (
     <main className="w-full p-4 maxsm:p-2 bg-slate-200">
       <section className="w-full ">
-        <h1 className="text-2xl font-semibold text-black mb-8 font-EB_Garamond">
+        <h1 className="text-2xl font-semibold text-foreground mb-8 font-EB_Garamond">
           Crear Nuevo Producto Simple
         </h1>
 
@@ -653,7 +653,7 @@ const NewProduct = () => {
                     />
                     <button
                       type="button"
-                      className="absolute -right-3 -top-3 flex h-7 w-7 items-center justify-center rounded-full border border-rose-400 bg-rose-400 transition-colors hover:bg-white"
+                      className="absolute -right-3 -top-3 flex h-7 w-7 items-center justify-center rounded-full border border-rose-400 bg-rose-400 transition-colors hover:bg-background"
                       onClick={() => removeFile(file.name)}
                     >
                       <FaWindowClose className="h-5 w-5 fill-white transition-colors hover:fill-rose-400" />

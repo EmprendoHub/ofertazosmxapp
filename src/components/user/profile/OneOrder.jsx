@@ -1,9 +1,9 @@
-'use client';
-import Image from 'next/image';
-import FormattedPrice from '@/backend/helpers/FormattedPrice';
-import { getOrderItemsQuantities, getTotalFromItems } from '@/backend/helpers';
-import { loadStripe } from '@stripe/stripe-js';
-import { useSelector } from 'react-redux';
+"use client";
+import Image from "next/image";
+import FormattedPrice from "@/backend/helpers/FormattedPrice";
+import { getOrderItemsQuantities, getTotalFromItems } from "@/backend/helpers";
+import { loadStripe } from "@stripe/stripe-js";
+import { useSelector } from "react-redux";
 
 const OneOrder = ({ order, session, deliveryAddress }) => {
   const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE__KEY);
@@ -13,10 +13,10 @@ const OneOrder = ({ order, session, deliveryAddress }) => {
     const stripe = await stripePromise;
     const stringSession = JSON.stringify(session);
     const response = await fetch(`/api/layaway`, {
-      method: 'POST',
+      method: "POST",
       headers: {
         Session: stringSession,
-        'Content-Type': 'application/json; charset=utf-8',
+        "Content-Type": "application/json; charset=utf-8",
       },
       body: JSON.stringify({
         order: order,
@@ -44,8 +44,8 @@ const OneOrder = ({ order, session, deliveryAddress }) => {
     );
 
     if (Number(orderAmountPaid) >= Number(totalAmount)) {
-      return 'pagado';
-    } else return 'pendiente de pago';
+      return "pagado";
+    } else return "pendiente de pago";
   }
 
   function getPendingTotal(orderItems, orderAmountPaid) {
@@ -71,13 +71,13 @@ const OneOrder = ({ order, session, deliveryAddress }) => {
           </h2>
           <h2
             className={`text-3xl mb-8 ml-4 font-bold uppercase ${
-              order && order?.orderStatus === 'Apartado'
-                ? 'text-amber-700'
-                : order.orderStatus === 'En Camino'
-                ? 'text-blue-700'
-                : order.orderStatus === 'Entregado'
-                ? 'text-green-700'
-                : 'text-slate-600'
+              order && order?.orderStatus === "Apartado"
+                ? "text-amber-700"
+                : order.orderStatus === "En Camino"
+                ? "text-blue-700"
+                : order.orderStatus === "Entregado"
+                ? "text-green-700"
+                : "text-slate-600"
             }`}
           >
             {order?.orderStatus}
@@ -105,7 +105,7 @@ const OneOrder = ({ order, session, deliveryAddress }) => {
             </tr>
           </thead>
           <tbody>
-            <tr className="bg-white">
+            <tr className="bg-background">
               <td className="px-6 py-2">{deliveryAddress?.street}</td>
               <td className="px-6 py-2">{deliveryAddress?.city}</td>
               <td className="px-6 py-2">{deliveryAddress?.province}</td>
@@ -144,7 +144,7 @@ const OneOrder = ({ order, session, deliveryAddress }) => {
           </thead>
           <tbody>
             {order?.orderItems?.map((item, index) => (
-              <tr className="bg-white" key={index}>
+              <tr className="bg-background" key={index}>
                 <td className="px-6 py-2">
                   {item.product.substring(0, 10) || item._id.substring(0, 10)}
                   ...
@@ -170,10 +170,10 @@ const OneOrder = ({ order, session, deliveryAddress }) => {
         </table>
       </div>
 
-      {order?.orderStatus === 'Apartado' ? (
+      {order?.orderStatus === "Apartado" ? (
         <div className="relative flex fle-row maxmd:flex-col overflow-x-auto shadow-md sm:rounded-lg p-5">
           <div className="w-1/3 maxmd:w-full">
-            <div className=" max-w-screen-xl mx-auto bg-white flex flex-col p-2">
+            <div className=" max-w-screen-xl mx-auto bg-background flex flex-col p-2">
               <h2 className="text-2xl">Totales</h2>
               <ul className="mb-5">
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
@@ -219,9 +219,9 @@ const OneOrder = ({ order, session, deliveryAddress }) => {
                 checkIfPaid(
                   order?.orderItems,
                   order?.paymentInfo?.amountPaid
-                ) === 'pagado'
-                  ? 'text-green-700'
-                  : 'text-amber-700'
+                ) === "pagado"
+                  ? "text-green-700"
+                  : "text-amber-700"
               } `}
             >
               {checkIfPaid(order?.orderItems, order?.paymentInfo?.amountPaid)}
@@ -229,9 +229,9 @@ const OneOrder = ({ order, session, deliveryAddress }) => {
 
             <button
               onClick={() => handleCheckout()}
-              className="bg-black w-1/2 text-slate-100 mt-4 py-3 px-6 hover:bg-slate-200 hover:text-black duration-300 ease-in-out cursor-pointer"
+              className="bg-black w-1/2 text-slate-100 mt-4 py-3 px-6 hover:bg-slate-200 hover:text-foreground duration-300 ease-in-out cursor-pointer"
             >
-              Pagar Total{' '}
+              Pagar Total{" "}
             </button>
             <p className="pt-5">
               Si realizaste un pago por Oxxo o Transferencia Bancaria
@@ -245,7 +245,7 @@ const OneOrder = ({ order, session, deliveryAddress }) => {
       ) : (
         <div className="relative flex fle-row maxmd:flex-col overflow-x-auto shadow-md sm:rounded-lg p-5">
           <div className="w-1/3 maxmd:w-full">
-            <div className="container max-w-screen-xl mx-auto bg-white flex flex-col  p-2">
+            <div className="container max-w-screen-xl mx-auto bg-background flex flex-col  p-2">
               <ul className="mb-5">
                 <li className="flex justify-between gap-x-5 text-gray-600  mb-1">
                   <span>Sub-Total:</span>
@@ -283,9 +283,9 @@ const OneOrder = ({ order, session, deliveryAddress }) => {
                 checkIfPaid(
                   order?.orderItems,
                   order?.paymentInfo?.amountPaid
-                ) === 'pagado'
-                  ? 'text-green-700'
-                  : 'text-amber-700'
+                ) === "pagado"
+                  ? "text-green-700"
+                  : "text-amber-700"
               } `}
             >
               {checkIfPaid(order?.orderItems, order?.paymentInfo?.amountPaid)}

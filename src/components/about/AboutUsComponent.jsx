@@ -47,7 +47,7 @@ const AboutUsComponent = ({ acerca }) => {
           </p>
 
           <div className="grid grid-cols-3 maxsm:grid-cols-1 gap-4 mt-5">
-            <div className="bg-white rounded-lg p-8 shadow-md">
+            <div className="bg-background rounded-lg p-8 shadow-md">
               <Image
                 src={acerca?.sections[1].boxes[1].images[0].url}
                 width={100}
@@ -62,7 +62,7 @@ const AboutUsComponent = ({ acerca }) => {
               />
               <div className="mt-10" />
             </div>
-            <div className="bg-white rounded-lg p-8 shadow-md">
+            <div className="bg-background rounded-lg p-8 shadow-md">
               <Image
                 src={acerca?.sections[1].boxes[2].images[0].url}
                 width={100}
@@ -77,7 +77,7 @@ const AboutUsComponent = ({ acerca }) => {
               />
               <div className="mt-10" />
             </div>
-            <div className="bg-white rounded-lg p-8 shadow-md">
+            <div className="bg-background rounded-lg p-8 shadow-md">
               <Image
                 src={acerca?.sections[1].boxes[3].images[0].url}
                 width={100}
@@ -116,7 +116,7 @@ const AboutUsComponent = ({ acerca }) => {
             transition={{ duration: 1.2 }}
             className="flex gap-x-4 mt-2 justify-center"
           >
-            <div className="bg-white rounded-lg p-4 shadow-md">
+            <div className="bg-background rounded-lg p-4 shadow-md">
               <Image
                 src={acerca?.sections[2].boxes[0].images[0].url}
                 width={400}

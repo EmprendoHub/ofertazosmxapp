@@ -139,7 +139,7 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
   return (
     <div className="container-class maxsm:py-8 ">
       <main className="bg-gray-100 flex flex-col items-center justify-between">
-        <div className="w-full mx-auto wrapper-class gap-3 bg-slate-100 text-black bg-opacity-80 rounded-lg">
+        <div className="w-full mx-auto wrapper-class gap-3 bg-slate-100 text-foreground bg-opacity-80 rounded-lg">
           <div className="flex flex-row maxsm:flex-col items-start justify-start gap-x-5 px-20 py-8 maxmd:py-4  maxmd:px-3">
             {/* Left Panel */}
             <div className=" image-class w-1/2 maxsm:w-full flex flex-col items-center justify-center">
@@ -184,7 +184,7 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
                   </div>
                   {product?.sale_price ? (
                     <div className="flex flex-row items-center justify-between">
-                      <div className="border-[1px] border-yellow-600 w-fit py-1 px-4 rounded-full text-xs text-black">
+                      <div className="border-[1px] border-yellow-600 w-fit py-1 px-4 rounded-full text-xs text-foreground">
                         <p>
                           {calculatePercentage(
                             variation.price,
@@ -203,7 +203,7 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
                     ""
                   )}
                   <div>
-                    <p className="font-semibold text-4xl text-black font-bodyFont">
+                    <p className="font-semibold text-4xl text-foreground font-bodyFont">
                       {product?.sale_price > 0 ? (
                         <FormattedPrice amount={product?.sale_price} />
                       ) : variation.price > 0 ? (
@@ -215,7 +215,7 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
                     <p className="text-xs font-normal text-gray-600">
                       Apártalo con solo 30%:
                     </p>
-                    <p className="text-xl text-black font-bodyFont">
+                    <p className="text-xl text-foreground font-bodyFont">
                       <FormattedPrice amount={variation.price * 0.3} />
                     </p>
                   </div>
@@ -249,7 +249,7 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
                         Colores:
                       </p>
                       {product?.variations.length > 0 && (
-                        <span className="text-black flex flex-row items-center gap-5">
+                        <span className="text-foreground flex flex-row items-center gap-5">
                           {colorList?.map((c, index) => (
                             <div
                               key={index}
@@ -310,7 +310,7 @@ const ProductDetailsComponent = ({ product, trendingProducts }) => {
                       ) : (
                         <div className="grid maxxsm:grid-cols-1 maxmd:grid-cols-2 grid-cols-4 gap-4 mt-2">
                           <p>Talla:</p>
-                          <p className="text-black">
+                          <p className="text-foreground">
                             {product?.variations[0].size}
                           </p>
                         </div>

@@ -79,7 +79,7 @@ const AdminOrders = ({ orders, filteredOrdersCount }) => {
           </thead>
           <tbody>
             {orders?.map((order, index) => (
-              <tr className="bg-white" key={index}>
+              <tr className="bg-background" key={index}>
                 <td className="px-2 maxsm:px-2 py-2">
                   <Link key={index} href={`/admin/pedido/${order._id}`}>
                     {order.orderId}
@@ -125,13 +125,13 @@ const AdminOrders = ({ orders, filteredOrdersCount }) => {
                   <div className="flex items-center">
                     <Link
                       href={`/admin/pedido/${order._id}`}
-                      className="px-2 py-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
+                      className="px-2 py-2 inline-block text-white hover:text-foreground bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
                     >
                       <FaEye className="" />
                     </Link>
                     <Link
                       href={`/admin/recibo/${order._id}`}
-                      className="px-2 py-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
+                      className="px-2 py-2 inline-block text-white hover:text-foreground bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
                     >
                       <FaPrint className="" />
                     </Link>
@@ -142,7 +142,7 @@ const AdminOrders = ({ orders, filteredOrdersCount }) => {
                     ) : (
                       <button
                         onClick={() => updateOrderStatus(order)}
-                        className={`px-2 py-2 inline-block text-black hover:text-black ${
+                        className={`px-2 py-2 inline-block text-foreground hover:text-foreground ${
                           order?.paymentInfo?.amountPaid >=
                             getTotalFromItems(order.orderItems) ===
                           true

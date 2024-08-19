@@ -82,12 +82,12 @@ const AllPaymentFilters = () => {
     <div className="w-full print:hidden">
       <div className="min-w-full flex items-center justify-start h-full">
         {/* Date Filter */}
-        <div className="flex flex-col w-2/3 py-4 border border-gray-200 bg-white rounded shadow-sm">
-          <h3 className=" mb-2 text-black flex items-center">
+        <div className="flex flex-col w-2/3 py-4 border border-gray-200 bg-background rounded shadow-sm">
+          <h3 className=" mb-2 text-foreground flex items-center">
             Fechas <FaCalendar />
           </h3>
 
-          <div className="flex items-center gap-x-2 text-black">
+          <div className="flex items-center gap-x-2 text-foreground">
             <div className="mb-4 flex flex-row maxmd:flex-col gap-2 items-center">
               <DateTimePicker
                 calendarClassName={"appearance-none rounded-md"}
@@ -107,7 +107,7 @@ const AllPaymentFilters = () => {
           </div>
         </div>
         {/* Payment Type Filter */}
-        <div className="p-5 pt-4 w-1/3 mb-2 sm:p-1 border border-gray-200 bg-white rounded shadow-sm">
+        <div className="p-5 pt-4 w-1/3 mb-2 sm:p-1 border border-gray-200 bg-background rounded shadow-sm">
           <h3 className="font-semibold mb-2 text-gray-700">Estado</h3>
 
           <div className="relative w-full">
@@ -137,7 +137,7 @@ const AllPaymentFilters = () => {
           </div>
         </div>
         {/* Store Filter */}
-        <div className="p-5 pt-4 w-1/3 sm:p-1 border border-gray-200 bg-white rounded shadow-sm">
+        <div className="p-5 pt-4 w-1/3 sm:p-1 border border-gray-200 bg-background rounded shadow-sm">
           <h3 className="font-semibold mb-2 text-gray-700">Tienda</h3>
 
           <div className="relative w-full">

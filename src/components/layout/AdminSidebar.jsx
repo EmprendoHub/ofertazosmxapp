@@ -1,26 +1,26 @@
-'use client';
-import React, { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { SIDENAV_ITEMS } from '@/backend/data/constants';
-import { motion, useCycle } from 'framer-motion';
-import { FaChevronDown } from 'react-icons/fa';
-import { FaFolder, FaHandshake, FaHome, FaMailBulk } from 'react-icons/fa';
-import { FaGear } from 'react-icons/fa6';
+"use client";
+import React, { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { SIDENAV_ITEMS } from "@/backend/data/constants";
+import { motion, useCycle } from "framer-motion";
+import { FaChevronDown } from "react-icons/fa";
+import { FaFolder, FaHandshake, FaHome, FaMailBulk } from "react-icons/fa";
+import { FaGear } from "react-icons/fa6";
 
 const sidebar = {
   open: (height = 1000) => ({
     clipPath: `circle(${height * 2 + 200}px at 100% 0)`,
     transition: {
-      type: 'spring',
+      type: "spring",
       stiffness: 20,
       restDelta: 2,
     },
   }),
   closed: {
-    clipPath: 'circle(0px at 100% 0)',
+    clipPath: "circle(0px at 100% 0)",
     transition: {
-      type: 'spring',
+      type: "spring",
       stiffness: 400,
       damping: 40,
     },
@@ -38,21 +38,21 @@ const HeaderMobile = () => {
       <MenuToggle toggle={toggleOpen} />
       <motion.nav
         initial={false}
-        animate={isOpen ? 'open' : 'closed'}
+        animate={isOpen ? "open" : "closed"}
         custom={height}
         className={`relative inset-0 z-30 w-full  ${
-          isOpen ? '' : 'pointer-events-none'
+          isOpen ? "" : "pointer-events-none"
         }`}
         ref={containerRef}
       >
         <motion.div
-          className="absolute inset-0 left-0 w-full bg-white"
+          className="absolute inset-0 left-0 w-full bg-background"
           variants={sidebar}
         />
         <motion.ul
           variants={variants}
           className={`${
-            isOpen ? 'bg-white w-full relative' : 'absolute'
+            isOpen ? "bg-background w-full relative" : "absolute"
           }  grid w-full gap-3 px-10 py-16`}
         >
           {SIDENAV_ITEMS.map((item, idx) => {
@@ -72,7 +72,7 @@ const HeaderMobile = () => {
                       href={item.path}
                       onClick={() => toggleOpen()}
                       className={`flex w-full text-2xl ${
-                        item.path === pathname ? 'font-bold' : ''
+                        item.path === pathname ? "font-bold" : ""
                       }`}
                     >
                       {item.title}
@@ -159,14 +159,14 @@ const MenuItemWithSubMenu = ({ item, toggleOpen, isOpen }) => {
           >
             <span
               className={`text-2xl ${
-                pathname.includes(item.path) ? 'font-bold ' : ''
+                pathname.includes(item.path) ? "font-bold " : ""
               }`}
             >
               {item.title}
             </span>
             <div
               className={`${
-                subMenuOpen && 'rotate-180'
+                subMenuOpen && "rotate-180"
               } duration-500 ease-in-out`}
             >
               <FaChevronDown className="text-base" />
@@ -184,7 +184,7 @@ const MenuItemWithSubMenu = ({ item, toggleOpen, isOpen }) => {
                     href={subItem.path}
                     onClick={() => toggleOpen()}
                     className={`text-xl ${
-                      subItem.path === pathname ? 'font-bold' : ''
+                      subItem.path === pathname ? "font-bold" : ""
                     }`}
                   >
                     {subItem.title}

@@ -1,12 +1,12 @@
-import Link from 'next/link';
-import React from 'react';
+import Link from "next/link";
+import React from "react";
 
 const NoAutorizadoPage = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
       <div
         className={
-          'bg-white h-[80vh] flex items-center justify-center text-center mx-auto'
+          "bg-background h-[80vh] flex items-center justify-center text-center mx-auto"
         }
       >
         <div>
@@ -16,7 +16,7 @@ const NoAutorizadoPage = () => {
           </h3>
           <p className="text-lg">Explorando nuestros productos.</p>
           <div className="flex items-center gap-x-5 justify-center mt-10">
-            <Link href={'/tienda'}>
+            <Link href={"/tienda"}>
               <button className="bg-black text-slate-100 w-44 h-12 rounded-full text-base font-semibold hover:bg-gray-100 hover:text-slate-900 duration-500">
                 Ir a Tienda
               </button>

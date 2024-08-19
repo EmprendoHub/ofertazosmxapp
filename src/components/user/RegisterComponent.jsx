@@ -1,76 +1,76 @@
-'use client';
-import React, { useEffect, useState } from 'react';
-import { signIn, useSession } from 'next-auth/react';
-import { toast } from 'react-toastify';
-import { IoLogoGoogle } from 'react-icons/io';
-import { useRouter } from 'next/navigation';
-import WhiteLogoComponent from '../logos/WhiteLogoComponent';
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
-import { isValidEmail, isValidPhone } from '@/backend/helpers';
+"use client";
+import React, { useEffect, useState } from "react";
+import { signIn, useSession } from "next-auth/react";
+import { toast } from "react-toastify";
+import { IoLogoGoogle } from "react-icons/io";
+import { useRouter } from "next/navigation";
+import WhiteLogoComponent from "../logos/WhiteLogoComponent";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { isValidEmail, isValidPhone } from "@/backend/helpers";
 
 const RegisterFormComponent = ({ cookie }) => {
-  const [notification, setNotification] = useState('');
+  const [notification, setNotification] = useState("");
   const { executeRecaptcha } = useGoogleReCaptcha();
   const router = useRouter();
   const session = useSession();
 
   useEffect(() => {
-    if (session?.status === 'authenticated') {
-      router.replace('/');
+    if (session?.status === "authenticated") {
+      router.replace("/");
     }
   }, [session, router]);
 
-  const [honeypot, setHoneypot] = useState('');
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [honeypot, setHoneypot] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (username === '') {
-      toast.error('Por favor complete el nombre de usuario para registrarse.');
+    if (username === "") {
+      toast.error("Por favor complete el nombre de usuario para registrarse.");
       return;
     }
 
-    if (email === '') {
-      toast.error('Por favor agregue su correo electrónico para registrarse.');
+    if (email === "") {
+      toast.error("Por favor agregue su correo electrónico para registrarse.");
       return;
     }
 
     if (!isValidEmail(email)) {
-      toast.error('Utilice un correo electrónico válido.');
+      toast.error("Utilice un correo electrónico válido.");
       return;
     }
 
     if (!isValidPhone(phone)) {
-      toast.error('Utilice un teléfono válido.');
+      toast.error("Utilice un teléfono válido.");
       return;
     }
 
     if (!password || password.length < 8) {
-      toast.error('La contraseña debe tener al menos 8 caracteres');
+      toast.error("La contraseña debe tener al menos 8 caracteres");
       return;
     }
 
     if (!executeRecaptcha) {
-      console.log('Execute recaptcha not available yet');
+      console.log("Execute recaptcha not available yet");
       setNotification(
-        'Execute recaptcha not available yet likely meaning key not recaptcha key not set'
+        "Execute recaptcha not available yet likely meaning key not recaptcha key not set"
       );
       return;
     }
 
-    executeRecaptcha('enquiryFormSubmit').then(async (gReCaptchaToken) => {
+    executeRecaptcha("enquiryFormSubmit").then(async (gReCaptchaToken) => {
       try {
         const res = await fetch(`/api/register`, {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Cookie: cookie,
           },
-          method: 'POST',
+          method: "POST",
           body: JSON.stringify({
             username,
             phone,
@@ -89,12 +89,12 @@ const RegisterFormComponent = ({ cookie }) => {
 
         if (res.status === 400) {
           toast.warning(
-            'Este correo electrónico y/o el teléfono ya esta en uso'
+            "Este correo electrónico y/o el teléfono ya esta en uso"
           );
-          setError('Este correo electrónico y/o el teléfono ya esta en uso');
+          setError("Este correo electrónico y/o el teléfono ya esta en uso");
         }
         if (res.ok) {
-          toast.success('Se registró exitosamente al usuario');
+          toast.success("Se registró exitosamente al usuario");
           signIn();
           return;
         }
@@ -105,19 +105,19 @@ const RegisterFormComponent = ({ cookie }) => {
   };
 
   const handlePhoneChange = (e) => {
-    const inputPhone = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
-    let formattedPhone = '';
+    const inputPhone = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+    let formattedPhone = "";
 
     if (inputPhone.length <= 10) {
       formattedPhone = inputPhone.replace(
         /(\d{3})(\d{0,3})(\d{0,4})/,
-        '$1$2$3'
+        "$1$2$3"
       );
     } else {
       // If the phone number exceeds 10 digits, truncate it
       formattedPhone = inputPhone
         .slice(0, 10)
-        .replace(/(\d{3})(\d{0,3})(\d{0,4})/, '$1 $2 $3');
+        .replace(/(\d{3})(\d{0,3})(\d{0,4})/, "$1 $2 $3");
     }
 
     setPhone(formattedPhone);
@@ -127,15 +127,15 @@ const RegisterFormComponent = ({ cookie }) => {
     <main className="flex min-h-screen maxsm:min-h-[70vh] flex-col items-center justify-center">
       <div className="w-fit flex flex-col items-center bg-slate-200 maxsm:p-8 p-20 shadow-xl text-center mx-auto">
         {/* <LogoComponent /> */}
-        <WhiteLogoComponent className={'ml-5 mt-4 w-[200px] maxsm:w-[120px]'} />
-        <h2 className="my-4 text-black font-bold font-EB_Garamond text-2xl">
+        <WhiteLogoComponent className={"ml-5 mt-4 w-[200px] maxsm:w-[120px]"} />
+        <h2 className="my-4 text-foreground font-bold font-EB_Garamond text-2xl">
           Registro Nuevo
         </h2>
         <button
-          className="w-full hover:text-black hover:bg-slate-300 duration-500 ease-in-out text-white bg-black mb-4 flex flex-row gap-4
+          className="w-full hover:text-foreground hover:bg-slate-300 duration-500 ease-in-out text-white bg-black mb-4 flex flex-row gap-4
             items-center py-4 justify-center"
           onClick={() => {
-            signIn('google');
+            signIn("google");
           }}
         >
           <IoLogoGoogle />
@@ -143,7 +143,7 @@ const RegisterFormComponent = ({ cookie }) => {
         </button>
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col justify-center items-center text-center gap-y-4 text-black"
+          className="flex flex-col justify-center items-center text-center gap-y-4 text-foreground"
         >
           <input
             className="text-center py-2"
@@ -180,12 +180,12 @@ const RegisterFormComponent = ({ cookie }) => {
           />
           <button
             type="submit"
-            className={`bg-black text-white py-2 px-8 text-xl hover:bg-slate-200 hover:text-black ease-in-out duration-700 rounded-md`}
+            className={`bg-black text-white py-2 px-8 text-xl hover:bg-slate-200 hover:text-foreground ease-in-out duration-700 rounded-md`}
           >
             Registrarme
           </button>
         </form>
-        <button className={`text-black mt-3`} onClick={() => signIn()}>
+        <button className={`text-foreground mt-3`} onClick={() => signIn()}>
           ¿Ya tienes cuenta? <br /> Iniciar Session
         </button>
       </div>

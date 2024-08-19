@@ -1,9 +1,9 @@
-'use client';
-import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+"use client";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 const Search = ({ SetIsActive }) => {
-  const [keyword, setKeyword] = useState('');
+  const [keyword, setKeyword] = useState("");
   const router = useRouter();
   const submitHandler = (e) => {
     e.preventDefault();
@@ -11,7 +11,7 @@ const Search = ({ SetIsActive }) => {
     if (keyword) {
       router.push(`/tienda/?keyword=${keyword}`);
     } else {
-      router.push('/tienda');
+      router.push("/tienda");
     }
   };
   return (
@@ -20,7 +20,7 @@ const Search = ({ SetIsActive }) => {
       className="flex flex-col gap-3 items-center w-auto "
     >
       <input
-        className="flex-grow text-black appearance-none border border-gray-200 bg-gray-100 rounded-md mr-2 py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-[95%]"
+        className="flex-grow text-foreground appearance-none border border-gray-200 bg-gray-100 rounded-md mr-2 py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-[95%]"
         type="text"
         placeholder="Palabra clave"
         value={keyword}

@@ -1,11 +1,11 @@
-'use client';
-import React from 'react';
-import Link from 'next/link';
-import { signOut } from 'next-auth/react';
-import { FaUser, FaRegAddressCard, FaUserEdit } from 'react-icons/fa';
-import { RiLockPasswordLine, RiLogoutCircleRFill } from 'react-icons/ri';
-import { FaListCheck } from 'react-icons/fa6';
-import { MdOutlineAddHomeWork } from 'react-icons/md';
+"use client";
+import React from "react";
+import Link from "next/link";
+import { signOut } from "next-auth/react";
+import { FaUser, FaRegAddressCard, FaUserEdit } from "react-icons/fa";
+import { RiLockPasswordLine, RiLogoutCircleRFill } from "react-icons/ri";
+import { FaListCheck } from "react-icons/fa6";
+import { MdOutlineAddHomeWork } from "react-icons/md";
 
 const Sidebar = () => {
   return (
@@ -16,7 +16,7 @@ const Sidebar = () => {
           className="block px-3 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
         >
           <li className="flex flex-row items-center gap-x-3">
-            <FaUser className="text-2xl text-black" />
+            <FaUser className="text-2xl text-foreground" />
 
             <div className="maxmd:hidden">Tu Perfil</div>
           </li>
@@ -26,7 +26,7 @@ const Sidebar = () => {
           className="block px-3 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
         >
           <li className="flex flex-row items-center gap-x-3">
-            <FaListCheck className="text-2xl text-black" />
+            <FaListCheck className="text-2xl text-foreground" />
 
             <div className="maxmd:hidden">Pedidos</div>
           </li>
@@ -36,7 +36,7 @@ const Sidebar = () => {
           className="block px-3 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
         >
           <li className="flex flex-row items-center gap-x-3">
-            <FaListCheck className="text-2xl text-black" />
+            <FaListCheck className="text-2xl text-foreground" />
 
             <div className="maxmd:hidden">Favoritos</div>
           </li>
@@ -46,7 +46,7 @@ const Sidebar = () => {
           className="block px-3 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
         >
           <li className="flex flex-row items-center gap-x-3">
-            <MdOutlineAddHomeWork className="text-2xl text-black" />
+            <MdOutlineAddHomeWork className="text-2xl text-foreground" />
 
             <div className="maxmd:hidden">Nueva Direccion</div>
           </li>
@@ -56,7 +56,7 @@ const Sidebar = () => {
           className="block px-3 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
         >
           <li className="flex flex-row items-center gap-x-3">
-            <FaRegAddressCard className="text-2xl text-black" />
+            <FaRegAddressCard className="text-2xl text-foreground" />
 
             <div className="maxmd:hidden">Direcciones</div>
           </li>
@@ -69,7 +69,7 @@ const Sidebar = () => {
           className="block px-3 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
         >
           <li className="flex flex-row items-center gap-x-3">
-            <FaUserEdit className="text-2xl text-black" />
+            <FaUserEdit className="text-2xl text-foreground" />
 
             <div className="maxmd:hidden">Actualizar Perfil</div>
           </li>
@@ -79,7 +79,7 @@ const Sidebar = () => {
           className="block px-3 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
         >
           <li className="flex flex-row items-center gap-x-3">
-            <RiLockPasswordLine className="text-2xl text-black" />
+            <RiLockPasswordLine className="text-2xl text-foreground" />
 
             <div className="maxmd:hidden">Actualizar Contraseña</div>
           </li>
@@ -90,7 +90,7 @@ const Sidebar = () => {
             className="block px-3 py-2 text-red-800 hover:bg-red-100 hover:text-white-500 rounded-md cursor-pointer flex flex-row items-center gap-x-3"
             onClick={() => signOut()}
           >
-            <RiLogoutCircleRFill className="text-2xl text-black" />
+            <RiLogoutCircleRFill className="text-2xl text-foreground" />
 
             <div className="maxmd:hidden">Cerrar Session</div>
           </div>

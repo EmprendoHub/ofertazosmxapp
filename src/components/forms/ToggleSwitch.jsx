@@ -46,7 +46,7 @@ const ToggleSwitch = ({ label, enabled, setEnabled }) => {
           ></div>
           <div
             className={`dot absolute left-1 top-1  w-6 h-6 rounded-full transition ${
-              enabled ? "translate-x-6 bg-emerald-700" : "bg-white"
+              enabled ? "translate-x-6 bg-emerald-700" : "bg-background"
             }`}
           >
             <div className="h-full w-full flex items-center justify-center">

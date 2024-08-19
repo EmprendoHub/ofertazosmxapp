@@ -1,14 +1,14 @@
-'use client';
-import { motion } from 'framer-motion';
+"use client";
+import { motion } from "framer-motion";
 
-const TextRightMotion = ({ title, subtitle, className = '' }) => {
+const TextRightMotion = ({ title, subtitle, className = "" }) => {
   return (
     <div className={`${className} `}>
       <motion.h2
         initial={{ x: -50, opacity: 0 }}
         whileInView={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className=" mb-2 text-5xl maxlg:text-3xl font-black uppercase pb-3 text-black font-EB_Garamond"
+        className=" mb-2 text-5xl maxlg:text-3xl font-black uppercase pb-3 text-foreground font-EB_Garamond"
       >
         {title}
       </motion.h2>

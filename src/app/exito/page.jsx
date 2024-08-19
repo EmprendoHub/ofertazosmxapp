@@ -37,7 +37,7 @@ const SuccessPage = async ({ searchParams }) => {
     <>
       <div
         className={
-          "bg-white h-[80vh] flex items-center justify-center text-center mx-auto"
+          "bg-background h-[80vh] flex items-center justify-center text-center mx-auto"
         }
       >
         {isVerified ? (
@@ -55,12 +55,12 @@ const SuccessPage = async ({ searchParams }) => {
             </p>
             <div className="flex maxsm:flex-col gap-4 items-center gap-x-5 justify-center mt-10">
               <Link href={"/iniciar"}>
-                <button className="bg-black text-slate-100 hover:text-black w-44 h-12 rounded-full text-base font-semibold hover:bg-gray-200 duration-500">
+                <button className="bg-black text-slate-100 hover:text-foreground w-44 h-12 rounded-full text-base font-semibold hover:bg-gray-200 duration-500">
                   iniciar tu session.
                 </button>
               </Link>
               <Link href={"/tienda"}>
-                <button className="bg-black text-slate-100 hover:text-black w-44 h-12 rounded-full text-base font-semibold hover:bg-gray-200 duration-500">
+                <button className="bg-black text-slate-100 hover:text-foreground w-44 h-12 rounded-full text-base font-semibold hover:bg-gray-200 duration-500">
                   Explorar Tienda
                 </button>
               </Link>

@@ -1,17 +1,17 @@
-'use client';
-import React from 'react';
-import Link from 'next/link';
-import BreadCrumbs from '../layout/BreadCrumbs';
-import PaymentForm from './PaymentForm';
-import { addUser, addShippingInfo } from '@/redux/shoppingSlice';
-import { useDispatch } from 'react-redux';
-import { useSession } from 'next-auth/react';
+"use client";
+import React from "react";
+import Link from "next/link";
+import BreadCrumbs from "../layout/BreadCrumbs";
+import PaymentForm from "./PaymentForm";
+import { addUser, addShippingInfo } from "@/redux/shoppingSlice";
+import { useDispatch } from "react-redux";
+import { useSession } from "next-auth/react";
 
 const Shipping = ({ addresses }) => {
   const breadCrumbs = [
     {
-      name: 'Tienda',
-      url: '/tienda',
+      name: "Tienda",
+      url: "/tienda",
     },
     {
       name: `carrito`,
@@ -27,7 +27,7 @@ const Shipping = ({ addresses }) => {
   function handleClick(radio, selectedAddress) {
     if (radio.checked === false) {
       //delete filter
-      console.log('deleted');
+      console.log("deleted");
     } else {
       //set query filter
       const user = {
@@ -47,7 +47,7 @@ const Shipping = ({ addresses }) => {
         <div className=" max-w-screen-xl mx-auto px-4">
           <div className="flex maxsm:flex-col flex-row gap-4 lg:gap-8">
             <main className="md:w-2/3">
-              <article className="border border-gray-200 bg-white shadow-sm rounded p-4 lg:p-6 mb-5">
+              <article className="border border-gray-200 bg-background shadow-sm rounded p-4 lg:p-6 mb-5">
                 <h2 className="text-xl font-semibold mb-5">
                   Información de Envió
                 </h2>
@@ -69,7 +69,7 @@ const Shipping = ({ addresses }) => {
                       <p className="ml-2">
                         <span>{address?.street}</span>
                         <small className="block text-sm text-gray-400">
-                          {address?.city}, {address?.province},{' '}
+                          {address?.city}, {address?.province},{" "}
                           {address?.zip_code}
                           <br />
                           {address?.country}
@@ -90,7 +90,7 @@ const Shipping = ({ addresses }) => {
               </article>
             </main>
             <aside className="md:w-1/4">
-              <article className="border border-gray-200 bg-white shadow-sm rounded mb-5 p-1">
+              <article className="border border-gray-200 bg-background shadow-sm rounded mb-5 p-1">
                 <PaymentForm />
               </article>
             </aside>

@@ -197,7 +197,7 @@ const AllClientsComponent = ({ clients, filteredClientsCount }) => {
                   <div>
                     <Link
                       href={`/admin/cliente/${client._id}`}
-                      className="px-2 py-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
+                      className="px-2 py-2 inline-block text-white hover:text-foreground bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
                     >
                       <FaPencilAlt className="" />
                     </Link>
@@ -208,7 +208,7 @@ const AllClientsComponent = ({ clients, filteredClientsCount }) => {
                         onClick={() =>
                           deactivateHandler(client._id, client?.active)
                         }
-                        className="px-2 py-2 inline-block text-white hover:text-black bg-slate-400 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
+                        className="px-2 py-2 inline-block text-white hover:text-foreground bg-slate-400 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
                       >
                         <TiCancel className="" />
                       </button>
@@ -217,7 +217,7 @@ const AllClientsComponent = ({ clients, filteredClientsCount }) => {
                         onClick={() =>
                           deactivateHandler(client._id, client?.active)
                         }
-                        className="px-2 py-2 inline-block text-green-800 hover:text-black bg-slate-200 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
+                        className="px-2 py-2 inline-block text-green-800 hover:text-foreground bg-slate-200 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
                       >
                         <FaCheck className="" />
                       </button>

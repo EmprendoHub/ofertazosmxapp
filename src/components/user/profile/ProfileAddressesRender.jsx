@@ -1,27 +1,27 @@
-'use client';
-import Link from 'next/link';
-import { AiTwotoneHome } from 'react-icons/ai';
-import Swal from 'sweetalert2';
-import { FaPencilAlt, FaTrash } from 'react-icons/fa';
-import { deleteAddress } from '@/app/_actions';
+"use client";
+import Link from "next/link";
+import { AiTwotoneHome } from "react-icons/ai";
+import Swal from "sweetalert2";
+import { FaPencilAlt, FaTrash } from "react-icons/fa";
+import { deleteAddress } from "@/app/_actions";
 
 const ProfileAddressesRender = ({ addresses }) => {
   const deleteHandler = (address_id) => {
     Swal.fire({
-      title: 'Estas seguro(a)?',
-      text: '¡No podrás revertir esta acción!',
-      icon: 'warning',
+      title: "Estas seguro(a)?",
+      text: "¡No podrás revertir esta acción!",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#000',
-      confirmButtonText: '¡Sí, eliminar!',
-      cancelButtonText: 'No, cancelar!',
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#000",
+      confirmButtonText: "¡Sí, eliminar!",
+      cancelButtonText: "No, cancelar!",
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
-          title: 'Eliminado!',
-          text: 'El Domicilio ha sido eliminado.',
-          icon: 'success',
+          title: "Eliminado!",
+          text: "El Domicilio ha sido eliminado.",
+          icon: "success",
         });
         deleteAddress(address_id);
       }
@@ -48,14 +48,14 @@ const ProfileAddressesRender = ({ addresses }) => {
               <div className="mb-5 gap-4">
                 <figure className="w-full flex align-center bg-gray-100 p-4 rounded-md cursor-pointer">
                   <div className="mr-3">
-                    <span className="flex items-center justify-center text-black w-12 h-12 bg-white rounded-full shadow mt-2">
-                      <AiTwotoneHome className=" text-black" />
+                    <span className="flex items-center justify-center text-foreground w-12 h-12 bg-background rounded-full shadow mt-2">
+                      <AiTwotoneHome className=" text-foreground" />
                     </span>
                   </div>
                   <figcaption className="text-gray-600">
                     <p>
                       {address?.street}
-                      <br /> {address?.city}, {address?.province},{' '}
+                      <br /> {address?.city}, {address?.province},{" "}
                       {address?.zip_code}, {address?.country}
                       <br />
                       Tel: {address?.phone}

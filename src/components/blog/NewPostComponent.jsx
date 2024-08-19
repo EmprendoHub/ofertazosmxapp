@@ -1,11 +1,11 @@
-'use client';
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import Image from 'next/image';
-import { useDropzone } from 'react-dropzone';
-import { FaWindowClose, FaArrowUp } from 'react-icons/fa';
-import { cstDateTimeClient } from '@/backend/helpers';
+"use client";
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import Image from "next/image";
+import { useDropzone } from "react-dropzone";
+import { FaWindowClose, FaArrowUp } from "react-icons/fa";
+import { cstDateTimeClient } from "@/backend/helpers";
 //import { addPost } from '@/app/_actions';
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 const NewPostComponent = () => {
   const router = useRouter();
@@ -13,16 +13,16 @@ const NewPostComponent = () => {
   const [files, setFiles] = useState([]);
   const [rejected, setRejected] = useState([]);
   const available_categories = [
-    'Moda',
-    'Estilo',
-    'Tendencias',
-    'Esenciales',
-    'Salud',
+    "Moda",
+    "Estilo",
+    "Tendencias",
+    "Esenciales",
+    "Salud",
   ];
-  const [title, setTitle] = useState('');
-  const [summary, setSummary] = useState('');
-  const [content, setContent] = useState('');
-  const [category, setCategory] = useState('Moda');
+  const [title, setTitle] = useState("");
+  const [summary, setSummary] = useState("");
+  const [content, setContent] = useState("");
+  const [category, setCategory] = useState("Moda");
   const [createdAt, setCreatedAt] = useState(
     cstDateTimeClient().toLocaleString()
   );
@@ -46,7 +46,7 @@ const NewPostComponent = () => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
-      'image/*': [],
+      "image/*": [],
     },
     maxSize: 1024 * 1000,
     maxFiles: 3,
@@ -74,25 +74,25 @@ const NewPostComponent = () => {
   async function action() {
     const file = files[0];
     if (!file) {
-      const noFileError = { images: { _errors: ['Se requiere una imagen '] } };
+      const noFileError = { images: { _errors: ["Se requiere una imagen "] } };
       setValidationError(noFileError);
       return;
     }
     if (!title) {
-      const noTitleError = { title: { _errors: ['Se requiere un titulo '] } };
+      const noTitleError = { title: { _errors: ["Se requiere un titulo "] } };
       setValidationError(noTitleError);
       return;
     }
     if (!content) {
       const noContentError = {
-        content: { _errors: ['Se requiere contenido '] },
+        content: { _errors: ["Se requiere contenido "] },
       };
       setValidationError(noContentError);
       return;
     }
     if (!summary) {
       const noSummaryError = {
-        summary: { _errors: ['Se requiere un resumen breve '] },
+        summary: { _errors: ["Se requiere un resumen breve "] },
       };
       setValidationError(noSummaryError);
       return;
@@ -100,13 +100,13 @@ const NewPostComponent = () => {
 
     const imageFormData = new FormData();
     files.forEach((file) => {
-      imageFormData.append('images', file);
+      imageFormData.append("images", file);
     });
     const endpoint = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/minio`;
     const data = await fetch(endpoint, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        Type: 'posts',
+        Type: "posts",
       },
       body: imageFormData,
     }).then((res) => res.json());
@@ -117,12 +117,12 @@ const NewPostComponent = () => {
     });
 
     const formData = new FormData();
-    formData.append('title', title);
-    formData.append('content', content);
-    formData.append('category', category);
-    formData.append('summary', summary);
-    formData.append('images', JSON.stringify(images));
-    formData.append('createdAt', createdAt);
+    formData.append("title", title);
+    formData.append("content", content);
+    formData.append("category", category);
+    formData.append("summary", summary);
+    formData.append("images", JSON.stringify(images));
+    formData.append("createdAt", createdAt);
     // write to database using server actions
 
     //const result = await addPost(formData);
@@ -132,7 +132,7 @@ const NewPostComponent = () => {
       setValidationError(null);
       //reset the form
       formRef.current.reset();
-      router.push('/admin/blog');
+      router.push("/admin/blog");
     }
   }
   const handleCategoryChange = async (e) => {
@@ -142,7 +142,7 @@ const NewPostComponent = () => {
   return (
     <main className="w-full pl-4 maxsm:pl-0">
       <section className="w-full ">
-        <h1 className="text-xl maxmd:text-3xl font-semibold text-black mb-8">
+        <h1 className="text-xl maxmd:text-3xl font-semibold text-foreground mb-8">
           Crear Nueva Publicación
         </h1>
 
@@ -160,7 +160,7 @@ const NewPostComponent = () => {
               />
               {validationError?.title && (
                 <p className="text-sm text-red-400">
-                  {validationError.title._errors.join(', ')}
+                  {validationError.title._errors.join(", ")}
                 </p>
               )}
             </div>
@@ -176,7 +176,7 @@ const NewPostComponent = () => {
               ></textarea>
               {validationError?.content && (
                 <p className="text-sm text-red-400">
-                  {validationError.content._errors.join(', ')}
+                  {validationError.content._errors.join(", ")}
                 </p>
               )}
             </div>
@@ -192,7 +192,7 @@ const NewPostComponent = () => {
               />
               {validationError?.summary && (
                 <p className="text-sm text-red-400">
-                  {validationError.summary._errors.join(', ')}
+                  {validationError.summary._errors.join(", ")}
                 </p>
               )}
             </div>
@@ -215,7 +215,7 @@ const NewPostComponent = () => {
                 </select>
                 {validationError?.category && (
                   <p className="text-sm text-red-400">
-                    {validationError.category._errors.join(', ')}
+                    {validationError.category._errors.join(", ")}
                   </p>
                 )}
                 <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
@@ -233,7 +233,7 @@ const NewPostComponent = () => {
           </div>
 
           <div {...getRootProps({})}>
-            <input {...getInputProps({ name: 'file' })} />
+            <input {...getInputProps({ name: "file" })} />
 
             <div className="flex flex-col items-center justify-center gap-4 min-h-44">
               <FaArrowUp className="h-5 w-5 fill-current" />
@@ -247,7 +247,7 @@ const NewPostComponent = () => {
               )}
               {validationError?.images && (
                 <p className="text-sm text-red-400">
-                  {validationError.images._errors.join(', ')}
+                  {validationError.images._errors.join(", ")}
                 </p>
               )}
             </div>
@@ -287,7 +287,7 @@ const NewPostComponent = () => {
                   />
                   <button
                     type="button"
-                    className="absolute -right-3 -top-3 flex h-7 w-7 items-center justify-center rounded-full border border-rose-400 bg-rose-400 transition-colors hover:bg-white"
+                    className="absolute -right-3 -top-3 flex h-7 w-7 items-center justify-center rounded-full border border-rose-400 bg-rose-400 transition-colors hover:bg-background"
                     onClick={() => removeFile(file.name)}
                   >
                     <FaWindowClose className="h-5 w-5 fill-white transition-colors hover:fill-rose-400" />

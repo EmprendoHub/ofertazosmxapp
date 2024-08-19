@@ -20,9 +20,9 @@ const UnderConstruction = () => {
         className={"grayscale absolute bottom-0 z-10"}
       />
 
-      <div className="h-full flex flex-wrap bg-gray-300 w-1/2 absolute bottom-0 right-0 z-0" />
+      <div className="h-full flex flex-wrap bg-black bg-opacity-300 w-1/2 absolute bottom-0 right-0 z-0" />
       {/* overlay */}
-      <div className="min-h-[100%] absolute z-[1] min-w-[100%] top-0 left-0 bg-black bg-opacity-30" />
+      <div className="min-h-[100%] absolute z-[1] min-w-[100%] top-0 left-0 bg-red-600 bg-opacity-30" />
     </div>
   );
 };

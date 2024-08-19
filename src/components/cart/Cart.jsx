@@ -62,7 +62,7 @@ const Cart = () => {
 
       {productsData?.length > 0 && (
         <section className="pb-10 bg-gray-100">
-          <div className="container max-w-screen-xl mx-auto bg-white p-5">
+          <div className="container max-w-screen-xl mx-auto bg-background p-5">
             <div className="flex flex-col md:flex-row gap-4">
               <main className="md:w-3/4">
                 {/* Items */}
@@ -94,7 +94,7 @@ const Cart = () => {
                           </figure>
                         </div>
                         <div className="w-24">
-                          <div className="flex items-center text-lg text-black  w-20 justify-between">
+                          <div className="flex items-center text-lg text-foreground  w-20 justify-between">
                             <span
                               onClick={() =>
                                 dispatch(decreaseQuantity(cartItem))
@@ -143,7 +143,7 @@ const Cart = () => {
                 </article>
               </main>
               <aside className="md:w-1/4">
-                <article className="border border-gray-200 bg-white shadow-sm rounded mb-5 p-1">
+                <article className="border border-gray-200 bg-background shadow-sm rounded mb-5 p-1">
                   <CheckOutForm />
                 </article>
               </aside>

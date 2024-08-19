@@ -150,7 +150,7 @@ const AllPOSProductsComp = ({ products, filteredProductsCount }) => {
                 <td className="w-full px-6 maxsm:px-0 py-0 relative">
                   <span
                     onClick={() => handleCheckBox(product)}
-                    className="relative flex items-center justify-center text-black w-20 h-20 maxsm:w-8 maxsm:h-8 shadow mt-2 overflow-hidden cursor-pointer"
+                    className="relative flex items-center justify-center text-foreground w-20 h-20 maxsm:w-8 maxsm:h-8 shadow mt-2 overflow-hidden cursor-pointer"
                   >
                     <Image
                       src={product?.images[0].url}

@@ -1,16 +1,16 @@
-'use client';
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AiOutlineClose } from 'react-icons/ai';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+"use client";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AiOutlineClose } from "react-icons/ai";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import {
   decreaseQuantity,
   deleteProduct,
   increaseQuantity,
-} from '@/redux/shoppingSlice';
-import { toast } from 'react-toastify';
-import FormattedPrice from '@/backend/helpers/FormattedPrice';
-import Image from 'next/image';
+} from "@/redux/shoppingSlice";
+import { toast } from "react-toastify";
+import FormattedPrice from "@/backend/helpers/FormattedPrice";
+import Image from "next/image";
 
 const CartItem = () => {
   const { productsData } = useSelector((state) => state?.compras);
@@ -18,7 +18,7 @@ const CartItem = () => {
   return (
     <div className="flex flex-col gap-y-2">
       <div className="text-xs font-normal md:hidden inline-flex items-center justify-between   bg-gray-200 py-3 px-5">
-        <p className="text-black w-1/4">Procedimiento</p>
+        <p className="text-foreground w-1/4">Procedimiento</p>
         <p className="flex items-center justify-start w-1/4">
           Deposito Inicial
         </p>
@@ -72,7 +72,7 @@ const CartItem = () => {
             {/* quantity value */}
             <div className="flex  items-center justify-end gap-x-3 border-[1px] border-slate-300 py-2 px-4 w-auto">
               <p className="">Cant</p>
-              <div className="flex items-center text-lg text-black  w-20 justify-between">
+              <div className="flex items-center text-lg text-foreground  w-20 justify-between">
                 <span
                   onClick={() => dispatch(decreaseQuantity(item))}
                   className="cursor-pointer"

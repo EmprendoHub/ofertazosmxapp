@@ -1,15 +1,15 @@
-'use client';
-import GoogleCaptchaWrapper from '@/components/forms/GoogleCaptchaWrapper';
-import React, { useState } from 'react';
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+"use client";
+import GoogleCaptchaWrapper from "@/components/forms/GoogleCaptchaWrapper";
+import React, { useState } from "react";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 const SubscribeComponent = ({ cookie, setShowModal }) => {
-  const [notification, setNotification] = useState('');
+  const [notification, setNotification] = useState("");
   const { executeRecaptcha } = useGoogleReCaptcha();
 
-  const [honeypot, setHoneypot] = useState('');
-  const [email, setEmail] = useState('');
-  const [error, setError] = useState('');
+  const [honeypot, setHoneypot] = useState("");
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
 
   const isValidEmail = (email) => {
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -17,31 +17,31 @@ const SubscribeComponent = ({ cookie, setShowModal }) => {
   };
 
   const handleSubmit = async (e) => {
-    setError('');
+    setError("");
     e.preventDefault();
 
-    if (email === '') {
-      setError('Por favor agregue su correo electrónico para registrarse.');
+    if (email === "") {
+      setError("Por favor agregue su correo electrónico para registrarse.");
       return;
     }
 
     if (!isValidEmail(email)) {
-      setError('Utilice un correo electrónico válido.');
+      setError("Utilice un correo electrónico válido.");
       return;
     }
 
     if (!executeRecaptcha) {
-      setNotification('Ejecutar recaptcha aún no está disponible');
+      setNotification("Ejecutar recaptcha aún no está disponible");
       return;
     }
-    executeRecaptcha('enquiryFormSubmit').then(async (gReCaptchaToken) => {
+    executeRecaptcha("enquiryFormSubmit").then(async (gReCaptchaToken) => {
       try {
         const res = await fetch(`/api/subscribe`, {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Cookie: cookie,
           },
-          method: 'POST',
+          method: "POST",
           body: JSON.stringify({
             email,
             recaptcha: gReCaptchaToken,
@@ -56,10 +56,10 @@ const SubscribeComponent = ({ cookie, setShowModal }) => {
         }
 
         if (res.status === 400) {
-          setError('Este correo ya esta suscrito!');
+          setError("Este correo ya esta suscrito!");
         }
         if (res.ok) {
-          setError('El correo quedo suscrito exitosamente');
+          setError("El correo quedo suscrito exitosamente");
           setShowModal(false);
           return;
         }
@@ -72,7 +72,7 @@ const SubscribeComponent = ({ cookie, setShowModal }) => {
     <GoogleCaptchaWrapper>
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col justify-center items-center text-center gap-y-4 text-black"
+        className="flex flex-col justify-center items-center text-center gap-y-4 text-foreground"
       >
         {notification && (
           <p className="text-sm text-blue-600">{notification}</p>
@@ -94,7 +94,7 @@ const SubscribeComponent = ({ cookie, setShowModal }) => {
 
           <button
             type="submit"
-            className={`bg-black text-white py-2 px-8 text-xl hover:bg-slate-200 hover:text-black ease-in-out duration-700 rounded-md`}
+            className={`bg-black text-white py-2 px-8 text-xl hover:bg-slate-200 hover:text-foreground ease-in-out duration-700 rounded-md`}
           >
             Suscribir
           </button>

@@ -1,16 +1,16 @@
-'use client';
-import React, { useContext } from 'react';
-import Link from 'next/link';
-import { IoMdCart, IoMdHeart } from 'react-icons/io';
-import { AiOutlineUser, AiOutlineMail } from 'react-icons/ai';
-import { FiLogOut } from 'react-icons/fi';
-import { useSession, signOut } from 'next-auth/react';
-import { useSelector } from 'react-redux';
-import FormattedPrice from '@/backend/helpers/FormattedPrice';
-import { useState, useEffect } from 'react';
-import AuthContext from '@/context/AuthContext';
-import Image from 'next/image';
-import { IoQrCode } from 'react-icons/io5';
+"use client";
+import React, { useContext } from "react";
+import Link from "next/link";
+import { IoMdCart, IoMdHeart } from "react-icons/io";
+import { AiOutlineUser, AiOutlineMail } from "react-icons/ai";
+import { FiLogOut } from "react-icons/fi";
+import { useSession, signOut } from "next-auth/react";
+import { useSelector } from "react-redux";
+import FormattedPrice from "@/backend/helpers/FormattedPrice";
+import { useState, useEffect } from "react";
+import AuthContext from "@/context/AuthContext";
+import Image from "next/image";
+import { IoQrCode } from "react-icons/io5";
 
 const MiniMenuComponent = () => {
   const { data: session } = useSession();
@@ -43,23 +43,23 @@ const MiniMenuComponent = () => {
         {/* Login/Register */}
         {!session && (
           <Link
-            href={'/iniciar'}
+            href={"/iniciar"}
             className="maxmd:hidden cursor-pointer flex justify-center items-center gap-x-1"
           >
-            <AiOutlineUser className="text-xl text-black hover:scale-110 ease-in-out duration-300" />
+            <AiOutlineUser className="text-xl text-foreground hover:scale-110 ease-in-out duration-300" />
           </Link>
         )}
         {/* Admin */}
-        {isLoggedIn && session?.user.role === 'manager' ? (
+        {isLoggedIn && session?.user.role === "manager" ? (
           <>
-            <Link href={'/admin'}>
+            <Link href={"/admin"}>
               {session?.user?.image ? (
                 <Image
                   className="w-8 h-8 rounded-full "
                   src={
-                    session?.user?.image ? session?.user?.image : '/next.svg'
+                    session?.user?.image ? session?.user?.image : "/next.svg"
                   }
-                  alt={session?.user?.name ? session?.user?.name : 'avatar'}
+                  alt={session?.user?.name ? session?.user?.name : "avatar"}
                   width={50}
                   height={50}
                 />
@@ -70,16 +70,16 @@ const MiniMenuComponent = () => {
               )}
             </Link>
           </>
-        ) : session?.user?.role === 'sucursal' ? (
+        ) : session?.user?.role === "sucursal" ? (
           <>
-            <Link href={'/puntodeventa'}>
+            <Link href={"/puntodeventa"}>
               {session?.user?.image ? (
                 <Image
                   className="w-8 h-8 rounded-full "
                   src={
-                    session?.user?.image ? session?.user?.image : '/next.svg'
+                    session?.user?.image ? session?.user?.image : "/next.svg"
                   }
-                  alt={session?.user?.name ? session?.user?.name : 'avatar'}
+                  alt={session?.user?.name ? session?.user?.name : "avatar"}
                   width={50}
                   height={50}
                 />
@@ -92,14 +92,14 @@ const MiniMenuComponent = () => {
           </>
         ) : (
           <>
-            <Link href={'/perfil'}>
+            <Link href={"/perfil"}>
               {session?.user?.image ? (
                 <Image
                   className="w-8 h-8 rounded-full "
                   src={
-                    session?.user?.image ? session?.user?.image : '/next.svg'
+                    session?.user?.image ? session?.user?.image : "/next.svg"
                   }
-                  alt={session?.user?.name ? session?.user?.name : 'avatar'}
+                  alt={session?.user?.name ? session?.user?.name : "avatar"}
                   width={50}
                   height={50}
                 />
@@ -114,52 +114,52 @@ const MiniMenuComponent = () => {
 
         {/* Cart Button */}
         {isLoggedIn &&
-        session?.user.role != 'manager' &&
-        session?.user?.role != 'sucursal' ? (
+        session?.user.role != "manager" &&
+        session?.user?.role != "sucursal" ? (
           <div className="flex items-center gap-x-3">
-            <Link href={'/carrito'}>
+            <Link href={"/carrito"}>
               <div className="bg-gray-100 rounded-full text-slate-800  flex items-center justify-center  cursor-pointer">
                 <IoMdCart className="text-xl" />
-                <span className="bg-white text-black rounded-full font-bold text-xs relative  -top-2 flex items-center justify-center w-4 h-5 shadow-xl ">
+                <span className="bg-background text-foreground rounded-full font-bold text-xs relative  -top-2 flex items-center justify-center w-4 h-5 shadow-xl ">
                   {productsData ? productsData?.length : 0}
                 </span>
               </div>
             </Link>
           </div>
         ) : (
-          ''
+          ""
         )}
-        {isLoggedIn && session.user.role === 'sucursal' ? (
-          <Link href={'/puntodeventa/qr/generador'}>
+        {isLoggedIn && session.user.role === "sucursal" ? (
+          <Link href={"/puntodeventa/qr/generador"}>
             <div className="  flex items-center justify-center  ease-in-out duration-300 cursor-pointer">
               <IoQrCode className="text-xl" />
-              <span className="bg-white text-black rounded-full font-bold text-xs relative  -top-2 flex items-center justify-center w-4 h-5 shadow-xl ">
+              <span className="bg-background text-foreground rounded-full font-bold text-xs relative  -top-2 flex items-center justify-center w-4 h-5 shadow-xl ">
                 {qrListData ? qrListData?.length : 0}
               </span>
             </div>
           </Link>
         ) : (
-          <Link href={'/perfil/favoritos'}>
+          <Link href={"/perfil/favoritos"}>
             <div className="  flex items-center justify-center  ease-in-out duration-300 cursor-pointer">
               <IoMdHeart className="text-xl" />
-              <span className="bg-white text-black rounded-full font-bold text-xs relative  -top-2 flex items-center justify-center w-4 h-5 shadow-xl ">
+              <span className="bg-background text-foreground rounded-full font-bold text-xs relative  -top-2 flex items-center justify-center w-4 h-5 shadow-xl ">
                 {favoritesData ? favoritesData?.length : 0}
               </span>
             </div>
           </Link>
         )}
         {/*  Emails Button */}
-        {isLoggedIn && session?.user.role === 'manager' ? (
-          <Link href={'/admin/correos'}>
-            <div className="bg-gray-100 hover:bg-slate-100 rounded-full text-slate-800 hover:text-black relative flex items-center justify-center gap-x-1  border-[1px]  border-gray-100  ease-in-out duration-300 cursor-pointer">
+        {isLoggedIn && session?.user.role === "manager" ? (
+          <Link href={"/admin/correos"}>
+            <div className="bg-gray-100 hover:bg-slate-100 rounded-full text-slate-800 hover:text-foreground relative flex items-center justify-center gap-x-1  border-[1px]  border-gray-100  ease-in-out duration-300 cursor-pointer">
               <AiOutlineMail className="text-2xl absolute" />
-              <span className="bg-white text-black rounded-full font-bold text-xs relative -right-2 -top-2 flex items-center justify-center w-3 h-3 shadow-xl ">
+              <span className="bg-background text-foreground rounded-full font-bold text-xs relative -right-2 -top-2 flex items-center justify-center w-3 h-3 shadow-xl ">
                 {emailListData ? emailListData?.length : 0}
               </span>
             </div>
           </Link>
         ) : (
-          ''
+          ""
         )}
 
         {/** Logout Button */}
@@ -168,7 +168,7 @@ const MiniMenuComponent = () => {
             onClick={() => signOut()}
             className="maxmd:hidden cursor-pointer flex justify-center items-center gap-x-1 "
           >
-            <FiLogOut className="text-xl flex text-black" />
+            <FiLogOut className="text-xl flex text-foreground" />
           </div>
         )}
       </nav>

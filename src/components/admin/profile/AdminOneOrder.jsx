@@ -142,7 +142,7 @@ const AdminOneOrder = ({
               </tr>
             </thead>
             <tbody>
-              <tr className="bg-white flex flex-row maxsm:flex-col">
+              <tr className="bg-background flex flex-row maxsm:flex-col">
                 <td className="w-1/6 maxsm:w-full px-6 py-2">
                   {deliveryAddress?.street}
                 </td>
@@ -204,7 +204,7 @@ const AdminOneOrder = ({
           </thead>
           <tbody>
             {order?.orderItems?.map((item, index) => (
-              <tr className="bg-white" key={index}>
+              <tr className="bg-background" key={index}>
                 <td className="px-2 maxsm:px-0 py-2">
                   {item.name.substring(0, 13)}...
                 </td>
@@ -233,7 +233,7 @@ const AdminOneOrder = ({
       </div>
       <div className="relative flex flex-row maxmd:flex-col-reverse items-start justify-start overflow-x-auto shadow-md p-5 maxmd:p-1 gap-12">
         <div className="w-1/3 maxmd:w-full">
-          <div className=" max-w-screen-xl mx-auto bg-white flex flex-col p-2">
+          <div className=" max-w-screen-xl mx-auto bg-background flex flex-col p-2">
             <h2 className="text-2xl">Totales</h2>
             {order?.orderStatus === "Apartado" ? (
               <ul className="mb-5">
@@ -339,7 +339,7 @@ const AdminOneOrder = ({
               <tbody>
                 {orderPayments?.map((payment) => (
                   <tr
-                    className="bg-white flex flex-row justify-between "
+                    className="bg-background flex flex-row justify-between "
                     key={payment?._id}
                   >
                     <td className="px-2 maxsm:px-0 py-2 w-full">

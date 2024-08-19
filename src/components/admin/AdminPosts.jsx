@@ -64,14 +64,14 @@ const AdminPosts = ({ posts }) => {
           </thead>
           <tbody>
             {posts?.map((post, index) => (
-              <tr className="bg-white" key={index}>
+              <tr className="bg-background" key={index}>
                 <td className="px-6 maxsm:px-2 py-2 maxmd:hidden">
                   <Link key={index} href={`/admin/blog/editar/${post.slug}`}>
                     {post._id}
                   </Link>
                 </td>
                 <td className="px-6 maxsm:px-0 py-2 relative ">
-                  <span className="relative flex items-center justify-center text-black w-12 h-12 maxsm:w-10 maxsm:h-10 shadow mt-2">
+                  <span className="relative flex items-center justify-center text-foreground w-12 h-12 maxsm:w-10 maxsm:h-10 shadow mt-2">
                     <Link key={index} href={`/admin/blog/editar/${post.slug}`}>
                       <Image
                         src={post?.mainImage}
@@ -97,7 +97,7 @@ const AdminPosts = ({ posts }) => {
                   <div>
                     <Link
                       href={`/admin/blog/editar/${post.slug}`}
-                      className="px-2 py-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
+                      className="px-2 py-2 inline-block text-white hover:text-foreground bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
                     >
                       <FaPencilAlt className="maxsm:text-[10px]" />
                     </Link>

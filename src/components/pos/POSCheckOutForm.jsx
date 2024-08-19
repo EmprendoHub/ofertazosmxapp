@@ -32,7 +32,7 @@ const POSCheckOutForm = () => {
 
   return (
     <section className="max-w-full p-2 maxsm:py-7 bg-gray-100">
-      <div className=" mx-auto bg-white flex flex-col justify-between p-2">
+      <div className=" mx-auto bg-background flex flex-col justify-between p-2">
         <h2>Totales</h2>
         <ul className="mb-5">
           <li className="flex justify-between text-gray-600  mb-1">
@@ -70,7 +70,7 @@ const POSCheckOutForm = () => {
             <div className="flex gap-5 w-full">
               <Link
                 href={`${pathname}/caja`}
-                className="text-slate-100 text-center bg-emerald-700 border mt-4 py-3 px-6  hover:bg-slate-200 hover:border-slate-400 hover:border hover:text-black duration-300 ease-in-out cursor-pointer min-w-full"
+                className="text-slate-100 text-center bg-emerald-700 border mt-4 py-3 px-6  hover:bg-slate-200 hover:border-slate-400 hover:border hover:text-foreground duration-300 ease-in-out cursor-pointer min-w-full"
               >
                 Continuar
               </Link>
@@ -78,7 +78,7 @@ const POSCheckOutForm = () => {
 
             <Link
               href={`${pathname}/qr/scanner`}
-              className="px-4 mt-3 py-3 inline-block text-lg w-full text-center font-medium bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 text-white hover:text-black font-EB_Garamond duration-300 ease-in-out"
+              className="px-4 mt-3 py-3 inline-block text-lg w-full text-center font-medium bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 text-white hover:text-foreground font-EB_Garamond duration-300 ease-in-out"
             >
               Escanear mas Productos
             </Link>
@@ -98,7 +98,7 @@ const POSCheckOutForm = () => {
                 </Link>
                 <Link
                   href={`${pathname}/qr/scanner`}
-                  className="px-4 py-3 inline-block text-lg w-full text-center font-medium bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 text-black font-EB_Garamond"
+                  className="px-4 py-3 inline-block text-lg w-full text-center font-medium bg-background shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 text-foreground font-EB_Garamond"
                 >
                   Escanear mas Productos
                 </Link>

@@ -1,20 +1,20 @@
-'use client';
-import React, { useRef, useState } from 'react';
-import AnimationWrapper from '../motions/AnimationWrapper';
-import Image from 'next/image';
-import { cstDateTimeClient } from '@/backend/helpers';
-import { updatePost } from '@/app/_actions';
-import { useRouter } from 'next/navigation';
+"use client";
+import React, { useRef, useState } from "react";
+import AnimationWrapper from "../motions/AnimationWrapper";
+import Image from "next/image";
+import { cstDateTimeClient } from "@/backend/helpers";
+import { updatePost } from "@/app/_actions";
+import { useRouter } from "next/navigation";
 
 const BlogPublishedComponent = ({ post }) => {
   const router = useRouter();
   const formRef = useRef();
   const available_categories = [
-    'Moda',
-    'Estilo',
-    'Tendencias',
-    'Esenciales',
-    'Salud',
+    "Moda",
+    "Estilo",
+    "Tendencias",
+    "Esenciales",
+    "Salud",
   ];
   const [category, setCategory] = useState(post?.category);
   // Main section
@@ -150,7 +150,7 @@ const BlogPublishedComponent = ({ post }) => {
   async function retrieveNewURL(file, cb) {
     const endpoint = `/api/minio`;
     fetch(endpoint, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
         Name: file.name,
       },
@@ -168,7 +168,7 @@ const BlogPublishedComponent = ({ post }) => {
   // to upload this file to S3 at `https://minio.salvawebpro.com:9000` using the URL:
   async function uploadFile(file, url, section) {
     fetch(url, {
-      method: 'PUT',
+      method: "PUT",
       body: file,
     })
       .then(() => {
@@ -176,32 +176,32 @@ const BlogPublishedComponent = ({ post }) => {
         // document.querySelector(
         //   '#status'
         // ).innerHTML += `<br>Uploaded ${file.name}.`;
-        const newUrl = url.split('?');
-        if (section === 'selector') {
+        const newUrl = url.split("?");
+        if (section === "selector") {
           setMainImage(newUrl[0]);
         }
-        if (section === 'sectionTwoSelector') {
+        if (section === "sectionTwoSelector") {
           setSectionTwoImage(newUrl[0]);
         }
-        if (section === 'sectionThreeSelector') {
+        if (section === "sectionThreeSelector") {
           setSectionThreeImage(newUrl[0]);
         }
-        if (section === 'sectionFourSelector') {
+        if (section === "sectionFourSelector") {
           setSectionFourImage(newUrl[0]);
         }
-        if (section === 'sectionFiveSelector') {
+        if (section === "sectionFiveSelector") {
           setSectionFiveImage(newUrl[0]);
         }
-        if (section === 'sectionSixSelectorOne') {
+        if (section === "sectionSixSelectorOne") {
           setSectionSixColOneImage(newUrl[0]);
         }
-        if (section === 'sectionSixSelectorTwo') {
+        if (section === "sectionSixSelectorTwo") {
           setSectionSixColTwoImage(newUrl[0]);
         }
-        if (section === 'sectionSixSelectorThree') {
+        if (section === "sectionSixSelectorThree") {
           setSectionSixColThreeImage(newUrl[0]);
         }
-        if (section === 'sectionSevenSelector') {
+        if (section === "sectionSevenSelector") {
           setSectionSevenImage(newUrl[0]);
         }
       })
@@ -212,16 +212,16 @@ const BlogPublishedComponent = ({ post }) => {
 
   // send form
   async function action() {
-    if (mainImage === '/images/blog_placeholder.jpeg') {
+    if (mainImage === "/images/blog_placeholder.jpeg") {
       const noFileError = {
-        mainImage: { _errors: ['Se requiere una imagen Principal'] },
+        mainImage: { _errors: ["Se requiere una imagen Principal"] },
       };
       setValidationError(noFileError);
       return;
     }
     if (!mainTitle) {
       const noTitleError = {
-        mainTitle: { _errors: ['Se requiere un titulo para el Blog'] },
+        mainTitle: { _errors: ["Se requiere un titulo para el Blog"] },
       };
       setValidationError(noTitleError);
       return;
@@ -229,7 +229,7 @@ const BlogPublishedComponent = ({ post }) => {
     if (!category) {
       const noCategory = {
         category: {
-          _errors: ['Se requiere un titulo para La section 1 el Blog'],
+          _errors: ["Se requiere un titulo para La section 1 el Blog"],
         },
       };
       setValidationError(noCategory);
@@ -237,45 +237,45 @@ const BlogPublishedComponent = ({ post }) => {
     }
 
     const formData = new FormData();
-    formData.append('category', category);
-    formData.append('mainTitle', mainTitle);
-    formData.append('mainImage', mainImage);
-    formData.append('sectionTwoTitle', sectionTwoTitle);
-    formData.append('sectionTwoParagraphOne', sectionTwoParagraphOne);
-    formData.append('sectionTwoParagraphTwo', sectionTwoParagraphTwo);
-    formData.append('sectionThreeTitle', sectionThreeTitle);
-    formData.append('sectionThreeParagraphOne', sectionThreeParagraphOne);
-    formData.append('sectionThreeImage', sectionThreeImage);
-    formData.append('sectionThreeParagraphFooter', sectionThreeParagraphFooter);
-    formData.append('sectionFourTitle', sectionFourTitle);
-    formData.append('sectionFourOptionOne', sectionFourOptionOne);
-    formData.append('sectionFourOptionTwo', sectionFourOptionTwo);
-    formData.append('sectionFourOptionThree', sectionFourOptionThree);
-    formData.append('sectionFourParagraphOne', sectionFourParagraphOne);
-    formData.append('sectionFourImage', sectionFourImage);
-    formData.append('sectionFourParagraphFooter', sectionFourParagraphFooter);
-    formData.append('sectionFiveTitle', sectionFiveTitle);
-    formData.append('sectionFiveImage', sectionFiveImage);
-    formData.append('sectionFiveParagraphOne', sectionFiveParagraphOne);
-    formData.append('sectionFiveParagraphTwo', sectionFiveParagraphTwo);
-    formData.append('sectionSixColOneTitle', sectionSixColOneTitle);
-    formData.append('sectionSixColOneParagraph', sectionSixColOneParagraph);
-    formData.append('sectionSixColOneImage', sectionSixColOneImage);
-    formData.append('sectionSixColTwoTitle', sectionSixColTwoTitle);
-    formData.append('sectionSixColTwoParagraph', sectionSixColTwoParagraph);
-    formData.append('sectionSixColTwoImage', sectionSixColTwoImage);
-    formData.append('sectionSixColThreeTitle', sectionSixColThreeTitle);
-    formData.append('sectionSixColThreeParagraph', sectionSixColThreeParagraph);
-    formData.append('sectionSixColThreeImage', sectionSixColThreeImage);
+    formData.append("category", category);
+    formData.append("mainTitle", mainTitle);
+    formData.append("mainImage", mainImage);
+    formData.append("sectionTwoTitle", sectionTwoTitle);
+    formData.append("sectionTwoParagraphOne", sectionTwoParagraphOne);
+    formData.append("sectionTwoParagraphTwo", sectionTwoParagraphTwo);
+    formData.append("sectionThreeTitle", sectionThreeTitle);
+    formData.append("sectionThreeParagraphOne", sectionThreeParagraphOne);
+    formData.append("sectionThreeImage", sectionThreeImage);
+    formData.append("sectionThreeParagraphFooter", sectionThreeParagraphFooter);
+    formData.append("sectionFourTitle", sectionFourTitle);
+    formData.append("sectionFourOptionOne", sectionFourOptionOne);
+    formData.append("sectionFourOptionTwo", sectionFourOptionTwo);
+    formData.append("sectionFourOptionThree", sectionFourOptionThree);
+    formData.append("sectionFourParagraphOne", sectionFourParagraphOne);
+    formData.append("sectionFourImage", sectionFourImage);
+    formData.append("sectionFourParagraphFooter", sectionFourParagraphFooter);
+    formData.append("sectionFiveTitle", sectionFiveTitle);
+    formData.append("sectionFiveImage", sectionFiveImage);
+    formData.append("sectionFiveParagraphOne", sectionFiveParagraphOne);
+    formData.append("sectionFiveParagraphTwo", sectionFiveParagraphTwo);
+    formData.append("sectionSixColOneTitle", sectionSixColOneTitle);
+    formData.append("sectionSixColOneParagraph", sectionSixColOneParagraph);
+    formData.append("sectionSixColOneImage", sectionSixColOneImage);
+    formData.append("sectionSixColTwoTitle", sectionSixColTwoTitle);
+    formData.append("sectionSixColTwoParagraph", sectionSixColTwoParagraph);
+    formData.append("sectionSixColTwoImage", sectionSixColTwoImage);
+    formData.append("sectionSixColThreeTitle", sectionSixColThreeTitle);
+    formData.append("sectionSixColThreeParagraph", sectionSixColThreeParagraph);
+    formData.append("sectionSixColThreeImage", sectionSixColThreeImage);
     formData.append(
-      'sectionSixColOneParagraphFooter',
+      "sectionSixColOneParagraphFooter",
       sectionSixColOneParagraphFooter
     );
-    formData.append('sectionSevenTitle', sectionSevenTitle);
-    formData.append('sectionSevenImage', sectionSevenImage);
-    formData.append('sectionSevenParagraph', sectionSevenParagraph);
-    formData.append('updatedAt', updatedAt);
-    formData.append('_id', post?._id);
+    formData.append("sectionSevenTitle", sectionSevenTitle);
+    formData.append("sectionSevenImage", sectionSevenImage);
+    formData.append("sectionSevenParagraph", sectionSevenParagraph);
+    formData.append("updatedAt", updatedAt);
+    formData.append("_id", post?._id);
     // write to database using server actions
     const result = await updatePost(formData);
     if (result?.error) {
@@ -284,7 +284,7 @@ const BlogPublishedComponent = ({ post }) => {
       setValidationError(null);
       //reset the form
       formRef.current.reset();
-      router.push('/admin/blog');
+      router.push("/admin/blog");
     }
   }
 
@@ -310,7 +310,7 @@ const BlogPublishedComponent = ({ post }) => {
             </select>
             {validationError?.category && (
               <p className="text-sm text-red-400">
-                {validationError.category._errors.join(', ')}
+                {validationError.category._errors.join(", ")}
               </p>
             )}
             <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
@@ -326,7 +326,7 @@ const BlogPublishedComponent = ({ post }) => {
           </div>
         </div>
         <nav className="mx-auto max-w-[900px] w-full flex flex-row items-center justify-between mb-10">
-          <p className="max-md:hidden text-black line-clamp-1 flex w-full  font-EB_Garamond leading-loose">
+          <p className="max-md:hidden text-foreground line-clamp-1 flex w-full  font-EB_Garamond leading-loose">
             <input
               name="mainTitle"
               value={mainTitle}
@@ -336,7 +336,7 @@ const BlogPublishedComponent = ({ post }) => {
             />
             {validationError?.mainTitle && (
               <p className="text-sm text-red-400">
-                {validationError.mainTitle._errors.join(', ')}
+                {validationError.mainTitle._errors.join(", ")}
               </p>
             )}
           </p>
@@ -360,7 +360,7 @@ const BlogPublishedComponent = ({ post }) => {
           <section>
             <div className="mx-auto max-w-[900px] w-full">
               {/* Section 1 - Title, Image */}
-              <div className="relative aspect-video hover:opacity-80 bg-white border-4 border-gray-300">
+              <div className="relative aspect-video hover:opacity-80 bg-background border-4 border-gray-300">
                 <label htmlFor="selector" className="cursor-pointer">
                   <Image
                     id="blogImage"
@@ -380,7 +380,7 @@ const BlogPublishedComponent = ({ post }) => {
 
                   {validationError?.mainImage && (
                     <p className="text-sm text-red-400">
-                      {validationError.mainImage._errors.join(', ')}
+                      {validationError.mainImage._errors.join(", ")}
                     </p>
                   )}
                 </label>

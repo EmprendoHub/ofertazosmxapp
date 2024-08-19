@@ -1,10 +1,10 @@
-'use client';
-import React from 'react';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import AnimationWrapper from '../motions/AnimationWrapper';
-import ProductCard from '../products/ProductCard';
-import { formatDate } from '@/backend/helpers';
+"use client";
+import React from "react";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import AnimationWrapper from "../motions/AnimationWrapper";
+import ProductCard from "../products/ProductCard";
+import { formatDate } from "@/backend/helpers";
 
 const ViewPostDetails = ({ post, trendingProducts }) => {
   return (
@@ -12,7 +12,7 @@ const ViewPostDetails = ({ post, trendingProducts }) => {
       <aside className="sticky top-20 z-[50] min-h-full w-[450px] flex flex-col items-center justify-center">
         <div className="w-full mx-auto ">
           <p className="text-2xl font-EB_Garamond py-1 font-semibold">
-            {'Productos destacados'}
+            {"Productos destacados"}
           </p>
           <div className="w-full relative ">
             {trendingProducts?.map((product, index) => (
@@ -25,7 +25,7 @@ const ViewPostDetails = ({ post, trendingProducts }) => {
         <div className="w-full">
           {/* Blog Header */}
           <span className="mx-auto max-w-[1200px] w-full flex flex-row items-center justify-between mb-10">
-            <div className="max-md:hidden text-black line-clamp-1 flex w-full  font-EB_Garamond leading-loose">
+            <div className="max-md:hidden text-foreground line-clamp-1 flex w-full  font-EB_Garamond leading-loose">
               <div className="font-bold font-EB_Garamond text-5xl flex flex-row items-center gap-1 w-full">
                 {post?.mainTitle}
               </div>
@@ -36,7 +36,7 @@ const ViewPostDetails = ({ post, trendingProducts }) => {
             <section>
               <div className="mx-auto max-w-[1200px] w-full">
                 {/* Section 1 - Title, Image */}
-                <div className="relative aspect-video bg-white border-4 border-gray-300">
+                <div className="relative aspect-video bg-background border-4 border-gray-300">
                   <Image
                     alt="blogBanner"
                     src={post?.mainImage}

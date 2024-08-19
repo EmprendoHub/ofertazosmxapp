@@ -22,7 +22,7 @@ const BranchSidebar = ({ children }) => {
   console.log(user);
   return (
     <aside className="h-screen print:hidden ">
-      <nav className="h-full flex flex-col bg-white border-r border-r-slate-300 shadow-sm">
+      <nav className="h-full flex flex-col bg-background border-r border-r-slate-300 shadow-sm">
         <div className="p-4 maxmd:p-2 pb-2 flex justify-between maxmd:justify-center items-center">
           <Image
             alt="image"
@@ -116,7 +116,7 @@ export function SideBarItem({ icon, text, active, alert, url, dropdownItems }) {
     <li
       className={`relative flex flex-col items-center py-2 px-3 maxmd:pr-1 my-1 font-medium rounded-md cursor-pointer gap-x-1 transition-colors group ${
         active
-          ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800"
+          ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-primary"
           : "hover:bg-indigo-50 text-gray-600"
       }`}
       onClick={handleDropdownToggle}
@@ -146,14 +146,14 @@ export function SideBarItem({ icon, text, active, alert, url, dropdownItems }) {
           variants={backdropVariants}
           initial="initial"
           animate="animate"
-          className="relative flex flex-col mt-1 w-full bg-white"
+          className="relative flex flex-col mt-1 w-full bg-background"
         >
           {dropdownItems.map((item, index) => (
             <Link href={item.url} key={index}>
               <li
                 className={`py-2 px-3 cursor-pointer flex items-center rounded-md ${
                   item.active
-                    ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800"
+                    ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-primary"
                     : "hover:bg-indigo-50 text-gray-600 bg-opacity-0"
                 }`}
               >
@@ -166,7 +166,7 @@ export function SideBarItem({ icon, text, active, alert, url, dropdownItems }) {
                   {item.text}
                 </span>
                 {!expandSidebar && (
-                  <div className="absolute z-50 left-full rounded-md px-2 py-1 ml-0 bg-indigo-100 text-indigo-800 text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0">
+                  <div className="absolute z-50 left-full rounded-md px-2 py-1 ml-0 bg-indigo-100 text-primary text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0">
                     {item.text}
                   </div>
                 )}
@@ -177,7 +177,7 @@ export function SideBarItem({ icon, text, active, alert, url, dropdownItems }) {
       )}
 
       {!expandSidebar && (
-        <div className="absolute z-50 left-full rounded-md px-2 py-1 ml-0 bg-indigo-100 text-indigo-800 text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0">
+        <div className="absolute z-50 left-full rounded-md px-2 py-1 ml-0 bg-indigo-100 text-primary text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0">
           {text}
         </div>
       )}

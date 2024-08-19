@@ -1,7 +1,7 @@
-import SectionTitle from '@/components/texts/SectionTitle';
-import Image from 'next/image';
-import Link from 'next/link';
-import React from 'react';
+import SectionTitle from "@/components/texts/SectionTitle";
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
 
 const ExploreCategoryComponent = () => {
   return (
@@ -10,10 +10,10 @@ const ExploreCategoryComponent = () => {
         <SectionTitle
           className="pb-10 text-5xl maxmd:text-3xl text-center"
           title={
-            'Categorías Destacadas para Prendas, Bolsas y Accesorios Exclusivos'
+            "Categorías Destacadas para Prendas, Bolsas y Accesorios Exclusivos"
           }
           subtitle={
-            'Desde prendas de alta costura hasta accesorios que complementan tu estilo único, sumérgete en un mundo de opciones premium que elevan tu experiencia de moda a nuevas alturas.'
+            "Desde prendas de alta costura hasta accesorios que complementan tu estilo único, sumérgete en un mundo de opciones premium que elevan tu experiencia de moda a nuevas alturas."
           }
         />
       </div>
@@ -25,14 +25,14 @@ const ExploreCategoryComponent = () => {
           >
             <div className="box relative mx-auto items-center justify-center flex ">
               <Image
-                src={'/images/Balenciaga.jpg'}
+                src={"/images/Balenciaga.jpg"}
                 width={400}
                 height={400}
                 alt="Explora Balenciaga category"
                 className="w-full min-h-[500px] max-h-[600px] object-cover "
               />
-              <span className="absolute z-50 bg-white text-black uppercase py-2 px-5 maxsm:px-2 maxmd:text-xs top-1/2 font-playfair-display tracking-wide">
-                {'Explora Balenciaga'}
+              <span className="absolute z-50 bg-background text-foreground uppercase py-2 px-5 maxsm:px-2 maxmd:text-xs top-1/2 font-playfair-display tracking-wide">
+                {"Explora Balenciaga"}
               </span>
             </div>
           </Link>
@@ -42,14 +42,14 @@ const ExploreCategoryComponent = () => {
           >
             <div className="box relative mx-auto items-center justify-center flex ">
               <Image
-                src={'/images/Christian_Dior.webp'}
+                src={"/images/Christian_Dior.webp"}
                 width={400}
                 height={400}
                 alt="Explore Christian Dior category"
                 className="w-full min-h-[500px] max-h-[600px] object-cover "
               />
-              <span className="absolute z-50 bg-white text-black uppercase py-2 px-5 maxsm:px-2 maxmd:text-xs top-1/2 font-playfair-display tracking-wide">
-                {'Explore Christian Dior'}
+              <span className="absolute z-50 bg-background text-foreground uppercase py-2 px-5 maxsm:px-2 maxmd:text-xs top-1/2 font-playfair-display tracking-wide">
+                {"Explore Christian Dior"}
               </span>
             </div>
           </Link>
@@ -62,14 +62,14 @@ const ExploreCategoryComponent = () => {
           >
             <div className="box object-fit relative mx-auto items-center justify-center flex">
               <Image
-                src={'/images/fendi-palacio-cover.webp'}
+                src={"/images/fendi-palacio-cover.webp"}
                 width={400}
                 height={400}
                 alt="Explora Fendi category"
                 className="w-full min-h-[500px] max-h-[600px] object-cover "
               />
-              <span className="absolute z-50 bg-white text-black uppercase py-2 px-5 maxsm:px-2 maxmd:text-xs top-1/2 font-playfair-display tracking-wide">
-                {'Explora Fendi'}
+              <span className="absolute z-50 bg-background text-foreground uppercase py-2 px-5 maxsm:px-2 maxmd:text-xs top-1/2 font-playfair-display tracking-wide">
+                {"Explora Fendi"}
               </span>
             </div>
           </Link>
@@ -79,14 +79,14 @@ const ExploreCategoryComponent = () => {
           >
             <div className="box relative mx-auto items-center justify-center flex">
               <Image
-                src={'/images/Gucci.webp?w=1080&q=75'}
+                src={"/images/Gucci.webp?w=1080&q=75"}
                 width={400}
                 height={400}
                 alt="Explora Gucci category"
                 className="w-full min-h-[500px] max-h-[600px] object-cover "
               />
-              <span className="absolute z-50 bg-white text-black uppercase py-2 px-5 maxsm:px-2 maxmd:text-xs top-1/2 font-playfair-display tracking-wide">
-                {'Explora Gucci'}
+              <span className="absolute z-50 bg-background text-foreground uppercase py-2 px-5 maxsm:px-2 maxmd:text-xs top-1/2 font-playfair-display tracking-wide">
+                {"Explora Gucci"}
               </span>
             </div>
           </Link>

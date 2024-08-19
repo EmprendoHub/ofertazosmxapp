@@ -91,10 +91,10 @@ const AllFiltersComponent = ({
         <Search SetIsActive={SetIsActive} />
         {/* Price Filter */}
 
-        <div className="flex flex-col w-[95%] py-4 border border-gray-200 bg-white rounded shadow-sm">
-          <h3 className=" mb-2 text-black">Precio ($)</h3>
+        <div className="flex flex-col w-[95%] py-4 border border-gray-200 bg-background rounded shadow-sm">
+          <h3 className=" mb-2 text-foreground">Precio ($)</h3>
 
-          <div className="grid maxsm:grid-cols-3 gap-x-2 text-black">
+          <div className="grid maxsm:grid-cols-3 gap-x-2 text-foreground">
             <div className="mb-4">
               <input
                 name="min"
@@ -119,7 +119,7 @@ const AllFiltersComponent = ({
 
             <div className="mb-4">
               <button
-                className="px-1 py-2 text-center w-full inline-block text-white bg-black border border-transparent rounded-md hover:bg-slate-200 hover:text-black"
+                className="px-1 py-2 text-center w-full inline-block text-white bg-black border border-transparent rounded-md hover:bg-slate-200 hover:text-foreground"
                 onClick={handlePriceButtonClick}
               >
                 Filtrar
@@ -128,7 +128,7 @@ const AllFiltersComponent = ({
           </div>
         </div>
         {/* Category Filter */}
-        <div className="p-5 pt-4  mb-2 sm:p-1 border border-gray-200 bg-white rounded shadow-sm">
+        <div className="p-5 pt-4  mb-2 sm:p-1 border border-gray-200 bg-background rounded shadow-sm">
           <h3 className="font-semibold mb-2 text-gray-700">Categoría</h3>
           <ul className="space-y-1">
             {allCategories?.map((category, index) => (
@@ -164,7 +164,7 @@ const AllFiltersComponent = ({
           </ul>
         </div>
         {/* Brand Filter */}
-        <div className="p-5 pt-4 sm:p-1 border border-gray-200 bg-white rounded shadow-sm">
+        <div className="p-5 pt-4 sm:p-1 border border-gray-200 bg-background rounded shadow-sm">
           <h3 className="font-semibold mb-2 text-gray-700">Marca</h3>
           <ul className="space-y-1">
             {allBrands?.map((brand, index) => (

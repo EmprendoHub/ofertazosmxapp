@@ -1,10 +1,10 @@
-'use client';
-import React, { useContext, useEffect, useState } from 'react';
-import Link from 'next/link';
-import { AiTwotoneHome } from 'react-icons/ai';
-import AuthContext from '@/context/AuthContext';
-import Swal from 'sweetalert2';
-import { FaPencilAlt, FaTrash } from 'react-icons/fa';
+"use client";
+import React, { useContext, useEffect, useState } from "react";
+import Link from "next/link";
+import { AiTwotoneHome } from "react-icons/ai";
+import AuthContext from "@/context/AuthContext";
+import Swal from "sweetalert2";
+import { FaPencilAlt, FaTrash } from "react-icons/fa";
 
 const MyAffiliateLinks = ({ currentCookies }) => {
   const { getAllAffiliateLinks } = useContext(AuthContext);
@@ -20,20 +20,20 @@ const MyAffiliateLinks = ({ currentCookies }) => {
 
   const deleteHandler = (link_id) => {
     Swal.fire({
-      title: 'Estas seguro(a)?',
-      text: '¡No podrás revertir esta acción!',
-      icon: 'warning',
+      title: "Estas seguro(a)?",
+      text: "¡No podrás revertir esta acción!",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#000',
-      confirmButtonText: '¡Sí, eliminar!',
-      cancelButtonText: 'No, cancelar!',
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#000",
+      confirmButtonText: "¡Sí, eliminar!",
+      cancelButtonText: "No, cancelar!",
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
-          title: 'Eliminado!',
-          text: 'El Enlace ha sido eliminado.',
-          icon: 'success',
+          title: "Eliminado!",
+          text: "El Enlace ha sido eliminado.",
+          icon: "success",
         });
         //deleteAddress(link_id);
       }
@@ -59,14 +59,14 @@ const MyAffiliateLinks = ({ currentCookies }) => {
             <div className="mb-5 gap-4">
               <figure className="w-full flex align-center bg-gray-100 p-4 rounded-md ">
                 <div className="mr-3">
-                  <span className="flex items-center justify-center text-black w-12 h-12 bg-white rounded-full shadow mt-2">
-                    <AiTwotoneHome className=" text-black" />
+                  <span className="flex items-center justify-center text-foreground w-12 h-12 bg-background rounded-full shadow mt-2">
+                    <AiTwotoneHome className=" text-foreground" />
                   </span>
                 </div>
                 <figcaption className="text-gray-600">
                   <p>
                     <br />
-                    Enlace de Afiliado:{' '}
+                    Enlace de Afiliado:{" "}
                     {`${link?.link?.targetUrl}?alink=${link?.link?._id}`}
                     <br />
                     Codigo Unico: {link?.link?._id}

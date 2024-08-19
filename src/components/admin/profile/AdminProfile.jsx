@@ -1,20 +1,20 @@
-'use client';
-import React, { useContext } from 'react';
-import Image from 'next/image';
-import AuthContext from '@/context/AuthContext';
-import { formatDate, formatTime } from '@/backend/helpers';
+"use client";
+import React, { useContext } from "react";
+import Image from "next/image";
+import AuthContext from "@/context/AuthContext";
+import { formatDate, formatTime } from "@/backend/helpers";
 
 const AdminProfile = () => {
   const { user } = useContext(AuthContext);
 
   return (
     <>
-      <figure className="flex flex-row items-center text-black">
+      <figure className="flex flex-row items-center text-foreground">
         <div className="relative">
           <Image
             className="w-16 h-16 maxsm:w-10 maxsm:h-10 rounded-full mr-4"
-            src={user?.image ? user?.image : '/next.svg'}
-            alt={user?.name ? user?.name : 'avatar'}
+            src={user?.image ? user?.image : "/next.svg"}
+            alt={user?.name ? user?.name : "avatar"}
             width={50}
             height={50}
           />

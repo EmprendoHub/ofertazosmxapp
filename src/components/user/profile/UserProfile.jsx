@@ -1,16 +1,16 @@
-import Image from 'next/image';
-import { formatDate, formatTime } from '@/backend/helpers';
+import Image from "next/image";
+import { formatDate, formatTime } from "@/backend/helpers";
 
 const UserProfile = ({ user }) => {
   return (
     <>
-      <figure className="flex maxmd:flex-col items-start maxsm:items-center text-black">
+      <figure className="flex maxmd:flex-col items-start maxsm:items-center text-foreground">
         <div className="relative flex pr-3">
           {user?.image ? (
             <Image
               className="w-12 h-12 maxmd:w-10 maxmd:h-10  rounded-full mr-4"
-              src={user?.image ? user?.image : '/next.svg'}
-              alt={user?.name ? user?.name : 'avatar'}
+              src={user?.image ? user?.image : "/next.svg"}
+              alt={user?.name ? user?.name : "avatar"}
               width={50}
               height={50}
             />

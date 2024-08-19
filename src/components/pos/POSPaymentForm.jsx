@@ -1,12 +1,12 @@
-'use client';
-import React, { useState } from 'react';
-import FormattedPrice from '@/backend/helpers/FormattedPrice';
-import POSModal from '../modals/POSModal';
-import { useSelector } from 'react-redux';
+"use client";
+import React, { useState } from "react";
+import FormattedPrice from "@/backend/helpers/FormattedPrice";
+import POSModal from "../modals/POSModal";
+import { useSelector } from "react-redux";
 
 const POSPaymentForm = () => {
   const [showModal, setShowModal] = useState(false);
-  const [payType, setPayType] = useState('');
+  const [payType, setPayType] = useState("");
   const { productsPOS } = useSelector((state) => state.compras);
   const amountTotal = productsPOS?.reduce(
     (acc, cartItem) => acc + cartItem.quantity * cartItem.price,
@@ -26,7 +26,7 @@ const POSPaymentForm = () => {
         setShowModal={setShowModal}
         payType={payType}
       />
-      <div className=" bg-white flex flex-col p-2">
+      <div className=" bg-background flex flex-col p-2">
         <h2 className="text-5xl font-EB_Garamond mb-4">Totales</h2>
 
         <ul className="mb-5">
@@ -78,14 +78,14 @@ const POSPaymentForm = () => {
 
         <div className="flex flex-row flex-wrap items-center gap-3">
           <button
-            onClick={() => handleCheckout('layaway')}
-            className="text-4xl text-slate-100 bg-violet-950 mt-4 py-5 px-6 hover:bg-slate-200 hover:text-black duration-300 ease-in-out cursor-pointer w-full uppercase rounded-md"
+            onClick={() => handleCheckout("layaway")}
+            className="text-4xl text-slate-100 bg-violet-950 mt-4 py-5 px-6 hover:bg-slate-200 hover:text-foreground duration-300 ease-in-out cursor-pointer w-full uppercase rounded-md"
           >
             Apartar
           </button>
           <button
-            onClick={() => handleCheckout('total')}
-            className="bg-black w-full text-slate-100 mt-4 py-5 uppercase text-4xl px-12 hover:bg-slate-200 hover:text-black duration-300 ease-in-out cursor-pointer  rounded-md"
+            onClick={() => handleCheckout("total")}
+            className="bg-black w-full text-slate-100 mt-4 py-5 uppercase text-4xl px-12 hover:bg-slate-200 hover:text-foreground duration-300 ease-in-out cursor-pointer  rounded-md"
           >
             Pagar
           </button>

@@ -1,9 +1,9 @@
-import React from 'react';
-import Link from 'next/link';
-import { getCookiesName } from '@/backend/helpers';
-import { cookies } from 'next/headers';
-import EmailAccountReset from '@/components/email/EmailAccountReset';
-import GoogleCaptchaWrapper from '@/components/forms/GoogleCaptchaWrapper';
+import React from "react";
+import Link from "next/link";
+import { getCookiesName } from "@/backend/helpers";
+import { cookies } from "next/headers";
+import EmailAccountReset from "@/components/email/EmailAccountReset";
+import GoogleCaptchaWrapper from "@/components/forms/GoogleCaptchaWrapper";
 
 const resetAccountAccess = async (token) => {
   const nextCookies = cookies();
@@ -14,13 +14,13 @@ const resetAccountAccess = async (token) => {
     const res = await fetch(
       URL,
       {
-        method: 'POST',
+        method: "POST",
         headers: {
           Cookie: `${cookieName}=${nextAuthSessionToken?.value}`,
           Token: token,
         },
       },
-      { cache: 'no-cache' }
+      { cache: "no-cache" }
     );
     const data = res.json();
     return data;
@@ -32,12 +32,12 @@ const resetAccountAccess = async (token) => {
 const SuccessPage = async ({ searchParams }) => {
   const token = searchParams?.token;
   const res = await resetAccountAccess(token);
-  const isUnblocked = res?.message === 'Cuenta desbloqueada';
+  const isUnblocked = res?.message === "Cuenta desbloqueada";
   return (
     <>
       <div
         className={
-          'bg-white h-[80vh] flex items-center justify-center text-center mx-auto'
+          "bg-background h-[80vh] flex items-center justify-center text-center mx-auto"
         }
       >
         {isUnblocked ? (
@@ -50,13 +50,13 @@ const SuccessPage = async ({ searchParams }) => {
               Ya puedes iniciar tu session.
             </p>
             <div className="flex maxsm:flex-col gap-4 items-center gap-x-5 justify-center mt-10">
-              <Link href={'/iniciar'}>
-                <button className="bg-black text-slate-100 hover:text-black w-44 h-12 rounded-full text-base font-semibold hover:bg-gray-200 duration-500">
+              <Link href={"/iniciar"}>
+                <button className="bg-black text-slate-100 hover:text-foreground w-44 h-12 rounded-full text-base font-semibold hover:bg-gray-200 duration-500">
                   iniciar tu session.
                 </button>
               </Link>
-              <Link href={'/tienda'}>
-                <button className="bg-black text-slate-100 hover:text-black w-44 h-12 rounded-full text-base font-semibold hover:bg-gray-200 duration-500">
+              <Link href={"/tienda"}>
+                <button className="bg-black text-slate-100 hover:text-foreground w-44 h-12 rounded-full text-base font-semibold hover:bg-gray-200 duration-500">
                   Explorar Tienda
                 </button>
               </Link>

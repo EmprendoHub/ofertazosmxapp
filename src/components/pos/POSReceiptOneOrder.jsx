@@ -48,7 +48,7 @@ const POSReceiptOneOrder = ({ order }) => {
   return (
     <div
       ref={ref}
-      className="main-receipt w-[300px] maxmd:w-full min-h-full mx-auto relative bg-white px-2"
+      className="main-receipt w-[300px] maxmd:w-full min-h-full mx-auto relative bg-background px-2"
     >
       <div className="flex flex-row justify-between items-center">
         <div className=" relative flex flex-col items-center justify-center max-w-fit">
@@ -58,7 +58,7 @@ const POSReceiptOneOrder = ({ order }) => {
         </div>
 
         <div className=" flex flex-col  items-end justify-end gap-x-1 overflow-hidden  ">
-          <h2 className="text-md font-bold text-black items-center">
+          <h2 className="text-md font-bold text-foreground items-center">
             #{order?.orderId}
           </h2>
         </div>
@@ -66,7 +66,7 @@ const POSReceiptOneOrder = ({ order }) => {
 
       <div className="relative overflow-x-hidden border-b-2 border-slate-300">
         <table className="w-full text-left">
-          <thead className="text-xs text-black uppercase">
+          <thead className="text-xs text-foreground uppercase">
             <tr className="flex flex-row items-center justify-between">
               <th scope="col" className="px-2 maxsm:px-0 py-1">
                 #
@@ -111,7 +111,7 @@ const POSReceiptOneOrder = ({ order }) => {
               </li>
               <li className="flex justify-between gap-x-5 text-gray-950">
                 <span className="text-xs">Total de Artículos:</span>
-                <span className="text-black text-xs">
+                <span className="text-foreground text-xs">
                   {getQuantities(order?.orderItems)} (Artículos)
                 </span>
               </li>
@@ -147,7 +147,7 @@ const POSReceiptOneOrder = ({ order }) => {
                 </span>
               </li>
             </ul>
-            <div className="text-xs text-black tracking-wide text-center  border-t-2 border-slate-300 ">
+            <div className="text-xs text-foreground tracking-wide text-center  border-t-2 border-slate-300 ">
               <p className="text-xs my-2 w-full text-center">
                 {formatSpanishDate(order?.createdAt)}
               </p>

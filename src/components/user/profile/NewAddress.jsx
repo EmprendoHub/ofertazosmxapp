@@ -1,7 +1,7 @@
-'use client';
-import { addAddress } from '@/app/_actions';
-import { useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
+"use client";
+import { addAddress } from "@/app/_actions";
+import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const NewAddress = ({ searchParams }) => {
   const cartUrl = searchParams?.callbackUrl;
@@ -21,53 +21,53 @@ const NewAddress = ({ searchParams }) => {
       if (cartUrl) {
         router.push(cartUrl);
       } else {
-        router.push('/perfil/direcciones');
+        router.push("/perfil/direcciones");
       }
     }
   }
 
   const provincias = [
-    { clave: 'AGS', nombre: 'AGUASCALIENTES' },
-    { clave: 'BC', nombre: 'BAJA CALIFORNIA' },
-    { clave: 'BCS', nombre: 'BAJA CALIFORNIA SUR' },
-    { clave: 'CHI', nombre: 'CHIHUAHUA' },
-    { clave: 'CHS', nombre: 'CHIAPAS' },
-    { clave: 'CMP', nombre: 'CAMPECHE' },
-    { clave: 'CMX', nombre: 'CIUDAD DE MEXICO' },
-    { clave: 'COA', nombre: 'COAHUILA' },
-    { clave: 'COL', nombre: 'COLIMA' },
-    { clave: 'DGO', nombre: 'DURANGO' },
-    { clave: 'GRO', nombre: 'GUERRERO' },
-    { clave: 'GTO', nombre: 'GUANAJUATO' },
-    { clave: 'HGO', nombre: 'HIDALGO' },
-    { clave: 'JAL', nombre: 'JALISCO' },
-    { clave: 'MCH', nombre: 'MICHOACAN' },
-    { clave: 'MEX', nombre: 'ESTADO DE MEXICO' },
-    { clave: 'MOR', nombre: 'MORELOS' },
-    { clave: 'NAY', nombre: 'NAYARIT' },
-    { clave: 'NL', nombre: 'NUEVO LEON' },
-    { clave: 'OAX', nombre: 'OAXACA' },
-    { clave: 'PUE', nombre: 'PUEBLA' },
-    { clave: 'QR', nombre: 'QUINTANA ROO' },
-    { clave: 'QRO', nombre: 'QUERETARO' },
-    { clave: 'SIN', nombre: 'SINALOA' },
-    { clave: 'SLP', nombre: 'SAN LUIS POTOSI' },
-    { clave: 'SON', nombre: 'SONORA' },
-    { clave: 'TAB', nombre: 'TABASCO' },
-    { clave: 'TLX', nombre: 'TLAXCALA' },
-    { clave: 'TMS', nombre: 'TAMAULIPAS' },
-    { clave: 'VER', nombre: 'VERACRUZ' },
-    { clave: 'YUC', nombre: 'YUCATAN' },
-    { clave: 'ZAC', nombre: 'ZACATECAS' },
+    { clave: "AGS", nombre: "AGUASCALIENTES" },
+    { clave: "BC", nombre: "BAJA CALIFORNIA" },
+    { clave: "BCS", nombre: "BAJA CALIFORNIA SUR" },
+    { clave: "CHI", nombre: "CHIHUAHUA" },
+    { clave: "CHS", nombre: "CHIAPAS" },
+    { clave: "CMP", nombre: "CAMPECHE" },
+    { clave: "CMX", nombre: "CIUDAD DE MEXICO" },
+    { clave: "COA", nombre: "COAHUILA" },
+    { clave: "COL", nombre: "COLIMA" },
+    { clave: "DGO", nombre: "DURANGO" },
+    { clave: "GRO", nombre: "GUERRERO" },
+    { clave: "GTO", nombre: "GUANAJUATO" },
+    { clave: "HGO", nombre: "HIDALGO" },
+    { clave: "JAL", nombre: "JALISCO" },
+    { clave: "MCH", nombre: "MICHOACAN" },
+    { clave: "MEX", nombre: "ESTADO DE MEXICO" },
+    { clave: "MOR", nombre: "MORELOS" },
+    { clave: "NAY", nombre: "NAYARIT" },
+    { clave: "NL", nombre: "NUEVO LEON" },
+    { clave: "OAX", nombre: "OAXACA" },
+    { clave: "PUE", nombre: "PUEBLA" },
+    { clave: "QR", nombre: "QUINTANA ROO" },
+    { clave: "QRO", nombre: "QUERETARO" },
+    { clave: "SIN", nombre: "SINALOA" },
+    { clave: "SLP", nombre: "SAN LUIS POTOSI" },
+    { clave: "SON", nombre: "SONORA" },
+    { clave: "TAB", nombre: "TABASCO" },
+    { clave: "TLX", nombre: "TLAXCALA" },
+    { clave: "TMS", nombre: "TAMAULIPAS" },
+    { clave: "VER", nombre: "VERACRUZ" },
+    { clave: "YUC", nombre: "YUCATAN" },
+    { clave: "ZAC", nombre: "ZACATECAS" },
   ];
   const countriesList = [
-    { clave: 'MEX', name: 'Mexico' },
-    { clave: 'USA', name: 'Estados Unidos' },
+    { clave: "MEX", name: "Mexico" },
+    { clave: "USA", name: "Estados Unidos" },
   ];
 
   return (
     <>
-      <div className=" relative mt-1 mb-20 p-4 md:p-7 mx-auto rounded bg-white shadow-lg ">
+      <div className=" relative mt-1 mb-20 p-4 md:p-7 mx-auto rounded bg-background shadow-lg ">
         <form ref={formRef} action={action} className="relative w-full">
           <h2 className="mb-5 text-2xl font-semibold font-EB_Garamond">
             Agregar Nueva Dirección
@@ -83,7 +83,7 @@ const NewAddress = ({ searchParams }) => {
             />
             {validationError?.street && (
               <p className="text-sm text-red-400">
-                {validationError.street._errors.join(', ')}
+                {validationError.street._errors.join(", ")}
               </p>
             )}
           </div>
@@ -99,7 +99,7 @@ const NewAddress = ({ searchParams }) => {
               />
               {validationError?.city && (
                 <p className="text-sm text-red-400">
-                  {validationError.city._errors.join(', ')}
+                  {validationError.city._errors.join(", ")}
                 </p>
               )}
             </div>
@@ -118,7 +118,7 @@ const NewAddress = ({ searchParams }) => {
               </select>
               {validationError?.province && (
                 <p className="text-sm text-red-400">
-                  {validationError.province._errors.join(', ')}
+                  {validationError.province._errors.join(", ")}
                 </p>
               )}
             </div>
@@ -135,7 +135,7 @@ const NewAddress = ({ searchParams }) => {
               />
               {validationError?.zip_code && (
                 <p className="text-sm text-red-400">
-                  {validationError.zip_code._errors.join(', ')}
+                  {validationError.zip_code._errors.join(", ")}
                 </p>
               )}
             </div>
@@ -151,7 +151,7 @@ const NewAddress = ({ searchParams }) => {
               <p className="text-sm text-slate-500">331 235 4455</p>
               {validationError?.phone && (
                 <p className="text-sm text-red-400">
-                  {validationError.phone._errors.join(', ')}
+                  {validationError.phone._errors.join(", ")}
                 </p>
               )}
             </div>
@@ -171,7 +171,7 @@ const NewAddress = ({ searchParams }) => {
             </select>
             {validationError?.country && (
               <p className="text-sm text-red-400">
-                {validationError.country._errors.join(', ')}
+                {validationError.country._errors.join(", ")}
               </p>
             )}
           </div>

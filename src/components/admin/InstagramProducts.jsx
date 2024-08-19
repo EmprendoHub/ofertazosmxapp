@@ -214,7 +214,7 @@ const InstagramProducts = ({ products, filteredProductsCount, search }) => {
                 </td>
 
                 <td className="w-full px-6 maxsm:px-0 py-0 relative ">
-                  <span className="relative flex items-center justify-center text-black w-20 h-20 maxsm:w-8 maxsm:h-8 shadow mt-2">
+                  <span className="relative flex items-center justify-center text-foreground w-20 h-20 maxsm:w-8 maxsm:h-8 shadow mt-2">
                     <Link
                       href={`/${pathname}/productos/variacion/${product?.slug}?&callback=${searchParams}`}
                     >
@@ -246,7 +246,7 @@ const InstagramProducts = ({ products, filteredProductsCount, search }) => {
                 <td className="w-full px-1 py-0 flex flex-row items-center gap-x-1">
                   <Link
                     href={`/${pathname}/productos/variacion/${product?.slug}?&callback=${currentPage}`}
-                    className="p-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
+                    className="p-2 inline-block text-white hover:text-foreground bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
                   >
                     <FaPencilAlt className="maxsm:text-[10px]" />
                   </Link>
@@ -258,7 +258,7 @@ const InstagramProducts = ({ products, filteredProductsCount, search }) => {
                         product?.availability?.online
                       )
                     }
-                    className="p-2 inline-block text-white hover:text-black bg-slate-300 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
+                    className="p-2 inline-block text-white hover:text-foreground bg-slate-300 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
                   >
                     <TbWorldWww
                       className={` ${
@@ -276,7 +276,7 @@ const InstagramProducts = ({ products, filteredProductsCount, search }) => {
                         product?.availability?.branch
                       )
                     }
-                    className="p-2 inline-block text-white hover:text-black bg-slate-300 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
+                    className="p-2 inline-block text-white hover:text-foreground bg-slate-300 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
                   >
                     <FaShop
                       className={` ${
@@ -293,7 +293,7 @@ const InstagramProducts = ({ products, filteredProductsCount, search }) => {
                         product?.availability?.instagram
                       )
                     }
-                    className="p-2 inline-block text-white hover:text-black bg-slate-300 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
+                    className="p-2 inline-block text-white hover:text-foreground bg-slate-300 shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
                   >
                     <FaInstagramSquare
                       className={` ${

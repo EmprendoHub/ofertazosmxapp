@@ -1,30 +1,30 @@
-'use client';
-import React, { useRef, useState, useContext } from 'react';
-import { Bounce, toast } from 'react-toastify';
-import { motion } from 'framer-motion';
-import { IoIosStar } from 'react-icons/io';
-import Image from 'next/image';
-import FormattedPrice from '@/backend/helpers/FormattedPrice';
-import { calculatePercentage, cstDateTimeClient } from '@/backend/helpers';
-import DateTimePicker from 'react-datetime-picker';
-import 'react-datetime-picker/dist/DateTimePicker.css';
-import 'react-calendar/dist/Calendar.css';
-import 'react-clock/dist/Clock.css';
-import { FaImage, FaExchangeAlt } from 'react-icons/fa';
-import MultiselectComponent from '../forms/MultiselectComponent';
-import AuthContext from '@/context/AuthContext';
-import { useRouter } from 'next/navigation';
+"use client";
+import React, { useRef, useState, useContext } from "react";
+import { Bounce, toast } from "react-toastify";
+import { motion } from "framer-motion";
+import { IoIosStar } from "react-icons/io";
+import Image from "next/image";
+import FormattedPrice from "@/backend/helpers/FormattedPrice";
+import { calculatePercentage, cstDateTimeClient } from "@/backend/helpers";
+import DateTimePicker from "react-datetime-picker";
+import "react-datetime-picker/dist/DateTimePicker.css";
+import "react-calendar/dist/Calendar.css";
+import "react-clock/dist/Clock.css";
+import { FaImage, FaExchangeAlt } from "react-icons/fa";
+import MultiselectComponent from "../forms/MultiselectComponent";
+import AuthContext from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 const UpdatePostDetails = ({ post }) => {
   const imageRef = useRef(null);
   const router = useRouter();
 
   const available_categories = [
-    'Moda',
-    'Estilo',
-    'Tendencias',
-    'Esenciales',
-    'Salud',
+    "Moda",
+    "Estilo",
+    "Tendencias",
+    "Esenciales",
+    "Salud",
   ];
 
   const { updatePost } = useContext(AuthContext);
@@ -39,43 +39,43 @@ const UpdatePostDetails = ({ post }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (title === '') {
+    if (title === "") {
       toast.error(
-        'Por favor complete el nombre del publicación para continuar.'
+        "Por favor complete el nombre del publicación para continuar."
       );
       return;
     }
 
-    if (content === '') {
-      toast.error('Por favor agregue contenido para continuar.');
+    if (content === "") {
+      toast.error("Por favor agregue contenido para continuar.");
       return;
     }
-    if (summary === '') {
+    if (summary === "") {
       toast.error(
-        'Por favor complete el resumen de la Publicación para continuar.'
+        "Por favor complete el resumen de la Publicación para continuar."
       );
       return;
     }
-    if (category === '') {
+    if (category === "") {
       toast.error(
-        'Por favor agrega la categoría del publicación para continuar.'
+        "Por favor agrega la categoría del publicación para continuar."
       );
       return;
     }
 
     if (inputImageFields > 0) {
       inputImageFields.map((field) => {
-        if (field.i_file === '') {
+        if (field.i_file === "") {
           toast.error(
-            'Por favor agrega imágenes a la publicación para continuar.'
+            "Por favor agrega imágenes a la publicación para continuar."
           );
           return;
         }
       });
     } else {
-      if (inputImageFields[0].i_file === '') {
+      if (inputImageFields[0].i_file === "") {
         toast.error(
-          'Por favor agrega imágenes a la publicación para continuar.'
+          "Por favor agrega imágenes a la publicación para continuar."
         );
         return;
       }
@@ -83,28 +83,28 @@ const UpdatePostDetails = ({ post }) => {
 
     try {
       const formData = new FormData();
-      formData.set('title', title);
-      formData.set('content', content);
-      formData.set('category', category);
-      formData.set('summary', summary);
+      formData.set("title", title);
+      formData.set("content", content);
+      formData.set("category", category);
+      formData.set("summary", summary);
       // Convert arrays to JSON strings
       const imagesJson = JSON.stringify(inputImageFields);
 
       // Append JSON strings to FormData
-      formData.set('images', imagesJson);
-      formData.set('updatedAt', updatedAt);
-      formData.set('_id', post?._id);
+      formData.set("images", imagesJson);
+      formData.set("updatedAt", updatedAt);
+      formData.set("_id", post?._id);
 
       try {
         const res = await updatePost(formData);
         if (res.ok) {
-          toast.success('La publicación se actualizo exitosamente');
+          toast.success("La publicación se actualizo exitosamente");
           router.refresh();
           return;
         }
       } catch (error) {
         toast.error(
-          'Error actualizando Publicación. Por favor Intenta de nuevo.'
+          "Error actualizando Publicación. Por favor Intenta de nuevo."
         );
       }
     } catch (error) {
@@ -114,18 +114,18 @@ const UpdatePostDetails = ({ post }) => {
 
   const handleCategoryChange = async (e) => {
     setCategory(e);
-    if (e === 'Calzado' && gender == 'Damas') {
+    if (e === "Calzado" && gender == "Damas") {
       setSizeSelection(available_sizes_shoes_woman);
     } else {
       setSizeSelection(available_sizes_shoes_men);
     }
 
     if (
-      e === 'Prendas' ||
-      e === 'Bolsas' ||
-      e === 'Accesorios' ||
-      e === 'Belleza' ||
-      e === 'Joyeria'
+      e === "Prendas" ||
+      e === "Bolsas" ||
+      e === "Accesorios" ||
+      e === "Belleza" ||
+      e === "Joyeria"
     ) {
       setSizeSelection(available_sizes_prendas);
     }
@@ -133,18 +133,18 @@ const UpdatePostDetails = ({ post }) => {
 
   const handleGenderChange = async (e) => {
     setGender(e);
-    if (category === 'Calzado' && e == 'Damas') {
+    if (category === "Calzado" && e == "Damas") {
       setSizeSelection(available_sizes_shoes_woman);
     } else {
       setSizeSelection(available_sizes_shoes_men);
     }
 
     if (
-      category === 'Prendas' ||
-      category === 'Bolsas' ||
-      category === 'Accesorios' ||
-      category === 'Belleza' ||
-      category === 'Joyeria'
+      category === "Prendas" ||
+      category === "Bolsas" ||
+      category === "Accesorios" ||
+      category === "Belleza" ||
+      category === "Joyeria"
     ) {
       setSizeSelection(available_sizes_prendas);
     }
@@ -162,26 +162,26 @@ const UpdatePostDetails = ({ post }) => {
     setInputImageFields([
       ...inputImageFields,
       {
-        i_file: '',
-        i_filePreview: '/images/shopout_clothing_placeholder.webp',
+        i_file: "",
+        i_filePreview: "/images/shopout_clothing_placeholder.webp",
       },
     ]);
   };
 
   const handleImageInputChange = (index, fieldName, event) => {
     const newInputImageFields = [...inputImageFields];
-    if (fieldName === 'i_file') {
+    if (fieldName === "i_file") {
       const reader = new FileReader();
       reader.onload = () => {
         if (reader.readyState === 2) {
-          newInputImageFields[index]['url'] = reader.result;
+          newInputImageFields[index]["url"] = reader.result;
           setInputImageFields(newInputImageFields); // Update state after setting filePreview
         }
       };
       if (event.target.files?.[0]) {
         reader.readAsDataURL(event.target.files[0]);
         newInputImageFields[index][fieldName] = event.target.files[0];
-        newInputImageFields[index]['i_file'] = event.target.files[0].name;
+        newInputImageFields[index]["i_file"] = event.target.files[0].name;
       }
     } else {
       newInputImageFields[index][fieldName] = event.target.value;
@@ -198,7 +198,7 @@ const UpdatePostDetails = ({ post }) => {
   return (
     <div className="container-class maxsm:py-8">
       <main className="bg-gray-100 flex  flex-col items-center justify-between">
-        <div className="w-full mx-auto wrapper-class gap-5 bg-slate-100 text-black bg-opacity-80 rounded-lg">
+        <div className="w-full mx-auto wrapper-class gap-5 bg-slate-100 text-foreground bg-opacity-80 rounded-lg">
           <div className="flex flex-row maxsm:flex-col-reverse items-start justify-start gap-x-5  maxmd:py-4 maxmd:px-5 maxsm:px-0">
             <div className="image-class w-1/2 maxsm:w-full flex flex-col items-end justify-end">
               <motion.div
@@ -212,7 +212,7 @@ const UpdatePostDetails = ({ post }) => {
                   src={
                     post?.images[0]
                       ? post?.images[0].url
-                      : '/images/shopout_clothing_placeholder.webp'
+                      : "/images/shopout_clothing_placeholder.webp"
                   }
                   alt="post image"
                   className="rounded-lg object-cover ease-in-out duration-500"
@@ -245,7 +245,7 @@ const UpdatePostDetails = ({ post }) => {
                   transition={{ duration: 0.6 }}
                   className=" font-bodyFont content-class"
                 >
-                  {post?.content ? post?.content : ''}
+                  {post?.content ? post?.content : ""}
                 </motion.div>
                 <motion.div
                   initial={{ y: 50, opacity: 0 }}
@@ -257,7 +257,7 @@ const UpdatePostDetails = ({ post }) => {
                     SKU: <span className=" font-bodyFont">{post?._id}</span>
                   </span>
                   <span>
-                    Categoría:{' '}
+                    Categoría:{" "}
                     <span className="t font-bodyFont">{post?.category}</span>
                   </span>
                 </motion.div>
@@ -268,7 +268,7 @@ const UpdatePostDetails = ({ post }) => {
       </main>
       <main className="w-full pl-4">
         <section className=" p-6 ">
-          <h1 className="text-xl maxmd:text-3xl font-semibold text-black mb-8">
+          <h1 className="text-xl maxmd:text-3xl font-semibold text-foreground mb-8">
             Actualizar Publicación
           </h1>
 
@@ -388,12 +388,12 @@ const UpdatePostDetails = ({ post }) => {
                           <div className="min-h-[100%] absolute z-[1] min-w-[100%] top-0 left-0 bg-black bg-opacity-30" />
 
                           <input
-                            className="form-control block w-40 overflow-hidden  text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none  cursor-pointer z-20 min-h-full top-0 absolute opacity-0"
+                            className="form-control block w-40 overflow-hidden  text-base font-normal text-gray-700 bg-background bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-background focus:border-blue-600 focus:outline-none  cursor-pointer z-20 min-h-full top-0 absolute opacity-0"
                             type="file"
                             id="i_file"
                             name="i_file"
                             onChange={(e) =>
-                              handleImageInputChange(index, 'i_file', e)
+                              handleImageInputChange(index, "i_file", e)
                             }
                           />
                         </div>

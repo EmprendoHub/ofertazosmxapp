@@ -19,7 +19,7 @@ const ContactComponent = ({ contacto }) => {
           <div className="min-h-[100%] absolute z-[1] min-w-[100%] top-0 left-0 bg-black bg-opacity-30" />
         </section>
 
-        <section className="bg-white py-12 px-20 maxsm:px-2">
+        <section className="bg-background py-12 px-20 maxsm:px-2">
           <div className="w-full flex flex-row maxmd:flex-col justify-center items-center">
             <div className="w-1/3 maxmd:w-full pl-20 maxmd:pl-0 text-lg text-gray-600 ">
               <IconListSectionComponent

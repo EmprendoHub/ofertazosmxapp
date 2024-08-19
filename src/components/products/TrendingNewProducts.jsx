@@ -1,8 +1,8 @@
-'use client';
-import SectionTitle from '../texts/SectionTitle';
-import { motion, AnimatePresence } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
-import ProductCard from './ProductCard';
+"use client";
+import SectionTitle from "../texts/SectionTitle";
+import { motion, AnimatePresence } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import ProductCard from "./ProductCard";
 
 function shuffleArray(array) {
   let i = array.length - 1;
@@ -17,15 +17,15 @@ function shuffleArray(array) {
 
 const TrendingNewProducts = ({ trendProducts }) => {
   const cat_title = [
-    { id: 1, category: 'Bolsas' },
-    { id: 2, category: 'Prendas' },
-    { id: 3, category: 'Accesorios' },
-    { id: 4, category: 'Belleza' },
-    { id: 5, category: 'Joyeria' },
+    { id: 1, category: "Bolsas" },
+    { id: 2, category: "Prendas" },
+    { id: 3, category: "Accesorios" },
+    { id: 4, category: "Belleza" },
+    { id: 5, category: "Joyeria" },
   ];
   const [allProducts, setAllProducts] = useState(trendProducts);
   const [trendingProducts, setTrendingProducts] = useState([]);
-  const [activeTab, setActiveTab] = useState('All');
+  const [activeTab, setActiveTab] = useState("All");
 
   const activatedTab = (category) => {
     setActiveTab(category);
@@ -36,7 +36,7 @@ const TrendingNewProducts = ({ trendProducts }) => {
     const filteredProductData = productsArray.filter(
       (prod) => prod.category === category
     );
-    if (category === 'All') {
+    if (category === "All") {
       setTrendingProducts(randommized);
     } else {
       setTrendingProducts(filteredProductData);
@@ -80,9 +80,9 @@ const TrendingNewProducts = ({ trendProducts }) => {
     <div className="mx-auto flex flex-col justify-center items-center px-40 mb-20">
       <SectionTitle
         className="pb-10 text-5xl maxmd:text-3xl text-center"
-        title={'Explora la Elegancia'}
+        title={"Explora la Elegancia"}
         subtitle={
-          'Descubre una selección excepcional de categorías cuidadosamente curadas que resaltan la sofisticación en cada detalle. Desde prendas de alta costura hasta accesorios que complementan tu estilo único, sumérgete en un mundo de opciones premium que elevan tu experiencia de moda a nuevas alturas.'
+          "Descubre una selección excepcional de categorías cuidadosamente curadas que resaltan la sofisticación en cada detalle. Desde prendas de alta costura hasta accesorios que complementan tu estilo único, sumérgete en un mundo de opciones premium que elevan tu experiencia de moda a nuevas alturas."
         }
       />
 
@@ -93,9 +93,9 @@ const TrendingNewProducts = ({ trendProducts }) => {
               key={index}
               className={`${
                 activeTab == item.category
-                  ? 'active'
-                  : 'border-b border-gray-500'
-              } cursor-pointer text-center  py-2 px-6 maxsm:px-2 text-sm text-black maxsm:text-xs uppercase font-playfair-display`}
+                  ? "active"
+                  : "border-b border-gray-500"
+              } cursor-pointer text-center  py-2 px-6 maxsm:px-2 text-sm text-foreground maxsm:text-xs uppercase font-playfair-display`}
               onClick={() => activatedTab(item.category)}
             >
               {item.category}

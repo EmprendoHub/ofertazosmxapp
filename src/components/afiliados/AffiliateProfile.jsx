@@ -1,18 +1,18 @@
-'use client';
-import React from 'react';
-import Image from 'next/image';
-import { formatDate, formatTime } from '@/backend/helpers';
+"use client";
+import React from "react";
+import Image from "next/image";
+import { formatDate, formatTime } from "@/backend/helpers";
 
 const AffiliateProfile = ({ affiliate }) => {
   return (
     <>
-      <figure className="flex items-start sm:items-center text-black">
+      <figure className="flex items-start sm:items-center text-foreground">
         <div className="relative">
           {affiliate?.image ? (
             <Image
               className="w-16 h-16 rounded-full mr-4"
-              src={affiliate?.image ? affiliate?.image : '/next.svg'}
-              alt={affiliate?.name ? affiliate?.name : 'avatar'}
+              src={affiliate?.image ? affiliate?.image : "/next.svg"}
+              alt={affiliate?.name ? affiliate?.name : "avatar"}
               width={50}
               height={50}
             />
@@ -40,8 +40,8 @@ const AffiliateProfile = ({ affiliate }) => {
               )} CST`}
           </p>
           <p>
-            <b>Estado:</b>{' '}
-            {affiliate?.isActive === true ? 'Verificado' : 'Inactivo'}
+            <b>Estado:</b>{" "}
+            {affiliate?.isActive === true ? "Verificado" : "Inactivo"}
           </p>
         </figcaption>
       </figure>

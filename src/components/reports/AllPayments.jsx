@@ -59,7 +59,7 @@ const AllPayments = ({ data, itemCount }) => {
           </thead>
           <tbody>
             {payments?.map((payment, index) => (
-              <tr className="bg-white" key={index}>
+              <tr className="bg-background" key={index}>
                 <td className="px-2 maxsm:px-2 py-2">{payment.method}</td>
 
                 <td className="px-2 maxsm:px-0 py-2 ">
@@ -74,7 +74,7 @@ const AllPayments = ({ data, itemCount }) => {
             ))}
           </tbody>
         </table>
-        <table className="w-full text-sm maxmd:text-xs text-left p-4 bg-white ">
+        <table className="w-full text-sm maxmd:text-xs text-left p-4 bg-background ">
           <thead className=" text-gray-700 uppercase">
             <tr>
               <th scope="col" className="px-2 py-3 ">
@@ -83,7 +83,7 @@ const AllPayments = ({ data, itemCount }) => {
             </tr>
           </thead>
           <tbody>
-            <tr className="bg-white">
+            <tr className="bg-background">
               <td className="px-2 py-2 text-2xl font-semibold">
                 <FormattedPrice amount={paymentTotals} />
               </td>

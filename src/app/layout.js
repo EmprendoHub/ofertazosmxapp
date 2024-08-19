@@ -4,13 +4,12 @@ import "./css/globals.css";
 import FooterComponent from "@/components/footer/FooterComponent";
 import BackToTopButton from "@/components/buttons/BackToTopButton";
 import WhatsAppButton from "@/components/buttons/WhatsAppButton";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { getServerSession } from "next-auth";
 import { options } from "./api/auth/[...nextauth]/options";
 import CookieConsentComp from "@/components/cookies/CookieConsent";
 import { getCookiesName } from "@/backend/helpers";
 import { cookies } from "next/headers";
+import { ThemeProvider } from "next-themes";
 
 export const metadata = {
   title: "Ofertazos MX",
@@ -25,12 +24,19 @@ export default async function RootLayout({ children }) {
   const nextAuthSessionToken = nextCookies.get(cookieName);
   const cookie = `${cookieName}=${nextAuthSessionToken?.value}`;
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`overflow-x-hidden max-w-full`}>
         <CustomSessionProvider>
-          <HeaderComponent cookie={cookie} />
-          {children}
-          {/* <FooterComponent /> */}
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <HeaderComponent cookie={cookie} />
+            {children}
+            {/* <FooterComponent /> */}
+          </ThemeProvider>
         </CustomSessionProvider>
         <BackToTopButton />
         {(session && session?.user?.role === "manager") ||
@@ -41,7 +47,6 @@ export default async function RootLayout({ children }) {
           <WhatsAppButton />
         )}
         <CookieConsentComp />
-        <ToastContainer position="top-left" autoClose={1000} />
       </body>
     </html>
   );

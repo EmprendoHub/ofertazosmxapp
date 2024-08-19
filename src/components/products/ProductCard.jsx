@@ -1,13 +1,13 @@
-'use client';
-import Image from 'next/image';
-import 'react-toastify/dist/ReactToastify.css';
-import FormattedPrice from '@/backend/helpers/FormattedPrice';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { addToFavorites } from '@/redux/shoppingSlice';
-import { useDispatch } from 'react-redux';
-import { IoMdHeart } from 'react-icons/io';
-import { calculatePercentage } from '@/backend/helpers';
+"use client";
+import Image from "next/image";
+import "react-toastify/dist/ReactToastify.css";
+import FormattedPrice from "@/backend/helpers/FormattedPrice";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { addToFavorites } from "@/redux/shoppingSlice";
+import { useDispatch } from "react-redux";
+import { IoMdHeart } from "react-icons/io";
+import { calculatePercentage } from "@/backend/helpers";
 
 const ProductCard = ({ item }) => {
   const dispatch = useDispatch();
@@ -29,32 +29,32 @@ const ProductCard = ({ item }) => {
           />
 
           {item?.sale_price && (
-            <span className="absolute top-2 right-2  border-[1px] border-black font-medium text-xs py-1 px-3 rounded-sm bg-black text-slate-100 group-hover:bg-slate-100 group-hover:text-black duration-200">
+            <span className="absolute top-2 right-2  border-[1px] border-black font-medium text-xs py-1 px-3 rounded-sm bg-black text-slate-100 group-hover:bg-slate-100 group-hover:text-foreground duration-200">
               Oferta
             </span>
           )}
           {item?.stock <= 0 && (
-            <span className="absolute rotate-12 top-1/2 right-1/4  border-[1px] border-black font-medium text-xl py-1 px-3 rounded-sm bg-black text-slate-100 group-hover:bg-slate-100 group-hover:text-black duration-200">
+            <span className="absolute rotate-12 top-1/2 right-1/4  border-[1px] border-black font-medium text-xl py-1 px-3 rounded-sm bg-black text-slate-100 group-hover:bg-slate-100 group-hover:text-foreground duration-200">
               SOLD OUT
             </span>
           )}
           {item?.sale_price ? (
             <div>
-              <div className="absolute top-2 left-2  border-[1px] border-black w-fit py-1 px-4 rounded-sm text-xs bg-black text-slate-100 group-hover:bg-slate-100 group-hover:text-black duration-200">
+              <div className="absolute top-2 left-2  border-[1px] border-black w-fit py-1 px-4 rounded-sm text-xs bg-black text-slate-100 group-hover:bg-slate-100 group-hover:text-foreground duration-200">
                 <p>
                   {calculatePercentage(item?.price, item?.sale_price)}% menos
                 </p>
               </div>
             </div>
           ) : (
-            ''
+            ""
           )}
         </div>
       </Link>
       <div className=" px-4 py-4 flex flex-col bg-gray-100 rounded-b-sm">
         <div className="flex items-center justify-between gap-x-1">
-          <p className="text-black tracking-widest font-EB_Garamond text-xl">
-            {item?.title.substring(0, 15) + '...'}
+          <p className="text-foreground tracking-widest font-EB_Garamond text-xl">
+            {item?.title.substring(0, 15) + "..."}
           </p>
           <div className="flex items-center justify-between my-5">
             {/* add to favorites button */}
@@ -71,31 +71,31 @@ const ProductCard = ({ item }) => {
 
         <div className="pricing-class flex fle-row items-center gap-x-2">
           <div className="flex flex-col gap-y-1">
-            <p className="font-semibold text-black tracking-wider text-xl">
+            <p className="font-semibold text-foreground tracking-wider text-xl">
               {item?.sale_price > 0 ? (
                 <FormattedPrice amount={item?.sale_price} />
               ) : item?.price > 0 ? (
                 <FormattedPrice amount={item?.price} />
               ) : (
-                ''
+                ""
               )}
             </p>
           </div>
           {item?.sale_price ? (
             <div>
               <div className="flex items-center gap-x-2">
-                <p className="line-through text-sm text-black font-bodyFont">
+                <p className="line-through text-sm text-foreground font-bodyFont">
                   <FormattedPrice amount={item?.price} />
                 </p>
               </div>
             </div>
           ) : (
-            ''
+            ""
           )}
         </div>
         <div className="">
-          <p className="text-xs text-black">Resérvalo por solo: </p>
-          <p className="font-semibold text-black tracking-wider">
+          <p className="text-xs text-foreground">Resérvalo por solo: </p>
+          <p className="font-semibold text-foreground tracking-wider">
             <FormattedPrice
               amount={
                 item?.variations[0].price > 0
@@ -103,7 +103,7 @@ const ProductCard = ({ item }) => {
                   : item?.sale_price ?? item?.sale_price * 0.3
               }
             />
-            {item?.sale_price > 0 ? '(30%)' : ''}
+            {item?.sale_price > 0 ? "(30%)" : ""}
           </p>
         </div>
       </div>

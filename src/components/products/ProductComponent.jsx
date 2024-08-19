@@ -1,16 +1,16 @@
-'use client';
-import { useEffect, useRef, useState } from 'react';
-import './productstyles.css';
-import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
-import ProductCard from './ProductCard';
-import { IoMdCart } from 'react-icons/io';
-import FormattedPrice from '@/backend/helpers/FormattedPrice';
-import { motion } from 'framer-motion';
-import { calculatePercentage } from '@/backend/helpers';
-import { useDispatch, useSelector } from 'react-redux';
-import { addToCart } from '@/redux/shoppingSlice';
-import { Bounce, toast } from 'react-toastify';
-import { useRouter } from 'next/navigation';
+"use client";
+import { useEffect, useRef, useState } from "react";
+import "./productstyles.css";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
+import ProductCard from "./ProductCard";
+import { IoMdCart } from "react-icons/io";
+import FormattedPrice from "@/backend/helpers/FormattedPrice";
+import { motion } from "framer-motion";
+import { calculatePercentage } from "@/backend/helpers";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "@/redux/shoppingSlice";
+import { Bounce, toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const ProductComponent = ({ product, trendingProducts }) => {
   const dispatch = useDispatch();
@@ -50,7 +50,7 @@ const ProductComponent = ({ product, trendingProducts }) => {
   }, [productsData]);
 
   const appendClone = () => {
-    const lists = slideRef.current.querySelectorAll('.item');
+    const lists = slideRef.current.querySelectorAll(".item");
     const lastItem = lists[lists.length - 1];
 
     slideRef.current.prepend(lastItem);
@@ -61,15 +61,15 @@ const ProductComponent = ({ product, trendingProducts }) => {
   };
 
   const moveNext = () => {
-    const lists = slideRef.current.querySelectorAll('.item');
+    const lists = slideRef.current.querySelectorAll(".item");
     const lastItem = lists[lists.length - 1];
 
     // Clone the last item
     const clonedItem = lastItem.cloneNode(true);
 
     // Add click event to the cloned item
-    clonedItem.addEventListener('click', () =>
-      clickImage(clonedItem.getAttribute('data-image-id'))
+    clonedItem.addEventListener("click", () =>
+      clickImage(clonedItem.getAttribute("data-image-id"))
     );
 
     // Prepend the cloned item
@@ -82,15 +82,15 @@ const ProductComponent = ({ product, trendingProducts }) => {
   };
 
   const movePrev = () => {
-    const lists = slideRef.current.querySelectorAll('.item');
+    const lists = slideRef.current.querySelectorAll(".item");
     const firstItem = lists[0];
 
     // Clone the first item
     const clonedItem = firstItem.cloneNode(true);
 
     // Add click event to the cloned item
-    clonedItem.addEventListener('click', () =>
-      clickImage(clonedItem.getAttribute('data-image-id'))
+    clonedItem.addEventListener("click", () =>
+      clickImage(clonedItem.getAttribute("data-image-id"))
     );
 
     // Append the cloned item
@@ -107,7 +107,7 @@ const ProductComponent = ({ product, trendingProducts }) => {
 
     // Find the clicked item using imageId
     const clickedItem = Array.from(lists).find((item) => {
-      const itemId = item.getAttribute('data-image-id');
+      const itemId = item.getAttribute("data-image-id");
       return itemId === imageId;
     });
 
@@ -129,12 +129,12 @@ const ProductComponent = ({ product, trendingProducts }) => {
       `${product?.title.substring(0, 15)}... se agrego al carrito`,
       {
         position: toast.POSITION.TOP_CENTER,
-        className: 'foo-bar',
-        theme: 'dark',
+        className: "foo-bar",
+        theme: "dark",
         transition: Bounce,
       }
     );
-    router.push('/carrito');
+    router.push("/carrito");
   };
 
   const handleColorSelection = (e) => {
@@ -177,7 +177,7 @@ const ProductComponent = ({ product, trendingProducts }) => {
   return (
     <div className="container-class maxsm:py-8 h-full">
       <main className="bg-gray-100 flex min-h-screen flex-col items-center justify-between">
-        <div className="w-full mx-auto wrapper-class gap-3 bg-slate-100 text-black bg-opacity-80 rounded-lg">
+        <div className="w-full mx-auto wrapper-class gap-3 bg-slate-100 text-foreground bg-opacity-80 rounded-lg">
           <div className="flex flex-row maxsm:flex-col items-start justify-start gap-x-5 px-20 py-8 maxmd:py-4  maxmd:px-3">
             <div className="image-class w-1/2 maxsm:w-full flex flex-col items-center justify-center ">
               <motion.div
@@ -196,7 +196,7 @@ const ProductComponent = ({ product, trendingProducts }) => {
                       data-image-id={image._id}
                       onClick={() => clickImage(image._id)}
                       className={`item cursor-pointer ${
-                        index === 0 && 'active'
+                        index === 0 && "active"
                       }`}
                       style={{
                         backgroundImage: `url('${image.url}')`,
@@ -234,7 +234,7 @@ const ProductComponent = ({ product, trendingProducts }) => {
                   </div>
                   {product?.sale_price ? (
                     <div className="flex flex-row items-center justify-between">
-                      <div className="border-[1px] border-yellow-600 w-fit py-1 px-4 rounded-full text-xs text-black">
+                      <div className="border-[1px] border-yellow-600 w-fit py-1 px-4 rounded-full text-xs text-foreground">
                         <p>
                           {calculatePercentage(
                             variation.price,
@@ -250,22 +250,22 @@ const ProductComponent = ({ product, trendingProducts }) => {
                       </div>
                     </div>
                   ) : (
-                    ''
+                    ""
                   )}
                   <div>
-                    <p className="font-semibold text-4xl text-black font-bodyFont">
+                    <p className="font-semibold text-4xl text-foreground font-bodyFont">
                       {product?.sale_price > 0 ? (
                         <FormattedPrice amount={product?.sale_price} />
                       ) : variation.price > 0 ? (
                         <FormattedPrice amount={variation.price} />
                       ) : (
-                        ''
+                        ""
                       )}
                     </p>
                     <p className="text-xs font-normal text-gray-600">
                       Apártalo con solo 30%:
                     </p>
-                    <p className="text-xl text-black font-bodyFont">
+                    <p className="text-xl text-foreground font-bodyFont">
                       <FormattedPrice amount={variation.price * 0.3} />
                     </p>
                   </div>
@@ -277,19 +277,19 @@ const ProductComponent = ({ product, trendingProducts }) => {
                   transition={{ duration: 0.6 }}
                   className="text-slate-600 description-class tracking-wider"
                 >
-                  {product?.description ? product?.description : ''}
+                  {product?.description ? product?.description : ""}
                 </motion.div>
                 <span>
-                  Existencias:{' '}
+                  Existencias:{" "}
                   <span className=" font-bodyFont">
                     <b>{variation.stock}</b>
                   </span>
                 </span>
                 {product?.stock <= 0 || alreadyCart ? (
-                  ''
+                  ""
                 ) : (
                   <>
-                    {' '}
+                    {" "}
                     <motion.div
                       initial={{ y: 50, opacity: 0 }}
                       whileInView={{ y: 0, opacity: 1 }}
@@ -300,14 +300,14 @@ const ProductComponent = ({ product, trendingProducts }) => {
                         Colores Disponibles:
                       </p>
                       {product?.variations.length > 0 && (
-                        <span className="text-black flex flex-row items-center gap-5">
+                        <span className="text-foreground flex flex-row items-center gap-5">
                           {colors?.map((c, index) => (
                             <button
                               value={c.value}
                               key={index}
                               onClick={handleColorSelection}
                               className={`flex cursor-pointer p-3  text-white ${
-                                color === c.value ? 'bg-black' : 'bg-slate-500'
+                                color === c.value ? "bg-black" : "bg-slate-500"
                               }`}
                             >
                               {c.value}
@@ -334,8 +334,8 @@ const ProductComponent = ({ product, trendingProducts }) => {
                               value={s}
                               className={`rounded-full border border-slate-400 flex items-center justify-center px-2 py-1 ${
                                 size === s
-                                  ? ' bg-black text-white'
-                                  : 'border-slate-400'
+                                  ? " bg-black text-white"
+                                  : "border-slate-400"
                               }`}
                             >
                               {s}
@@ -345,7 +345,7 @@ const ProductComponent = ({ product, trendingProducts }) => {
                       ) : (
                         <div className="grid maxxsm:grid-cols-1 maxmd:grid-cols-2 grid-cols-4 gap-4 mt-2">
                           <p>Talla:</p>
-                          <p className="text-black">
+                          <p className="text-foreground">
                             {product?.variations[0].size}
                           </p>
                         </div>
@@ -376,20 +376,20 @@ const ProductComponent = ({ product, trendingProducts }) => {
                       whileTap={{ scale: 0.9 }}
                       className={`${
                         variation?.stock <= 0
-                          ? 'bg-slate-300 grayscale-0 text-slate-500 border-slate-300'
-                          : 'text-white border-black'
+                          ? "bg-slate-300 grayscale-0 text-slate-500 border-slate-300"
+                          : "text-white border-black"
                       } border  drop-shadow-md flex flex-row items-center justify-between px-6 py-3 text-sm gap-x-4 rounded-sm  bg-black  ease-in-out  duration-300 w-80 uppercase tracking-wider cursor-pointer `}
                       onClick={handleClick}
                     >
                       {variation?.stock <= 0
-                        ? 'Out of Stock'
-                        : 'Agregar a carrito'}
+                        ? "Out of Stock"
+                        : "Agregar a carrito"}
 
                       <span
                         className={`${
                           variation?.stock <= 0
-                            ? 'bg-slate-300 grayscale-0 text-slate-500'
-                            : 'group-hover:bg-black hover:text-white duration-200 '
+                            ? "bg-slate-300 grayscale-0 text-slate-500"
+                            : "group-hover:bg-black hover:text-white duration-200 "
                         } text-xl text-slate-400 w-12 flex items-center justify-center  rounded-full py-2`}
                       >
                         <IoMdCart />
@@ -399,20 +399,20 @@ const ProductComponent = ({ product, trendingProducts }) => {
                 </motion.div>
                 <div className="flex flex-col">
                   <span>
-                    SKU:{' '}
+                    SKU:{" "}
                     <span className=" font-bodyFont">
                       <b>{product?._id}</b>
                     </span>
                   </span>
 
                   <span>
-                    Categoría:{' '}
+                    Categoría:{" "}
                     <span className="t font-bodyFont">
                       <b>{product?.category}</b>
                     </span>
                   </span>
                   <span>
-                    Genero:{' '}
+                    Genero:{" "}
                     <span className="t font-bodyFont">{product?.gender}</span>
                   </span>
                 </div>
@@ -423,7 +423,7 @@ const ProductComponent = ({ product, trendingProducts }) => {
 
         <div className=" maxsm:px-4 mb-10 mt-10 w-[90%] mx-auto h-full">
           <p className="text-5xl maxsm:text-4xl font-EB_Garamond pb-5 font-semibold">
-            {'Productos destacados'}
+            {"Productos destacados"}
           </p>
           <div className="grid maxxsm:grid-cols-1 maxmd:grid-cols-2 grid-cols-4 gap-4 mt-2">
             {trendingProducts?.map((product) => (

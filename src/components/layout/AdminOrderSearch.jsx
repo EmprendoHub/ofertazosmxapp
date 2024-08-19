@@ -1,26 +1,26 @@
-'use client';
-import { usePathname, useRouter } from 'next/navigation';
-import React, { useState } from 'react';
-import { FaSearch } from 'react-icons/fa';
+"use client";
+import { usePathname, useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { FaSearch } from "react-icons/fa";
 
 const AdminOrderSearch = () => {
   const pathname = usePathname();
-  const [keyword, setKeyword] = useState('');
+  const [keyword, setKeyword] = useState("");
   const router = useRouter();
   const submitHandler = (e) => {
     e.preventDefault();
 
-    if (pathname.includes('admin')) {
+    if (pathname.includes("admin")) {
       if (keyword) {
         router.push(`/admin/pedidos/?keyword=${keyword}`);
       } else {
-        router.push('/admin/pedidos');
+        router.push("/admin/pedidos");
       }
     } else {
       if (keyword) {
         router.push(`/puntodeventa/pedidos/?keyword=${keyword}`);
       } else {
-        router.push('/puntodeventa/pedidos');
+        router.push("/puntodeventa/pedidos");
       }
     }
   };
@@ -30,7 +30,7 @@ const AdminOrderSearch = () => {
       className="flex flex-row items-center w-full order-last maxmd:order-none my-5 maxmd:my-0 "
     >
       <input
-        className="flex-grow text-black appearance-none border border-gray-200 bg-gray-100 rounded-md mr-2 py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-40"
+        className="flex-grow text-foreground appearance-none border border-gray-200 bg-gray-100 rounded-md mr-2 py-2 px-3 hover:border-gray-400 focus:outline-none focus:border-gray-400 w-40"
         type="text"
         placeholder="búsqueda"
         value={keyword}

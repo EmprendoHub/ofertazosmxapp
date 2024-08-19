@@ -92,7 +92,7 @@ const UpdateOrderComp = ({ setShowModal, order }) => {
           </div>
           <button
             type="submit"
-            className={`bg-black text-white py-2 px-8 text-xl hover:bg-slate-200 hover:text-black ease-in-out duration-700 rounded-md`}
+            className={`bg-black text-white py-2 px-8 text-xl hover:bg-slate-200 hover:text-foreground ease-in-out duration-700 rounded-md`}
           >
             Actualizar
           </button>

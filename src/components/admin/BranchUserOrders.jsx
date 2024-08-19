@@ -77,11 +77,11 @@ const BranchUserOrders = ({ orders, filteredOrdersCount, client }) => {
           </thead>
           <tbody>
             {orders?.map((order, index) => (
-              <tr className="bg-white" key={index}>
+              <tr className="bg-background" key={index}>
                 <td className="px-6 maxsm:px-1 py-2">
                   <Link
                     href={`/puntodeventa/pedido/${order._id}`}
-                    className="px-2 py-2 inline-block text-black shadow-sm border border-gray-200 rounded-md bg-gray-100 cursor-pointer mr-2"
+                    className="px-2 py-2 inline-block text-foreground shadow-sm border border-gray-200 rounded-md bg-gray-100 cursor-pointer mr-2"
                   >
                     {order.orderId}
                   </Link>
@@ -129,7 +129,7 @@ const BranchUserOrders = ({ orders, filteredOrdersCount, client }) => {
                   <div className="flex items-center">
                     <Link
                       href={`/puntodeventa/pedido/${order._id}`}
-                      className="px-2 py-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
+                      className="px-2 py-2 inline-block text-white hover:text-foreground bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
                     >
                       <FaEye className="" />
                     </Link>
@@ -140,7 +140,7 @@ const BranchUserOrders = ({ orders, filteredOrdersCount, client }) => {
                     ) : (
                       <button
                         onClick={() => updateOrderStatus(order)}
-                        className={`px-2 py-2 inline-block text-black hover:text-black ${
+                        className={`px-2 py-2 inline-block text-foreground hover:text-foreground ${
                           order?.paymentInfo?.amountPaid >=
                             getTotalFromItems(order.orderItems) ===
                           true

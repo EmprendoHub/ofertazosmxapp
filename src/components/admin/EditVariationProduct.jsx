@@ -505,7 +505,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
         <div className="flex flex-col items-start gap-5 justify-start w-full">
           <section className="w-full ">
             <div className="flex flex-row maxmd:flex-col items-center justify-between">
-              <h1 className="w-full text-2xl font-semibold text-black mb-8 font-EB_Garamond">
+              <h1 className="w-full text-2xl font-semibold text-foreground mb-8 font-EB_Garamond">
                 Actualizar Producto Con Variaciones
               </h1>
               {/* Availability */}
@@ -536,7 +536,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
             <div className="flex flex-row maxmd:flex-col items-start gap-3 justify-between w-full">
               <div className="gap-y-1 flex-col flex px-2 w-full">
                 {/*  Imagen principal del Producto */}
-                <div className="relative hover:opacity-80 bg-white border-4 border-gray-300">
+                <div className="relative hover:opacity-80 bg-background border-4 border-gray-300">
                   <label htmlFor="selectorMain" className="cursor-pointer">
                     <Image
                       id="blogImage"
@@ -909,7 +909,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
               </div>
               {/* Imagen de Variación # 1 */}
               <div className="mb-4 w-1/3 maxsm:w-full">
-                <div className="relative flex min-w-full  hover:opacity-80 bg-white border-4 border-gray-300">
+                <div className="relative flex min-w-full  hover:opacity-80 bg-background border-4 border-gray-300">
                   <label htmlFor="selectorVarOne" className="cursor-pointer">
                     <Image
                       id="MainVariation"
@@ -1088,7 +1088,7 @@ const EditVariationProduct = ({ product, currentCookies }) => {
                 </div>
                 {/* Dynamic Image Variation */}
                 <div className="mb-4 w-1/3 maxsm:w-full">
-                  <div className="relative aspect-video hover:opacity-80 bg-white border-4 border-gray-300">
+                  <div className="relative aspect-video hover:opacity-80 bg-background border-4 border-gray-300">
                     <label
                       htmlFor={`selector${index + 1}`}
                       className="cursor-pointer"

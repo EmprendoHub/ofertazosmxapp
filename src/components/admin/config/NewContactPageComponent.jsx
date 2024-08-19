@@ -292,7 +292,7 @@ const NewContactPageComponent = ({ contacto }) => {
                   value={preTitle}
                   onChange={handleMainSectionChange}
                   placeholder="Bienvenido a Ofertazos MX"
-                  className="font-bold font-EB_Garamond text-xl uppercase  z-20 flex flex-wrap items-center gap-1  mb-5 text-center text-white bg-white bg-opacity-0 leading-none py-0 outline-none"
+                  className="font-bold font-EB_Garamond text-xl uppercase  z-20 flex flex-wrap items-center gap-1  mb-5 text-center text-white bg-background bg-opacity-0 leading-none py-0 outline-none"
                 />
                 {validationError?.preTitle && (
                   <p className="text-sm text-red-400">
@@ -312,7 +312,7 @@ const NewContactPageComponent = ({ contacto }) => {
                   value={mainTitle}
                   onChange={handleMainSectionChange}
                   placeholder="CONTACTO"
-                  className="font-bold font-EB_Garamond uppercase text-5xl maxsm:text-3xl  z-20  text-white text-center  outline-none bg-white bg-opacity-0 leading-none resize-none py-0"
+                  className="font-bold font-EB_Garamond uppercase text-5xl maxsm:text-3xl  z-20  text-white text-center  outline-none bg-background bg-opacity-0 leading-none resize-none py-0"
                   onKeyDown={handleInputKeyDown}
                 />
                 {validationError?.mainTitle && (
@@ -333,7 +333,7 @@ const NewContactPageComponent = ({ contacto }) => {
                   value={subTitle}
                   onChange={handleMainSectionChange}
                   placeholder="Tu destino exclusivo para la moda de lujo!"
-                  className="font-bold font-EB_Garamond text-xl text-white w-full z-20  mb-5 text-center bg-white bg-opacity-0 outline-none resize-none"
+                  className="font-bold font-EB_Garamond text-xl text-white w-full z-20  mb-5 text-center bg-background bg-opacity-0 outline-none resize-none"
                 />
                 {validationError?.subTitle && (
                   <p className="text-sm text-red-400">
@@ -363,7 +363,7 @@ const NewContactPageComponent = ({ contacto }) => {
               </label>
             </section>
             {/*  Section 0 */}
-            <section className="bg-white py-12 px-20 maxsm:px-2">
+            <section className="bg-background py-12 px-20 maxsm:px-2">
               <div className="w-full flex flex-row maxmd:flex-col justify-center items-center">
                 <div className="w-1/3 maxmd:w-full pl-20 maxmd:pl-0 text-lg text-gray-600 ">
                   <div className="relative h-full">
@@ -377,7 +377,7 @@ const NewContactPageComponent = ({ contacto }) => {
                               handleInputChange(e, 0, 0, "title")
                             }
                             placeholder="Información de Contacto"
-                            className="font-bold bg-white bg-opacity-10 w-full outline-none"
+                            className="font-bold bg-background bg-opacity-10 w-full outline-none"
                           />
                           {validationError?.sectionOneTitle && (
                             <p className="text-sm text-red-400">
@@ -406,7 +406,7 @@ const NewContactPageComponent = ({ contacto }) => {
                                     handleInputChange(e, 1, 0, "title")
                                   }
                                   placeholder="Teléfono"
-                                  className="font-bold bg-white bg-opacity-10 w-full  outline-none"
+                                  className="font-bold bg-background bg-opacity-10 w-full  outline-none"
                                 />
                                 {validationError?.sectionOneBoxOneTitle && (
                                   <p className="text-sm text-red-400">
@@ -489,7 +489,7 @@ const NewContactPageComponent = ({ contacto }) => {
                                     handleInputChange(e, 2, 0, "title")
                                   }
                                   placeholder="Correo Electrónico"
-                                  className="font-bold bg-white bg-opacity-10 w-full  outline-none"
+                                  className="font-bold bg-background bg-opacity-10 w-full  outline-none"
                                 />
                                 {validationError?.sectionOneBoxTwoTitle && (
                                   <p className="text-sm text-red-400">
@@ -572,7 +572,7 @@ const NewContactPageComponent = ({ contacto }) => {
                                     handleInputChange(e, 3, 0, "title")
                                   }
                                   placeholder="Oficinas"
-                                  className="font-bold bg-white bg-opacity-10 w-full  outline-none"
+                                  className="font-bold bg-background bg-opacity-10 w-full  outline-none"
                                 />
                                 {validationError?.sectionOneBoxThreeTitle && (
                                   <p className="text-sm text-red-400">
@@ -671,7 +671,7 @@ const NewContactPageComponent = ({ contacto }) => {
                         value={sections[4]?.boxes[0]?.title}
                         onChange={(e) => handleInputChange(e, 4, 0, "title")}
                         placeholder="Envía un mensaje"
-                        className="font-bold bg-white bg-opacity-10 w-full  outline-none text-7xl font-EB_Garamond"
+                        className="font-bold bg-background bg-opacity-10 w-full  outline-none text-7xl font-EB_Garamond"
                       />
                       {validationError?.sectionThreeBoxOneTitle && (
                         <p className="text-sm text-red-400">
@@ -712,7 +712,7 @@ const NewContactPageComponent = ({ contacto }) => {
                     transition={{ duration: 1.2 }}
                     className="flex gap-x-4 mt-2 justify-center"
                   >
-                    <div className="bg-white rounded-lg p-4 shadow-md">
+                    <div className="bg-background rounded-lg p-4 shadow-md">
                       <label
                         htmlFor="sectionFourImageSelector"
                         className="cursor-pointer"

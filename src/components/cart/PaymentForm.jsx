@@ -65,7 +65,7 @@ const PaymentForm = () => {
   //=============================== Stripe Payment ends here ============================
   return (
     <section className="p-2 maxsm:py-7 bg-gray-100">
-      <div className=" max-w-screen-xl mx-auto bg-white flex flex-col justify-between p-2">
+      <div className=" max-w-screen-xl mx-auto bg-background flex flex-col justify-between p-2">
         <h2>Totales</h2>
         <ul className="mb-5">
           <li className="flex justify-between text-gray-600  mb-1">
@@ -115,13 +115,13 @@ const PaymentForm = () => {
           <div className="flex flex-col items-center gap-1">
             <button
               onClick={() => handleCheckout("layaway")}
-              className=" text-slate-100 bg-violet-950 mt-4 py-3 px-6 hover:bg-slate-200 hover:text-black duration-300 ease-in-out cursor-pointer w-full"
+              className=" text-slate-100 bg-violet-950 mt-4 py-3 px-6 hover:bg-slate-200 hover:text-foreground duration-300 ease-in-out cursor-pointer w-full"
             >
               Apartar Artículos{" "}
             </button>
             <button
               onClick={() => handleCheckout("total")}
-              className="bg-black w-full text-slate-100 mt-4 py-3 px-6 hover:bg-slate-200 hover:text-black duration-300 ease-in-out cursor-pointer"
+              className="bg-black w-full text-slate-100 mt-4 py-3 px-6 hover:bg-slate-200 hover:text-foreground duration-300 ease-in-out cursor-pointer"
             >
               Pagar Total{" "}
             </button>
@@ -132,7 +132,7 @@ const PaymentForm = () => {
             </p>
             <Link
               href="/carrito"
-              className="w-full mt-4 text-center px-5 py-2 inline-block text-gray-700 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:text-blue-600"
+              className="w-full mt-4 text-center px-5 py-2 inline-block text-gray-700 bg-background shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 hover:text-blue-600"
             >
               Regresar
             </Link>

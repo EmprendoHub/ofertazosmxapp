@@ -7,10 +7,10 @@ export const metadata = {
 
 const PoliticaPage = () => {
   return (
-    <div className="bg-white p-6 px-20 md:px-10">
+    <div className="bg-background p-6 px-20 md:px-10">
       <section className="hero bg-gray-100 text-center py-20 border border-slate-400 drop-shadow-md mb-10">
         <div className="container mx-auto">
-          <h1 className="text-4xl font-extrabold font-EB_Garamond text-black">
+          <h1 className="text-4xl font-extrabold font-EB_Garamond text-foreground">
             Política de privacidad de Ofertazos MX
           </h1>
           <p className="text-lg mt-4 font-raleway font-semibold">
@@ -22,7 +22,7 @@ const PoliticaPage = () => {
           </p>
         </div>
       </section>
-      <div className="bg-white p-10 maxsm:p-5 border border-slate-400 drop-shadow-md ">
+      <div className="bg-background p-10 maxsm:p-5 border border-slate-400 drop-shadow-md ">
         <section className="mb-4">
           <h2 className="text-2xl font-semibold  font-EB_Garamond">
             INFORMACIÓN PERSONAL QUE RECOPILAMOS

@@ -57,9 +57,9 @@ const PayOrderComp = ({
 
   return (
     <div className="flex flex-col w-full h-full items-center justify-center">
-      <div className="w-1/2 maxmd:w-5/6 bg-white pl-4">
+      <div className="w-1/2 maxmd:w-5/6 bg-background pl-4">
         <section className=" p-6 w-full">
-          <h2 className="text-xl maxmd:text-5xl font-semibold text-black mb-8 font-EB_Garamond">
+          <h2 className="text-xl maxmd:text-5xl font-semibold text-foreground mb-8 font-EB_Garamond">
             Recibir Pago
           </h2>
           <div className="w-ful flex flex-col items-center justify-center">

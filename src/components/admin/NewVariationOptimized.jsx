@@ -491,11 +491,11 @@ const NewVariationOptimized = ({ currentCookies }) => {
   }
 
   return (
-    <main className="w-full p-4 maxsm:p-2 bg-slate-200 text-sm">
+    <main className="w-full p-4 maxsm:p-2 bg-card text-sm">
       {!isSending ? (
         <div className="flex flex-col items-start gap-5 justify-start w-full">
           <section className={`w-full ${!isSending ? "" : "grayscale"}`}>
-            <h1 className="w-full text-xl font-semibold text-black mb-8 font-EB_Garamond">
+            <h1 className="w-full text-xl font-semibold text-foreground mb-8 font-EB_Garamond">
               Nuevo Producto Con Variaciones
             </h1>
             <div className="flex flex-row maxmd:flex-col items-start gap-2 justify-between w-full">
@@ -527,7 +527,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
                 </div>
                 {/*  Imagen principal */}
                 <div className="gap-y-1 flex-col flex px-2 w-full">
-                  <div className="relative aspect-video hover:opacity-80 bg-white border-4 border-gray-300">
+                  <div className="relative aspect-video hover:opacity-80 bg-background border-4 border-gray-300">
                     <label htmlFor="selectorMain" className="cursor-pointer">
                       <Image
                         id="blogImage"
@@ -914,7 +914,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
               <div className="mb-4 w-1/3 maxsm:w-full">
                 {/* Section 1 - Title, Image */}
                 <label className="block  font-EB_Garamond">Imagen # 1</label>
-                <div className="relative aspect-video hover:opacity-80 bg-white border-4 border-gray-300">
+                <div className="relative aspect-video hover:opacity-80 bg-background border-4 border-gray-300">
                   <label htmlFor="selectorVarOne" className="cursor-pointer">
                     <Image
                       id="MainVariation"
@@ -1090,7 +1090,7 @@ const NewVariationOptimized = ({ currentCookies }) => {
                   <label className="block  font-EB_Garamond">
                     Imagen # {index + 2}
                   </label>
-                  <div className="relative aspect-video hover:opacity-80 bg-white border-4 border-gray-300">
+                  <div className="relative aspect-video hover:opacity-80 bg-background border-4 border-gray-300">
                     <label
                       htmlFor={`selector${index + 1}`}
                       className="cursor-pointer"

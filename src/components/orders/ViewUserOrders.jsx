@@ -1,7 +1,7 @@
-import { formatDate, formatTime, getTotalFromItems } from '@/backend/helpers';
-import FormattedPrice from '@/backend/helpers/FormattedPrice';
-import Link from 'next/link';
-import { FaPencilAlt } from 'react-icons/fa';
+import { formatDate, formatTime, getTotalFromItems } from "@/backend/helpers";
+import FormattedPrice from "@/backend/helpers/FormattedPrice";
+import Link from "next/link";
+import { FaPencilAlt } from "react-icons/fa";
 
 const ViewUserOrders = ({ orders, filteredOrdersCount, client }) => {
   return (
@@ -36,11 +36,11 @@ const ViewUserOrders = ({ orders, filteredOrdersCount, client }) => {
         </thead>
         <tbody>
           {orders?.map((order, index) => (
-            <tr className="bg-white" key={index}>
+            <tr className="bg-background" key={index}>
               <td className="px-6 maxsm:px-1 py-2">
                 <Link
                   href={`/admin/pedido/${order._id}`}
-                  className="px-2 py-2 inline-block text-black shadow-sm border border-gray-200 rounded-md bg-gray-100 cursor-pointer mr-2"
+                  className="px-2 py-2 inline-block text-foreground shadow-sm border border-gray-200 rounded-md bg-gray-100 cursor-pointer mr-2"
                 >
                   {order.orderId}
                 </Link>
@@ -55,13 +55,13 @@ const ViewUserOrders = ({ orders, filteredOrdersCount, client }) => {
               </td>
               <td
                 className={`px-6 maxsm:px-1 py-2 font-bold ${
-                  order.orderStatus === 'Apartado'
-                    ? 'text-amber-700'
-                    : order.orderStatus === 'En Camino'
-                    ? 'text-blue-700'
-                    : order.orderStatus === 'Entregado'
-                    ? 'text-green-700'
-                    : 'text-slate-600'
+                  order.orderStatus === "Apartado"
+                    ? "text-amber-700"
+                    : order.orderStatus === "En Camino"
+                    ? "text-blue-700"
+                    : order.orderStatus === "Entregado"
+                    ? "text-green-700"
+                    : "text-slate-600"
                 }`}
               >
                 {order.orderStatus}
@@ -76,7 +76,7 @@ const ViewUserOrders = ({ orders, filteredOrdersCount, client }) => {
                 <div>
                   <Link
                     href={`/admin/pedido/${order._id}`}
-                    className="px-2 py-2 inline-block text-white hover:text-black bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
+                    className="px-2 py-2 inline-block text-white hover:text-foreground bg-black shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer mr-2"
                   >
                     <FaPencilAlt className="" />
                   </Link>

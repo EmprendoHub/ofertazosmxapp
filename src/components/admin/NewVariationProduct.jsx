@@ -1,13 +1,13 @@
-'use client';
-import React, { useState, useRef } from 'react';
-import Image from 'next/image';
-import DateTimePicker from 'react-datetime-picker';
-import 'react-datetime-picker/dist/DateTimePicker.css';
-import 'react-calendar/dist/Calendar.css';
-import 'react-clock/dist/Clock.css';
-import { cstDateTimeClient } from '@/backend/helpers';
-import { addVariationProduct } from '@/app/_actions';
-import { useRouter } from 'next/navigation';
+"use client";
+import React, { useState, useRef } from "react";
+import Image from "next/image";
+import DateTimePicker from "react-datetime-picker";
+import "react-datetime-picker/dist/DateTimePicker.css";
+import "react-calendar/dist/Calendar.css";
+import "react-clock/dist/Clock.css";
+import { cstDateTimeClient } from "@/backend/helpers";
+import { addVariationProduct } from "@/app/_actions";
+import { useRouter } from "next/navigation";
 import {
   set_colors,
   sizes_prendas,
@@ -16,47 +16,47 @@ import {
   product_categories,
   genders,
   blog_categories,
-} from '@/backend/data/productData';
-import MultiselectTagComponent from '../forms/MultiselectTagComponent';
+} from "@/backend/data/productData";
+import MultiselectTagComponent from "../forms/MultiselectTagComponent";
 
 const NewVariationProduct = () => {
   const router = useRouter();
   const formRef = useRef();
-  const [title, setTitle] = useState('');
-  const [brand, setBrand] = useState('');
+  const [title, setTitle] = useState("");
+  const [brand, setBrand] = useState("");
   const [branchAvailability, setBranchAvailability] = useState(false);
   const [instagramAvailability, setInstagramAvailability] = useState(false);
   const [onlineAvailability, setOnlineAvailability] = useState(true);
-  const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('Moda');
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("Moda");
   const [tags, setTags] = useState([]);
-  const [gender, setGender] = useState('Damas');
-  const [featured, setFeatured] = useState('No');
+  const [gender, setGender] = useState("Damas");
+  const [featured, setFeatured] = useState("No");
   const [createdAt, setCreatedAt] = useState(
     cstDateTimeClient().toLocaleString()
   );
   const [salePrice, setSalePrice] = useState(0);
-  const [salePriceEndDate, setSalePriceEndDate] = useState('');
+  const [salePriceEndDate, setSalePriceEndDate] = useState("");
   const [sizeSelection, setSizeSelection] = useState(sizes_prendas);
   const [tagSelection, setTagSelection] = useState(blog_categories);
   const [validationError, setValidationError] = useState(null);
 
   const [mainImage, setMainImage] = useState(
-    '/images/product-placeholder-minimalist.jpg'
+    "/images/product-placeholder-minimalist.jpg"
   );
 
   const [mainVariation, setMainVariation] = useState(
-    '/images/product-placeholder-minimalist.jpg'
+    "/images/product-placeholder-minimalist.jpg"
   );
 
   const [variations, setVariations] = useState([
     {
-      size: '',
-      color: '',
+      size: "",
+      color: "",
       price: 0,
       cost: 0,
       stock: 1,
-      image: '/images/product-placeholder-minimalist.jpg',
+      image: "/images/product-placeholder-minimalist.jpg",
     },
   ]);
 
@@ -64,8 +64,8 @@ const NewVariationProduct = () => {
     setVariations((prevVariations) => [
       ...prevVariations,
       {
-        size: '',
-        color: '',
+        size: "",
+        color: "",
         price: prevVariations[0].price,
         cost: prevVariations[0].cost,
         stock: 1,
@@ -124,9 +124,9 @@ const NewVariationProduct = () => {
   async function retrieveNewURL(file, cb) {
     const endpoint = `/api/minio/`;
     fetch(endpoint, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        "Access-Control-Allow-Origin": "*",
         Name: file.name,
       },
     })
@@ -144,13 +144,13 @@ const NewVariationProduct = () => {
   async function uploadVariationFile(file, url, index) {
     fetch(url, {
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        "Access-Control-Allow-Origin": "*",
       },
-      method: 'PUT',
+      method: "PUT",
       body: file,
     })
       .then(() => {
-        const newUrl = url.split('?');
+        const newUrl = url.split("?");
         const newVariations = [...variations];
         newVariations[index].image = newUrl[0];
         setVariations(newVariations);
@@ -183,9 +183,9 @@ const NewVariationProduct = () => {
   async function uploadFile(file, url, section) {
     fetch(url, {
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        "Access-Control-Allow-Origin": "*",
       },
-      method: 'PUT',
+      method: "PUT",
       body: file,
     })
       .then(() => {
@@ -193,13 +193,13 @@ const NewVariationProduct = () => {
         // document.querySelector(
         //   '#status'
         // ).innerHTML += `<br>Uploaded ${file.name}.`;
-        const newUrl = url.split('?');
-        if (section === 'selectorMain') {
+        const newUrl = url.split("?");
+        if (section === "selectorMain") {
           setMainImage(newUrl[0]);
           setVariations([
             {
-              size: '',
-              color: '',
+              size: "",
+              color: "",
               price: 0,
               cost: 0,
               stock: 1,
@@ -207,7 +207,7 @@ const NewVariationProduct = () => {
             },
           ]);
         }
-        if (section === 'selectorVarOne') {
+        if (section === "selectorVarOne") {
           setMainVariation(newUrl[0]);
         }
       })
@@ -219,85 +219,85 @@ const NewVariationProduct = () => {
   async function action() {
     if (
       !mainImage ||
-      mainImage === '/images/product-placeholder-minimalist.jpg'
+      mainImage === "/images/product-placeholder-minimalist.jpg"
     ) {
       const noMainImageError = {
-        mainImage: { _errors: ['Se requiere una imagen '] },
+        mainImage: { _errors: ["Se requiere una imagen "] },
       };
       setValidationError(noMainImageError);
       return;
     }
     if (!title) {
-      const noTitleError = { title: { _errors: ['Se requiere un titulo '] } };
+      const noTitleError = { title: { _errors: ["Se requiere un titulo "] } };
       setValidationError(noTitleError);
       return;
     }
     if (!description) {
       const noDescriptionError = {
-        description: { _errors: ['Se requiere descripción '] },
+        description: { _errors: ["Se requiere descripción "] },
       };
       setValidationError(noDescriptionError);
       return;
     }
     if (!brand) {
       const noBrandError = {
-        brand: { _errors: ['Se requiere un Marca '] },
+        brand: { _errors: ["Se requiere un Marca "] },
       };
       setValidationError(noBrandError);
       return;
     }
     if (!tags) {
       const noTagsError = {
-        tags: { _errors: ['Se requiere mínimo una etiqueta '] },
+        tags: { _errors: ["Se requiere mínimo una etiqueta "] },
       };
       setValidationError(noTagsError);
       return;
     }
     if (!variations[0].cost) {
       const noCostError = {
-        cost: { _errors: ['Se requiere un costo de producto '] },
+        cost: { _errors: ["Se requiere un costo de producto "] },
       };
       setValidationError(noCostError);
       return;
     }
     if (!variations[0].price) {
       const noPriceError = {
-        price: { _errors: ['Se requiere un precio de producto '] },
+        price: { _errors: ["Se requiere un precio de producto "] },
       };
       setValidationError(noPriceError);
       return;
     }
     if (!variations[0].size) {
       const noSizesError = {
-        sizes: { _errors: ['Se requiere una talla o tamaño '] },
+        sizes: { _errors: ["Se requiere una talla o tamaño "] },
       };
       setValidationError(noSizesError);
       return;
     }
     if (!variations[0].color) {
       const noColorsError = {
-        colors: { _errors: ['Se requiere un color '] },
+        colors: { _errors: ["Se requiere un color "] },
       };
       setValidationError(noColorsError);
       return;
     }
 
     const formData = new FormData();
-    formData.append('title', title);
-    formData.append('description', description);
-    formData.append('category', category);
-    formData.append('featured', featured);
-    formData.append('branchAvailability', branchAvailability);
-    formData.append('instagramAvailability', instagramAvailability);
-    formData.append('onlineAvailability', onlineAvailability);
-    formData.append('brand', brand);
-    formData.append('gender', gender);
-    formData.append('mainImage', mainImage);
-    formData.append('variations', JSON.stringify(variations));
-    formData.append('tags', JSON.stringify(tags));
-    formData.append('salePrice', Number(salePrice));
-    formData.append('salePriceEndDate', salePriceEndDate);
-    formData.append('createdAt', createdAt);
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("category", category);
+    formData.append("featured", featured);
+    formData.append("branchAvailability", branchAvailability);
+    formData.append("instagramAvailability", instagramAvailability);
+    formData.append("onlineAvailability", onlineAvailability);
+    formData.append("brand", brand);
+    formData.append("gender", gender);
+    formData.append("mainImage", mainImage);
+    formData.append("variations", JSON.stringify(variations));
+    formData.append("tags", JSON.stringify(tags));
+    formData.append("salePrice", Number(salePrice));
+    formData.append("salePriceEndDate", salePriceEndDate);
+    formData.append("createdAt", createdAt);
     // write to database using server actions
 
     const result = await addVariationProduct(formData);
@@ -307,23 +307,23 @@ const NewVariationProduct = () => {
       setValidationError(null);
       //reset the form
       formRef.current.reset();
-      router.push('/admin/productos');
+      router.push("/admin/productos");
     }
   }
   const handleCategoryChange = async (e) => {
     setCategory(e);
-    if (e === 'Calzado' && gender == 'Damas') {
+    if (e === "Calzado" && gender == "Damas") {
       setSizeSelection(sizes_shoes_woman);
     } else {
       setSizeSelection(sizes_shoes_men);
     }
 
     if (
-      e === 'Prendas' ||
-      e === 'Bolsas' ||
-      e === 'Accesorios' ||
-      e === 'Belleza' ||
-      e === 'Joyeria'
+      e === "Prendas" ||
+      e === "Bolsas" ||
+      e === "Accesorios" ||
+      e === "Belleza" ||
+      e === "Joyeria"
     ) {
       setSizeSelection(sizes_prendas);
     }
@@ -339,18 +339,18 @@ const NewVariationProduct = () => {
 
   const handleGenderChange = async (e) => {
     setGender(e);
-    if (category === 'Calzado' && e == 'Damas') {
+    if (category === "Calzado" && e == "Damas") {
       setSizeSelection(sizes_shoes_woman);
     } else {
       setSizeSelection(sizes_shoes_men);
     }
 
     if (
-      category === 'Prendas' ||
-      category === 'Bolsas' ||
-      category === 'Accesorios' ||
-      category === 'Belleza' ||
-      category === 'Joyeria'
+      category === "Prendas" ||
+      category === "Bolsas" ||
+      category === "Accesorios" ||
+      category === "Belleza" ||
+      category === "Joyeria"
     ) {
       setSizeSelection(sizes_prendas);
     }
@@ -365,7 +365,7 @@ const NewVariationProduct = () => {
       >
         <section className="w-full ">
           <div className="flex flex-row maxmd:flex-col items-center justify-between">
-            <h1 className="w-full text-xl font-semibold text-black mb-8 font-EB_Garamond">
+            <h1 className="w-full text-xl font-semibold text-foreground mb-8 font-EB_Garamond">
               Nuevo Producto Con Variaciones
             </h1>
 
@@ -379,8 +379,8 @@ const NewVariationProduct = () => {
                   value={featured}
                 >
                   {[
-                    { value: false, name: 'No', uniqueKey: 'featuredNO' },
-                    { value: true, name: 'Si', uniqueKey: 'featuredYES' },
+                    { value: false, name: "No", uniqueKey: "featuredNO" },
+                    { value: true, name: "Si", uniqueKey: "featuredYES" },
                   ].map((opt, index) => (
                     <option key={opt.uniqueKey} value={opt.value}>
                       {opt.name}
@@ -389,7 +389,7 @@ const NewVariationProduct = () => {
                 </select>
                 {validationError?.featured && (
                   <p className="text-sm text-red-400">
-                    {validationError.featured._errors.join(', ')}
+                    {validationError.featured._errors.join(", ")}
                   </p>
                 )}
                 <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
@@ -414,13 +414,13 @@ const NewVariationProduct = () => {
                   {[
                     {
                       value: false,
-                      name: 'No',
-                      uniqueKey: 'instagramNO',
+                      name: "No",
+                      uniqueKey: "instagramNO",
                     },
                     {
                       value: true,
-                      name: 'Si',
-                      uniqueKey: 'instagramYes',
+                      name: "Si",
+                      uniqueKey: "instagramYes",
                     },
                   ].map((opt) => (
                     <option key={opt.uniqueKey} value={opt.value}>
@@ -451,13 +451,13 @@ const NewVariationProduct = () => {
                   {[
                     {
                       value: false,
-                      name: 'No',
-                      uniqueKey: 'branchNo',
+                      name: "No",
+                      uniqueKey: "branchNo",
                     },
                     {
                       value: true,
-                      name: 'Si',
-                      uniqueKey: 'branchYes',
+                      name: "Si",
+                      uniqueKey: "branchYes",
                     },
                   ].map((opt) => (
                     <option key={opt.uniqueKey} value={opt.value}>
@@ -488,13 +488,13 @@ const NewVariationProduct = () => {
                   {[
                     {
                       value: false,
-                      name: 'No',
-                      uniqueKey: 'onlineNo',
+                      name: "No",
+                      uniqueKey: "onlineNo",
                     },
                     {
                       value: true,
-                      name: 'Si',
-                      uniqueKey: 'onlineYes',
+                      name: "Si",
+                      uniqueKey: "onlineYes",
                     },
                   ].map((opt) => (
                     <option key={opt.uniqueKey} value={opt.value}>
@@ -523,7 +523,7 @@ const NewVariationProduct = () => {
               <label className="block  font-EB_Garamond">
                 Imagen principal
               </label>
-              <div className="relative aspect-video hover:opacity-80 bg-white border-4 border-gray-300">
+              <div className="relative aspect-video hover:opacity-80 bg-background border-4 border-gray-300">
                 <label htmlFor="selectorMain" className="cursor-pointer">
                   <Image
                     id="blogImage"
@@ -543,7 +543,7 @@ const NewVariationProduct = () => {
 
                   {validationError?.mainImage && (
                     <p className="text-sm text-red-400">
-                      {validationError.mainImage._errors.join(', ')}
+                      {validationError.mainImage._errors.join(", ")}
                     </p>
                   )}
                 </label>
@@ -563,13 +563,13 @@ const NewVariationProduct = () => {
                 />
                 {validationError?.title && (
                   <p className="text-sm text-red-400">
-                    {validationError.title._errors.join(', ')}
+                    {validationError.title._errors.join(", ")}
                   </p>
                 )}
               </div>
               <div className="mb-4">
                 <label className="block mb-1  font-EB_Garamond">
-                  {' '}
+                  {" "}
                   Description Corta
                 </label>
                 <textarea
@@ -582,7 +582,7 @@ const NewVariationProduct = () => {
                 ></textarea>
                 {validationError?.description && (
                   <p className="text-sm text-red-400">
-                    {validationError.description._errors.join(', ')}
+                    {validationError.description._errors.join(", ")}
                   </p>
                 )}
               </div>
@@ -598,7 +598,7 @@ const NewVariationProduct = () => {
                 />
                 {validationError?.brand && (
                   <p className="text-sm text-red-400">
-                    {validationError.brand._errors.join(', ')}
+                    {validationError.brand._errors.join(", ")}
                   </p>
                 )}
               </div>
@@ -618,7 +618,7 @@ const NewVariationProduct = () => {
                   </select>
                   {validationError?.gender && (
                     <p className="text-sm text-red-400">
-                      {validationError.gender._errors.join(', ')}
+                      {validationError.gender._errors.join(", ")}
                     </p>
                   )}
                   <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
@@ -643,15 +643,15 @@ const NewVariationProduct = () => {
                   />
                   {validationError?.tags && (
                     <p className="text-sm text-red-400">
-                      {validationError.tags._errors.join(', ')}
+                      {validationError.tags._errors.join(", ")}
                     </p>
                   )}
                 </div>
               </div>
               <div className="mb-4 w-full">
                 <label className="block mb-1 font-EB_Garamond">
-                  {' '}
-                  Categoría{' '}
+                  {" "}
+                  Categoría{" "}
                 </label>
                 <div className="relative">
                   <select
@@ -667,7 +667,7 @@ const NewVariationProduct = () => {
                   </select>
                   {validationError?.category && (
                     <p className="text-sm text-red-400">
-                      {validationError.category._errors.join(', ')}
+                      {validationError.category._errors.join(", ")}
                     </p>
                   )}
                   <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
@@ -701,7 +701,7 @@ const NewVariationProduct = () => {
                       />
                       {validationError?.salePrice && (
                         <p className="text-sm text-red-400">
-                          {validationError.salePrice._errors.join(', ')}
+                          {validationError.salePrice._errors.join(", ")}
                         </p>
                       )}
                     </div>
@@ -715,9 +715,9 @@ const NewVariationProduct = () => {
                   <DateTimePicker
                     onChange={onChangeDate}
                     value={salePriceEndDate}
-                    locale={'es-MX'}
+                    locale={"es-MX"}
                     minDate={cstDateTimeClient()}
-                    className={'h-full'}
+                    className={"h-full"}
                   />
                 </div>
               </div>
@@ -748,7 +748,7 @@ const NewVariationProduct = () => {
                   </select>
                   {validationError?.sizes && (
                     <p className="text-sm text-red-400">
-                      {validationError.sizes._errors.join(', ')}
+                      {validationError.sizes._errors.join(", ")}
                     </p>
                   )}
                 </div>
@@ -768,7 +768,7 @@ const NewVariationProduct = () => {
                   </select>
                   {validationError?.colors && (
                     <p className="text-sm text-red-400">
-                      {validationError.colors._errors.join(', ')}
+                      {validationError.colors._errors.join(", ")}
                     </p>
                   )}
                 </div>
@@ -788,7 +788,7 @@ const NewVariationProduct = () => {
                     />
                     {validationError?.price && (
                       <p className="text-sm text-red-400">
-                        {validationError.price._errors.join(', ')}
+                        {validationError.price._errors.join(", ")}
                       </p>
                     )}
                   </div>
@@ -809,7 +809,7 @@ const NewVariationProduct = () => {
                     />
                     {validationError?.cost && (
                       <p className="text-sm text-red-400">
-                        {validationError.cost._errors.join(', ')}
+                        {validationError.cost._errors.join(", ")}
                       </p>
                     )}
                   </div>
@@ -817,8 +817,8 @@ const NewVariationProduct = () => {
               </div>
               <div className="mb-4 w-full">
                 <label className="block mb-1 font-EB_Garamond">
-                  {' '}
-                  Existencias{' '}
+                  {" "}
+                  Existencias{" "}
                 </label>
                 <div className="relative">
                   <div className="col-span-2">
@@ -833,7 +833,7 @@ const NewVariationProduct = () => {
                     />
                     {validationError?.stock && (
                       <p className="text-sm text-red-400">
-                        {validationError.stock._errors.join(', ')}
+                        {validationError.stock._errors.join(", ")}
                       </p>
                     )}
                   </div>
@@ -845,7 +845,7 @@ const NewVariationProduct = () => {
                 <label className="block  font-EB_Garamond">
                   Imagen de Variación # 1
                 </label>
-                <div className="relative aspect-video hover:opacity-80 bg-white border-4 border-gray-300">
+                <div className="relative aspect-video hover:opacity-80 bg-background border-4 border-gray-300">
                   <label htmlFor="selectorVarOne" className="cursor-pointer">
                     <Image
                       id="MainVariation"
@@ -865,7 +865,7 @@ const NewVariationProduct = () => {
 
                     {validationError?.mainImage && (
                       <p className="text-sm text-red-400">
-                        {validationError.mainImage._errors.join(', ')}
+                        {validationError.mainImage._errors.join(", ")}
                       </p>
                     )}
                   </label>
@@ -902,7 +902,7 @@ const NewVariationProduct = () => {
 
                     {validationError?.sizes && (
                       <p className="text-sm text-red-400">
-                        {validationError.sizes._errors.join(', ')}
+                        {validationError.sizes._errors.join(", ")}
                       </p>
                     )}
                   </div>
@@ -924,7 +924,7 @@ const NewVariationProduct = () => {
                     </select>
                     {validationError?.colors && (
                       <p className="text-sm text-red-400">
-                        {validationError.colors._errors.join(', ')}
+                        {validationError.colors._errors.join(", ")}
                       </p>
                     )}
                   </div>
@@ -959,8 +959,8 @@ const NewVariationProduct = () => {
                 </div>
                 <div className="mb-4 w-full">
                   <label className="block mb-1 font-EB_Garamond">
-                    {' '}
-                    Existencias{' '}
+                    {" "}
+                    Existencias{" "}
                   </label>
                   <div className="relative">
                     <input
@@ -980,7 +980,7 @@ const NewVariationProduct = () => {
                   <label className="block  font-EB_Garamond">
                     Imagen de Variación # {index + 2}
                   </label>
-                  <div className="relative aspect-video hover:opacity-80 bg-white border-4 border-gray-300">
+                  <div className="relative aspect-video hover:opacity-80 bg-background border-4 border-gray-300">
                     <label
                       htmlFor={`selector${index + 1}`}
                       className="cursor-pointer"
@@ -1005,7 +1005,7 @@ const NewVariationProduct = () => {
 
                       {validationError?.mainImage && (
                         <p className="text-sm text-red-400">
-                          {validationError.mainImage._errors.join(', ')}
+                          {validationError.mainImage._errors.join(", ")}
                         </p>
                       )}
                     </label>
