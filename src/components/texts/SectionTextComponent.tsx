@@ -30,7 +30,7 @@ const SectionTextComponent = ({
           initial={{ y: 40, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6 }}
-          className="text-base font-poppins text-gray-700"
+          className="text-base font-poppins text-gray-500"
         >
           {paraOne}
         </motion.p>
@@ -38,7 +38,7 @@ const SectionTextComponent = ({
           initial={{ y: 40, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.7 }}
-          className="text-base font-poppins text-gray-700"
+          className="text-base font-poppins text-gray-500"
         >
           {paraTwo}
         </motion.p>

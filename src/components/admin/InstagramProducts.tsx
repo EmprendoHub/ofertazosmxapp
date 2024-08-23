@@ -216,9 +216,9 @@ const InstagramProducts = ({
                 key={product?._id}
               >
                 <td
-                  className={`w-full px-6 maxsm:px-0 py-0 font-bold maxsm:hidden`}
+                  className={`w-full text-[12px] px-6 maxsm:px-0 py-0 font-bold maxsm:hidden`}
                 >
-                  {product?.title}
+                  {product?.title.substring(0, 20)}...
                 </td>
 
                 <td className="w-full px-6 maxsm:px-0 py-0 relative ">

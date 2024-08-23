@@ -246,32 +246,12 @@ const AdminProducts = ({
                 product: {
                   active: boolean;
                   _id: Key | null | undefined;
-                  title:
-                    | string
-                    | number
-                    | bigint
-                    | boolean
-                    | ReactElement<any, string | JSXElementConstructor<any>>
-                    | Iterable<ReactNode>
-                    | ReactPortal
-                    | Promise<AwaitedReactNode>
-                    | null
-                    | undefined;
+                  title: string;
                   slug: any;
                   images: { url: string | StaticImport }[];
                   featured: any;
                   variations: { price: any }[];
-                  stock:
-                    | string
-                    | number
-                    | bigint
-                    | boolean
-                    | ReactElement<any, string | JSXElementConstructor<any>>
-                    | Iterable<ReactNode>
-                    | ReactPortal
-                    | Promise<AwaitedReactNode>
-                    | null
-                    | undefined;
+                  stock: string | number;
                   availability: {
                     online: boolean;
                     branch: boolean;
@@ -289,9 +269,9 @@ const AdminProducts = ({
                   key={product?._id}
                 >
                   <td
-                    className={`w-full px-6 maxsm:px-0 py-0 font-bold maxsm:hidden`}
+                    className={`w-full px-6 maxsm:px-0 py-0 font-bold maxsm:hidden text-[12px]`}
                   >
-                    {product?.title}
+                    {product?.title?.substring(0, 30)}...
                   </td>
 
                   <td className="w-full px-6 maxsm:px-0 py-0 relative ">
@@ -304,7 +284,7 @@ const AdminProducts = ({
                           alt="Title"
                           width={200}
                           height={200}
-                          className="w-20 object-cover h-20 maxsm:w-20 rounded-md"
+                          className="w-14 object-cover h-14 maxsm:w-14 rounded-md"
                         />
                       </Link>
 

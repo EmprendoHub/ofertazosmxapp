@@ -262,58 +262,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const createProduct = async (formData) => {
-    // Make the fetch request
-    try {
-      // Create a new FormData object
-      const formDataObject = new FormData();
-      // Append each form field to the FormData object
-      for (const [key, value] of formData.entries()) {
-        formDataObject.append(key, value);
-      }
-
-      // Construct the payload in the desired format
-      const payload = {
-        title: formDataObject.get("title"),
-        description: formDataObject.get("description"),
-        category: formDataObject.get("category"),
-        cost: formDataObject.get("cost"),
-        price: parseInt(formDataObject.get("price"), 10), // Convert to integer
-        sizes: formDataObject.get("sizes"),
-        images: formDataObject.get("images"),
-        featured: formDataObject.get("featured"),
-        brand: formDataObject.get("brand"),
-        gender: formDataObject.get("gender"),
-        salePrice: formDataObject.get("salePrice"),
-        salePriceEndDate: formDataObject.get("salePriceEndDate"),
-        stock: formDataObject.get("stock"),
-        createdAt: formDataObject.get("createdAt"),
-      };
-      const response = await axios.post(
-        `/api/product`,
-        {
-          payload,
-        },
-        {
-          headers: {
-            "X-Mysession-Key": JSON.stringify(user),
-          },
-        }
-      );
-      if (response) {
-        setLoading(false);
-        return NextResponse.json(
-          {
-            message: "Se creo el Producto Exitosamente ",
-          },
-          { status: 200 }
-        );
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
   const updateProduct = async (formData) => {
     // Make the fetch request
     try {
@@ -364,54 +312,6 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Error:", error);
-    }
-  };
-
-  const deleteProduct = async (id) => {
-    try {
-      const { data } = await axios.delete(`/api/product?${id}`, {
-        headers: {
-          "X-Mysession-Key": JSON.stringify(user),
-        },
-      });
-      if (data) {
-        router.refresh("/admin/productos");
-      }
-    } catch (error) {
-      setError(error?.response?.data?.message);
-    }
-  };
-
-  const addNewAddress = async (address) => {
-    try {
-      const { data } = await axios.post(
-        `/api/address`,
-        {
-          address,
-        },
-        {
-          headers: {
-            "X-Mysession-Key": JSON.stringify(user),
-          },
-        }
-      );
-
-      if (data) {
-        router.push("/perfil/direcciones");
-      }
-    } catch (error) {
-      // Check if it's a duplicate record error
-      if (isDuplicateRecordError(error?.response)) {
-        const duplicateKeyInfo = extractDuplicateKey(error?.response);
-        if (duplicateKeyInfo) {
-          const { index, key, value } = duplicateKeyInfo;
-          setError(
-            `Ya existe un registro con ${
-              key && key === "phone" ? "telefono" : "domicilio"
-            }: "${value}". Por favor, ingrese un valor único.`
-          );
-        }
-      }
     }
   };
 
@@ -523,16 +423,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const getAllAddresses = async () => {
-    try {
-      const { data } = await axios.get(`/api/addresses`);
-
-      return data.addresses;
-    } catch (error) {
-      setError(error?.response?.data?.message);
-    }
-  };
-
   const getOneAddress = async (id) => {
     try {
       const URL = `/api/address?${id}`;
@@ -540,108 +430,6 @@ export const AuthProvider = ({ children }) => {
       return data;
     } catch (error) {
       setError(error?.response?.data?.message);
-    }
-  };
-
-  const getAllUserOrders = async (searchParams, currentCookies) => {
-    try {
-      const urlParams = {
-        keyword: searchParams.keyword,
-        page: searchParams.page,
-      };
-      // Filter out undefined values
-      const filteredUrlParams = Object.fromEntries(
-        Object.entries(urlParams).filter(([key, value]) => value !== undefined)
-      );
-
-      const searchQuery = new URLSearchParams(filteredUrlParams).toString();
-      const URL = `/api/orders?${searchQuery}`;
-      const { data } = await axios.get(
-        URL,
-        {
-          headers: {
-            Cookie: currentCookies,
-          },
-        },
-        { cache: "no-cache" }
-      );
-
-      return data;
-    } catch (error) {
-      setError(error?.response?.data?.message);
-    }
-  };
-
-  const getAdminUserOrders = async (searchParams, currentCookies, params) => {
-    const urlParams = {
-      keyword: searchParams.keyword,
-      page: searchParams.page,
-      id: params.id,
-    };
-    // Filter out undefined values
-    const filteredUrlParams = Object.fromEntries(
-      Object.entries(urlParams).filter(([key, value]) => value !== undefined)
-    );
-    const searchQuery = new URLSearchParams(filteredUrlParams).toString();
-    const URL = `/api/orders/user?${searchQuery}`;
-    const { data } = await axios.get(
-      URL,
-      {
-        headers: {
-          Cookie: currentCookies,
-        },
-      },
-      { cache: "no-cache" }
-    );
-
-    return data;
-  };
-
-  const getAllOrders = async (searchParams, currentCookies) => {
-    try {
-      const urlParams = {
-        keyword: searchParams.keyword,
-        page: searchParams.page,
-      };
-      // Filter out undefined values
-      const filteredUrlParams = Object.fromEntries(
-        Object.entries(urlParams).filter(([key, value]) => value !== undefined)
-      );
-      const searchQuery = new URLSearchParams(filteredUrlParams).toString();
-      const URL = `/api/orders?${searchQuery}`;
-      const { data } = await axios.get(
-        URL,
-        {
-          headers: {
-            Cookie: currentCookies,
-          },
-        },
-        { cache: "no-cache" }
-      );
-
-      return data;
-    } catch (error) {
-      console.log(error);
-      setError(error?.response?.data?.message);
-    }
-  };
-
-  const getOneOrder = async (id, currentCookies) => {
-    try {
-      const URL = `/api/order?${id}`;
-
-      const { data } = await axios.get(
-        URL,
-        {
-          headers: {
-            Cookie: currentCookies,
-          },
-        },
-        { cache: "no-cache" }
-      );
-      return data;
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -680,118 +468,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const getAllProducts = async (searchParams, currentCookies, perPage) => {
-    try {
-      const urlParams = {
-        keyword: searchParams.keyword,
-        page: searchParams.page,
-        category: searchParams.category,
-        brand: searchParams.brand,
-        "rating[gte]": searchParams.rating,
-        "price[lte]": searchParams.max,
-        "price[gte]": searchParams.min,
-      };
-      // Filter out undefined values
-      const filteredUrlParams = Object.fromEntries(
-        Object.entries(urlParams).filter(([key, value]) => value !== undefined)
-      );
-
-      const searchQuery = new URLSearchParams(filteredUrlParams).toString();
-      const URL = `/api/products?${searchQuery}`;
-      const { data } = await axios.get(
-        URL,
-        {
-          headers: {
-            Cookie: currentCookies,
-            perPage: perPage,
-          },
-        },
-        { cache: "no-cache" }
-      );
-
-      return data;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getAllClients = async (searchParams, currentCookies, perPage) => {
-    try {
-      const urlParams = {
-        keyword: searchParams.keyword,
-        page: searchParams.page,
-        name: searchParams.name,
-        email: searchParams.email,
-      };
-      // Filter out undefined values
-      const filteredUrlParams = Object.fromEntries(
-        Object.entries(urlParams).filter(([key, value]) => value !== undefined)
-      );
-      const searchQuery = new URLSearchParams(filteredUrlParams).toString();
-      const URL = `/api/clients?${searchQuery}`;
-      const { data } = await axios.get(
-        URL,
-        {
-          headers: {
-            Cookie: currentCookies,
-            perPage: perPage,
-          },
-        },
-        { cache: "no-cache" }
-      );
-      return data;
-    } catch (error) {
-      setError(error?.response?.data?.message);
-    }
-  };
-
-  const getAllAffiliates = async (searchParams, currentCookies, perPage) => {
-    try {
-      const urlParams = {
-        keyword: searchParams.keyword,
-        page: searchParams.page,
-        username: searchParams.username,
-        phone: searchParams.phone,
-      };
-      // Filter out undefined values
-      const filteredUrlParams = Object.fromEntries(
-        Object.entries(urlParams).filter(([key, value]) => value !== undefined)
-      );
-
-      const searchQuery = new URLSearchParams(filteredUrlParams).toString();
-      const URL = `/api/affiliates?${searchQuery}`;
-      const { data } = await axios.get(
-        URL,
-        {
-          headers: {
-            Cookie: currentCookies,
-            perPage: perPage,
-          },
-        },
-        { cache: "no-cache" }
-      );
-
-      return data;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const deleteAffiliate = async (id) => {
-    try {
-      const { data } = await axios.delete(`/api/affiliate?${id}`, {
-        headers: {
-          "X-Mysession-Key": JSON.stringify(user),
-        },
-      });
-      if (data) {
-        router.refresh("/admin/asociados");
-      }
-    } catch (error) {
-      setError(error?.response?.data?.message);
-    }
-  };
-
   return (
     <AuthContext.Provider
       value={{
@@ -803,32 +479,20 @@ export const AuthProvider = ({ children }) => {
         registerUser,
         updateProfile,
         clearErrors,
-        addNewAddress,
         getOneAddress,
         updateAddress,
         setUpdated,
         deleteAddress,
         deleteProfile,
-        createProduct,
         updateProduct,
-        getAllProducts,
-        getAllAddresses,
-        deleteProduct,
         createPost,
         updatePost,
         deletePost,
-        getAllUserOrders,
-        getOneOrder,
-        getAllOrders,
-        getAllClients,
         updateOrder,
         getAllPosts,
-        getAdminUserOrders,
         addNewReferralLink,
         getAllAffiliateLinks,
         registerAffiliateUser,
-        getAllAffiliates,
-        deleteAffiliate,
         getUserFavorites,
       }}
     >

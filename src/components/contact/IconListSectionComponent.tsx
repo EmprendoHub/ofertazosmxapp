@@ -6,63 +6,33 @@ const IconListSectionComponent = ({
   textTitleOne,
   textTitleTwo,
   textTitleThree,
-  textOne,
   textTwo,
   textThree,
   phoneLinkOne,
   phoneLinkTextOne,
-  phoneLinkTwo,
-  phoneLinkTextTwo,
-  phoneLinkThree,
-  phoneTextThree,
-  phoneLinkFour,
-  phoneTextFour,
   linkTwo,
   linkThree,
-  linkOneText,
   linkTwoText,
   linkThreeText,
   textAddressThree,
   textAddressBThree,
   textAddressCThree,
-  textTitleFour,
-  textFour,
-  textAddressFour,
-  textAddressBFour,
-  textAddressCFour,
-  linkFour,
-  linkFourText,
 }: {
   mainTitle: string;
   textTitleOne: string;
   textTitleTwo: string;
   textTitleThree: string;
-  textOne: string;
   textTwo: string;
   textThree: string;
   phoneLinkOne: string;
   phoneLinkTextOne: string;
-  phoneLinkTwo: string;
-  phoneLinkTextTwo: string;
-  phoneLinkThree: string;
-  phoneTextThree: string;
-  phoneLinkFour: string;
-  phoneTextFour: string;
   linkTwo: string;
   linkThree: string;
-  linkOneText: string;
   linkTwoText: string;
   linkThreeText: string;
   textAddressThree: string;
   textAddressBThree: string;
   textAddressCThree: string;
-  textTitleFour: string;
-  textFour: string;
-  textAddressFour: string;
-  textAddressBFour: string;
-  textAddressCFour: string;
-  linkFour: string;
-  linkFourText: string;
 }) => {
   return (
     <div className="relative h-full">
@@ -118,9 +88,6 @@ const IconListSectionComponent = ({
               </div>
               <a href={phoneLinkOne} className="text-xs font-bold">
                 {phoneLinkTextOne}
-              </a>
-              <a href={phoneLinkTwo} className="text-xs font-bold">
-                {phoneLinkTextTwo}
               </a>
             </div>
           </div>

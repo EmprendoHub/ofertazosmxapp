@@ -11,6 +11,7 @@ import { LiaCashRegisterSolid, LiaStoreAltSolid } from "react-icons/lia";
 import { GiClothes } from "react-icons/gi";
 import { FaCartPlus, FaInstagram } from "react-icons/fa6";
 import { BsQrCodeScan } from "react-icons/bs";
+import { SiMercadopago } from "react-icons/si";
 
 export default function UserLayout({ children }: { children: any }) {
   const pathname = usePathname();
@@ -102,6 +103,14 @@ export default function UserLayout({ children }: { children: any }) {
             alert={undefined}
             dropdownItems={undefined}
           />
+          <SideBarItem
+            icon={<SiMercadopago size={20} />}
+            text={"MercadoLibre"}
+            active={pathname === "/admin/mercadolibre" ? "true" : "false"}
+            url={"/admin/mercadolibre"}
+            alert={undefined}
+            dropdownItems={undefined}
+          />
 
           <hr className="my-3 maxmd:my-1" />
           <SideBarItem
@@ -157,7 +166,7 @@ export default function UserLayout({ children }: { children: any }) {
             ]}
           />
         </AdminSidebar>
-        <div className="relative w-full mb-5 ">{children}</div>
+        <div className="relative w-full mb-5 p-4 ">{children}</div>
       </div>
     </div>
   );

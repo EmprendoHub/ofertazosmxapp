@@ -402,7 +402,7 @@ const DashComponent = ({ data }: { data: any }) => {
                         />
                       </td>
                       <td>
-                        <p className="line-clamp-2 capitalize">
+                        <p className="line-clamp-2 capitalize text-[12px]">
                           {product.title.substring(0, 12)}...
                         </p>
                       </td>

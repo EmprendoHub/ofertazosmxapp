@@ -8,7 +8,6 @@ const ProductSchema = new mongoose.Schema({
   domain: { type: String },
   url: {
     type: String,
-    required: true,
     unique: true,
   },
   currency: {

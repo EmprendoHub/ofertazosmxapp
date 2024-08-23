@@ -123,7 +123,7 @@ const AllPOSProductsComp: React.FC<AllPOSProductsCompProps> = ({
           <POSProductSearch />
         </div>
         <button
-          className="bg-black rounded-lg text-white p-4"
+          className="bg-secondary rounded-lg text-white p-4"
           onClick={handleGenerateQR}
         >
           Generar QRs
@@ -136,7 +136,7 @@ const AllPOSProductsComp: React.FC<AllPOSProductsCompProps> = ({
                   type="checkbox"
                   checked={selectAll}
                   onChange={handleSelectAll}
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
+                  className="w-4 h-4 text-blue-600 bg-card rounded-lg focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
                 />
               </th>
               <th
@@ -161,8 +161,8 @@ const AllPOSProductsComp: React.FC<AllPOSProductsCompProps> = ({
               <tr
                 className={`flex flex-row items-center ${
                   product.active
-                    ? "bg-slate-100"
-                    : "bg-slate-200 text-slate-400"
+                    ? "bg-background"
+                    : "bg-muted text-muted-foreground"
                 }`}
                 key={product._id}
               >
@@ -177,7 +177,7 @@ const AllPOSProductsComp: React.FC<AllPOSProductsCompProps> = ({
                 </td>
                 <td
                   onClick={() => handleCheckBox(product)}
-                  className={`w-full px-6 maxsm:px-0 py-0 font-semibold maxsm:hidden capitalize cursor-pointer`}
+                  className={`w-full px-6 maxsm:px-0 py-0 maxsm:hidden capitalize cursor-pointer text-[12px]`}
                 >
                   {product.title}
                 </td>

@@ -7,8 +7,8 @@ const ContactComponent = () => {
   return (
     <>
       <div>
-        <section className="relative min-h-[700px] flex flex-row maxsm:flex-col justify-center items-center bg-background bg-cover bg-no-repeat bg-center bg-fixed">
-          <div className="relative container mx-auto flex justify-center items-center text-center p-5 sm:py-20 text-white z-10">
+        <section className="relative min-h-[700px] flex flex-row maxsm:flex-col justify-center items-center  bg-background text-foreground">
+          <div className="relative container mx-auto flex justify-center items-center text-center p-5 sm:py-20 z-10">
             <HeroColTextComponent
               pretitle={"CONTACTO"}
               title={"OFERTAZOSMX"}
@@ -26,34 +26,19 @@ const ContactComponent = () => {
               <IconListSectionComponent
                 mainTitle={"Información de Contacto"}
                 textTitleOne={"Números"}
-                textOne={"Platiquemos acerca de tu proyecto"}
+                textTitleTwo={"Manda un mensaje"}
+                textTitleThree={"Sucursal Sahuayo"}
+                textTwo={"Escríbenos tus dudas"}
+                textThree={"Platiquemos en persona"}
                 phoneLinkOne={"tel:3532464146"}
                 phoneLinkTextOne={"(+52)353-246-4146"}
-                textTitleTwo={"Manda un mensaje"}
-                textTwo={"Escríbenos tus dudas"}
                 linkTwo={"mailto:ofertazosmx@gmail.com"}
+                linkThree={"https://maps.app.goo.gl/8122sB7xggByVweT8"}
                 linkTwoText={"ofertazosmx@gmail.com"}
-                textTitleThree={"Sucursal Sahuayo"}
-                textThree={"Platiquemos en persona"}
                 textAddressThree={"Calle Via Láctea 715"}
                 textAddressBThree={"Col. La Gloria del Colli"}
                 textAddressCThree={"Zapopan, Jalisco  45010"}
-                linkThree={"https://maps.app.goo.gl/8122sB7xggByVweT8"}
                 linkThreeText={"Ver en mapa"}
-                phoneLinkTwo={undefined}
-                phoneLinkTextTwo={undefined}
-                phoneLinkThree={undefined}
-                phoneTextThree={undefined}
-                phoneLinkFour={undefined}
-                phoneTextFour={undefined}
-                linkOneText={undefined}
-                textTitleFour={undefined}
-                textFour={undefined}
-                textAddressFour={undefined}
-                textAddressBFour={undefined}
-                textAddressCFour={undefined}
-                linkFour={undefined}
-                linkFourText={undefined}
               />
             </div>
 

@@ -22,7 +22,7 @@ const InnerSectionTextComponent = ({
           initial={{ y: 30, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8 }}
-          className="text-5xl maxmd:text-2xl font-bold font-EB_Garamond "
+          className="text-3xl maxmd:text-2xl font-bold font-EB_Garamond  "
         >
           {title}
         </motion.h2>
@@ -30,7 +30,7 @@ const InnerSectionTextComponent = ({
           initial={{ y: 40, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.9 }}
-          className="text-base font-poppins text-gray-700"
+          className="text-xs"
         >
           {paraOne}
         </motion.p>
@@ -38,7 +38,7 @@ const InnerSectionTextComponent = ({
           initial={{ y: 40, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 1.0 }}
-          className="text-base font-raleway text-gray-700"
+          className="text-xs"
         >
           {paraTwo}
         </motion.p>

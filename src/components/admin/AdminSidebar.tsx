@@ -31,43 +31,47 @@ const AdminSidebar = ({ children }: { children: any }) => {
   }
   return (
     <aside className="h-screen print:hidden ">
-      <nav className="h-full flex flex-col bg-background border-r border-r-foreground shadow-sm">
-        <div className="p-4 maxmd:pl-3 pb-2 flex justify-between maxmd:justify-center items-center">
-          <Image
-            alt="image"
-            src={"/images/horizontal_logo.png"}
-            width={500}
-            height={500}
-            className={`overflow-hidden transition-all ease-in-out ${
-              expandSidebar ? "w-36 h-auto  maxmd:w-36 maxmd:ml-1" : "w-0 h-0"
-            }`}
-          />
-          <button
-            onClick={() => setExpandSidebar((currentState) => !currentState)}
-            className="p-1.5 rounded-lg text-foreground"
-          >
-            {expandSidebar ? (
-              <BsChevronBarLeft size={20} />
-            ) : (
-              <BsChevronBarRight size={20} />
-            )}
-          </button>
-        </div>
+      <nav className="h-full flex justify-between flex-col bg-background border-r border-b border-r-muted shadow-sm">
+        <div>
+          <div className=" py-2 flex justify-center items-center">
+            <Image
+              alt="image"
+              src={"/images/horizontal_logo.png"}
+              width={500}
+              height={500}
+              className={`overflow-hidden transition-all ease-in-out ${
+                expandSidebar ? "w-36 h-auto  maxmd:w-36 maxmd:ml-1" : "w-0 h-0"
+              }`}
+            />
+            <button
+              onClick={() => setExpandSidebar((currentState) => !currentState)}
+              className="p-1.5 rounded-lg text-foreground"
+            >
+              {expandSidebar ? (
+                <BsChevronBarLeft size={20} />
+              ) : (
+                <BsChevronBarRight size={20} />
+              )}
+            </button>
+          </div>
 
-        <SidebarContext.Provider value={{ expandSidebar }}>
-          <ul className="flex-1 ">{children}</ul>
-        </SidebarContext.Provider>
+          <SidebarContext.Provider value={{ expandSidebar }}>
+            <ul className="flex flex-col justify-center gap-4 px-2">
+              {children}
+            </ul>
+          </SidebarContext.Provider>
+        </div>
         {/* user avatar */}
         <div
           onClick={() => setExpandSidebar((currentState) => !currentState)}
-          className="border-t flex p-1 "
+          className="border-t flex justify-center items-center p-1 "
         >
           <Image
             alt={user?.name ? user?.name : "avatar"}
             src={user?.image ? user?.image : "/images/avatar_placeholder.jpg"}
-            width={500}
-            height={500}
-            className="w-10 h-10 rounded-full cursor-pointer"
+            width={150}
+            height={150}
+            className="w-6 h-6 rounded-full cursor-pointer"
           />
 
           <div
@@ -76,30 +80,26 @@ const AdminSidebar = ({ children }: { children: any }) => {
             }`}
           >
             <div className="leading-4 w-full">
-              <div className="flex items-center">
-                <h4 className="font-semibold text-xs leading-4 text-wrap w-2/3 ">
-                  {" "}
-                  {user?.name}
+              <div className="flex items-center justify-between">
+                <h4 className=" text-[12px] leading-4 text-wrap w-2/3 ">
+                  {user?.name.substring(0, 12)}
                 </h4>
                 <div
-                  className=" text-red-800 hover:bg-red-100 hover:text-white-500 rounded-md cursor-pointer"
+                  className=" text-red-800 hover:bg-foreground hover:text-white-500 rounded-md cursor-pointer"
                   onClick={() => signOut()}
                 >
                   <div
                     className={`${
-                      expandSidebar ? "group absolute w-32" : "w-0"
+                      expandSidebar ? "group flex items-center w-6 p-1" : "w-0"
                     }`}
                   >
                     <FiLogOut />
-                    <span className="absolute -top-10 scale-0 transition-all rounded bg-black p-2 text-xs text-white group-hover:scale-100 z-50">
+                    <span className="absolute -top-10 scale-0 transition-all rounded bg-black text-xs text-white group-hover:scale-100 z-50">
                       Cerrar Session!
                     </span>
                   </div>
                 </div>
               </div>
-              <span className="text-xs text-gray-600">
-                {user?.email.substring(0, 15)}...
-              </span>
             </div>
           </div>
         </div>
@@ -140,14 +140,16 @@ export function SideBarItem({
 
   return (
     <li
-      className={`relative flex flex-col items-center py-2 pl-2 pr-3 maxmd:pr-1 my-1 font-medium rounded-md cursor-pointer gap-x-1 transition-colors ${
-        active === "true" ? " text-primary" : "hover:bg-primary text-gray-600"
+      className={`relative flex flex-col items-center font-medium rounded-md cursor-pointer text-[14px] ${
+        active === "true"
+          ? " text-secondary"
+          : "hover:text-secondary text-slate-500"
       }`}
       onClick={handleDropdownToggle}
       onMouseEnter={() => setHoveredIndex("main")} // Set hoveredIndex to 'main' for the main item
       onMouseLeave={() => setHoveredIndex("")} // Reset on mouse leave
     >
-      <div className="flex ">
+      <div className="flex items-center justify-center">
         {icon}
         <span
           className={`flex justify-between items-center overflow-hidden transition-all ease-in-out ${
@@ -160,63 +162,65 @@ export function SideBarItem({
 
       {/* Conditional rendering for main item hover text */}
       {!expandSidebar && hoveredIndex === "main" && (
-        <div className="absolute z-50 left-full rounded-md px-2 py-1 ml-0 bg-indigo-100 text-primary text-sm opacity-100 min-w-[250px]">
+        <div className="absolute z-50 left-full rounded-md px-2 py-1 ml-0 bg-indigo-100 text-primary text-xs opacity-100 min-w-[250px]">
           {text}
         </div>
       )}
 
       {dropdownOpen && dropdownItems && (
-        <motion.ul
-          variants={{
-            animate: { opacity: 1, scale: 1 },
-            initial: { opacity: 0, scale: 0.5 },
-          }}
-          transition={{ duration: 0.5 }}
-          initial="initial"
-          animate="animate"
-          className="relative flex flex-col gap-1 mt-1 w-full bg-background"
-        >
-          {dropdownItems.map(
-            (
-              item: {
-                url: string;
-                active: string;
-                icon: any;
-                text: string;
-              },
-              index: number
-            ) => (
-              <Link href={item.url} key={index} className="min-w-full">
-                <li
-                  className={`p-2 cursor-pointer flex items-center justify-center rounded-md ${
-                    item.active === "true"
-                      ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-primary"
-                      : "hover:bg-indigo-50 text-gray-600 bg-opacity-0"
-                  }`}
-                  onMouseEnter={() => setHoveredIndex(index.toString())} // Set hoveredIndex to the current item's index
-                  onMouseLeave={() => setHoveredIndex("")} // Reset on mouse leave
-                >
-                  {item.icon && item.icon}
-                  <span
-                    className={`flex justify-between items-center overflow-hidden transition-all ease-in-out ${
-                      expandSidebar
-                        ? " w-36 ml-2  maxmd:w-36 maxmd:ml-1"
-                        : "w-0"
+        <AnimatePresence>
+          <motion.ul
+            variants={{
+              animate: { opacity: 1, scale: 1 },
+              initial: { opacity: 0, scale: 0.5 },
+            }}
+            transition={{ duration: 0.2 }}
+            initial="initial"
+            animate="animate"
+            className="absolute z-50 top-6 flex flex-col gap-1 mt-1 bg-muted rounded-lg"
+          >
+            {dropdownItems.map(
+              (
+                item: {
+                  url: string;
+                  active: string;
+                  icon: any;
+                  text: string;
+                },
+                index: number
+              ) => (
+                <Link href={item.url} key={index} className="min-w-full">
+                  <li
+                    className={`p-2 cursor-pointer flex items-center justify-center rounded-md ${
+                      item.active === "true"
+                        ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-primary"
+                        : "hover:bg-indigo-50 text-gray-600 bg-opacity-0"
                     }`}
+                    onMouseEnter={() => setHoveredIndex(index.toString())} // Set hoveredIndex to the current item's index
+                    onMouseLeave={() => setHoveredIndex("")} // Reset on mouse leave
                   >
-                    {item.text}
-                  </span>
-                  {/* Conditional rendering for dropdown item hover text */}
-                  {!expandSidebar && hoveredIndex === index.toString() && (
-                    <div className="absolute z-50 left-full rounded-md px-2 py-1 ml-0 bg-indigo-100 text-primary text-sm opacity-100 min-w-[250px]">
+                    {item.icon && item.icon}
+                    <span
+                      className={`flex justify-between items-center overflow-hidden transition-all ease-in-out ${
+                        expandSidebar
+                          ? " w-36 ml-2  maxmd:w-36 maxmd:ml-1"
+                          : "w-0"
+                      }`}
+                    >
                       {item.text}
-                    </div>
-                  )}
-                </li>
-              </Link>
-            )
-          )}
-        </motion.ul>
+                    </span>
+                    {/* Conditional rendering for dropdown item hover text */}
+                    {!expandSidebar && hoveredIndex === index.toString() && (
+                      <div className="absolute z-50 left-full rounded-md px-2 py-1 ml-0 bg-indigo-100 text-primary text-xs opacity-100 min-w-[250px]">
+                        {item.text}
+                      </div>
+                    )}
+                  </li>
+                </Link>
+              )
+            )}
+          </motion.ul>
+        </AnimatePresence>
       )}
     </li>
   );
