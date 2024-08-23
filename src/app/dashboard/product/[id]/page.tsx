@@ -203,6 +203,21 @@ const ProductDetails = async ({ params: { id } }: Props) => {
             {product.description}
           </div>
         </div>
+        <div className="flex flex-col gap-5">
+          <h3 className="ml-2 text-2xl font-semibold text-secondary">
+            Especificaciones
+          </h3>
+          <div className="flex flex-col gap-4 p-2 text-xs">
+            {product.details.map((detail) => (
+              <div>
+                <p className="flex items-center gap-2">
+                  <span>{detail.key}:</span>
+                  <span>{detail.value}</span>
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
         <Button variant="outline" className=" w-1/2 mx-auto">
           <Image
             src={"/icons/save-svgrepo-com.svg"}

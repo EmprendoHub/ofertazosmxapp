@@ -178,23 +178,23 @@ export async function scrapeMercadoLibreProduct(url: string) {
     console.log("details", details);
 
     // // Extract "Formato de venta" detail
-    // $(".ui-vpp-highlighted-specs__key-value__labels__key-value").each(
-    //   (index, element) => {
-    //     const text = $(element).text();
-    //     console.log("text"), text;
+    $(".ui-vpp-highlighted-specs__key-value__labels__key-value").each(
+      (index, element) => {
+        const text = $(element).text();
+        console.log("text"), text;
 
-    //     const [key, value] = text.split(":");
-    //     details.push({ key: key.trim(), value: value.trim() });
-    //   }
-    // );
+        const [key, value] = text.split(":");
+        details.push({ key: key.trim(), value: value.trim() });
+      }
+    );
 
     // Extract "Formato de venta" detail
-    $(".ui-vpp-highlighted-specs__key-value__labels").each((index, element) => {
-      const text = $(element).text();
-      console.log("text 2"), text;
-      const [key, value] = text.split(":");
-      details.push({ key: key.trim(), value: value.trim() });
-    });
+    // $(".ui-vpp-highlighted-specs__key-value__labels").each((index, element) => {
+    //   const text = $(element).text();
+    //   console.log("text 2"), text;
+    //   const [key, value] = text.split(":");
+    //   details.push({ key: key.trim(), value: value.trim() });
+    // });
 
     console.log("details 22222", details);
 
