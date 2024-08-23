@@ -4,7 +4,7 @@ import AllAffiliatesAdmin from "@/components/afiliados/AllAffiliatesAdmin";
 import ServerPagination from "@/components/pagination/ServerPagination";
 import React from "react";
 
-const AffiliatesPage = async (searchParams: { keyword: any; page: any }) => {
+const AffiliatesPage = async (searchParams: any) => {
   const urlParams = {
     keyword: searchParams.keyword,
     page: searchParams.page,

@@ -113,10 +113,7 @@ async function subtotal(order: any) {
   return sub;
 }
 
-export async function getAllOrders(
-  searchParams: { keyword: any; page: any },
-  session: any
-) {
+export async function getAllOrders(searchParams: any, session: any) {
   try {
     const urlParams = {
       keyword: searchParams.keyword,

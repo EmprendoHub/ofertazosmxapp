@@ -3,7 +3,7 @@ import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { getAllPost } from "@/app/_actions";
 import AdminPosts from "@/components/admin/AdminPosts";
 
-const AdminPostsPage = async (searchParams: { keyword: any; page: any }) => {
+const AdminPostsPage = async (searchParams: any) => {
   const urlParams = {
     keyword: searchParams.keyword,
     page: searchParams.page,
