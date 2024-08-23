@@ -69,13 +69,15 @@ export async function POST(request, res) {
 export async function PUT(request, res) {
   const token = await getToken({ req: request });
   const name = await request.headers.get("name");
+  console.log(name, "name");
+
   if (
     (token && token.user.role === "manager") ||
     token.user.role === "instagram"
   ) {
     const url = await new Promise((resolve, reject) => {
       mc.presignedPutObject(
-        "uploads", // bucket name
+        "ofertazosmx", // bucket name
         name,
         900, // 15 min expiry
         function (err, url) {

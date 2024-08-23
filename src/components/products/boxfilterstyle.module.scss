@@ -27,7 +27,7 @@
 }
 
 .checkboxBipolarInput:checked + label .checkboxBipolar:after {
-  background: #0c0c0c;
+  background: var(--primary);
 }
 
 .checkboxBipolar {
@@ -35,15 +35,15 @@
   width: 36px;
   height: 20px;
   border-radius: 10px;
-  border: 1px solid #0f0f0f;
+  border: 1px solid var(--muted);
   display: inline-block;
   position: relative;
 
   &:after {
-    content: '';
+    content: "";
     display: block;
     position: absolute;
-    background: #999999;
+    background: var(--muted);
     left: 2px;
     top: 2px;
     bottom: 2px;

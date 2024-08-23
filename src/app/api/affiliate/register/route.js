@@ -127,13 +127,13 @@ export async function POST(req) {
         const bestRegards = "Gracias por unirte a nuestro equipo de afiliados.";
         const recipient_email = email;
         const sender_email = "ofertazosmx@gmail.com.mx";
-        const fromName = "Ofertazos MX";
+        const fromName = "OFERTAZOSMX";
 
         var transporter = nodemailer.createTransport({
           service: "gmail",
           auth: {
             user: process.env.GOOGLE_MAIL,
-            pass: process.env.GOOGLE_MAIL_PASS_ONE,
+            pass: process.env.GOOGLE_MAIL_PASS,
           },
         });
 

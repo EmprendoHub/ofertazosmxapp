@@ -240,7 +240,7 @@ export async function POST(req, res) {
     } else {
       try {
         const subject = "¡Gracias por tu compra!";
-        const bodyOne = `Queríamos expresarte nuestro más sincero agradecimiento por haber elegido Ofertazos MX para realizar tu compra reciente. Nos complace enormemente saber que confías en nuestros productos/servicios.`;
+        const bodyOne = `Queríamos expresarte nuestro más sincero agradecimiento por haber elegido OFERTAZOSMX para realizar tu compra reciente. Nos complace enormemente saber que confías en nuestros productos/servicios.`;
         const bodyTwo = `Tu apoyo significa mucho para nosotros y nos comprometemos a brindarte la mejor experiencia posible. Si tienes alguna pregunta o necesitas asistencia adicional, no dudes en ponerte en contacto con nuestro equipo de atención al cliente. Estamos aquí para ayudarte en cualquier momento.`;
         const title = "Recibo de compra";
         const greeting = `Estimado/a ${customer?.name}`;
@@ -248,13 +248,13 @@ export async function POST(req, res) {
         const bestRegards = "¡Que tengas un excelente día!";
         const recipient_email = customer?.email;
         const sender_email = "ofertazosmx@gmail.com.mx";
-        const fromName = "Ofertazos MX";
+        const fromName = "OFERTAZOSMX";
 
         var transporter = nodemailer.createTransport({
           service: "gmail",
           auth: {
             user: process.env.GOOGLE_MAIL,
-            pass: process.env.GOOGLE_MAIL_PASS_ONE,
+            pass: process.env.GOOGLE_MAIL_PASS,
           },
         });
 

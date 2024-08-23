@@ -1,8 +1,21 @@
+import { createHash } from "crypto";
+
 export const cx = (...classNames) => classNames.filter(Boolean).join(" ");
 
 export const isValidEmail = (email) => {
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
   return emailRegex.test(email);
+};
+
+export const generateCodeChallenge = async () => {
+  // Generate a code challenge from the code verifier
+  const codeVerifier =
+    process.env.NEXT_PUBLIC_MERCADO_LIBRE_CHALLENGE.toString("hex");
+  const codeChallengeSha256 = createHash("sha256")
+    .update(codeVerifier)
+    .digest("hex");
+
+  return codeChallengeSha256;
 };
 
 export function removeUndefinedAndPageKeys(obj) {

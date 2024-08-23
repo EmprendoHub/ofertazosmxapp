@@ -14,12 +14,12 @@
     width: 100%;
     &::after,
     &::before {
-      content: '';
+      content: "";
       display: block;
       height: 1px;
       width: 40%;
       margin: auto;
-      background-color: rgb(52, 52, 52);
+      background-color: var(--primary);
       position: relative;
       transition: transform 0.3s;
     }

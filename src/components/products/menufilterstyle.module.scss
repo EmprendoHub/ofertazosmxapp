@@ -1,10 +1,8 @@
 .menu {
-  height: 99%;
-  background-color: rgb(241, 241, 241);
+  height: 100%;
   position: fixed;
   left: 0;
   top: 0;
-  color: white;
   z-index: 70;
 
   .body {
@@ -31,7 +29,6 @@
 
       a {
         text-decoration: none;
-        color: white;
         font-weight: 300;
       }
     }
