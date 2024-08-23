@@ -21,9 +21,7 @@ const UsageTrack = () => {
     const result: AiDbOutput[] = await db
       .select()
       .from(AIOutput)
-      .where(
-        eq(AIOutput.createdBy, user?.primaryEmailAddress?.emailAddress || "")
-      );
+      .where(eq(AIOutput.createdBy, user?.email || ""));
     GetTotalUsage(result);
   };
 

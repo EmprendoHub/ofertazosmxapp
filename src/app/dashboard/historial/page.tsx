@@ -17,12 +17,7 @@ const HistoryPage = () => {
         const result = await db
           .select()
           .from(AIOutput)
-          .where(
-            eq(
-              AIOutput.createdBy,
-              user?.primaryEmailAddress?.emailAddress || ""
-            )
-          );
+          .where(eq(AIOutput.createdBy, user?.email || ""));
         setData(result);
       }
     };

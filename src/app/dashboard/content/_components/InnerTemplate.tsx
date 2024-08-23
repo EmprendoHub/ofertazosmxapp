@@ -22,7 +22,6 @@ const InnerTemplate = ({ pageSlug }: { pageSlug: string }) => {
   const [onLoading, setOnLoading] = useState(false);
   const [aiOutput, setAiOutput] = useState<string>("");
   const { user } = useContext(AuthContext);
-  console.log("user", user, "user");
 
   const router = useRouter();
   const { totalUsage, setTotalUsage } = useContext(TotalUsageContext);

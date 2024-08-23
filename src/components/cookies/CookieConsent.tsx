@@ -55,7 +55,7 @@ const CookieConsentComp = () => {
             >
               Continuar
             </button>
-            <LogoComponent className={undefined} />
+            <LogoComponent className={""} />
           </div>
         </div>
       </div>
