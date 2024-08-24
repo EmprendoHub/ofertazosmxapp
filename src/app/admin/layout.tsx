@@ -12,7 +12,7 @@ import {
 } from "react-icons/md";
 import { LuReceipt } from "react-icons/lu";
 import { LiaCashRegisterSolid, LiaStoreAltSolid } from "react-icons/lia";
-import { GiClothes } from "react-icons/gi";
+import { GiClothes, GiEnergyArrow } from "react-icons/gi";
 import { FaCartPlus, FaInstagram } from "react-icons/fa6";
 import { BsAmazon, BsCalendar, BsQrCodeScan, BsRobot } from "react-icons/bs";
 import { SiMercadopago } from "react-icons/si";
@@ -165,6 +165,7 @@ export default function UserLayout({ children }: { children: any }) {
             icon={<BsRobot size={20} />}
             text={"AiContent"}
             active={
+              pathname === "/admin/aicontent" ||
               pathname === "/admin/aicontent/historial" ||
               pathname === "/admin/aicontent/planes" ||
               pathname === "admin/aicontent/calendario" ||
@@ -174,6 +175,12 @@ export default function UserLayout({ children }: { children: any }) {
             url={"/admin/aicontent"}
             alert
             dropdownItems={[
+              {
+                text: "Generador",
+                url: "/admin/aicontent",
+                active: pathname === "/admin/aicontent" ? "true" : "false",
+                icon: <GiEnergyArrow size={20} />,
+              },
               {
                 text: "Historial",
                 url: "/admin/aicontent/historial",

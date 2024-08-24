@@ -1,6 +1,69 @@
 /* eslint import/no-anonymous-default-export: [2, {"allowArray": true}] */
 export default [
   {
+    name: "Product MercadoLibre",
+    desc: "This is your AI-powered MercadoLibre expert, creating captivating and keyword-rich Marketplace product descriptions to boost your online sales.",
+    icon: "/icons/mercadolibre-white.svg",
+    category: "Marketing",
+
+    slug: "marketplace-product-description",
+    aiPrompt: `- **ERES** un **REDACTOR PUBLICITARIO EXPERTO** en la venta de productos en marketplaces como Amazon y Mercado Libre. 
+    
+    (Contexto: "Tu habilidad para crear descripciones motivadoras y persuasivas es clave para incrementar las ventas y atraer a más compradores.")
+    ## Descripción de la Tarea
+
+    - **TU TAREA ES** **DESARROLLAR** descripciones de producto basadas en el productName y outline  proporcionada por el usuario y si existen las imágenes del producto que te serán compartidas.
+
+    (Contexto: "Estas descripciones deben captar la atención del comprador, destacar los beneficios clave y convertir visitas en ventas.")
+
+    ## Instrucciones de Redacción
+
+    1. **REVISA** las imágenes del producto proporcionadas antes de desarrollar la descripción para asegurar que el texto refleje visualmente lo que el comprador verá.
+
+    2. **CREA** una descripción clara y directa, organizada en **pocos párrafos**.
+
+    3. **DESTACA** los **beneficios** del producto en los primeros párrafos, enfocándote en lo que más valora el comprador.
+
+    4. **INCLUYE** gatillos mentales y **llamadas a la acción** entre el segundo y tercer párrafo para motivar la compra.
+
+    5. **FINALIZA** la descripción con una **lista de características relevantes** del producto, asegurándote de que sea precisa y concisa.
+
+    6. **UTILIZA** un tono persuasivo, asegurándote de que el contenido sea atractivo y relevante.
+
+    7. **ESPERA** la orden del usuario para proceder con la redacción después de que te proporcione los datos específicos del producto y las imágenes correspondientes.
+
+    ## Resultados Esperados
+
+    - **PROPORCIONA** una descripción de producto bien estructurada que aumente la probabilidad de conversión.
+
+    - **ASEGURA** que las llamadas a la acción sean claras y efectivas, guiando al comprador hacia la decisión de compra.
+
+    - **INCLUYE** una lista de características que resalte los aspectos más importantes del producto.
+
+    (Contexto: "Una descripción efectiva es clave para destacar en marketplaces competitivos y mejorar las tasas de conversión.")
+
+    ## IMPORTANTE
+
+    - "Tu habilidad en la redacción puede marcar la diferencia entre una venta exitosa y una oportunidad perdida. ¡Hagamos que cada palabra cuente!"
+
+    - "Recuerda, tu descripción es la primera impresión que el comprador tendrá del producto. ¡Asegúrate de que sea memorable!"
+    `,
+    form: [
+      {
+        label: "Product Name",
+        field: "input",
+        name: "productName",
+        required: true,
+      },
+      {
+        label: "Product Details",
+        field: "textarea",
+        name: "outline",
+        required: true,
+      },
+    ],
+  },
+  {
     name: "Content Strategy Plan",
     desc: "Create a comprehensive content strategy plan tailored to your business goals, audience, and niche.",
     category: "marketing-strategy",
@@ -94,6 +157,7 @@ export default [
     icon: "/icons/brand-statement.png",
     aiPromt:
       "Create a brand positioning statement based on the provided brand attributes, target market, and competitive advantage.Output in rich text editor format.",
+    slug: "brand-positioning-statement",
     form: [
       {
         label: "Enter your brand attributes",
@@ -374,7 +438,7 @@ export default [
   },
   {
     name: "Instagram Post/Reel Idea",
-    desc: "An AI tool that generate New and trending instagram idea depends on your niche",
+    desc: "An AI tool that generate New and trending Instagram idea depends on your niche",
     icon: "/icons/insta-ideas.png",
     category: "instagram",
 
@@ -383,7 +447,7 @@ export default [
       "Generate 5-10 Instagram idea depends on niche with latest trend and give output in  in rich text editor format",
     form: [
       {
-        label: "Enter Keywords / Niche for your instagram idea",
+        label: "Enter Keywords / Niche for your Instagram idea",
         field: "input",
         name: "keywords",
         required: true,
@@ -412,7 +476,7 @@ export default [
     name: "Tagline Generator",
     desc: "Struggling to find the perfect tagline for your brand? Let our AI-tool assist you in creating a tagline that stands out.",
     icon: "/icons/tagline.png",
-    category: "marketting",
+    category: "Marketing",
 
     slug: "tagline-generator",
     aiPrompt:
@@ -425,7 +489,7 @@ export default [
         required: true,
       },
       {
-        label: "What you are selling / Marketting",
+        label: "What you are selling / Marketing",
         field: "textarea",
         name: "outline",
         required: true,
@@ -465,7 +529,7 @@ export default [
     name: "Product Description",
     desc: "This is your AI-powered SEO expert, creating captivating and keyword-rich e-commerce product descriptions to boost your online sales.",
     icon: "/icons/product.png",
-    category: "Marketting",
+    category: "Marketing",
 
     slug: "product-description",
     aiPrompt:

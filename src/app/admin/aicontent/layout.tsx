@@ -9,14 +9,10 @@ export default function DashLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [totalUsage, setTotalUsage] = useState<Number>(0);
-
   return (
-    <TotalUsageContext.Provider value={{ totalUsage, setTotalUsage }}>
-      <div className="bg-background h-screen">
-        <DashHeader />
-        {children}
-      </div>
-    </TotalUsageContext.Provider>
+    <div className="bg-background h-screen">
+      <DashHeader />
+      {children}
+    </div>
   );
 }

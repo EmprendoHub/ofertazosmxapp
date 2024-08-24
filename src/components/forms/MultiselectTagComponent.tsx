@@ -15,8 +15,9 @@ const MultiselectTagComponent = ({
       isMulti
       value={values}
       options={options}
-      className="block appearance-none border border-gray-300 bg-gray-100 rounded-md  focus:outline-none focus:border-gray-400 w-full"
+      className="block appearance-none border border-gray-300 bg-input text-black rounded-md focus:outline-none focus:border-gray-400 w-full"
       name="tags"
+      placeholder="Etiquetas"
       onChange={handleAddTagField}
     />
   );

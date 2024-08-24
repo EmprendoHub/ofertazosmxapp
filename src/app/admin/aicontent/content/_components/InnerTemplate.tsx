@@ -62,7 +62,7 @@ const InnerTemplate = ({ pageSlug }: { pageSlug: string }) => {
 
   return (
     <div className="p-5 bg-background">
-      <Link href={"/aicontent"}>
+      <Link href={"/admin/aicontent"}>
         <Button className="text-[12px] rounded-[10px]">
           <ArrowBigLeftDash size={20} /> Atras
         </Button>

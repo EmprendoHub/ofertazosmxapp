@@ -21,6 +21,15 @@ import MultiselectTagComponent from "../forms/MultiselectTagComponent";
 import ToggleSwitch from "../forms/ToggleSwitch";
 import { toast } from "sonner";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export interface ValidationError {
   [key: string]: {
@@ -96,6 +105,8 @@ const EditVariationProduct = ({
         i !== index && variation.size === size && variation.color === color
     );
   };
+
+  console.log("gender", gender);
 
   const addVariation = () => {
     setVariations(
@@ -401,28 +412,28 @@ const EditVariationProduct = ({
       setValidationError(noTagsError);
       return;
     }
-    if (!variations[0].cost) {
+    if (!variations[0]?.cost) {
       const noCostError = {
         cost: { _errors: ["Se requiere un costo de producto "] },
       };
       setValidationError(noCostError);
       return;
     }
-    if (!variations[0].price) {
+    if (!variations[0]?.price) {
       const noPriceError = {
         price: { _errors: ["Se requiere un precio de producto "] },
       };
       setValidationError(noPriceError);
       return;
     }
-    if (!variations[0].size) {
+    if (!variations[0]?.size) {
       const noSizesError = {
         sizes: { _errors: ["Se requiere una talla o tamaño "] },
       };
       setValidationError(noSizesError);
       return;
     }
-    if (!variations[0].color) {
+    if (!variations[0]?.color) {
       const noColorsError = {
         colors: { _errors: ["Se requiere un color "] },
       };
@@ -558,7 +569,7 @@ const EditVariationProduct = ({
   }, []);
 
   return (
-    <main className="w-full p-4 maxsm:p-2 bg-slate-200">
+    <main className="w-full p-4 maxsm:p-2 bg-background">
       {!isSending ? (
         <div className="flex flex-col items-start gap-5 justify-start w-full">
           <section className="w-full ">
@@ -574,7 +585,7 @@ const EditVariationProduct = ({
                   setEnabled={setFeatured}
                 />
                 <ToggleSwitch
-                  label="Instagram"
+                  label="MercadoLibre"
                   enabled={instagramAvailability}
                   setEnabled={setInstagramAvailability}
                 />
@@ -661,15 +672,12 @@ const EditVariationProduct = ({
                 </div>
 
                 {/* Marca y genero */}
-                <div className=" flex flex-row items-center">
-                  <div className="mb-4">
-                    <label className="block mb-1  font-EB_Garamond">
-                      Marca
-                    </label>
+                <div className=" flex flex-row items-center gap-3">
+                  <div className="mb-4 w-full">
                     <input
                       type="text"
-                      className="appearance-none border bg-gray-100 rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
-                      placeholder="Marca del Producto"
+                      className="appearance-none border bg-input rounded-md py-2 px-3 border-gray-300 focus:outline-none focus:border-gray-400 w-full"
+                      placeholder="Marca"
                       value={brand}
                       onChange={(e) => setBrand(e.target.value)}
                       name="brand"
@@ -681,46 +689,34 @@ const EditVariationProduct = ({
                     )}
                   </div>
                   <div className="mb-4 w-full">
-                    <label className="block mb-1 font-EB_Garamond">
-                      Género
-                    </label>
-                    <div className="relative">
-                      <select
-                        value={gender}
-                        className="block appearance-none border border-gray-300 bg-gray-100 cursor-pointer rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full"
-                        name="gender"
-                        onChange={(e) => handleGenderChange(e.target.value)}
-                      >
-                        {genders?.map((gender) => (
-                          <option key={gender.es} value={gender.es}>
-                            {gender.es}
-                          </option>
-                        ))}
-                      </select>
-                      {validationError?.gender && (
-                        <p className="text-sm text-red-400">
-                          {validationError.gender._errors.join(", ")}
-                        </p>
-                      )}
-                      <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
-                        <svg
-                          width="22"
-                          height="22"
-                          className="fill-current"
-                          viewBox="0 0 20 20"
+                    <Select>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Género" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup
+                          onChange={(e: any) =>
+                            handleGenderChange(e.target.value)
+                          }
                         >
-                          <path d="M7 10l5 5 5-5H7z"></path>
-                        </svg>
-                      </i>
-                    </div>
+                          {genders?.map((gender) => (
+                            <SelectItem key={gender.es} value={gender.es}>
+                              {gender.es}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                    {validationError?.gender && (
+                      <p className="text-sm text-red-400">
+                        {validationError.gender._errors.join(", ")}
+                      </p>
+                    )}
                   </div>
                 </div>
                 {/* Etiquetas y Categoria */}
-                <div className=" flex flex-row items-center">
+                <div className=" flex flex-row items-center gap-3">
                   <div className="mb-1 w-full">
-                    <label className="block mb-1 font-EB_Garamond">
-                      Etiquetas
-                    </label>
                     <div className="relative ">
                       <MultiselectTagComponent
                         values={tags}
@@ -735,37 +731,30 @@ const EditVariationProduct = ({
                     </div>
                   </div>
                   <div className="mb-4 w-full">
-                    <label className="block mb-1 font-EB_Garamond">
-                      Categoría
-                    </label>
                     <div className="relative">
-                      <select
-                        value={category}
-                        className="block appearance-none border border-gray-300 bg-gray-100 rounded-md py-2 px-3 focus:outline-none focus:border-gray-400 w-full cursor-pointer"
-                        name="category"
-                        onChange={(e) => handleCategoryChange(e.target.value)}
-                      >
-                        {product_categories.map((category) => (
-                          <option key={category.es} value={category.es}>
-                            {category.es}
-                          </option>
-                        ))}
-                      </select>
+                      <Select>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Categoría" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup
+                            onChange={(e: any) =>
+                              handleCategoryChange(e.target.value)
+                            }
+                          >
+                            {product_categories.map((category) => (
+                              <SelectItem key={category.es} value={category.es}>
+                                {category.es}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
                       {validationError?.category && (
                         <p className="text-sm text-red-400">
                           {validationError.category._errors.join(", ")}
                         </p>
                       )}
-                      <i className="absolute inset-y-0 right-0 p-2 text-gray-400">
-                        <svg
-                          width="22"
-                          height="22"
-                          className="fill-current"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M7 10l5 5 5-5H7z"></path>
-                        </svg>
-                      </i>
                     </div>
                   </div>
                 </div>
@@ -825,7 +814,7 @@ const EditVariationProduct = ({
                   <label className="block mb-1 font-EB_Garamond"> Talla </label>
                   <div className="relative">
                     <select
-                      value={variations[0].size}
+                      value={variations[0]?.size}
                       name="size"
                       onChange={(e) => handleSizeChange(0, e.target.value)}
                       className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 cursor-pointer focus:outline-none focus:border-gray-400 w-full"
@@ -847,8 +836,8 @@ const EditVariationProduct = ({
                   <label className="block mb-1 font-EB_Garamond"> Color </label>
                   <div className="relative">
                     <select
-                      value={variations[0].color}
-                      name={variations[0].colorHex}
+                      value={variations[0]?.color}
+                      name={variations[0]?.colorHex}
                       onChange={(e) => {
                         const selectedOption =
                           e.target.options[e.target.selectedIndex];
@@ -896,7 +885,7 @@ const EditVariationProduct = ({
                         className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 remove-arrow  focus:outline-none focus:border-gray-400 w-full"
                         placeholder="0.00"
                         min="1"
-                        value={variations[0].price}
+                        value={variations[0]?.price}
                         onChange={(e) => handlePriceChange(0, e.target.value)}
                         name="price"
                       />
@@ -917,7 +906,7 @@ const EditVariationProduct = ({
                         className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 remove-arrow focus:outline-none focus:border-gray-400 w-full"
                         placeholder="0.00"
                         min="1"
-                        value={variations[0].cost}
+                        value={variations[0]?.cost}
                         onChange={(e) => handleCostChange(0, e.target.value)}
                         name="cost"
                       />
@@ -941,7 +930,7 @@ const EditVariationProduct = ({
                         className="appearance-none border border-gray-300 bg-gray-100 rounded-md pl-2 remove-arrow focus:outline-none focus:border-gray-400 w-full"
                         placeholder="1"
                         min="1"
-                        value={variations[0].stock}
+                        value={variations[0]?.stock}
                         onChange={(e) => handleStockChange(0, e.target.value)}
                         name="stock"
                       />
@@ -961,7 +950,7 @@ const EditVariationProduct = ({
                     <Image
                       id="MainVariation"
                       alt="Main Variation"
-                      src={variations[0].image}
+                      src={variations[0]?.image}
                       width={500}
                       height={500}
                       className="w-full h-full object-cover z-20"

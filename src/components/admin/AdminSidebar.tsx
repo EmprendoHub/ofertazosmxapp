@@ -62,49 +62,53 @@ const AdminSidebar = ({ children }: { children: any }) => {
             </ul>
           </SidebarContext.Provider>
         </div>
-        <div
-          className={`flex items-center overflow-hidden transition-all ease-in-out  ${
-            expandSidebar ? "w-full ml-3 maxmd:ml-1" : "w-0"
-          }`}
-        >
-          <UsageTrack />
-        </div>
-        {/* user avatar */}
-        <div
-          onClick={() => setExpandSidebar((currentState) => !currentState)}
-          className="border-t flex justify-center items-center p-1 "
-        >
-          <Image
-            alt={user?.name ? user?.name : "avatar"}
-            src={user?.image ? user?.image : "/images/avatar_placeholder.jpg"}
-            width={150}
-            height={150}
-            className="w-6 h-6 rounded-full cursor-pointer"
-          />
-
+        <div>
           <div
-            className={`flex items-center overflow-hidden transition-all ease-in-out  ${
-              expandSidebar ? "w-full ml-3 maxmd:ml-1" : "w-0"
+            className={`transition-all ease-in-out px-2 ${
+              expandSidebar ? "w-full" : "w-0 hidden"
             }`}
           >
-            <div className="leading-4 w-full">
-              <div className="flex items-center justify-between">
-                <h4 className=" text-[12px] leading-4 text-wrap w-2/3 ">
-                  {user?.name.substring(0, 12)}
-                </h4>
-                <div
-                  className=" text-red-800 hover:bg-foreground hover:text-white-500 rounded-md cursor-pointer"
-                  onClick={() => signOut()}
-                >
+            <UsageTrack />
+          </div>
+          {/* user avatar */}
+          <div
+            onClick={() => setExpandSidebar((currentState) => !currentState)}
+            className="border-t flex justify-center items-center p-1 "
+          >
+            <Image
+              alt={user?.name ? user?.name : "avatar"}
+              src={user?.image ? user?.image : "/images/avatar_placeholder.jpg"}
+              width={150}
+              height={150}
+              className="w-6 h-6 rounded-full cursor-pointer"
+            />
+
+            <div
+              className={`flex items-center overflow-hidden transition-all ease-in-out  ${
+                expandSidebar ? "w-full ml-3 maxmd:ml-1" : "w-0"
+              }`}
+            >
+              <div className="leading-4 w-full">
+                <div className="flex items-center justify-between">
+                  <h4 className=" text-[12px] leading-4 text-wrap w-2/3 ">
+                    {user?.name.substring(0, 12)}
+                  </h4>
                   <div
-                    className={`${
-                      expandSidebar ? "group flex items-center w-6 p-1" : "w-0"
-                    }`}
+                    className=" text-red-800 hover:bg-foreground hover:text-white-500 rounded-md cursor-pointer"
+                    onClick={() => signOut()}
                   >
-                    <FiLogOut />
-                    <span className="absolute -top-10 scale-0 transition-all rounded bg-black text-xs text-white group-hover:scale-100 z-50">
-                      Cerrar Session!
-                    </span>
+                    <div
+                      className={`${
+                        expandSidebar
+                          ? "group flex items-center w-6 p-1"
+                          : "w-0"
+                      }`}
+                    >
+                      <FiLogOut />
+                      <span className="absolute -top-10 scale-0 transition-all rounded bg-black text-xs text-white group-hover:scale-100 z-50">
+                        Cerrar Session!
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>

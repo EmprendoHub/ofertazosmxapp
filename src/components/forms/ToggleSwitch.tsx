@@ -1,5 +1,6 @@
 import React from "react";
 import { FaCheck, FaInstagram, FaStar, FaStore } from "react-icons/fa6";
+import { SiMercadopago } from "react-icons/si";
 import { TbWorldWww } from "react-icons/tb";
 import { TiCancel } from "react-icons/ti";
 
@@ -21,9 +22,9 @@ const ToggleSwitch = ({
               <FaStar />
               <p className="text-[10px]">{label}</p>
             </div>
-          ) : label === "Instagram" ? (
+          ) : label === "MercadoLibre" ? (
             <div className="flex flex-col items-center justify-center">
-              <FaInstagram />
+              <SiMercadopago />
               <p className="text-[10px]">{label}</p>
             </div>
           ) : label === "Sucursal" ? (

@@ -34,16 +34,16 @@ const UsageTrack = () => {
     setTotalUsage(total);
   };
   return (
-    <div className="m-5">
+    <div className="tracking-class">
       <div className="bg-primary text-white p-3 rounded-[10px] ">
         <h2>Credits</h2>
         <div className="h-2 bg-primary-foreground w-full rounded-full mt-3">
           <div
             className="h-2 bg-white rounded-full"
-            style={{ width: (totalUsage / 100000) * 100 + "%" }}
+            style={{ width: (totalUsage / 1000000) * 100 + "%" }}
           ></div>
         </div>
-        <h2 className="text-[12px]">{totalUsage}/10,000 Credits used</h2>
+        <h2 className="text-[10px]">{totalUsage}/1,000,000 Credits used</h2>
       </div>
       <Button
         variant={"outline"}
