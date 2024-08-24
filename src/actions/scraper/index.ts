@@ -18,8 +18,6 @@ export async function scraperAndStoreProduct(productUrl: string) {
       scrapeProduct = await scrapeMercadoLibreProduct(productUrl);
     }
 
-    console.log(scrapeProduct, "scrapeProduct");
-
     if (!scrapeProduct) return;
 
     let product = scrapeProduct;
