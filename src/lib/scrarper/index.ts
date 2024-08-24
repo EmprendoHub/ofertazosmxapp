@@ -68,7 +68,9 @@ export async function scrapeAmazonProduct(url: string) {
     // Select all elements with the class "imageThumbnail" within the "altImages" element
     $("#imgTagWrapperId img").each((index, element) => {
       const imageUrl = $(element).attr("src");
-      images.push(imageUrl);
+      if (imageUrl) {
+        images.push({ url: imageUrl, color: "#00000050" });
+      }
     });
 
     const currentPrice = extractPrice(
@@ -109,15 +111,11 @@ export async function scrapeAmazonProduct(url: string) {
       description,
       currentPrice: Number(currentPrice) || Number(originalPrice),
       originalPrice: Number(originalPrice) || Number(currentPrice),
-      priceHistory: [],
       discountRate: Number(discountRate),
       category,
       reviewCount,
       stars,
       isOutOfStock: outOfStock,
-      lowestPrice: Number(currentPrice) || Number(originalPrice),
-      highestPrice: Number(originalPrice) || Number(currentPrice),
-      averagePrice: Number(currentPrice) || Number(originalPrice),
     };
     return data;
   } catch (error: any) {
@@ -205,7 +203,9 @@ export async function scrapeMercadoLibreProduct(url: string) {
     const images: any = [];
     imageElements.each((index, element) => {
       const imageUrl = $(element).attr("data-zoom");
-      images.push(imageUrl);
+      if (imageUrl) {
+        images.push({ url: imageUrl, color: "#00000050" });
+      }
     });
 
     const currentPrice = Number(
@@ -242,15 +242,11 @@ export async function scrapeMercadoLibreProduct(url: string) {
       details,
       currentPrice: Number(currentPrice) || Number(originalPrice),
       originalPrice: Number(originalPrice) || Number(currentPrice),
-      priceHistory: [],
       discountRate: Number(discountRate),
       category,
       reviewCount,
       stars,
       isOutOfStock: outOfStock,
-      lowestPrice: Number(currentPrice) || Number(originalPrice),
-      highestPrice: Number(originalPrice) || Number(currentPrice),
-      averagePrice: Number(currentPrice) || Number(originalPrice),
     };
 
     return data;

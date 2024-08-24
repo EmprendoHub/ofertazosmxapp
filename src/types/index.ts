@@ -1,34 +1,64 @@
-export type PriceHistoryItem = {
-  price: number;
-};
+import mongoose from "mongoose";
 
 export type User = {
   email: string;
 };
 
 export type Product = {
+  type?: string;
   _id?: string;
   url: string;
   currency: string;
-  images: string[];
+  images: [{ url: string; color: string }];
   domain: string;
   ASIN: string;
   title: string;
+  slug: string;
+  price: number;
+  stock: number;
+  active: Boolean;
+  createdAt: Date;
+  published: Boolean;
+  featured: Boolean;
+  quantity: number;
+  sale_price: number;
+  sale_price_end_date: Date;
+  cost: number;
   currentPrice: number;
   originalPrice: number;
-  priceHistory: PriceHistoryItem[] | [];
-  highestPrice: number;
-  lowestPrice: number;
-  averagePrice: number;
   discountRate: number;
   description: string;
   details: { key: string; value: string }[];
-  brand: string[];
+  gender: String;
+  brand?: string;
   category: string;
   reviewCount: number;
   stars: number;
+  rating?: number;
   isOutOfStock: Boolean;
-  users?: User[];
+  variations: [
+    {
+      title: String;
+      stock: Number;
+      color?: String;
+      colorHex?: String;
+      colorHexTwo?: String;
+      colorHexThree?: String;
+      size?: String;
+      cost: Number;
+      price: Number;
+      image?: String;
+      quantity?: Number;
+      productId: String;
+    }
+  ];
+  availability: {
+    instagram: Boolean;
+    branch: Boolean;
+    online: Boolean;
+  };
+  reviews: mongoose.Schema.Types.ObjectId;
+  user: mongoose.Schema.Types.ObjectId;
 };
 
 export type NotificationType =

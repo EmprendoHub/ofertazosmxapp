@@ -355,7 +355,13 @@ const BlogPublishedComponent = ({ post }: { post: any }) => {
           </div>
         </nav>
 
-        <AnimationWrapper keyValue={undefined} className={undefined}>
+        <AnimationWrapper
+          keyValue={undefined}
+          className={""}
+          initial={""}
+          animate={""}
+          transition={""}
+        >
           <section>
             <div className="mx-auto max-w-[900px] w-full">
               {/* Section 1 - Title, Image */}

@@ -9,7 +9,7 @@ const UnderConstructionTwo = () => {
       className={`min-w-full min-h-screen relative flex flex-col justify-center items-center `}
     >
       <div className="flex flex-col items-center justify-center z-20 w-full">
-        <LogoComponent className={undefined} />
+        <LogoComponent className={""} />
         <p className="text-2xl text-white tracking-widest">¡Muy Pronto!</p>
       </div>
 

@@ -16,6 +16,7 @@ const BonusHero = ({ lottery }: { lottery: any }) => {
               subtitle={
                 "En OFERTAZOSMX, te ofrecemos una exquisita selección de productos de lujo de marcas renombradas como Chanel, Louis Vuitton, y Dior. Desde accesorios de moda hasta prendas icónicas, nuestro catálogo es una expresión de sofisticación y buen gusto."
               }
+              className={""}
             />
           </div>
         </div>
@@ -39,6 +40,7 @@ const BonusHero = ({ lottery }: { lottery: any }) => {
               subtitle={
                 "Experimenta la comodidad de comprar en línea con la confianza de recibir productos auténticos y de alta calidad. Nos enorgullece ofrecer una experiencia de compra segura y fácil, respaldada por nuestro compromiso de excelencia en cada detalle."
               }
+              className={""}
             />
           </div>
         </div>

@@ -15,8 +15,8 @@ const ModalProductCard = ({
 }: {
   item: any;
   setShowModal: any;
-  orderId: any;
-  isPaid: any;
+  orderId?: any;
+  isPaid?: any;
 }) => {
   const pathname = usePathname();
   const router = useRouter();

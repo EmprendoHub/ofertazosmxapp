@@ -12,7 +12,7 @@ const ProductCard = ({ product }: Props) => {
     <Link href={`/dashboard/product/${product._id}`} className="product-card">
       <div className="product-card_img-container">
         <Image
-          src={product.images[0]}
+          src={product.images[0].url}
           alt={product.title}
           width={200}
           height={200}

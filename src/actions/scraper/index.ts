@@ -2,15 +2,14 @@
 
 import { revalidatePath } from "next/cache";
 import { scrapeAmazonProduct, scrapeMercadoLibreProduct } from "@/lib/scrarper";
-import { connectToMongoDB } from "../../../utils/mongoose";
-import Product from "@/lib/models/product.model";
-import { getAveragePrice, getHighestPrice, getLowestPrice } from "@/lib/utils";
+import Product from "@/backend/models/Product";
+import dbConnect from "@/lib/db";
 
 export async function scraperAndStoreProduct(productUrl: string) {
   if (!productUrl) return;
 
   try {
-    connectToMongoDB();
+    dbConnect();
     let scrapeProduct;
     if (productUrl.toLowerCase().includes("amazon")) {
       scrapeProduct = await scrapeAmazonProduct(productUrl);
@@ -30,19 +29,8 @@ export async function scraperAndStoreProduct(productUrl: string) {
     });
 
     if (existingProduct) {
-      const updatedPriceHistory: any = [
-        ...existingProduct.priceHistory,
-        {
-          price: scrapeProduct.currentPrice,
-        },
-      ];
-
       product = {
         ...scrapeProduct,
-        priceHistory: updatedPriceHistory,
-        lowestPrice: getLowestPrice(updatedPriceHistory),
-        highestPrice: getHighestPrice(updatedPriceHistory),
-        averagePrice: getAveragePrice(updatedPriceHistory),
       };
     }
 
@@ -64,7 +52,7 @@ export async function scraperAndStoreProduct(productUrl: string) {
 
 export async function getProductById(productId: string) {
   try {
-    connectToMongoDB();
+    dbConnect();
     const product = await Product.findOne({ _id: productId });
     if (!product) return null;
     return product;
@@ -75,7 +63,7 @@ export async function getProductById(productId: string) {
 
 export async function getAllProducts() {
   try {
-    connectToMongoDB();
+    dbConnect();
     const products = await Product.find();
     return products;
   } catch (error) {
@@ -85,7 +73,7 @@ export async function getAllProducts() {
 
 export async function getSimilarProducts(productId: string) {
   try {
-    connectToMongoDB();
+    dbConnect();
     const currentProduct = await Product.findById(productId);
 
     if (!currentProduct) return null;

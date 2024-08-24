@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Templates from "@/app/(dashdata)/Templates";
 import { TEMPLATE } from "../../_components/TemplateListSection";
-import { getAIContent } from "../[template-slug]/page";
+import { GetAIContent } from "./GetContent";
 import { db } from "../../../../../utils/db";
 import { AIOutput } from "../../../../../utils/schema";
 import { TotalUsageContext } from "@/app/(context)/TotalUsageContext";
@@ -37,7 +37,7 @@ const InnerTemplate = ({ pageSlug }: { pageSlug: string }) => {
     }
     setOnLoading(true);
 
-    const response = await getAIContent(JSON.stringify(formData), pageSlug);
+    const response = await GetAIContent(JSON.stringify(formData), pageSlug);
     setAiOutput(response.result);
     await saveInDb(formData, selectedTemplate?.slug, response.result);
     setOnLoading(false);

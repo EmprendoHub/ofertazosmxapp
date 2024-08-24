@@ -27,7 +27,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
       <div className="flex gap-8 xl:flex-row flex-col">
         <div className="sm:max-w-[300px] max-w-full relative">
           <Image
-            src={product.images[0]}
+            src={product.images[0].url}
             alt={product.title}
             width={800}
             height={800}
@@ -38,7 +38,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
               .map((image, index) => (
                 <Image
                   key={index}
-                  src={image}
+                  src={image.url}
                   alt={product.title}
                   width={150}
                   height={150}
@@ -170,22 +170,6 @@ const ProductDetails = async ({ params: { id } }: Props) => {
                 iconSrc={`/icons/charts.svg`}
                 value={`${product.currency} ${formatNumber(
                   product.currentPrice
-                )}`}
-                borderColor="primary"
-              />
-              <PriceInfoCard
-                title="Highest Price"
-                iconSrc={`/icons/arrow-up.svg`}
-                value={`${product.currency} ${formatNumber(
-                  product.highestPrice
-                )}`}
-                borderColor="primary"
-              />
-              <PriceInfoCard
-                title="Lowest Price"
-                iconSrc={`/icons/arrow-down.svg`}
-                value={`${product.currency} ${formatNumber(
-                  product.lowestPrice
                 )}`}
                 borderColor="primary"
               />

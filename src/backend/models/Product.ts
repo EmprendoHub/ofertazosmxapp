@@ -1,204 +1,213 @@
 import mongoose from "mongoose";
 
-const ProductSchema = new mongoose.Schema({
-  type: {
-    type: String,
-  },
-  ASIN: { type: String },
-  domain: { type: String },
-  url: {
-    type: String,
-    unique: true,
-  },
-  currency: {
-    type: String,
-  },
-  images: [
-    {
-      url: {
-        type: String,
-      },
-      color: {
-        type: String,
-      },
+const ProductSchema = new mongoose.Schema(
+  {
+    type: {
+      type: String,
     },
-  ],
-  title: {
-    require: true,
-    type: String,
-    unique: true,
-  },
-  details: [
-    {
-      key: { type: String },
-      value: { type: String },
+    ASIN: { type: String },
+    domain: { type: String },
+    url: {
+      type: String,
+      unique: true,
     },
-  ],
-  slug: {
-    type: String,
-    unique: true,
-  },
-  description: {
-    require: true,
-    type: String,
-  },
-  price: {
-    require: true,
-    type: Number,
-  },
-  sale_price: {
-    type: Number,
-  },
-  sale_price_end_date: {
-    type: Date,
-  },
-  cost: {
-    type: Number,
-  },
-  brand: {
-    type: String,
-  },
-  linea: {
-    type: String,
-  },
-  modelo: {
-    type: String,
-  },
-  category: {
-    require: true,
-    type: String,
-  },
-  tags: [
-    {
-      value: {
-        type: String,
-      },
-      label: {
-        type: String,
-      },
+    currency: {
+      type: String,
     },
-  ],
-  colors: [
-    {
-      value: {
-        type: String,
+    images: [
+      {
+        url: {
+          type: String,
+        },
+        color: {
+          type: String,
+        },
       },
-      label: {
-        type: String,
-      },
-      hex: {
-        type: String,
-      },
+    ],
+    title: {
+      require: true,
+      type: String,
+      unique: true,
     },
-  ],
-  sizes: [
-    {
-      value: {
-        type: String,
+    details: [
+      {
+        key: { type: String },
+        value: { type: String },
       },
-      label: {
-        type: String,
-      },
+    ],
+    slug: {
+      type: String,
+      unique: true,
     },
-  ],
+    description: {
+      type: String,
+    },
+    currentPrice: { type: Number },
+    originalPrice: { type: Number },
+    discountRate: { type: Number },
+    price: {
+      require: true,
+      type: Number,
+    },
+    sale_price: {
+      type: Number,
+    },
+    sale_price_end_date: {
+      type: Date,
+    },
+    cost: {
+      type: Number,
+    },
+    reviewCount: { type: Number },
+    stars: { type: Number },
+    isOutOfStock: { type: Boolean, default: false },
+    brand: {
+      type: String,
+    },
+    linea: {
+      type: String,
+    },
+    modelo: {
+      type: String,
+    },
+    category: {
+      require: true,
+      type: String,
+    },
+    tags: [
+      {
+        value: {
+          type: String,
+        },
+        label: {
+          type: String,
+        },
+      },
+    ],
+    colors: [
+      {
+        value: {
+          type: String,
+        },
+        label: {
+          type: String,
+        },
+        hex: {
+          type: String,
+        },
+      },
+    ],
+    sizes: [
+      {
+        value: {
+          type: String,
+        },
+        label: {
+          type: String,
+        },
+      },
+    ],
 
-  variations: [
-    {
-      title: {
-        type: String,
+    variations: [
+      {
+        title: {
+          type: String,
+        },
+        stock: {
+          type: Number,
+        },
+        color: {
+          type: String,
+        },
+        colorHex: {
+          type: String,
+        },
+        colorHexTwo: {
+          type: String,
+        },
+        colorHexThree: {
+          type: String,
+        },
+        size: {
+          type: String,
+        },
+        cost: {
+          type: Number,
+        },
+        price: {
+          type: Number,
+        },
+        image: {
+          type: String,
+        },
+        quantity: {
+          type: Number,
+          default: 1,
+        },
+        productId: {
+          type: String,
+        },
       },
-      stock: {
-        type: Number,
+    ],
+    gender: {
+      type: String,
+    },
+    availability: {
+      instagram: {
+        type: Boolean,
+        default: false,
       },
-      color: {
-        type: String,
+      branch: {
+        type: Boolean,
+        default: false,
       },
-      colorHex: {
-        type: String,
-      },
-      colorHexTwo: {
-        type: String,
-      },
-      colorHexThree: {
-        type: String,
-      },
-      size: {
-        type: String,
-      },
-      cost: {
-        type: Number,
-      },
-      price: {
-        type: Number,
-      },
-      image: {
-        type: String,
-      },
-      quantity: {
-        type: Number,
-        default: 1,
-      },
-      productId: {
-        type: String,
+      online: {
+        type: Boolean,
+        default: false,
       },
     },
-  ],
-  gender: {
-    type: String,
-  },
-  availability: {
-    instagram: {
-      type: Boolean,
-      default: false,
+    stock: {
+      require: true,
+      type: Number,
+      default: 0,
     },
-    branch: {
-      type: Boolean,
-      default: false,
+    rating: {
+      type: Number,
+      default: 0,
     },
-    online: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  stock: {
-    require: true,
-    type: Number,
-    default: 0,
-  },
-  rating: {
-    type: Number,
-    default: 0,
-  },
 
-  active: {
-    default: true,
-    type: Boolean,
+    active: {
+      default: true,
+      type: Boolean,
+    },
+    createdAt: {
+      type: Date,
+    },
+    published: {
+      type: Boolean,
+      default: true,
+    },
+    featured: {
+      type: Boolean,
+      default: false,
+    },
+    quantity: {
+      type: Number,
+      default: 1,
+    },
+    reviews: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Review",
+    },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      require: true,
+      ref: "User",
+    },
+    default: [],
   },
-  createdAt: {
-    type: Date,
-  },
-  published: {
-    type: Boolean,
-    default: true,
-  },
-  featured: {
-    type: Boolean,
-    default: false,
-  },
-  quantity: {
-    type: Number,
-    default: 1,
-  },
-  reviews: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Review",
-  },
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    require: true,
-    ref: "User",
-  },
-});
+  { timestamps: true }
+);
 
 export default mongoose?.models?.Product ||
   mongoose.model("Product", ProductSchema);

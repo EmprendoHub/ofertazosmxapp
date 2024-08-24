@@ -15,6 +15,7 @@ const AdminOneOrderPage = async ({ params }: { params: any }) => {
         id={params?.id}
         deliveryAddress={deliveryAddress}
         orderPayments={orderPayments}
+        currentCookies={""}
       />
     </div>
   );

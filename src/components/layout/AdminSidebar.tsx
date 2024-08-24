@@ -67,7 +67,7 @@ const HeaderMobile = () => {
                     isOpen={isOpen}
                   />
                 ) : (
-                  <MenuItem className={undefined}>
+                  <MenuItem className={""}>
                     <Link
                       href={item.path}
                       onClick={() => toggleOpen()}
@@ -166,7 +166,7 @@ const MenuItemWithSubMenu = ({
 
   return (
     <>
-      <MenuItem className={undefined}>
+      <MenuItem className={""}>
         <button
           className="flex w-full text-2xl"
           onClick={() => setSubMenuOpen(!subMenuOpen)}
@@ -196,7 +196,7 @@ const MenuItemWithSubMenu = ({
           <>
             {item.subMenuItems?.map((subItem: any, subIdx: any) => {
               return (
-                <MenuItem key={subIdx} className={undefined}>
+                <MenuItem key={subIdx} className={""}>
                   <Link
                     href={subItem.path}
                     onClick={() => toggleOpen()}
