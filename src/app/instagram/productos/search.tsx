@@ -23,6 +23,7 @@ const SearchProducts = ({ search }: { search: any }) => {
     } else {
       router.push(`/instagram/productos?keyword=${query}`);
     }
+    // eslint-disable-next-line
   }, [query]);
 
   return (

@@ -53,7 +53,7 @@ const EditorsSlider = ({ editorsProducts }: { editorsProducts: any }) => {
         <CarouselContent>
           {editorsProducts.slice(0, 12).map((product: any, index: number) => {
             return (
-              <CarouselItem>
+              <CarouselItem key={product._id}>
                 <ProductCard item={product} key={index} />
               </CarouselItem>
             );
