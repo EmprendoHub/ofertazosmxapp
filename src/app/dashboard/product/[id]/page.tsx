@@ -192,8 +192,8 @@ const ProductDetails = async ({ params: { id } }: Props) => {
             Especificaciones
           </h3>
           <div className="flex flex-col gap-4 p-2 text-xs">
-            {product.details.map((detail) => (
-              <div>
+            {product.details.map((detail, index) => (
+              <div key={index}>
                 <p className="flex items-center gap-2">
                   <span>{detail.key}:</span>
                   <span>{detail.value}</span>

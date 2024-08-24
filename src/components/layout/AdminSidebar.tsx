@@ -5,8 +5,6 @@ import { usePathname } from "next/navigation";
 import { SIDENAV_ITEMS } from "@/backend/data/constants";
 import { motion, useCycle } from "framer-motion";
 import { FaChevronDown } from "react-icons/fa";
-import { FaFolder, FaHandshake, FaHome, FaMailBulk } from "react-icons/fa";
-import { FaGear } from "react-icons/fa6";
 
 const sidebar = {
   open: (height = 1000) => ({
@@ -81,10 +79,7 @@ const HeaderMobile = () => {
                 )}
 
                 {!isLastItem && (
-                  <MenuItem
-                    className="my-3 h-px w-full bg-gray-300"
-                    children={undefined}
-                  />
+                  <MenuItem className="my-3 h-px w-full bg-gray-300" />
                 )}
               </div>
             );
@@ -143,7 +138,7 @@ const MenuItem = ({
   children,
 }: {
   className: any;
-  children: any;
+  children?: any;
 }) => {
   return (
     <motion.li variants={MenuItemVariants} className={className}>
