@@ -9,7 +9,7 @@ export async function scraperAndStoreProduct(productUrl: string) {
   if (!productUrl) return;
 
   try {
-    dbConnect();
+    await dbConnect();
     let scrapeProduct;
     if (productUrl.toLowerCase().includes("amazon")) {
       scrapeProduct = await scrapeAmazonProduct(productUrl);
@@ -52,7 +52,7 @@ export async function scraperAndStoreProduct(productUrl: string) {
 
 export async function getProductById(productId: string) {
   try {
-    dbConnect();
+    await dbConnect();
     const product = await Product.findOne({ _id: productId });
     if (!product) return null;
     return product;
@@ -63,7 +63,7 @@ export async function getProductById(productId: string) {
 
 export async function getAllProducts() {
   try {
-    dbConnect();
+    await dbConnect();
     const products = await Product.find();
     return products;
   } catch (error) {
@@ -73,7 +73,7 @@ export async function getAllProducts() {
 
 export async function getSimilarProducts(productId: string) {
   try {
-    dbConnect();
+    await dbConnect();
     const currentProduct = await Product.findById(productId);
 
     if (!currentProduct) return null;
