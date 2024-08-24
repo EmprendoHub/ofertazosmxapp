@@ -569,7 +569,7 @@ const NewVariationOptimized = ({
                       setEnabled={setFeatured}
                     />
                     <ToggleSwitch
-                      label="Instagram"
+                      label="MercadoLibre"
                       enabled={instagramAvailability}
                       setEnabled={setInstagramAvailability}
                     />
