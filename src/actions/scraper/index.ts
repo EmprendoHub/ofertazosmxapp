@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { scrapeAmazonProduct, scrapeMercadoLibreProduct } from "@/lib/scrarper";
 import Product from "@/backend/models/Product";
 import dbConnect from "@/lib/db";
+import { generateUrlSafeTitle } from "@/backend/helpers";
 
 export async function scraperAndStoreProduct(productUrl: string) {
   if (!productUrl) return;
@@ -34,9 +35,21 @@ export async function scraperAndStoreProduct(productUrl: string) {
       };
     }
 
+    let slug = generateUrlSafeTitle(scrapeProduct.title);
+
+    let slugExists = await Product.findOne({ slug });
+
+    // Attempt to generate a new unique slug if the original one is already in use
+    while (slugExists) {
+      const randomNum = Math.floor(1000 + Math.random() * 9000); // Generates a four-digit number
+      const newTitle = `${scrapeProduct.title}-${randomNum}`;
+      slug = generateUrlSafeTitle(newTitle);
+      slugExists = await Product.findOne({ slug });
+    }
+
     const newProduct = await Product.findOneAndUpdate(
       { ASIN: scrapeProduct.ASIN },
-      product,
+      { product, slug },
       { upsert: true, new: true }
     );
 

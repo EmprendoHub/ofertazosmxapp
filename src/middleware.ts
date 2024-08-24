@@ -37,7 +37,6 @@ export async function middleware(request: any) {
 
   if (pathname.includes("admin")) {
     //if admin user is not logged in
-
     if (!token) {
       signInUrl = new URL("/api/auth/signin", request.url);
       signInUrl.searchParams.set("callbackUrl", pathname);
