@@ -97,7 +97,7 @@ const ProductCard = ({ item }: { item: any }) => {
           <p className="font-semibold text-foreground tracking-wider">
             <FormattedPrice
               amount={
-                item?.variations[0].price > 0
+                item?.variations[0]?.price > 0
                   ? item?.variations[0].price
                   : item?.sale_price ?? item?.sale_price
               }
