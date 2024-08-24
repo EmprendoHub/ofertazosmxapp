@@ -27,7 +27,7 @@ export interface FORM {
   required?: boolean;
 }
 
-const ProductCarousel = () => {
+const ProductCarousel = ({ products }: { products: any }) => {
   return (
     <Carousel
       opts={{
@@ -36,19 +36,18 @@ const ProductCarousel = () => {
       }}
     >
       <CarouselContent>
-        {Templates.map((product) => (
+        {products.map((product: any) => (
           <CarouselItem
-            key={product.name}
+            key={product.title}
             className="pl-1 sm:basis-1 md:basis-1/2 lg:basis-1/3 flex flex-col items-center justify-center"
           >
             <Image
               alt="image"
-              src={product.icon}
+              src={product.images[0].url}
               width={150}
               height={150}
-              className="object-contain"
+              className="object-contain w-16 h-auto"
             />
-            {product.name}
           </CarouselItem>
         ))}
       </CarouselContent>

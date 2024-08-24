@@ -220,7 +220,7 @@
 
   /* PRODUCT CARD */
   .product-card {
-    @apply sm:w-[292px] sm:max-w-[292px] w-full flex-1 flex flex-col gap-4 rounded-md;
+    @apply sm:w-[250px] sm:max-w-[250px] w-full flex-1 flex flex-col gap-4 rounded-lg;
   }
 
   .product-card_img-container {
@@ -228,7 +228,7 @@
   }
 
   .product-card_img {
-    @apply max-h-[250px] object-contain w-full h-full bg-transparent;
+    @apply max-h-[200px] object-contain w-full h-full bg-transparent;
   }
 
   .product-title {

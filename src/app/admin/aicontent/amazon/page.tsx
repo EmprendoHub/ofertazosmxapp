@@ -31,10 +31,10 @@ const ScraperPage = async () => {
         <ScrapeSearchBar />
         <div className="relative w-[95%]">
           {" "}
-          <ProductCarousel />
+          <ProductCarousel products={allProducts} />
         </div>
       </div>
-      <section className=" p-4">
+      <section className=" p-4 h-full">
         <h2 className="text-2xl font-bold mb-4">Trending</h2>
         <div className="flex flex-wrap gap-8">
           {allProducts?.map((product) => (

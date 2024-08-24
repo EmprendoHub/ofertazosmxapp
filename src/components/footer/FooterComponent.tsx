@@ -1,7 +1,11 @@
-import FooterMenu from './FooterMenu';
+import FooterMenu from "./FooterMenu";
 
 const FooterComponent = async () => {
-  return <FooterMenu />;
+  return (
+    <div className="relative">
+      <FooterMenu />;
+    </div>
+  );
 };
 
 export default FooterComponent;
