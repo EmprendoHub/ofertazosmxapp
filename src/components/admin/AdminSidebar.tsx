@@ -8,6 +8,7 @@ import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { UrlObject } from "url";
+import UsageTrack from "@/app/admin/aicontent/_components/UsageTrack";
 
 export interface SidebarContextType {
   expandSidebar: boolean;
@@ -31,7 +32,7 @@ const AdminSidebar = ({ children }: { children: any }) => {
   }
   return (
     <aside className="h-screen print:hidden ">
-      <nav className="h-full flex justify-between flex-col bg-background border-r border-b border-r-muted shadow-sm">
+      <nav className="min-h-full flex justify-between flex-col bg-background border-r border-b border-r-muted shadow-sm">
         <div>
           <div className=" py-2 flex justify-center items-center">
             <Image
@@ -60,6 +61,13 @@ const AdminSidebar = ({ children }: { children: any }) => {
               {children}
             </ul>
           </SidebarContext.Provider>
+        </div>
+        <div
+          className={`flex items-center overflow-hidden transition-all ease-in-out  ${
+            expandSidebar ? "w-full ml-3 maxmd:ml-1" : "w-0"
+          }`}
+        >
+          <UsageTrack />
         </div>
         {/* user avatar */}
         <div

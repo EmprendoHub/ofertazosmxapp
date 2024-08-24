@@ -7,7 +7,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Templates from "@/app/(dashdata)/Templates";
-import TemplateCard from "@/app/dashboard/_components/TemplateCard";
+import TemplateCard from "@/app/admin/aicontent/_components/TemplateCard";
 import Image from "next/image";
 
 export interface TEMPLATE {

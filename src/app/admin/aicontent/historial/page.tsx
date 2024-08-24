@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useContext } from "react";
-import { db } from "../../../../utils/db";
-import { AIOutput } from "../../../../utils/schema";
+import { db } from "../../../../../utils/db";
+import { AIOutput } from "../../../../../utils/schema";
 import { DataTableHistory } from "./_components/DataTable";
 import AuthContext from "@/context/AuthContext";
 import { eq } from "drizzle-orm";

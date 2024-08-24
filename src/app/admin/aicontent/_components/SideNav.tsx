@@ -25,32 +25,32 @@ const DashSideNav: React.FC = () => {
     {
       name: "Inicio",
       icon: Home,
-      path: "/dashboard",
+      path: "/aicontent",
     },
     {
       name: "Historial",
       icon: FileClock,
-      path: "/dashboard/historial",
+      path: "/aicontent/historial",
     },
     {
       name: "Planes",
       icon: WalletCards,
-      path: "/dashboard/planes",
+      path: "/aicontent/planes",
     },
     {
       name: "Calendario",
       icon: Calendar,
-      path: "/dashboard/calendario",
+      path: "/aicontent/calendario",
     },
     {
       name: "Amazon",
       icon: Search,
-      path: "/dashboard/amazon",
+      path: "/aicontent/amazon",
     },
     {
       name: "MercadoLibre",
       icon: Search,
-      path: "/dashboard/mercadolibre",
+      path: "/aicontent/mercadolibre",
     },
   ];
 

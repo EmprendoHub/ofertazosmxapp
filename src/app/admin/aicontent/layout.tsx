@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import DashSideNav from "./_components/SideNav";
 import DashHeader from "./_components/Header";
-import { TotalUsageContext } from "../(context)/TotalUsageContext";
+import { TotalUsageContext } from "../../(context)/TotalUsageContext";
 
 export default function DashLayout({
   children,
@@ -14,14 +14,8 @@ export default function DashLayout({
   return (
     <TotalUsageContext.Provider value={{ totalUsage, setTotalUsage }}>
       <div className="bg-background h-screen">
-        <div className="md:w-48 hidden md:block fixed">
-          <DashSideNav />
-        </div>
-
-        <div className="md:ml-48">
-          <DashHeader />
-          {children}
-        </div>
+        <DashHeader />
+        {children}
       </div>
     </TotalUsageContext.Provider>
   );

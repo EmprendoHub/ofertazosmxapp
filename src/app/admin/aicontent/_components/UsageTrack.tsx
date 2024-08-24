@@ -1,8 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import React, { useContext, useEffect, useState } from "react";
-import { db } from "../../../../utils/db";
-import { AIOutput } from "../../../../utils/schema";
+import { db } from "../../../../../utils/db";
+import { AIOutput } from "../../../../../utils/schema";
 import { eq } from "drizzle-orm";
 import { AiDbOutput } from "../historial/_components/DataTable";
 import { TotalUsageContext } from "@/app/(context)/TotalUsageContext";
@@ -45,7 +45,10 @@ const UsageTrack = () => {
         </div>
         <h2 className="text-[12px]">{totalUsage}/10,000 Credits used</h2>
       </div>
-      <Button variant={"link"} className="w-full my-3 rounded-[10px]">
+      <Button
+        variant={"outline"}
+        className="w-full my-3 rounded-[10px]  text-[12px]"
+      >
         Upgrade
       </Button>
     </div>

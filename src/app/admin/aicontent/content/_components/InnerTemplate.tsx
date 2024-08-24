@@ -8,8 +8,8 @@ import Link from "next/link";
 import Templates from "@/app/(dashdata)/Templates";
 import { TEMPLATE } from "../../_components/TemplateListSection";
 import { GetAIContent } from "./GetContent";
-import { db } from "../../../../../utils/db";
-import { AIOutput } from "../../../../../utils/schema";
+import { db } from "../../../../../../utils/db";
+import { AIOutput } from "../../../../../../utils/schema";
 import { TotalUsageContext } from "@/app/(context)/TotalUsageContext";
 import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
@@ -32,7 +32,7 @@ const InnerTemplate = ({ pageSlug }: { pageSlug: string }) => {
         title: "Actualiza tu plan",
         description: "Llegaste al limite de tu crédito mensual",
       });
-      router.push("/dashboard/cobranza");
+      router.push("/aicontent/cobranza");
       return;
     }
     setOnLoading(true);
@@ -62,7 +62,7 @@ const InnerTemplate = ({ pageSlug }: { pageSlug: string }) => {
 
   return (
     <div className="p-5 bg-background">
-      <Link href={"/dashboard"}>
+      <Link href={"/aicontent"}>
         <Button className="text-[12px] rounded-[10px]">
           <ArrowBigLeftDash size={20} /> Atras
         </Button>
