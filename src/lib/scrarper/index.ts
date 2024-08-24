@@ -100,6 +100,8 @@ export async function scrapeAmazonProduct(url: string) {
       availability.includes("unavailable") ||
       availability.includes("no disponible");
 
+    const slug = "";
+
     const data = {
       url,
       ASIN,
@@ -108,6 +110,7 @@ export async function scrapeAmazonProduct(url: string) {
       images,
       details,
       title,
+      slug,
       description,
       currentPrice: Number(currentPrice) || Number(originalPrice),
       originalPrice: Number(originalPrice) || Number(currentPrice),
@@ -230,6 +233,7 @@ export async function scrapeMercadoLibreProduct(url: string) {
       .toLowerCase();
 
     const outOfStock = !availability ? true : false;
+    const slug = "";
 
     const data = {
       url,
@@ -238,6 +242,7 @@ export async function scrapeMercadoLibreProduct(url: string) {
       domain,
       images,
       title,
+      slug,
       description,
       details,
       currentPrice: Number(currentPrice) || Number(originalPrice),

@@ -47,9 +47,13 @@ export async function scraperAndStoreProduct(productUrl: string) {
       slugExists = await Product.findOne({ slug });
     }
 
+    product.slug = slug;
+
+    console.log("product", product);
+
     const newProduct = await Product.findOneAndUpdate(
       { ASIN: scrapeProduct.ASIN },
-      { product, slug },
+      product,
       { upsert: true, new: true }
     );
 
@@ -77,7 +81,7 @@ export async function getProductById(productId: string) {
 export async function getAllProducts() {
   try {
     await dbConnect();
-    const products = await Product.find();
+    const products = await Product.find({});
     return products;
   } catch (error) {
     console.log(error);
