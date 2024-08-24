@@ -49,7 +49,18 @@ const ScrapeSearchBar = () => {
     } finally {
       setIsLoading(false);
     }
-    alert(isValidLink ? "Valid Link" : "invalid link");
+    if (isValidLink) {
+      return toast({
+        title: "Valid Link",
+        description: "Successfully scraped product",
+      });
+    } else {
+      return toast({
+        title: "Invalid Link",
+        description: "Add a valid amazon product link",
+        variant: "destructive",
+      });
+    }
   };
 
   // const useEffect = React.useEffect(() => {

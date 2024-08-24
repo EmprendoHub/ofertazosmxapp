@@ -49,8 +49,6 @@ export async function scraperAndStoreProduct(productUrl: string) {
 
     product.slug = slug;
 
-    console.log("product", product);
-
     const newProduct = await Product.findOneAndUpdate(
       { ASIN: scrapeProduct.ASIN },
       product,

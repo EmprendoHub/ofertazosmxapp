@@ -9,8 +9,6 @@ import ProductCarousel from "../product/_components/ProductCarousel";
 const ScraperPage = async () => {
   const allProducts = await getAllProducts();
 
-  console.log("allProducts", allProducts);
-
   return (
     <>
       <div className="flex flex-col items-center justify-center bg-card p-5 w-[95%] m-auto border-2 border-secondary rounded-[10px] mt-3">

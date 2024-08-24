@@ -176,8 +176,6 @@ export async function scrapeMercadoLibreProduct(url: string) {
       details.push({ key: detailKey, value: detailValue });
     });
 
-    console.log("details", details);
-
     // // Extract "Formato de venta" detail
     $(".ui-vpp-highlighted-specs__key-value__labels__key-value").each(
       (index, element) => {
@@ -197,8 +195,6 @@ export async function scrapeMercadoLibreProduct(url: string) {
     //   details.push({ key: key.trim(), value: value.trim() });
     // });
 
-    console.log("details 22222", details);
-
     // Extract image URLs (find relevant selectors based on HTML structure)
     // Select all image elements with the `data-zoom` attribute
     const imageElements = $(".ui-pdp-gallery__figure img[data-zoom]");
@@ -211,11 +207,23 @@ export async function scrapeMercadoLibreProduct(url: string) {
       }
     });
 
+    // Extract the current price
+    const currentPriceText = $(".ui-pdp-price__second-line .andes-money-amount")
+      .first()
+      .text()
+      .trim();
     const currentPrice = Number(
-      $(".andes-money-amount--cents-superscript-36").text().trim()
+      currentPriceText.replace(/[^0-9,]/g, "").replace(",", ".")
     );
-    const oldPriceElement = $(".andes-money-amount--previous");
-    const originalPrice = oldPriceElement.text().trim().replace("$", "");
+
+    // Extract the original price
+    const oldPriceElement = $(".ui-pdp-price__original-value");
+    const originalPriceText = oldPriceElement.text().trim();
+    const originalPrice = Number(
+      originalPriceText.replace(/[^0-9,]/g, "").replace(",", ".")
+    );
+
+    // Extract the currency
     const currency = oldPriceElement
       .find(".andes-money-amount__currency-symbol")
       .text();
