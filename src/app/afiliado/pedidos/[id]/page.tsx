@@ -12,14 +12,7 @@ const AdminOneOrderPage = async ({ params }: { params: any }) => {
   const currentCookies = `${cookieName}=${nextAuthSessionToken}`;
   return (
     <div>
-      <AdminOneOrder
-        id={params.id}
-        currentCookies={currentCookies}
-        order={undefined}
-        deliveryAddress={undefined}
-        orderPayments={undefined}
-        customer={undefined}
-      />
+      <AdminOneOrder id={params.id} currentCookies={currentCookies} />
     </div>
   );
 };

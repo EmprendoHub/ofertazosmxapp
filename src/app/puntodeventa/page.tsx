@@ -22,7 +22,6 @@ const POSPage = async () => {
         thisWeeksOrder={thisWeeksOrder}
         thisWeekOrderTotals={thisWeekOrderTotals}
         dailyOrdersTotals={dailyOrdersTotals}
-        clients={undefined}
       />
     </>
   );

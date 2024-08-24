@@ -28,16 +28,12 @@ export default function UserLayout({ children }: { children: any }) {
             text={"Tablero"}
             active={pathname === "/instagram" ?? true}
             url={"/instagram"}
-            alert={undefined}
-            dropdownItems={undefined}
           />
           <SideBarItem
             icon={<GiClothes size={20} />}
             text={"Productos"}
             active={pathname === "/instagram/productos" ?? true}
             url={"/instagram/productos"}
-            alert={undefined}
-            dropdownItems={undefined}
           />
           <SideBarItem
             icon={<FaCartPlus size={20} />}
@@ -46,8 +42,6 @@ export default function UserLayout({ children }: { children: any }) {
               pathname === "/instagram/productos/nuevo/variaciones" ?? true
             }
             url={"/instagram/productos/nuevo/variaciones"}
-            alert={undefined}
-            dropdownItems={undefined}
           />
 
           <SideBarItem
@@ -55,8 +49,6 @@ export default function UserLayout({ children }: { children: any }) {
             text={"Pedidos"}
             active={pathname === "/instagram/pedidos" ?? true}
             url={"/instagram/pedidos"}
-            alert={undefined}
-            dropdownItems={undefined}
           />
 
           <SideBarItem
@@ -67,8 +59,6 @@ export default function UserLayout({ children }: { children: any }) {
               (pathname === "/instagram/tienda" && true)
             }
             url={"/instagram/tienda"}
-            alert={undefined}
-            dropdownItems={undefined}
           />
 
           <SideBarItem
@@ -79,8 +69,6 @@ export default function UserLayout({ children }: { children: any }) {
               (pathname === "/instagram/carrito" && true)
             }
             url={"/instagram/carrito"}
-            alert={undefined}
-            dropdownItems={undefined}
           />
           <SideBarItem
             icon={<BsQrCodeScan size={20} />}
@@ -90,8 +78,6 @@ export default function UserLayout({ children }: { children: any }) {
               (pathname === "/instagram/qr/scanner" && true)
             }
             url={"/instagram/qr/scanner"}
-            alert={undefined}
-            dropdownItems={undefined}
           />
           <SideBarItem
             icon={<TbScanEye size={20} />}
@@ -101,8 +87,6 @@ export default function UserLayout({ children }: { children: any }) {
               (pathname === "/instagram/qr/idscanner" && true)
             }
             url={"/instagram/qr/idscanner"}
-            alert={undefined}
-            dropdownItems={undefined}
           />
           <SideBarItem
             icon={<MdOutlineFactCheck size={20} />}
@@ -112,8 +96,6 @@ export default function UserLayout({ children }: { children: any }) {
               (pathname === "/instagram/seleccionar" && true)
             }
             url={"/instagram/seleccionar"}
-            alert={undefined}
-            dropdownItems={undefined}
           />
         </BranchSidebar>
         <div className="relative w-full mb-5 ">{children}</div>

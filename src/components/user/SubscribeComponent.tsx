@@ -8,7 +8,7 @@ const SubscribeComponent = ({
   setShowModal,
 }: {
   cookie: string;
-  setShowModal: any;
+  setShowModal?: any;
 }) => {
   const [notification, setNotification] = useState("");
   const { executeRecaptcha } = useGoogleReCaptcha();

@@ -26,7 +26,6 @@ const POSPaymentForm = () => {
         showModal={showModal}
         setShowModal={setShowModal}
         payType={payType}
-        isPaid={undefined}
       />
       <div className=" bg-background flex flex-col p-2">
         <h2 className="text-5xl font-EB_Garamond mb-4">Totales</h2>

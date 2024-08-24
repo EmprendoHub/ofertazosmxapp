@@ -8,13 +8,7 @@ const ScanPOSProductPage = async ({ params }: { params: any }) => {
   const product = await JSON.parse(data.product);
   const variation = await JSON.parse(data.variation);
 
-  return (
-    <POSScannerComponent
-      product={product}
-      variation={variation}
-      error={undefined}
-    />
-  );
+  return <POSScannerComponent product={product} variation={variation} />;
 };
 
 export default ScanPOSProductPage;

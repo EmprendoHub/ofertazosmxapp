@@ -20,16 +20,12 @@ export default function UserLayout({ children }: { children: any }) {
             text={"Tablero"}
             active={pathname === "/puntodeventa" ?? true}
             url={"/puntodeventa"}
-            alert={undefined}
-            dropdownItems={undefined}
           />
           <SideBarItem
             icon={<TbDeviceIpadDollar size={20} />}
             text={"Pedidos"}
             active={pathname === "/puntodeventa/pedidos" ?? true}
             url={"/puntodeventa/pedidos"}
-            alert={undefined}
-            dropdownItems={undefined}
           />
 
           <SideBarItem
@@ -40,8 +36,6 @@ export default function UserLayout({ children }: { children: any }) {
               (pathname === "/puntodeventa/tienda" && true)
             }
             url={"/puntodeventa/tienda"}
-            alert={undefined}
-            dropdownItems={undefined}
           />
 
           <SideBarItem
@@ -52,8 +46,6 @@ export default function UserLayout({ children }: { children: any }) {
               (pathname === "/puntodeventa/carrito" && true)
             }
             url={"/puntodeventa/carrito"}
-            alert={undefined}
-            dropdownItems={undefined}
           />
           <SideBarItem
             icon={<LiaReceiptSolid size={20} />}
@@ -63,8 +55,6 @@ export default function UserLayout({ children }: { children: any }) {
               (pathname === "/puntodeventa/corte" && true)
             }
             url={"/puntodeventa/corte"}
-            alert={undefined}
-            dropdownItems={undefined}
           />
           <SideBarItem
             icon={<BsQrCodeScan size={20} />}
@@ -74,8 +64,6 @@ export default function UserLayout({ children }: { children: any }) {
               (pathname === "/puntodeventa/qr/scanner" && true)
             }
             url={"/puntodeventa/qr/scanner"}
-            alert={undefined}
-            dropdownItems={undefined}
           />
           <SideBarItem
             icon={<TbScanEye size={20} />}
@@ -85,8 +73,6 @@ export default function UserLayout({ children }: { children: any }) {
               (pathname === "/puntodeventa/qr/idscanner" && true)
             }
             url={"/puntodeventa/qr/idscanner"}
-            alert={undefined}
-            dropdownItems={undefined}
           />
           <SideBarItem
             icon={<MdOutlineFactCheck size={20} />}
@@ -96,8 +82,6 @@ export default function UserLayout({ children }: { children: any }) {
               (pathname === "/puntodeventa/seleccionar" && true)
             }
             url={"/puntodeventa/seleccionar"}
-            alert={undefined}
-            dropdownItems={undefined}
           />
         </BranchSidebar>
         <div className="relative w-full mb-5 ">{children}</div>

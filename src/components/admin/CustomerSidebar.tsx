@@ -109,9 +109,9 @@ export function SideBarItem({
   icon: any;
   text: string;
   active: any;
-  alert: any;
+  alert?: any;
   url: string;
-  dropdownItems: any;
+  dropdownItems?: any;
 }) {
   const { expandSidebar }: any = useContext(SidebarContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);

@@ -16,7 +16,7 @@ const POSModal = ({
   showModal: any;
   setShowModal: any;
   payType: any;
-  isPaid: any;
+  isPaid?: any;
 }) => {
   return (
     <AnimatePresence mode="wait">

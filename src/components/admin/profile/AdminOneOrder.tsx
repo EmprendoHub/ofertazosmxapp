@@ -19,11 +19,11 @@ const AdminOneOrder = ({
   customer,
   currentCookies,
 }: {
-  order: any;
-  deliveryAddress: any;
+  order?: any;
+  deliveryAddress?: any;
   id: any;
-  orderPayments: any;
-  customer: any;
+  orderPayments?: any;
+  customer?: any;
   currentCookies: any;
 }) => {
   const { updateOrder }: any = useContext(AuthContext);

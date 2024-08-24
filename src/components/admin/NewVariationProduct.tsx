@@ -642,7 +642,6 @@ const NewVariationProduct = () => {
                   <MultiselectTagComponent
                     options={tagSelection}
                     handleAddTagField={handleAddTagField}
-                    values={undefined}
                   />
                   {validationError?.tags && (
                     <p className="text-sm text-red-400">

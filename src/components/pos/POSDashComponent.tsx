@@ -15,7 +15,7 @@ const POSDashComponent = ({
   thisWeekOrderTotals,
   products,
 }: {
-  clients: any;
+  clients?: any;
   orders: any;
   orderCountPreviousMonth: any;
   totalOrderCount: any;

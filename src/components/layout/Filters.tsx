@@ -94,7 +94,7 @@ const Filters = ({ allCategories }: { allCategories: any }) => {
       {/* Search Filter */}
 
       <div className=" px-6 py-4 border border-gray-200 bg-background rounded shadow-sm">
-        <Search SetIsActive={undefined} />
+        <Search />
       </div>
       {/* Price Filter */}
 

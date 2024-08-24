@@ -18,9 +18,9 @@ const ListProducts = ({
   allBrands: any;
   allCategories: any;
   filteredProductsCount: number;
-  per_page: any;
-  start: any;
-  end: any;
+  per_page?: any;
+  start?: any;
+  end?: any;
 }) => {
   const { data: session }: any = useSession();
   const router = useRouter();

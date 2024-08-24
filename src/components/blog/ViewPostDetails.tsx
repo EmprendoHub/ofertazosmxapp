@@ -36,13 +36,7 @@ const ViewPostDetails = ({
             </div>
           </span>
 
-          <AnimationWrapper
-            keyValue={undefined}
-            className={""}
-            initial={""}
-            animate={""}
-            transition={""}
-          >
+          <AnimationWrapper>
             <section>
               <div className="mx-auto max-w-[1200px] w-full">
                 {/* Section 1 - Title, Image */}

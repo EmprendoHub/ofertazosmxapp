@@ -91,9 +91,6 @@ const TiendaPage = async ({ searchParams }: { searchParams: any }) => {
         allBrands={allBrands}
         allCategories={allCategories}
         filteredProductsCount={filteredProductsCount}
-        per_page={undefined}
-        start={undefined}
-        end={undefined}
       />
       <ServerPagination
         isPageOutOfRange={isPageOutOfRange}

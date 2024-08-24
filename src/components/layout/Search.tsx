@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Button } from "../ui/button";
 
-const Search = ({ SetIsActive }: { SetIsActive: any }) => {
+const Search = ({ SetIsActive }: { SetIsActive?: any }) => {
   const [keyword, setKeyword] = useState("");
   const router = useRouter();
   const submitHandler = (e: any) => {

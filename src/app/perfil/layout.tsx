@@ -22,24 +22,18 @@ export default function UserLayout({ children }: { children: any }) {
             text={"Tablero"}
             active={pathname === "/admin" ?? true}
             url={"/perfil"}
-            alert={undefined}
-            dropdownItems={undefined}
           />
           <SideBarItem
             icon={<TbDeviceIpadDollar size={20} />}
             text={"Pedidos"}
             active={pathname === "/perfil/pedidos" ?? true}
             url={"/perfil/pedidos"}
-            alert={undefined}
-            dropdownItems={undefined}
           />
           <SideBarItem
             icon={<FaHeart size={20} />}
             text={"Favoritos"}
             active={pathname === "/perfil/favoritos" ?? true}
             url={"/perfil/favoritos"}
-            alert={undefined}
-            dropdownItems={undefined}
           />
           <SideBarItem
             icon={<FaRegAddressCard size={20} />}
@@ -74,16 +68,12 @@ export default function UserLayout({ children }: { children: any }) {
             text={"Actualizar Perfil"}
             active={pathname === "/perfil/actualizar" ?? true}
             url={"/perfil/actualizar"}
-            alert={undefined}
-            dropdownItems={undefined}
           />
           <SideBarItem
             icon={<RiLockPasswordLine size={20} />}
             text={"Actualizar Contraseña"}
             active={pathname === "/perfil/actualizar_contrasena" ?? true}
             url={"/perfil/actualizar_contrasena"}
-            alert={undefined}
-            dropdownItems={undefined}
           />
         </CustomerSidebar>
         <div className="relative w-full mb-5 ">{children}</div>

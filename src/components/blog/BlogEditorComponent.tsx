@@ -325,13 +325,7 @@ const BlogEditorComponent = () => {
           </div>
         </nav>
 
-        <AnimationWrapper
-          keyValue={undefined}
-          className={""}
-          initial={""}
-          animate={""}
-          transition={""}
-        >
+        <AnimationWrapper>
           <section>
             <div className="mx-auto max-w-[900px] w-full">
               {/* Section 1 - Title, Image */}

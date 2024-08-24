@@ -10,12 +10,12 @@ const AnimationWrapper = ({
   transition = { duration: 0.35, ease: "easeInOut" },
   className,
 }: {
-  children: any;
-  keyValue: any;
-  initial: any;
-  animate: any;
-  transition: any;
-  className: any;
+  children?: any;
+  keyValue?: any;
+  initial?: any;
+  animate?: any;
+  transition?: any;
+  className?: any;
 }) => {
   return (
     <AnimatePresence>

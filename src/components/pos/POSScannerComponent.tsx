@@ -12,7 +12,7 @@ const POSScannerComponent = ({
 }: {
   product: any;
   variation: any;
-  error: any;
+  error?: any;
 }) => {
   console.log(product);
   const router = useRouter();

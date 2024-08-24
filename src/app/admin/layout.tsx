@@ -25,16 +25,12 @@ export default function UserLayout({ children }: { children: any }) {
             text={"Tablero"}
             active={pathname === "/admin" ? "true" : "false"}
             url={"/admin"}
-            alert={undefined}
-            dropdownItems={undefined}
           />
           <SideBarItem
             icon={<TbDeviceIpadDollar size={20} />}
             text={"Pedidos"}
             active={pathname === "/admin/pedidos" ? "true" : "false"}
             url={"/admin/pedidos"}
-            alert={undefined}
-            dropdownItems={undefined}
           />
           <SideBarItem
             icon={<CiGrid31 size={20} />}
@@ -92,24 +88,18 @@ export default function UserLayout({ children }: { children: any }) {
             text={"Clientes"}
             active={pathname === "/admin/clientes" ? "true" : "false"}
             url={"/admin/clientes"}
-            alert={undefined}
-            dropdownItems={undefined}
           />
           <SideBarItem
             icon={<TbReport size={20} />}
             text={"Reportes"}
             active={pathname === "/admin/reportes" ? "true" : "false"}
             url={"/admin/reportes"}
-            alert={undefined}
-            dropdownItems={undefined}
           />
           <SideBarItem
             icon={<SiMercadopago size={20} />}
             text={"MercadoLibre"}
             active={pathname === "/admin/mercadolibre" ? "true" : "false"}
             url={"/admin/mercadolibre"}
-            alert={undefined}
-            dropdownItems={undefined}
           />
 
           <hr className="my-3 maxmd:my-1" />

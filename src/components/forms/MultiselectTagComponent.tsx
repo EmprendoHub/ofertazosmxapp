@@ -8,7 +8,7 @@ const MultiselectTagComponent = ({
 }: {
   options: any;
   handleAddTagField: any;
-  values: any;
+  values?: any;
 }) => {
   return (
     <Select
