@@ -20,7 +20,7 @@ import Image from "next/image";
 import "./_components/editor-template.css";
 
 registerLicense(
-  "Ngo9BigBOggjHTQxAR8/V1NCaF1cWWhBYVJ/WmFZfVpgfV9FaFZRRGYuP1ZhSXxXdk1iW39Xc3xVRmJcUkE="
+  "Ngo9BigBOggjHTQxAR8/V1NCaF1cXGNCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXdcc3ZXQmVfWEV+XEY="
 );
 
 export default function SchedulePage() {
