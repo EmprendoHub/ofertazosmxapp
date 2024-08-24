@@ -11,6 +11,7 @@ const isValidMercadoLibreProductUrl = (url: string) => {
 
     if (
       hostname.includes("articulo.mercadolibre.com.mx") ||
+      hostname.includes("mercadolibre.com.mx") ||
       hostname.includes("articulo.mercadolibre.") ||
       hostname.endsWith("articulo.mercadolibre")
     ) {

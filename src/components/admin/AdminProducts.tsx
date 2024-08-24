@@ -241,141 +241,122 @@ const AdminProducts = ({
             </tr>
           </thead>
           <tbody>
-            {products?.map(
-              (
-                product: {
-                  active: boolean;
-                  _id: Key | null | undefined;
-                  title: string;
-                  slug: any;
-                  images: { url: string | StaticImport }[];
-                  featured: any;
-                  variations: { price: any }[];
-                  stock: string | number;
-                  availability: {
-                    online: boolean;
-                    branch: boolean;
-                    instagram: boolean;
-                  };
-                },
-                index: any
-              ) => (
-                <tr
-                  className={`flex flex-row items-center ${
-                    product?.active === true
-                      ? "bg-background"
-                      : "bg-card text-card-foreground"
-                  }`}
-                  key={product?._id}
+            {products?.map((product: any, index: any) => (
+              <tr
+                className={`flex flex-row items-center ${
+                  product?.active === true
+                    ? "bg-background"
+                    : "bg-card text-card-foreground"
+                }`}
+                key={product?._id}
+              >
+                <td
+                  className={`w-full px-6 maxsm:px-0 py-0 font-bold maxsm:hidden text-[12px]`}
                 >
-                  <td
-                    className={`w-full px-6 maxsm:px-0 py-0 font-bold maxsm:hidden text-[12px]`}
-                  >
-                    {product?.title?.substring(0, 30)}...
-                  </td>
+                  {product?.title?.substring(0, 30)}...
+                </td>
 
-                  <td className="w-full px-6 maxsm:px-0 py-0 relative ">
-                    <span className="relative flex items-center justify-center text-foreground w-20 h-20 maxsm:w-8 maxsm:h-8 shadow mt-2">
-                      <Link
-                        href={`/${pathname}/productos/variacion/${product?.slug}?&callback=${searchParams}`}
-                      >
-                        <Image
-                          src={product?.images[0]?.url}
-                          alt="Title"
-                          width={200}
-                          height={200}
-                          className="w-14 object-cover h-14 maxsm:w-14 rounded-md"
-                        />
-                      </Link>
-
-                      {product?.featured ? (
-                        <span className="absolute -top-3 -right-1 z-20">
-                          <FaStar className="text-xl text-amber-600" />
-                        </span>
-                      ) : (
-                        ""
-                      )}
-                    </span>
-                  </td>
-                  <td className="w-full px-6 maxsm:px-0 py-0 ">
-                    <b>
-                      <FormattedPrice amount={product?.variations[0]?.price} />
-                    </b>
-                  </td>
-
-                  <td className="w-full px-1 py-0 ">{product?.stock}</td>
-                  <td className="w-full px-1 py-0 flex flex-row items-center gap-x-1">
+                <td className="w-full px-6 maxsm:px-0 py-0 relative ">
+                  <span className="relative flex items-center justify-center text-foreground w-20 h-20 maxsm:w-8 maxsm:h-8 shadow mt-2">
                     <Link
-                      href={`/${pathname}/productos/variacion/${product?.slug}?&callback=${currentPage}`}
-                      className="p-2 inline-block text-foreground hover:text-card-foreground bg-background shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
+                      href={`/${pathname}/productos/variacion/${product?.slug}?&callback=${searchParams}`}
                     >
-                      <FaPencilAlt className="maxsm:text-[10px]" />
+                      <Image
+                        src={product?.images[0]?.url}
+                        alt="Title"
+                        width={200}
+                        height={200}
+                        className="w-14 object-cover h-14 maxsm:w-14 rounded-md"
+                      />
                     </Link>
 
-                    <button
-                      onClick={() =>
-                        deactivateOnlineHandler(
-                          product?._id,
-                          product?.availability?.online
-                        )
-                      }
-                      className="p-2 inline-block text-foreground hover:text-card-foreground bg-background shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
-                    >
-                      <TbWorldWww
-                        className={` ${
-                          product?.availability?.online === true
-                            ? "text-green-800 maxsm:text-[10px]"
-                            : "text-slate-400 maxsm:text-[10px]"
-                        }`}
-                      />
-                    </button>
+                    {product?.featured ? (
+                      <span className="absolute -top-3 -right-1 z-20">
+                        <FaStar className="text-xl text-amber-600" />
+                      </span>
+                    ) : (
+                      ""
+                    )}
+                  </span>
+                </td>
+                <td className="w-full px-6 maxsm:px-0 py-0 ">
+                  <b>
+                    <FormattedPrice amount={product?.currentPrice} />
+                  </b>
+                </td>
 
-                    <button
-                      onClick={() =>
-                        deactivateBranchHandler(
-                          product?._id,
-                          product?.availability?.branch
-                        )
-                      }
-                      className="p-2 inline-block text-foreground hover:text-card-foreground bg-background shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
-                    >
-                      <FaShop
-                        className={` ${
-                          product?.availability?.branch === true
-                            ? "text-green-800 maxsm:text-[10px]"
-                            : "text-muted maxsm:text-[10px]"
-                        }`}
-                      />
-                    </button>
-                    <button
-                      onClick={() =>
-                        deactivateInstagramHandler(
-                          product?._id,
-                          product?.availability?.instagram
-                        )
-                      }
-                      className="p-2 inline-block text-foreground hover:text-card-foreground bg-background shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
-                    >
-                      <FaInstagramSquare
-                        className={` ${
-                          product?.availability.instagram === true
-                            ? "bg-gradient-to-tr from-amber-700 to-pink-500 maxsm:text-[10px]"
-                            : "text-muted maxsm:text-[10px]"
-                        }`}
-                      />
-                    </button>
-                    <button
-                      onClick={() => deleteHandler(product?._id)}
-                      className="p-2 inline-block text-foreground hover:text-card-foreground bg-background shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
-                    >
-                      <FaExclamationCircle
-                        className={`text-red-500 maxsm:text-[10px]`}
-                      />
-                    </button>
-                  </td>
-                </tr>
-              )
-            )}
+                <td className="w-full px-1 py-0 ">{product?.stock}</td>
+                <td className="w-full px-1 py-0 flex flex-row items-center gap-x-1">
+                  <Link
+                    href={`/${pathname}/productos/variacion/${product?.slug}?&callback=${currentPage}`}
+                    className="p-2 inline-block text-foreground hover:text-card-foreground bg-background shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
+                  >
+                    <FaPencilAlt className="maxsm:text-[10px]" />
+                  </Link>
+
+                  <button
+                    onClick={() =>
+                      deactivateOnlineHandler(
+                        product?._id,
+                        product?.availability?.online
+                      )
+                    }
+                    className="p-2 inline-block text-foreground hover:text-card-foreground bg-background shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
+                  >
+                    <TbWorldWww
+                      className={` ${
+                        product?.availability?.online === true
+                          ? "text-green-800 maxsm:text-[10px]"
+                          : "text-slate-400 maxsm:text-[10px]"
+                      }`}
+                    />
+                  </button>
+
+                  <button
+                    onClick={() =>
+                      deactivateBranchHandler(
+                        product?._id,
+                        product?.availability?.branch
+                      )
+                    }
+                    className="p-2 inline-block text-foreground hover:text-card-foreground bg-background shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
+                  >
+                    <FaShop
+                      className={` ${
+                        product?.availability?.branch === true
+                          ? "text-green-800 maxsm:text-[10px]"
+                          : "text-muted maxsm:text-[10px]"
+                      }`}
+                    />
+                  </button>
+                  <button
+                    onClick={() =>
+                      deactivateInstagramHandler(
+                        product?._id,
+                        product?.availability?.instagram
+                      )
+                    }
+                    className="p-2 inline-block text-foreground hover:text-card-foreground bg-background shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
+                  >
+                    <FaInstagramSquare
+                      className={` ${
+                        product?.availability.instagram === true
+                          ? "bg-gradient-to-tr from-amber-700 to-pink-500 maxsm:text-[10px]"
+                          : "text-muted maxsm:text-[10px]"
+                      }`}
+                    />
+                  </button>
+                  <button
+                    onClick={() => deleteHandler(product?._id)}
+                    className="p-2 inline-block text-foreground hover:text-card-foreground bg-background shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
+                  >
+                    <FaExclamationCircle
+                      className={`text-red-500 maxsm:text-[10px]`}
+                    />
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

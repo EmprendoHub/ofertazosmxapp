@@ -33,18 +33,17 @@ const ProductDetails = async ({ params: { id } }: Props) => {
             height={800}
             className="mx-auto"
           />
-          <div className="max-w-[65px] relative flex  gap-1 mt-2">
-            {product.images
-              .map((image, index) => (
-                <Image
-                  key={index}
-                  src={image.url}
-                  alt={product.title}
-                  width={150}
-                  height={150}
-                />
-              ))
-              .slice(0, 4)}
+          <div className=" relative flex flex-wrap  gap-1 mt-2">
+            {product.images.map((image, index) => (
+              <Image
+                key={index}
+                src={image.url}
+                alt={product.title}
+                width={150}
+                height={150}
+                className="w-12 h-12 "
+              />
+            ))}
           </div>
         </div>
         <div className="flex-1 flex flex-col">

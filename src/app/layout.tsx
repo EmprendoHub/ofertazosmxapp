@@ -35,7 +35,7 @@ export default async function RootLayout({ children }: { children: any }) {
           >
             <HeaderComponent cookie={cookie} />
             {children}
-            {/* <FooterComponent /> */}
+            <FooterComponent />
           </ThemeProvider>
         </CustomSessionProvider>
         <CookieConsentComp />
