@@ -42,7 +42,7 @@ export default function SchedulePage() {
     return (
       <div className="tooltip-wrap">
         <Image
-          src={`/${props.EventType + ".png"}`}
+          src={`/icons/${props.EventType + ".png"}`}
           className="image"
           alt="image"
           height={50}
