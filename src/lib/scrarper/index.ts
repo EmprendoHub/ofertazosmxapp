@@ -187,14 +187,6 @@ export async function scrapeMercadoLibreProduct(url: string) {
       }
     );
 
-    // Extract "Formato de venta" detail
-    // $(".ui-vpp-highlighted-specs__key-value__labels").each((index, element) => {
-    //   const text = $(element).text();
-    //   console.log("text 2"), text;
-    //   const [key, value] = text.split(":");
-    //   details.push({ key: key.trim(), value: value.trim() });
-    // });
-
     // Extract image URLs (find relevant selectors based on HTML structure)
     // Select all image elements with the `data-zoom` attribute
     const imageElements = $(".ui-pdp-gallery__figure img[data-zoom]");
@@ -213,14 +205,14 @@ export async function scrapeMercadoLibreProduct(url: string) {
       .text()
       .trim();
     const currentPrice = Number(
-      currentPriceText.replace(/[^0-9,]/g, "").replace(",", ".")
+      currentPriceText.replace(/[^0-9,]/g, "").replace(",", "")
     );
 
     // Extract the original price
     const oldPriceElement = $(".ui-pdp-price__original-value");
     const originalPriceText = oldPriceElement.text().trim();
     const originalPrice = Number(
-      originalPriceText.replace(/[^0-9,]/g, "").replace(",", ".")
+      originalPriceText.replace(/[^0-9,]/g, "").replace(",", "")
     );
 
     // Extract the currency
