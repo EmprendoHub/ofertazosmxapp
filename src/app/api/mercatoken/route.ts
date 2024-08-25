@@ -5,9 +5,11 @@ export async function POST(request: any) {
   const { code, codeVerifier } = await request.json();
   const userToken: any = await getToken({ req: request });
   try {
-    const appId: any = process.env.NEXT_PUBLIC_MERCADO_LIBRE_APP_ID;
-    const secretKey: any = process.env.MERCADO_LIBRE_APP_SECRET;
-    const redirectUri: any = process.env.NEXT_PUBLIC_MERCADO_LIBRE_REDIRECT_URL;
+    const appId = process.env.NEXT_PUBLIC_MERCADO_LIBRE_APP_ID!;
+    const secretKey = process.env.MERCADO_LIBRE_APP_SECRET!;
+    const redirectUri = process.env.NEXT_PUBLIC_MERCADO_LIBRE_REDIRECT_URL!;
+    console.log(appId, secretKey, redirectUri, code, codeVerifier);
+
     const response: any = await fetch(
       "https://api.mercadolibre.com/oauth/token",
       {

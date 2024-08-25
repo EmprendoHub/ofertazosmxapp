@@ -13,7 +13,7 @@ const MercadoTokenUpdate = ({ searchParams }: { searchParams: any }) => {
 
   const handleRefreshToken: any = async (authCode: string) => {
     try {
-      const response = await fetch("/api/mercadotoken/update", {
+      const response = await fetch("/api/updatetoken", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

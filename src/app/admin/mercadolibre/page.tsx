@@ -67,7 +67,7 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
         throw new Error("No code verifier found");
       }
 
-      const response = await fetch("/api/mercadotoken", {
+      const response = await fetch("/api/mercatoken", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
