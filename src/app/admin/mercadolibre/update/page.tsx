@@ -13,11 +13,6 @@ const MercadoTokenUpdate = ({ searchParams }: { searchParams: any }) => {
 
   const handleRefreshToken: any = async (authCode: string) => {
     try {
-      const codeVerifier = localStorage.getItem("codeVerifier");
-      if (!codeVerifier) {
-        throw new Error("No code verifier found");
-      }
-
       const response = await fetch("/api/mercadotoken/update", {
         method: "POST",
         headers: {
@@ -49,7 +44,7 @@ const MercadoTokenUpdate = ({ searchParams }: { searchParams: any }) => {
       <div>
         <div className="flex flex-col items-center justify-center">
           <h1>Update Token for MercadoLibre</h1>
-          <p className="text-xs mb-3">Code: {code}</p>
+          <p className="text-xs mb-3">Token: {token}</p>
           {error && <p className="text-xs text-red-500">{error}</p>}
           <Button onClick={handleRefreshToken} size={"sm"}>
             Update Token

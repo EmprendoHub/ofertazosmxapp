@@ -1,7 +1,39 @@
 import mongoose from "mongoose";
 
 export type User = {
-  email: string;
+  active: Boolean;
+  name: String;
+  email: String;
+  verificationToken: String;
+  phone: String;
+  stripe_id?: String;
+  mercado_token?: {
+    access_token: String;
+    token_type: String;
+    expires_in: Number;
+    scope: String;
+    user_id: Number;
+    refresh_token: String;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+  password: String;
+  avatar?: String;
+  permissions?: {
+    name: String;
+    active: Boolean;
+  };
+  favorites?: {
+    _id: String;
+    title: String;
+    price: Number;
+    images: {
+      url: String;
+    }[];
+  }[];
+  loginAttempts?: Number;
+  points?: Number;
+  role?: String;
 };
 
 export type Product = {
