@@ -15,7 +15,7 @@ import { LiaCashRegisterSolid, LiaStoreAltSolid } from "react-icons/lia";
 import { GiClothes, GiEnergyArrow } from "react-icons/gi";
 import { FaCartPlus, FaInstagram } from "react-icons/fa6";
 import { BsAmazon, BsCalendar, BsQrCodeScan, BsRobot } from "react-icons/bs";
-import { SiMercadopago } from "react-icons/si";
+import { SiAuth0, SiMercadopago } from "react-icons/si";
 
 export default function UserLayout({ children }: { children: any }) {
   const pathname = usePathname();
@@ -99,11 +99,34 @@ export default function UserLayout({ children }: { children: any }) {
             active={pathname === "/admin/reportes" ? "true" : "false"}
             url={"/admin/reportes"}
           />
+
+          <hr className="my-3 maxmd:my-1" />
           <SideBarItem
             icon={<SiMercadopago size={20} />}
             text={"MercadoLibre"}
-            active={pathname === "/admin/mercadolibre" ? "true" : "false"}
-            url={"/admin/mercadolibre"}
+            active={
+              pathname === "/admin/mercadolibre" ||
+              pathname === "/admin/mercadolibre/producto"
+            }
+            url={"/admin/aicontent"}
+            alert
+            dropdownItems={[
+              {
+                text: "Auth",
+                url: "/admin/mercadolibre",
+                active: pathname === "/admin/mercadolibre" ? "true" : "false",
+                icon: <SiAuth0 size={20} />,
+              },
+              {
+                text: "Historial",
+                url: "/admin/mercadolibre/producto",
+                active:
+                  pathname === "/admin/mercadolibre/producto"
+                    ? "true"
+                    : "false",
+                icon: <SiMercadopago size={20} />,
+              },
+            ]}
           />
 
           <hr className="my-3 maxmd:my-1" />

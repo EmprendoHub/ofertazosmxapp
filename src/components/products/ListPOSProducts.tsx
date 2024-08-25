@@ -30,11 +30,9 @@ const ListPOSProducts = ({
       <div className=" mx-auto flex justify-center items-center w-full">
         <div className="w-full justify-center items-center gap-x-5">
           <main className=" flex flex-row gap-4 flex-wrap items-center w-full pl-5">
-            {filteredProducts?.map(
-              (product: any, index: Key | null | undefined) => (
-                <POSProductCard item={product} key={index} />
-              )
-            )}
+            {filteredProducts?.map((product: any, index: number) => (
+              <POSProductCard item={product} key={index} />
+            ))}
           </main>
         </div>
       </div>

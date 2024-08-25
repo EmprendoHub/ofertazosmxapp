@@ -39,6 +39,8 @@ import APIAffiliateFilters from "@/lib/APIAffiliateFilters";
 import Page from "@/backend/models/Page";
 import Payment from "@/backend/models/Payment";
 import Customer from "@/backend/models/Customer";
+import { getToken } from "next-auth/jwt";
+import TestUser from "@/backend/models/TestUser";
 
 // Function to get the document count for all from the previous month
 const getDocumentCountPreviousMonth = async (model: any) => {
@@ -2470,7 +2472,7 @@ export async function changeProductAvailability(productId: any, location: any) {
     await dbConnect();
     // Find the product that contains the variation with the specified variation ID
     let product = await Product.findOne({ _id: productId });
-    if (location === "Instagram") {
+    if (location === "MercadoLibre") {
       if (product.availability.instagram === true) {
         product.availability.instagram = false; // Remove from physical branch
       } else {
@@ -2650,12 +2652,15 @@ export async function getAllPOSProduct(searchQuery: any) {
   }
 }
 
-export async function getAllPOSInstagramProduct(searchQuery: any) {
+export async function getAllPOSMercadoLibreProduct(searchQuery: any) {
   try {
     await dbConnect();
     // Find the product that contains the variation with the specified variation ID
+    // let productQuery = Product.find({
+    //   $and: [{ stock: { $gt: 0 } }, { "availability.instagram": true }],
+    // });
     let productQuery = Product.find({
-      $and: [{ stock: { $gt: 0 } }, { "availability.instagram": true }],
+      $and: [{ "availability.instagram": true }],
     });
     const searchParams = new URLSearchParams(searchQuery);
     const resPerPage = Number(searchParams.get("perpage")) || 20;
@@ -2676,9 +2681,12 @@ export async function getAllPOSInstagramProduct(searchQuery: any) {
     apiProductFilters.pagination(resPerPage, page);
     productsData = await apiProductFilters.query.clone();
     let products = JSON.stringify(productsData);
-    revalidatePath("/admin/instagram/productos/");
+    const testUsersData = await TestUser.find({});
+    const testUsers = JSON.stringify(testUsersData);
+    revalidatePath("/admin/mercadolibre/producto");
     return {
       products: products,
+      testUsers: testUsers,
       filteredProductsCount: filteredProductsCount,
     };
   } catch (error: any) {
@@ -2708,7 +2716,7 @@ export async function getAllPOSProductNoFilter() {
   }
 }
 
-export async function getAllPOSInstagramProductNoFilter() {
+export async function getAllPOSMercadoLibreProductNoFilter() {
   try {
     await dbConnect();
     // Find the product that contains the variation with the specified variation ID
@@ -2731,57 +2739,71 @@ export async function getAllPOSInstagramProductNoFilter() {
 
 export async function getAllProduct(searchQuery: any) {
   try {
+    console.log("Starting getAllProduct with searchQuery:", searchQuery);
     await dbConnect();
+    console.log("Database connected");
+
     const session = await getServerSession(options);
+    console.log("Session retrieved:", session?.user?.role);
+
     let productQuery: any;
-    if (session) {
-      if (
-        session?.user?.role === "manager" ||
-        session?.user?.role === "sucursal" ||
-        session?.user?.role === "instagram"
-      ) {
-        productQuery = Product.find();
-      }
+    if (
+      session &&
+      ["manager", "sucursal", "instagram"].includes(session?.user?.role)
+    ) {
+      productQuery = Product.find();
     } else {
       productQuery = Product.find({ published: true });
     }
 
     const searchParams = new URLSearchParams(searchQuery);
     const resPerPage = Number(searchParams.get("perpage")) || 10;
-    // Extract page and per_page from request URL
     const page = Number(searchParams.get("page")) || 1;
+    console.log(`Page: ${page}, Items per page: ${resPerPage}`);
+
     productQuery = productQuery.sort({ createdAt: -1 });
-    // total number of documents in database
+
+    console.log("Counting total products");
     const productsCount = await Product.countDocuments();
-    // Extract all possible categories
-    let allCategories: any = await Product.distinct("category");
-    // Extract all possible categories
-    let allBrands: any = await Product.distinct("brand");
-    // Apply search Filters
+    console.log("Total products:", productsCount);
+
+    console.log("Getting distinct categories and brands");
+    const [allCategories, allBrands] = await Promise.all([
+      Product.distinct("category"),
+      Product.distinct("brand"),
+    ]);
+
+    console.log("Applying APIFilters");
     const apiProductFilters: any = new APIFilters(productQuery, searchParams)
       .searchAllFields()
       .filter();
 
-    let productsData = await apiProductFilters.query;
-
+    console.log("Executing filtered query");
+    let productsData = await apiProductFilters.query.exec();
     const filteredProductsCount = productsData.length;
+    console.log("Filtered products count:", filteredProductsCount);
 
+    console.log("Applying pagination");
     apiProductFilters.pagination(resPerPage, page);
-    productsData = await apiProductFilters.query.clone();
-    let sortedProducts = JSON.stringify(productsData);
-    allCategories = JSON.stringify(allCategories);
-    allBrands = JSON.stringify(allBrands);
-    revalidatePath("/admin/productos/");
-    return {
-      products: sortedProducts,
-      productsCount: productsCount,
-      filteredProductsCount: filteredProductsCount,
-      allCategories: allCategories,
-      allBrands: allBrands,
+    productsData = await apiProductFilters.query.clone().exec();
+
+    console.log("Preparing response");
+    const response = {
+      products: JSON.stringify(productsData),
+      productsCount,
+      filteredProductsCount,
+      allCategories: JSON.stringify(allCategories),
+      allBrands: JSON.stringify(allBrands),
     };
+
+    console.log("Revalidating path");
+    revalidatePath("/admin/mercadolibre/producto/");
+
+    console.log("Returning response");
+    return response;
   } catch (error: any) {
-    console.log(error);
-    throw Error(error);
+    console.error("Error in getAllProduct:", error);
+    throw new Error(`Failed to get all products: ${error.message}`);
   }
 }
 

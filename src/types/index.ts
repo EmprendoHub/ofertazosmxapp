@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export type User = {
+export type UserType = {
   active: Boolean;
   name: String;
   email: String;

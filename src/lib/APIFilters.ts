@@ -1,8 +1,8 @@
 import { Query } from "mongoose";
 
 class APIFilters {
-  private query: Query<any, any>; // Mongoose Query type
-  private queryStr: URLSearchParams; // URLSearchParams type
+  private query: Query<any, any>;
+  private queryStr: URLSearchParams;
 
   constructor(query: Query<any, any>, queryStr: URLSearchParams) {
     this.query = query;
@@ -11,23 +11,22 @@ class APIFilters {
 
   searchAllFields(): this {
     const keyword = this.queryStr.get("keyword");
-    // Define the conditions to search for the keyword in title, description, and category
-    const searchConditions = {
-      $or: [
-        { title: { $regex: keyword, $options: "i" } },
-        { description: { $regex: keyword, $options: "i" } },
-        { category: { $regex: keyword, $options: "i" } },
-        { brand: { $regex: keyword, $options: "i" } },
-      ],
-    };
 
-    // Use a temporary variable to hold the conditions
-    const tempConditions = keyword
-      ? { $and: [this.query.getQuery(), searchConditions] }
-      : this.query.getQuery(); // If no keyword, keep existing conditions
+    if (keyword) {
+      const searchConditions = {
+        $or: [
+          { title: { $regex: keyword, $options: "i" } },
+          { description: { $regex: keyword, $options: "i" } },
+          { category: { $regex: keyword, $options: "i" } },
+          { brand: { $regex: keyword, $options: "i" } },
+        ],
+      };
 
-    // Set the conditions to this.query._conditions
-    this.query = this.query.find(tempConditions);
+      const currentFilter = this.query.getFilter();
+      // Merge the current filter with the search conditions instead of nesting them
+      const newFilter = { ...currentFilter, ...searchConditions };
+      this.query = this.query.find(newFilter);
+    }
 
     return this;
   }
@@ -35,36 +34,31 @@ class APIFilters {
   filter(): this {
     const queryCopy: Record<string, string> = {};
     this.queryStr.forEach((value, key) => {
-      queryCopy[key] = value;
+      if (!["keyword", "page", "per_page"].includes(key)) {
+        queryCopy[key] = value;
+      }
     });
 
-    const removeFields = ["keyword", "page", "per_page"];
-    removeFields.forEach((el) => delete queryCopy[el]);
-    let prop = "";
-    //Price Filter for gt> gte>= lt< lte<= in PRICE
     let output: Record<string, any> = {};
-    for (let key in queryCopy) {
-      if (!key.match(/\b(gt|gte|lt|lte)/)) {
-        output[key] = queryCopy[key];
-      } else {
+    for (let [key, value] of Object.entries(queryCopy)) {
+      if (key.includes("[") && key.includes("]")) {
         const prop = key.split("[")[0];
-        const operatorMatch = key.match(/\[(.*)\]/);
-        const operator = operatorMatch ? operatorMatch[1] : "";
-        if (!output[prop]) {
-          output[prop] = {};
+        const operator = key.match(/\[(.*?)\]/)?.[1];
+        if (operator && ["gt", "gte", "lt", "lte"].includes(operator)) {
+          if (!output[prop]) output[prop] = {};
+          output[prop][`$${operator}`] = value;
         }
-
-        output[prop][`$${operator}`] = queryCopy[key];
+      } else {
+        output[key] = value;
       }
     }
-    this.query = this.query.find(output);
 
+    this.query = this.query.find(output);
     return this;
   }
 
   pagination(resPerPage: number, currentPage: number): this {
     const skip = resPerPage * (currentPage - 1);
-
     this.query = this.query.limit(resPerPage).skip(skip);
     return this;
   }

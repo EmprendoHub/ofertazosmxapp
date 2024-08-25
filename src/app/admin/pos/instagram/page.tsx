@@ -1,6 +1,6 @@
 import ServerPagination from "@/components/pagination/ServerPagination";
 import ListPOSProducts from "@/components/products/ListPOSProducts";
-import { getAllPOSInstagramProduct } from "@/app/_actions";
+import { getAllPOSMercadoLibreProduct } from "@/app/_actions";
 import { removeUndefinedAndPageKeys } from "@/backend/helpers";
 
 export const metadata = {
@@ -22,7 +22,7 @@ const TiendaPage = async ({ searchParams }: { searchParams: any }) => {
   const queryUrlParams = removeUndefinedAndPageKeys(urlParams);
   const keywordQuery = new URLSearchParams(queryUrlParams).toString();
 
-  const data = await getAllPOSInstagramProduct(searchParams);
+  const data = await getAllPOSMercadoLibreProduct(searchParams);
   //pagination
   let page = parseInt(searchParams.page, 20);
   page = !page || page < 1 ? 1 : page;

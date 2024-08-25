@@ -1,12 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import {
-  FaPencilAlt,
-  FaStar,
-  FaInstagramSquare,
-  FaExclamationCircle,
-} from "react-icons/fa";
+import { FaPencilAlt, FaStar, FaExclamationCircle } from "react-icons/fa";
 import FormattedPrice from "@/backend/helpers/FormattedPrice";
 import Swal, { SweetAlertIcon } from "sweetalert2";
 import SearchProducts from "@/app/admin/productos/search";
@@ -14,17 +9,8 @@ import { changeProductAvailability, deleteOneProduct } from "@/app/_actions";
 import { FaShop } from "react-icons/fa6";
 import { TbWorldWww } from "react-icons/tb";
 import { usePathname, useSearchParams } from "next/navigation";
-import {
-  AwaitedReactNode,
-  JSXElementConstructor,
-  Key,
-  ReactElement,
-  ReactNode,
-  ReactPortal,
-  useEffect,
-  useState,
-} from "react";
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import { useEffect, useState } from "react";
+import { SiMercadopago } from "react-icons/si";
 
 const AdminProducts = ({
   products,
@@ -41,8 +27,8 @@ const AdminProducts = ({
     pathname = "admin";
   } else if (getPathname.includes("puntodeventa")) {
     pathname = "puntodeventa";
-  } else if (getPathname.includes("instagram")) {
-    pathname = "instagram";
+  } else if (getPathname.includes("marketplace")) {
+    pathname = "marketplace";
   }
   const searchParams = useSearchParams();
   const searchValue = searchParams.get("page");
@@ -163,8 +149,8 @@ const AdminProducts = ({
     });
   };
 
-  const deactivateInstagramHandler = (product_id: any, active: boolean) => {
-    const location = "Instagram";
+  const deactivateMercadoLibreHandler = (product_id: any, active: boolean) => {
+    const location = "MercadoLibre";
     let title;
     let text;
     let confirmBtn;
@@ -175,24 +161,26 @@ const AdminProducts = ({
     if (active === true) {
       icon = "warning";
       title = "Estas seguro(a)?";
-      text = "¡Estas a punto de desactivar a este producto en Instagram!";
+      text = "¡Estas a punto de desactivar a este producto en MercadoLibre!";
       confirmBtn = "¡Sí, desactivar producto!";
       confirmBtnColor = "#CE7E00";
       successTitle = "Desactivar!";
-      successText = "El producto ha sido desactivado en Instagram.";
+      successText = "El producto ha sido desactivado en MercadoLibre.";
     } else {
       icon = "success";
       title = "Estas seguro(a)?";
-      text = "¡Estas a punto de Activar a este producto en Instagram!";
-      confirmBtn = "¡Sí, Activar producto en Instagram!";
+      text = "¡Estas a punto de Activar a este producto en MercadoLibre!";
+      confirmBtn = "¡Sí, Activar producto en MercadoLibre!";
       confirmBtnColor = "#228B22";
       successTitle = "Reactivado!";
-      successText = "El producto ha sido Activado en Instagram.";
+      successText = "El producto ha sido Activado en MercadoLibre.";
     }
     Swal.fire({
       title: title,
       text: text,
-      imageUrl: "/images/instagram_logo_small.webp",
+      imageUrl: "/icons/mercadolibre-white.svg",
+      imageWidth: 100,
+      imageHeight: 100,
       showCancelButton: true,
       confirmButtonColor: confirmBtnColor,
       cancelButtonColor: "#000",
@@ -331,17 +319,17 @@ const AdminProducts = ({
                   </button>
                   <button
                     onClick={() =>
-                      deactivateInstagramHandler(
+                      deactivateMercadoLibreHandler(
                         product?._id,
                         product?.availability?.instagram
                       )
                     }
                     className="p-2 inline-block text-foreground hover:text-card-foreground bg-background shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer "
                   >
-                    <FaInstagramSquare
+                    <SiMercadopago
                       className={` ${
                         product?.availability.instagram === true
-                          ? "bg-gradient-to-tr from-amber-700 to-pink-500 maxsm:text-[10px]"
+                          ? "bg-gradient-to-tr from-yellow-700 to-yellow-500 maxsm:text-[10px] rounded-full"
                           : "text-muted maxsm:text-[10px]"
                       }`}
                     />
