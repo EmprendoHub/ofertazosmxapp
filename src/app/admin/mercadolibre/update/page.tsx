@@ -26,7 +26,6 @@ const MercadoTokenUpdate = ({ searchParams }: { searchParams: any }) => {
       }
       setToken(tokenResponse.access_token);
       setCookie("mercadotoken", tokenResponse.access_token);
-      localStorage.removeItem("codeVerifier"); // Clean up
     } catch (err: any) {
       setError("Error al crear token: " + err.message);
     }

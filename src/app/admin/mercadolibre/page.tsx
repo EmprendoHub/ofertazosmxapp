@@ -112,8 +112,18 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
       const testUser = await response.json();
       console.log(testUser);
       setUser(testUser);
+      const newUserResponse = await fetch("/api/new-test-user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          testUser: testUser,
+        }),
+      });
+      console.log(newUserResponse);
     } catch (err) {
-      setError("Error al crear usuario");
+      setError(`Error al crear usuario: ${err}`);
     }
   };
 
