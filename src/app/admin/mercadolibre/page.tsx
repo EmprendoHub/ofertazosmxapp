@@ -61,6 +61,8 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
   }, [code]);
 
   const handleCreateToken: any = async (authCode: string) => {
+    console.log(authCode);
+
     try {
       const codeVerifier = localStorage.getItem("codeVerifier");
       if (!codeVerifier) {
@@ -73,11 +75,14 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          codeVerifier: codeVerifier,
+          codeVerifier:
+            process.env.NEXT_PUBLIC_MERCADO_LIBRE_CHALLENGE!.toString(),
           code: authCode,
         }),
       });
+
       const tokenResponse = await response.json();
+      console.log("response", tokenResponse);
       if (tokenResponse.error) {
         setError(tokenResponse.error);
         return;
@@ -136,7 +141,7 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
               <h1>Create Token for MercadoLibre</h1>
               <p className="text-xs mb-3">Code: {code}</p>
               {error && <p className="text-xs text-red-500">{error}</p>}
-              <Button onClick={handleCreateToken} size={"sm"}>
+              <Button onClick={handleCreateToken(code)} size={"sm"}>
                 Create Token
               </Button>
             </div>
