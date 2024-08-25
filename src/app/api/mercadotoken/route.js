@@ -1,5 +1,9 @@
+import { getToken } from "next-auth/jwt";
+import { User } from "@/models/user";
+
 export async function POST(request) {
   const { code, codeVerifier } = await request.json();
+  const userToken = getToken({ req: request });
   try {
     const appId = process.env.NEXT_PUBLIC_MERCADO_LIBRE_APP_ID;
     const secretKey = process.env.MERCADO_LIBRE_APP_SECRET;
@@ -25,6 +29,13 @@ export async function POST(request) {
       return new Response(JSON.stringify(tokenData), {
         status: 400,
       });
+    }
+    if (tokenData && userToken) {
+      const user = await User.findOne({ _id: userToken.user._id });
+      if (user) {
+        user.mercado_token = tokenData;
+        await user.save();
+      }
     }
     return new Response(JSON.stringify(tokenData), {
       status: 200,

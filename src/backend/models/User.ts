@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -22,11 +22,20 @@ const UserSchema = new mongoose.Schema(
     },
     phone: {
       type: String,
-      unique: true,
       index: true,
     },
     stripe_id: {
       type: String,
+    },
+    mercado_token: {
+      access_token: { type: String },
+      token_type: { type: String },
+      expires_in: { type: Number },
+      scope: { type: String },
+      user_id: { type: Number },
+      refresh_token: { type: String },
+      createdAt: { type: Date },
+      updatedAt: { type: Date },
     },
     password: {
       type: String,
@@ -76,10 +85,10 @@ const UserSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      default: 'cliente',
+      default: "cliente",
     },
   },
   { timestamps: true }
 );
 
-export default mongoose?.models?.User || mongoose.model('User', UserSchema);
+export default mongoose?.models?.User || mongoose.model("User", UserSchema);
