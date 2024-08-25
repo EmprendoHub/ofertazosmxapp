@@ -28,7 +28,6 @@ const CreateMercadoProduct = ({
   const [error, setError] = useState("");
   const [token, setToken] = useState("");
   const [productData, setProductData]: any = useState(null);
-  console.log(productData, "productData");
 
   useEffect(() => {
     const handleCreateToken: any = async () => {

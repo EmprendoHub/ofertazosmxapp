@@ -4,7 +4,6 @@ import User from "@/backend/models/User";
 export async function POST(request: any) {
   const { code, codeVerifier } = await request.json();
   const userToken: any = await getToken({ req: request });
-  console.log(userToken, "userToken");
   try {
     const appId = process.env.NEXT_PUBLIC_MERCADO_LIBRE_APP_ID!;
     const secretKey = process.env.MERCADO_LIBRE_APP_SECRET!;
