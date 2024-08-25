@@ -67,7 +67,7 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
         throw new Error("No code verifier found");
       }
 
-      const response = await fetch("/api/mercatoken", {
+      const response = await fetch("/api/mercado-get-token", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -93,35 +93,19 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
   const handleCreateUser = async () => {
     try {
       const accessToken = getCookie("mercadotoken");
-      const response = await fetch(
-        "https://api.mercadolibre.com/users/test_user",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ site_id: "MLM" }),
-        }
-      );
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch user data");
-      }
-
-      const testUser = await response.json();
-      console.log(testUser);
-      setUser(testUser);
-      const newUserResponse = await fetch("/api/new-test-user", {
+      const newUserResponse: any = await fetch("/api/mercado-new-test-user", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          testUser: testUser,
+          accessToken: accessToken,
         }),
       });
-      console.log(newUserResponse);
+      const newTestUser = await newUserResponse.json();
+      console.log(newTestUser);
+      setUser(newTestUser);
     } catch (err) {
       setError(`Error al crear usuario: ${err}`);
     }

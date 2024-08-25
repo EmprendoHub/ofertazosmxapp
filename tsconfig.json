@@ -31,7 +31,7 @@
     "src/context/AuthContext.js",
     "src/backend/data/constants.js",
     "src/app/api/minio/route.js",
-    "src/app/api/mercatoken/route.js"
+    "src/app/api/get-marketplace-token/route.js"
   ],
   "exclude": ["node_modules"]
 }
