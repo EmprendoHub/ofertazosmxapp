@@ -10,12 +10,13 @@ export async function updateUserMercadoToken(tokenData: any) {
   const session = await getServerSession(options);
   try {
     await dbConnect();
-
-    const updatedUSer = await User.findOneAndUpdate(
+    console.log("serversidertoken DAta", tokenData);
+    const updatedUser = await User.findOneAndUpdate(
       { _id: session?.user?._id }, // Query condition
-      { $set: { mercado_token: tokenData } } // Update operation
+      { $set: { mercado_token: tokenData } }, // Update operation
+      { new: true, runValidators: true } // Options
     );
-    console.log("updatedUSer", updatedUSer);
+    console.log("updatedUSer", updatedUser);
   } catch (error: any) {
     console.log(error);
 
