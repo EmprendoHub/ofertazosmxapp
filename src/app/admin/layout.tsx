@@ -118,7 +118,7 @@ export default function UserLayout({ children }: { children: any }) {
                 icon: <SiAuth0 size={20} />,
               },
               {
-                text: "Historial",
+                text: "+Producto",
                 url: "/admin/mercadolibre/producto",
                 active:
                   pathname === "/admin/mercadolibre/producto"

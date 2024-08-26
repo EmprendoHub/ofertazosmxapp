@@ -21,10 +21,11 @@ const CreateMercadoProduct = ({
   testUsers: any;
 }) => {
   const [listing, setListing]: any = useState(null);
+  const [predictiveListings, setPredictiveListings]: any = useState(null);
   const [error, setError] = useState("");
   const [token, setToken] = useState("");
   const [productData, setProductData]: any = useState(null);
-  console.log("token", token);
+  const [inputSearch, setInputSearch] = useState("");
 
   useEffect(() => {
     const handleCreateToken: any = async () => {
@@ -114,6 +115,35 @@ const CreateMercadoProduct = ({
       throw error;
     }
   };
+
+  const findProductCategory = async () => {
+    console.log("inputSearch", inputSearch);
+
+    try {
+      const response = await fetch(
+        `https://api.mercadolibre.com/sites/MLM/domain_discovery/search?limit=4&q=${inputSearch}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        console.log(await response.json(), "response");
+        throw new Error("Failed to create item");
+      }
+
+      const data = await response.json();
+      setPredictiveListings(data);
+    } catch (error) {
+      console.error("Error getting categories item:", error);
+      throw error;
+    }
+  };
+
   return (
     <section className="py-4 mx-auto maxlg:px-2 flex flex-col justify-center items-center">
       <div className=" flex flex-row  flex-wrap gap-3 items-center justify-between w-full mb-3">
@@ -148,7 +178,9 @@ const CreateMercadoProduct = ({
         />
         <div className="flex flex-col items-center justify-center">
           <Image
-            src={productData?.pictures[0]?.source}
+            src={
+              productData?.pictures[0]?.source || products[0]?.images[0]?.url
+            }
             alt="product image"
             width={150}
             height={150}
@@ -158,6 +190,29 @@ const CreateMercadoProduct = ({
           <p>{productData?.category_id}</p>
           <p>{productData?.price}</p>
         </div>
+        <div>
+          <input
+            type="text"
+            className="appearance-none border border-gray-300 bg-input rounded-md py-2 px-3focus:outline-none focus:border-gray-400 w-full remove-arrow "
+            onChange={(e) => setInputSearch(e.target.value)}
+          />
+          {predictiveListings &&
+            predictiveListings.map((prediction: any) => (
+              <div key={prediction.category_id}>
+                <div>
+                  <span>category_id: </span>
+                  {prediction.category_id}
+                </div>
+                <div>
+                  <span>category_name: </span>
+                  {prediction.category_name}
+                </div>
+              </div>
+            ))}
+        </div>
+        <Button onClick={() => findProductCategory()} size={"sm"}>
+          Find Category
+        </Button>
         <Button onClick={createItem} size={"sm"}>
           Add new Listing
         </Button>
