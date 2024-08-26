@@ -3,7 +3,6 @@ import { getToken } from "next-auth/jwt";
 
 export async function POST(request: any) {
   const { code, codeVerifier } = await request.json();
-  const userToken: any = await getToken({ req: request });
   try {
     const appId = process.env.NEXT_PUBLIC_MERCADO_LIBRE_APP_ID!;
     const secretKey = process.env.MERCADO_LIBRE_APP_SECRET!;
@@ -29,8 +28,6 @@ export async function POST(request: any) {
     );
 
     const tokenData = await response.json();
-    console.log(userToken.user, "userToken");
-    console.log(tokenData, "tokenData");
 
     if (tokenData.status === 400) {
       return new Response(JSON.stringify(tokenData), {

@@ -82,9 +82,7 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
       }
       setToken(tokenResponse.access_token);
       setCookie("mercadotoken", tokenResponse.access_token);
-      const updatedUser = await updateUserMercadoToken(
-        tokenResponse.access_token
-      );
+      const updatedUser = await updateUserMercadoToken(tokenResponse);
       localStorage.removeItem("codeVerifier"); // Clean up
     } catch (err: any) {
       setError("Error al crear token: " + err.message);
