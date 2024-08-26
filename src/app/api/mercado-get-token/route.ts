@@ -1,5 +1,5 @@
 import { getToken } from "next-auth/jwt";
-import User from "@/backend/models/User";
+// import User from "@/backend/models/User";
 
 export async function POST(request: any) {
   const { code, codeVerifier } = await request.json();
@@ -38,8 +38,9 @@ export async function POST(request: any) {
     //   );
     //   console.log("updatedUSer", updatedUSer);
     // }
-    const user = await User.findOne({ _id: userToken.user._id });
-    console.log(user, "user");
+
+    // const user = await User.findOne({ _id: userToken.user._id });
+    // console.log(user, "user");
     if (tokenData.status === 400) {
       return new Response(JSON.stringify(tokenData), {
         status: 400,
