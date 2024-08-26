@@ -5,7 +5,7 @@ import { createHash } from "crypto";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { hasCookie, setCookie, getCookie } from "cookies-next";
-import { updateUserMercadoToken } from "@/actions/user";
+import { updateUserMercadoToken } from "@/app/_actions";
 
 const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
   const [error, setError] = useState("");
@@ -13,7 +13,6 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
   const [user, setUser] = useState(null);
   const [dbUser, setDbUser] = useState<any>(null);
   const [token, setToken] = useState("");
-  const [fullToken, setFullToken] = useState<any>(null);
 
   const generateCodeChallenge = async (codeVerifier: string) => {
     // Generate a code challenge from the code verifier
@@ -83,8 +82,8 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
         return;
       }
       setToken(tokenResponse.access_token);
-      setFullToken(tokenResponse);
       setCookie("mercadotoken", tokenResponse.access_token);
+      setCookie("fullToken", tokenResponse);
 
       localStorage.removeItem("codeVerifier"); // Clean up
     } catch (err: any) {
@@ -93,6 +92,7 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
   };
 
   const handleUpdateUser = async () => {
+    const fullToken: any = getCookie("fullToken");
     const updatedUser = await updateUserMercadoToken(fullToken);
     setDbUser(updatedUser);
   };
