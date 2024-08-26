@@ -42,6 +42,7 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
 
       const authUrl = `https://auth.mercadolibre.com.mx/authorization?response_type=code&client_id=${appId}&redirect_uri=${redirectUri}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
       window.location.href = authUrl;
+      console.log("window.location.href", window.location.href);
     } catch (err) {
       console.log(err);
       setError("Error occurred during authentication");
@@ -50,13 +51,12 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
 
   useEffect(() => {
     // If we have a code in the URL, exchange it for a token immediately
-    const accessToken = getCookie("mercadotoken");
+    const accessToken: any = getCookie("mercadotoken");
     if (code) {
       if (!accessToken) {
         handleCreateToken(code);
-      } else {
-        setToken(accessToken);
       }
+      setToken(accessToken);
     }
   }, [code]);
 
