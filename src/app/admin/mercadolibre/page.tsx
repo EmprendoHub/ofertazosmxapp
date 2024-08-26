@@ -79,7 +79,6 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
       console.log("response", tokenResponse);
       if (tokenResponse.error) {
         setError(tokenResponse.error);
-        return;
       }
       setToken(tokenResponse.access_token);
       setCookie("mercadotoken", tokenResponse.access_token);
