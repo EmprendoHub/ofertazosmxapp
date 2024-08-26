@@ -58,7 +58,7 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
       }
       setToken(accessToken);
     }
-  }, [code]);
+  }, []);
 
   const handleCreateToken: any = async (authCode: string) => {
     console.log(authCode);

@@ -30,17 +30,18 @@ export async function POST(request: any) {
 
     const tokenData = await response.json();
     console.log(tokenData, "tokenData");
-    if (tokenData.status === 400) {
-      return new Response(JSON.stringify(tokenData), {
-        status: 400,
-      });
-    }
-    if (tokenData && userToken) {
+    if (tokenData.access_token) {
       await User.updateOne(
         { _id: userToken.user._id }, // Query condition
         { $set: { mercado_token: tokenData } } // Update operation
       );
     }
+    if (tokenData.status === 400) {
+      return new Response(JSON.stringify(tokenData), {
+        status: 400,
+      });
+    }
+
     return new Response(JSON.stringify(tokenData), {
       status: 200,
     });
