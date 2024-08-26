@@ -5,7 +5,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import MarketProductCard from "./MarketProductCard";
 import MercadoSearchProducts from "./MercadoSearch";
-import { getUserMercadoToken } from "@/app/_actions";
+import { getProductCategories, getUserMercadoToken } from "@/app/_actions";
 
 const CreateMercadoProduct = ({
   filteredProductsCount,
@@ -30,12 +30,6 @@ const CreateMercadoProduct = ({
   useEffect(() => {
     const handleCreateToken: any = async () => {
       try {
-        // const response = await fetch("/api/get-user-token", {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        // });
         const response = await getUserMercadoToken();
         setToken(response.accessToken);
       } catch (err: any) {
@@ -103,12 +97,10 @@ const CreateMercadoProduct = ({
       });
 
       if (!response.ok) {
-        console.log(await response.json(), "response");
         throw new Error("Failed to create item");
       }
 
       const data = await response.json();
-      console.log("Item created:", data);
       setListing(data);
     } catch (error) {
       console.error("Error creating item:", error);
@@ -117,27 +109,9 @@ const CreateMercadoProduct = ({
   };
 
   const findProductCategory = async () => {
-    console.log("inputSearch", inputSearch);
-
     try {
-      const response = await fetch(
-        `https://api.mercadolibre.com/sites/MLM/domain_discovery/search?limit=4&q=${inputSearch}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        console.log(await response.json(), "response");
-        throw new Error("Failed to create item");
-      }
-
-      const data = await response.json();
-      setPredictiveListings(data);
+      const response: any = await getProductCategories(token, inputSearch);
+      setPredictiveListings(response.data);
     } catch (error) {
       console.error("Error getting categories item:", error);
       throw error;
@@ -206,6 +180,10 @@ const CreateMercadoProduct = ({
                 <div>
                   <span>category_name: </span>
                   {prediction.category_name}
+                </div>
+                <div>
+                  <span>domain_name: </span>
+                  {prediction.domain_name}
                 </div>
               </div>
             ))}

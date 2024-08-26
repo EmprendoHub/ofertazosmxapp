@@ -18,7 +18,6 @@ interface Props {
 const ProductDetails = async ({ params: { id } }: Props) => {
   const product: Product = await getProductById(id);
   const similarProducts = await getSimilarProducts(id);
-  console.log("product", product);
 
   if (!product) redirect("/icons/");
 

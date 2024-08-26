@@ -122,13 +122,11 @@ export async function updateUserMercadoToken(tokenData: any) {
   const session = await getServerSession(options);
   try {
     await dbConnect();
-    console.log("serversidertoken DAta", tokenData);
     const updatedUser = await User.updateOne(
       { _id: session?.user?._id }, // Query condition
       { $set: { mercado_token: tokenData } }, // Update operation
       { new: true, runValidators: true } // Options
     );
-    console.log("updatedUSer", updatedUser);
   } catch (error: any) {
     console.log(error);
 
@@ -148,13 +146,30 @@ export async function getUserMercadoToken() {
     );
 
     const accessToken = user.mercado_token.access_token;
-    console.log("userToken", accessToken);
     return { accessToken };
   } catch (error: any) {
     console.log(error);
 
     throw new Error(`Failed to update user: we got error: ${error.message}`);
   }
+}
+
+export async function getProductCategories(token: string, inputSearch: string) {
+  const response = await fetch(
+    `https://api.mercadolibre.com/sites/MLM/domain_discovery/search?limit=8&q=${inputSearch}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to create item");
+  }
+  const data = await response.json();
+  return { data };
 }
 
 export async function getAllOrders(searchParams: any, session: any) {
@@ -2182,8 +2197,6 @@ export async function updateOneOrder(data: any) {
       payMethod = "EFECTIVO";
     }
 
-    console.log(order, "updatedOrder");
-
     let paymentTransactionData = {
       type: "sucursal",
       paymentIntent: "",
@@ -2781,12 +2794,9 @@ export async function getAllPOSMercadoLibreProductNoFilter() {
 
 export async function getAllProduct(searchQuery: any) {
   try {
-    console.log("Starting getAllProduct with searchQuery:", searchQuery);
     await dbConnect();
-    console.log("Database connected");
 
     const session = await getServerSession(options);
-    console.log("Session retrieved:", session?.user?.role);
 
     let productQuery: any;
     if (
@@ -2801,35 +2811,26 @@ export async function getAllProduct(searchQuery: any) {
     const searchParams = new URLSearchParams(searchQuery);
     const resPerPage = Number(searchParams.get("perpage")) || 10;
     const page = Number(searchParams.get("page")) || 1;
-    console.log(`Page: ${page}, Items per page: ${resPerPage}`);
 
     productQuery = productQuery.sort({ createdAt: -1 });
 
-    console.log("Counting total products");
     const productsCount = await Product.countDocuments();
-    console.log("Total products:", productsCount);
 
-    console.log("Getting distinct categories and brands");
     const [allCategories, allBrands] = await Promise.all([
       Product.distinct("category"),
       Product.distinct("brand"),
     ]);
 
-    console.log("Applying APIFilters");
     const apiProductFilters: any = new APIFilters(productQuery, searchParams)
       .searchAllFields()
       .filter();
 
-    console.log("Executing filtered query");
     let productsData = await apiProductFilters.query.exec();
     const filteredProductsCount = productsData.length;
-    console.log("Filtered products count:", filteredProductsCount);
 
-    console.log("Applying pagination");
     apiProductFilters.pagination(resPerPage, page);
     productsData = await apiProductFilters.query.clone().exec();
 
-    console.log("Preparing response");
     const response = {
       products: JSON.stringify(productsData),
       productsCount,
@@ -2838,10 +2839,8 @@ export async function getAllProduct(searchQuery: any) {
       allBrands: JSON.stringify(allBrands),
     };
 
-    console.log("Revalidating path");
     revalidatePath("/admin/mercadolibre/producto/");
 
-    console.log("Returning response");
     return response;
   } catch (error: any) {
     console.error("Error in getAllProduct:", error);

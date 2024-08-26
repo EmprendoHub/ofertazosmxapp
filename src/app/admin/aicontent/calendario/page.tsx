@@ -78,8 +78,6 @@ export default function SchedulePage() {
   };
 
   const onActionBegin = (args: Record<string, any>): void => {
-    console.log(args, "onActionBegin");
-
     if (
       args.requestType === "eventCreate" ||
       args.requestType === "eventChange"

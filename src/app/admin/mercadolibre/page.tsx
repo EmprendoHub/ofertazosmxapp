@@ -14,7 +14,6 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
   const [dbUser, setDbUser] = useState<any>(null);
   const [token, setToken] = useState("");
   const [fullToken, setFullToken] = useState<any>(null);
-  console.log("fullToken", fullToken);
 
   const generateCodeChallenge = async (codeVerifier: string) => {
     // Generate a code challenge from the code verifier
@@ -57,8 +56,6 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
   }, [searchParams?.code]);
 
   const handleCreateToken: any = async (authCode: string) => {
-    console.log(authCode);
-
     try {
       const codeVerifier = localStorage.getItem("codeVerifier");
       if (!codeVerifier) {
@@ -78,7 +75,6 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
       });
 
       const tokenResponse = await response.json();
-      console.log("response", tokenResponse);
       if (tokenResponse.error) {
         setError(tokenResponse.error);
       }
@@ -111,7 +107,6 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
         }),
       });
       const newTestUser = await newUserResponse.json();
-      console.log(newTestUser);
       setUser(newTestUser);
     } catch (err) {
       setError(`Error al crear usuario: ${err}`);
