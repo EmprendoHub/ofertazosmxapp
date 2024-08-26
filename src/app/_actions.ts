@@ -118,7 +118,9 @@ async function subtotal(order: any) {
 export async function updateUserMercadoToken(tokenData: any) {
   console.log(tokenData, "holaaaaaaaaaa");
 
-  if (!tokenData) return;
+  if (!tokenData) {
+    throw new Error(`No token sent`);
+  }
   const session = await getServerSession(options);
   try {
     await dbConnect();

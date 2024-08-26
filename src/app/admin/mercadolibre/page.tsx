@@ -13,6 +13,8 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
   const [user, setUser] = useState(null);
   const [dbUser, setDbUser] = useState<any>(null);
   const [token, setToken] = useState("");
+  const [fullToken, setFullToken] = useState<any>(null);
+  console.log("fullToken", fullToken);
 
   const generateCodeChallenge = async (codeVerifier: string) => {
     // Generate a code challenge from the code verifier
@@ -82,7 +84,7 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
       }
       setToken(tokenResponse.access_token);
       setCookie("mercadotoken", tokenResponse.access_token);
-      setCookie("fullToken", tokenResponse);
+      setFullToken(tokenResponse);
 
       localStorage.removeItem("codeVerifier"); // Clean up
     } catch (err: any) {
@@ -90,8 +92,7 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
     }
   };
 
-  const handleUpdateUser = async () => {
-    const fullToken: any = getCookie("fullToken");
+  const handleUpdateUser = async (fullToken?: any) => {
     const updatedUser = await updateUserMercadoToken(fullToken);
     setDbUser(updatedUser);
   };
@@ -158,7 +159,7 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
               <Button onClick={() => handleCreateUser} size={"sm"}>
                 Create Test User
               </Button>
-              <Button onClick={() => handleUpdateUser()} size={"sm"}>
+              <Button onClick={() => handleUpdateUser(fullToken)} size={"sm"}>
                 Update user
               </Button>
             </div>
