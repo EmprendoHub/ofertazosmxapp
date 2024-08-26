@@ -5,19 +5,13 @@ import { createHash } from "crypto";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { hasCookie, setCookie, getCookie } from "cookies-next";
+import { updateUserMercadoToken } from "@/actions/user";
 
 const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
   const [error, setError] = useState("");
   const [code, setCode] = useState(searchParams?.code);
   const [user, setUser] = useState(null);
   const [token, setToken] = useState("");
-
-  const generateCodeVerifier = () => {
-    // Generate a random code verifier
-    const codeVerifier =
-      process.env.NEXT_PUBLIC_MERCADO_LIBRE_CHALLENGE!.toString();
-    return codeVerifier;
-  };
 
   const generateCodeChallenge = async (codeVerifier: string) => {
     // Generate a code challenge from the code verifier
@@ -88,6 +82,9 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
       }
       setToken(tokenResponse.access_token);
       setCookie("mercadotoken", tokenResponse.access_token);
+      const updatedUser = await updateUserMercadoToken(
+        tokenResponse.access_token
+      );
       localStorage.removeItem("codeVerifier"); // Clean up
     } catch (err: any) {
       setError("Error al crear token: " + err.message);

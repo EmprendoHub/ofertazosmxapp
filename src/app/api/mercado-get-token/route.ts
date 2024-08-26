@@ -31,16 +31,7 @@ export async function POST(request: any) {
     const tokenData = await response.json();
     console.log(userToken.user, "userToken");
     console.log(tokenData, "tokenData");
-    // if (tokenData.access_token) {
-    //   const updatedUSer = await User.findOneAndUpdate(
-    //     { _id: userToken.user._id }, // Query condition
-    //     { $set: { mercado_token: tokenData } } // Update operation
-    //   );
-    //   console.log("updatedUSer", updatedUSer);
-    // }
 
-    // const user = await User.findOne({ _id: userToken.user._id });
-    // console.log(user, "user");
     if (tokenData.status === 400) {
       return new Response(JSON.stringify(tokenData), {
         status: 400,
