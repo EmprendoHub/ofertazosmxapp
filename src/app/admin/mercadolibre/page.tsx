@@ -34,7 +34,7 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
     try {
       const appId = process.env.NEXT_PUBLIC_MERCADO_LIBRE_APP_ID;
       const redirectUri = process.env.NEXT_PUBLIC_MERCADO_LIBRE_REDIRECT_URL;
-      const codeVerifier = generateCodeVerifier();
+      const codeVerifier = process.env.NEXT_PUBLIC_MERCADO_LIBRE_CHALLENGE!;
       const codeChallenge = await generateCodeChallenge(codeVerifier);
 
       // Store codeVerifier in localStorage to use it later

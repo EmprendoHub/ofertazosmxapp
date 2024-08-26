@@ -36,11 +36,10 @@ export async function POST(request: any) {
       });
     }
     if (tokenData && userToken) {
-      const user = await User.findOne({ _id: userToken.user._id });
-      if (user) {
-        user.mercado_token = tokenData;
-        await user.save();
-      }
+      await User.updateOne(
+        { _id: userToken.user._id }, // Query condition
+        { $set: { mercado_token: tokenData } } // Update operation
+      );
     }
     return new Response(JSON.stringify(tokenData), {
       status: 200,
