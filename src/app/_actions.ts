@@ -116,8 +116,6 @@ async function subtotal(order: any) {
 }
 
 export async function updateUserMercadoToken(tokenData: any) {
-  console.log(tokenData, "holaaaaaaaaaa");
-
   if (!tokenData) {
     throw new Error(`No token sent`);
   }
@@ -131,6 +129,27 @@ export async function updateUserMercadoToken(tokenData: any) {
       { new: true, runValidators: true } // Options
     );
     console.log("updatedUSer", updatedUser);
+  } catch (error: any) {
+    console.log(error);
+
+    throw new Error(`Failed to update user: we got error: ${error.message}`);
+  }
+}
+
+export async function getUserMercadoToken() {
+  const session = await getServerSession(options);
+  if (!session) {
+    throw new Error(`No session available`);
+  }
+  try {
+    await dbConnect();
+    const user = await User.findOne(
+      { _id: session?.user?._id } // Query condition
+    );
+
+    const accessToken = user.mercado_token.access_token;
+    console.log("userToken", accessToken);
+    return { accessToken };
   } catch (error: any) {
     console.log(error);
 

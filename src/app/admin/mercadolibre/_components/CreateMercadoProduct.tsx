@@ -2,11 +2,10 @@
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import React, { useContext, useEffect, useState } from "react";
-import AuthContext from "@/context/AuthContext";
+import React, { useEffect, useState } from "react";
 import MarketProductCard from "./MarketProductCard";
 import MercadoSearchProducts from "./MercadoSearch";
-import { set } from "mongoose";
+import { getUserMercadoToken } from "@/app/_actions";
 
 const CreateMercadoProduct = ({
   filteredProductsCount,
@@ -21,29 +20,23 @@ const CreateMercadoProduct = ({
   search: any;
   testUsers: any;
 }) => {
-  const { user } = useContext(AuthContext);
-
-  const accessToken = user?.mercado_token?.accessToken;
   const [listing, setListing]: any = useState(null);
   const [error, setError] = useState("");
   const [token, setToken] = useState("");
   const [productData, setProductData]: any = useState(null);
+  console.log("token", token);
 
   useEffect(() => {
     const handleCreateToken: any = async () => {
       try {
-        const response = await fetch("/api/get-user-token", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        const tokenResponse = await response.json();
-        if (tokenResponse.error) {
-          setError(tokenResponse.error);
-          return;
-        }
-        setToken(tokenResponse.access_token);
+        // const response = await fetch("/api/get-user-token", {
+        //   method: "POST",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        // });
+        const response = await getUserMercadoToken();
+        setToken(response.accessToken);
       } catch (err: any) {
         setError("Error al crear token: " + err.message);
       }
@@ -103,7 +96,7 @@ const CreateMercadoProduct = ({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(productData),
       });
