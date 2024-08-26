@@ -11,7 +11,9 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
   const [error, setError] = useState("");
   const [code, setCode] = useState(searchParams?.code);
   const [user, setUser] = useState(null);
+  const [dbUser, setDbUser] = useState<any>(null);
   const [token, setToken] = useState("");
+  const [fullToken, setFullToken] = useState<any>(null);
 
   const generateCodeChallenge = async (codeVerifier: string) => {
     // Generate a code challenge from the code verifier
@@ -81,12 +83,18 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
         return;
       }
       setToken(tokenResponse.access_token);
+      setFullToken(tokenResponse);
       setCookie("mercadotoken", tokenResponse.access_token);
-      const updatedUser = await updateUserMercadoToken(tokenResponse);
+
       localStorage.removeItem("codeVerifier"); // Clean up
     } catch (err: any) {
       setError("Error al crear token: " + err.message);
     }
+  };
+
+  const handleUpdateUser = async () => {
+    const updatedUser = await updateUserMercadoToken(fullToken);
+    setDbUser(updatedUser);
   };
 
   const handleCreateUser = async () => {
@@ -145,16 +153,20 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
         <div>
           {token && (
             <div className="flex flex-col items-center justify-center">
-              <h1>Create Test User for MercadoLibre</h1>
+              <h1>Update DB User with Token from MercadoLibre</h1>
               <p className="text-xs mb-3">Token: {token}</p>
               {error && <p className="text-xs text-red-500">{error}</p>}
               <Button onClick={() => handleCreateUser} size={"sm"}>
                 Create Test User
               </Button>
+              <Button onClick={() => handleUpdateUser()} size={"sm"}>
+                Update user
+              </Button>
             </div>
           )}
           <div className="flex flex-col items-center justify-center mt-5">
             {user && <p>User: {JSON.stringify(user)}</p>}
+            {dbUser && <p>dbUser: {JSON.stringify(dbUser)}</p>}
           </div>
         </div>
       )}
