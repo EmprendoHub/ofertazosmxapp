@@ -42,7 +42,6 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
 
       const authUrl = `https://auth.mercadolibre.com.mx/authorization?response_type=code&client_id=${appId}&redirect_uri=${redirectUri}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
       window.location.href = authUrl;
-      console.log("window.location.href", window.location.href);
     } catch (err) {
       console.log(err);
       setError("Error occurred during authentication");
@@ -52,13 +51,13 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
   useEffect(() => {
     // If we have a code in the URL, exchange it for a token immediately
     const accessToken: any = getCookie("mercadotoken");
-    if (code) {
+    if (searchParams?.code) {
       if (!accessToken) {
-        handleCreateToken(code);
+        handleCreateToken(searchParams?.code);
       }
       setToken(accessToken);
     }
-  }, []);
+  }, [searchParams?.code]);
 
   const handleCreateToken: any = async (authCode: string) => {
     console.log(authCode);
@@ -141,7 +140,7 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
               <h1>Create Token for MercadoLibre</h1>
               <p className="text-xs mb-3">Code: {code}</p>
               {error && <p className="text-xs text-red-500">{error}</p>}
-              <Button onClick={handleCreateToken(code)} size={"sm"}>
+              <Button onClick={() => handleCreateToken(code)} size={"sm"}>
                 Create Token
               </Button>
             </div>
@@ -154,7 +153,7 @@ const MercadoAuthPage = ({ searchParams }: { searchParams: any }) => {
               <h1>Create Test User for MercadoLibre</h1>
               <p className="text-xs mb-3">Token: {token}</p>
               {error && <p className="text-xs text-red-500">{error}</p>}
-              <Button onClick={handleCreateUser} size={"sm"}>
+              <Button onClick={() => handleCreateUser} size={"sm"}>
                 Create Test User
               </Button>
             </div>
