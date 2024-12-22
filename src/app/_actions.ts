@@ -4163,7 +4163,7 @@ export async function getFBLiveVideos() {
 }
 
 export async function subscribeToFbApp(pageId: string) {
-  const fbPage = pageId || "8619440141408007";
+  const fbPage = pageId || "421878677666248";
 
   // Expanded fields to get more user information
   const baseUrl = `https://graph.facebook.com/v21.0/${fbPage}/subscribed_apps?subscribed_fields=feed`;

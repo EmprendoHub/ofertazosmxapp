@@ -264,7 +264,7 @@ export default function UserLayout({ children }: { children: any }) {
 
           <SideBarItem
             icon={<AiFillMessage size={20} />}
-            text={"LIVE"}
+            text={"Chatroom"}
             active={pathname === "/admin/chatroom" ? "true" : "false"}
             url={"/admin/chatroom"}
           />
