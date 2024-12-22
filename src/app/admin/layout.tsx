@@ -17,6 +17,7 @@ import { FaCartPlus, FaInstagram } from "react-icons/fa6";
 import { BsAmazon, BsCalendar, BsQrCodeScan, BsRobot } from "react-icons/bs";
 import { SiAuth0, SiMercadopago } from "react-icons/si";
 import { Video } from "lucide-react";
+import { AiFillMessage } from "react-icons/ai";
 
 export default function UserLayout({ children }: { children: any }) {
   const pathname = usePathname();
@@ -258,6 +259,14 @@ export default function UserLayout({ children }: { children: any }) {
             text={"Rifa"}
             active={pathname === "/admin/rifa" ? "true" : "false"}
             url={"/admin/rifa"}
+          />
+          <hr className="my-3 maxmd:my-1" />
+
+          <SideBarItem
+            icon={<AiFillMessage size={20} />}
+            text={"LIVE"}
+            active={pathname === "/admin/chatroom" ? "true" : "false"}
+            url={"/admin/chatroom"}
           />
           <hr className="my-3 maxmd:my-1" />
         </AdminSidebar>
