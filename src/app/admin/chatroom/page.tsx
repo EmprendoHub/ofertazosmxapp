@@ -14,7 +14,7 @@ export default function Chatroom() {
 
   useEffect(() => {
     socket.on("message", (data) => {
-      console.log("data", data);
+      //console.log("data", data);
 
       setMessages((prevData) => [...prevData, data]);
     });
