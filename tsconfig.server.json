@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "target": "ES2017",
+    "outDir": "./dist",
+    "strict": true,
+    "noEmit": false,
+    "isolatedModules": false,
+    "esModuleInterop": true
+  },
+  "include": ["server.mts"]
+}

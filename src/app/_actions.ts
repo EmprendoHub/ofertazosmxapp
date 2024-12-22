@@ -41,6 +41,7 @@ import Payment from "@/backend/models/Payment";
 import Customer from "@/backend/models/Customer";
 import { getToken } from "next-auth/jwt";
 import TestUser from "@/backend/models/TestUser";
+import Comment from "@/backend/models/Comment";
 
 // Function to get the document count for all from the previous month
 const getDocumentCountPreviousMonth = async (model: any) => {
@@ -4082,5 +4083,81 @@ export async function resetAccountEmail(data: any) {
         email: { _errors: [`Failed Google Captcha Score: ${res.data?.score}`] },
       },
     };
+  }
+}
+
+export async function getPostDBComments(videoId: string) {
+  const video = videoId || "421878677666248_122131066880443689";
+
+  await dbConnect();
+
+  try {
+    const commentsData = await Comment.find({ postId: video }).sort({
+      createdAt: -1,
+    });
+    return {
+      status: 200,
+      commentsData: JSON.stringify(commentsData),
+      commentsDataCount: commentsData.length,
+    };
+  } catch (error: any) {
+    // Something happened in setting up the request
+    console.error("Error setting up request:", error);
+  }
+}
+
+export async function getSorteoParams() {
+  try {
+    // Define the model name with the suffix appended with the lottery ID
+    await dbConnect();
+    // Retrieve the dynamically created Ticket model
+
+    let customerCount = await Customer?.countDocuments();
+    let customersData = await Customer?.find({}).select("name phone -_id"); // Include name and phone, exclude _id
+    const customers = JSON.stringify(customersData);
+    return {
+      ticketCount: customerCount,
+      customers: customers,
+    };
+  } catch (error: any) {
+    console.log(error);
+    throw Error(error);
+  }
+}
+
+export async function getFBLiveVideos() {
+  const account = "421878677666248";
+  // "173875102485412";
+  const baseUrl = `https://graph.facebook.com/v21.0/${account}/posts`;
+  const headers = {
+    Authorization: `Bearer ${process.env.FB_LAIF_TOKEN}`,
+  };
+
+  let videos: any[] = [];
+  let nextPageUrl: string | null = baseUrl;
+
+  try {
+    while (nextPageUrl) {
+      const config: any = {
+        method: "get",
+        url: nextPageUrl,
+        headers,
+      };
+
+      const response = await axios(config);
+
+      if (response && response.status === 200) {
+        const liveVideos = response.data?.data || [];
+        videos = [...videos, ...liveVideos];
+        nextPageUrl = response.data?.paging?.next || null;
+      } else {
+        break;
+      }
+    }
+
+    return { status: 200, videos: JSON.stringify(videos) };
+  } catch (error) {
+    console.error("Failed to fetch Facebook Live Videos:", error);
+    return { status: 400, videos: "" };
   }
 }

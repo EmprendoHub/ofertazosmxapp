@@ -1,14 +1,6 @@
 import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
-const protectedPaths = [
-  "/perfil",
-  "/perfil/update",
-  "/perfil/update_password",
-  "/perfil/orders",
-  "/carrito/envio",
-];
-
 export async function middleware(request: any) {
   const token: any = await getToken({ req: request });
   request.nextauth = request.nextauth || {};
@@ -29,10 +21,10 @@ export async function middleware(request: any) {
       return NextResponse.redirect(signInUrl);
     }
 
-    // if (token?.user?.role === "manager" && !pathname.includes("admin")) {
-    //   signInUrl = new URL("/admin", request.url);
-    //   return NextResponse.redirect(signInUrl);
-    // }
+    if (token?.user?.role === "manager" && !pathname.includes("admin")) {
+      signInUrl = new URL("/admin", request.url);
+      return NextResponse.redirect(signInUrl);
+    }
   }
 
   if (pathname.includes("admin")) {

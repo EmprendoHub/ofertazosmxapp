@@ -7,7 +7,7 @@
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -31,7 +31,8 @@
     "src/context/AuthContext.js",
     "src/backend/data/constants.js",
     "src/app/api/minio/route.js",
-    "src/app/api/get-marketplace-token/route.js"
+    "src/app/api/get-marketplace-token/route.js",
+    "server.mts"
   ],
   "exclude": ["node_modules"]
 }

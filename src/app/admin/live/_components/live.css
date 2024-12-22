@@ -1,0 +1,40 @@
+.live-picker {
+  margin: 20px auto;
+  padding: 10px;
+  max-width: 600px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.comment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.comment {
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.comment-message {
+  font-size: 0.8rem;
+  color: #555;
+}
+
+.comment-user {
+  font-size: 0.7rem;
+  color: #3e4796;
+  text-align: left;
+  padding-left: 10px;
+}

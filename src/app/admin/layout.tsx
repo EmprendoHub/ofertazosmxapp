@@ -12,10 +12,11 @@ import {
 } from "react-icons/md";
 import { LuReceipt } from "react-icons/lu";
 import { LiaCashRegisterSolid, LiaStoreAltSolid } from "react-icons/lia";
-import { GiClothes, GiEnergyArrow } from "react-icons/gi";
+import { GiCartwheel, GiClothes, GiEnergyArrow } from "react-icons/gi";
 import { FaCartPlus, FaInstagram } from "react-icons/fa6";
 import { BsAmazon, BsCalendar, BsQrCodeScan, BsRobot } from "react-icons/bs";
 import { SiAuth0, SiMercadopago } from "react-icons/si";
+import { Video } from "lucide-react";
 
 export default function UserLayout({ children }: { children: any }) {
   const pathname = usePathname();
@@ -244,6 +245,21 @@ export default function UserLayout({ children }: { children: any }) {
               // Add more dropdown items as needed
             ]}
           />
+
+          <hr className="my-3 maxmd:my-1" />
+          <SideBarItem
+            icon={<Video size={20} />}
+            text={"LIVE"}
+            active={pathname === "/admin/videos" ? "true" : "false"}
+            url={"/admin/videos"}
+          />
+          <SideBarItem
+            icon={<GiCartwheel size={20} />}
+            text={"Rifa"}
+            active={pathname === "/admin/rifa" ? "true" : "false"}
+            url={"/admin/rifa"}
+          />
+          <hr className="my-3 maxmd:my-1" />
         </AdminSidebar>
         <div className="relative w-full mb-5 p-4 ">{children}</div>
       </div>

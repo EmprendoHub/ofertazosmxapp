@@ -16,6 +16,14 @@ export const isPassword = (password: string) => {
   }
 };
 
+export const extractURLfromString = (url: string) => {
+  return url.match(/https?:\/\/[^\s"<>]+/);
+};
+
+export const extractEmailsFromString = (text: string) => {
+  return text.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi);
+};
+
 export function getWordCount(str: string) {
   return str.length;
 }
