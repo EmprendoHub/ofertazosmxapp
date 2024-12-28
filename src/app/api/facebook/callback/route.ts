@@ -102,7 +102,7 @@ async function storeFeedEvent(feedDetails: FacebookComment) {
         .from("comments")
         .insert(commentData);
       console.log("newSupaComment", newSupaComment);
-      console.log("error", error);
+      console.log("error supabase:", error);
 
       const res = await newFeedEvent.save();
       runRevalidationTo(`/admin/live/${feedDetails.post_id}`);
