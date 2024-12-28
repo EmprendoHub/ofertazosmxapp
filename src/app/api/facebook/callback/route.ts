@@ -1,6 +1,7 @@
 import { runRevalidationTo } from "@/app/_actions";
 import Comment from "@/backend/models/Comment";
 import dbConnect from "@/lib/db";
+import { supabase } from "@/lib/supabase";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -96,6 +97,12 @@ async function storeFeedEvent(feedDetails: FacebookComment) {
         createdAt: new Date(feedDetails.post.updated_time),
       };
       const newFeedEvent = new Comment(commentData);
+      //supbase comment
+      const { data: newSupaComment, error } = await supabase
+        .from("comments")
+        .insert(commentData);
+      console.log("newSupaComment", newSupaComment);
+      console.log("error", error);
 
       const res = await newFeedEvent.save();
       runRevalidationTo(`/admin/live/${feedDetails.post_id}`);
@@ -165,5 +172,6 @@ async function storeMessage(messageDetails: any) {
     messageText: messageDetails.messageText,
     timestamp: new Date(messageDetails.timestamp),
   });
+
   console.log("Message stored:", newComment);
 }

@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "next dev",
     "dev:socket": "NODE_OPTIONS='--loader ts-node/esm --trace-warnings --no-warnings' ts-node server.mts",
+    "build": "next build",
     "build:socket": "next build && tsc --project tsconfig.server.json",
+    "start": "next start",
     "start:socket": "NODE_ENV=production node --experimental-modules dist/server.mjs",
     "lint": "next lint"
   },
@@ -24,6 +26,8 @@
     "@radix-ui/react-toast": "^1.2.1",
     "@reduxjs/toolkit": "^2.2.7",
     "@stripe/stripe-js": "^4.3.0",
+    "@supabase/ssr": "^0.5.2",
+    "@supabase/supabase-js": "^2.47.10",
     "@syncfusion/ej2-react-calendars": "^26.2.10",
     "@syncfusion/ej2-react-dropdowns": "^26.2.10",
     "@syncfusion/ej2-react-schedule": "^26.2.10",
