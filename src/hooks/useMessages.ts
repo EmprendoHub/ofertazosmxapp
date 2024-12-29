@@ -16,9 +16,23 @@ export const useMessages = () => {
     }
   };
 
+  const subscribeToMessages = async () => {
+    supabase
+      .channel("messages-followup")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "messages" },
+        (payload: any) => {
+          setMessages([...messages, payload.new]);
+        }
+      )
+      .subscribe();
+  };
+
   return {
     messages,
     setMessages,
     getMessages,
+    subscribeToMessages,
   };
 };

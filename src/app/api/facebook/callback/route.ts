@@ -85,14 +85,21 @@ async function storeFeedEvent(feedDetails: FacebookComment) {
   if (feedDetails.item === "comment") {
     try {
       const pageID = feedDetails?.post_id.split("_")[0];
+      let type = "";
+      if (
+        feedDetails.message.includes("compartido") ||
+        feedDetails.message.includes("Compartido")
+      )
+        type = "fake_share";
 
       const commentData = {
         pageId: pageID,
         postId: feedDetails.post_id,
-        facebookCommentId: Math.random().toString(36).substring(7),
+        facebookCommentId: feedDetails.comment_id,
         userId: feedDetails.from.id,
         userName: feedDetails.from.name,
         message: feedDetails.message,
+        type,
         email: "emprendomex@gmail.com",
         createdAt: new Date(feedDetails.post.updated_time),
       };

@@ -4162,6 +4162,30 @@ export async function getFBLiveVideos() {
   }
 }
 
+export async function respondToFBComment(commentId: string, message: string) {
+  const baseUrl = `https://graph.facebook.com/v21.0/${commentId}/comments`;
+  const headers = {
+    Authorization: `Bearer ${process.env.FB_LAIF_TOKEN}`,
+  };
+
+  try {
+    const response = await axios.post(baseUrl, { message }, { headers });
+
+    if (response.status === 200) {
+      console.log("Successfully responded to comment:", response.data);
+      return { status: 200, data: response.data };
+    } else {
+      console.error("Unexpected response status:", response.status);
+      return { status: response.status, data: response.data };
+    }
+  } catch (error: any) {
+    console.error(
+      "Failed to respond to Facebook comment:",
+      error.response?.data || error.message
+    );
+    return { status: 400, error: error.response?.data || error.message };
+  }
+}
 export async function subscribeToFbApp(pageId: string) {
   const fbPage = pageId || "421878677666248";
 
