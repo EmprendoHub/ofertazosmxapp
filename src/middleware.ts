@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
+import { supabase } from "./lib/supabase";
+import { updateSession } from "../utils/supabase/middleware";
 
 export async function middleware(request: any) {
   const token: any = await getToken({ req: request });
@@ -39,20 +41,9 @@ export async function middleware(request: any) {
       signInUrl = new URL("/no-autorizado", request.url);
       return NextResponse.redirect(signInUrl);
     }
-  }
 
-  if (pathname.includes("dashboard")) {
-    //if admin user is not logged in
-
-    if (!token) {
-      signInUrl = new URL("/api/auth/signin", request.url);
-      signInUrl.searchParams.set("callbackUrl", pathname);
-      return NextResponse.redirect(signInUrl);
-    }
-
-    if (token?.user?.role !== "manager") {
-      signInUrl = new URL("/no-autorizado", request.url);
-      return NextResponse.redirect(signInUrl);
+    if (token?.user?.role === "manager" && pathname.includes("admin/videos")) {
+      return await updateSession(request);
     }
   }
 

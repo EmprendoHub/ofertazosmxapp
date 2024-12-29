@@ -1,8 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./video.css";
 import LogoComponent from "@/components/logos/LogoComponent";
 import Link from "next/link";
+import { useSupabase } from "@/hooks/useSupabase";
 
 interface WinnerData {
   ticketNumber: string;
@@ -17,6 +18,12 @@ const LiveVideoPicker = ({
   data: string;
   pagingData?: string;
 }) => {
+  const { getSupaSession } = useSupabase();
+
+  useEffect(() => {
+    getSupaSession();
+  }, []);
+
   const lives = JSON.parse(data);
   const paging = JSON.parse(pagingData || "{}");
 

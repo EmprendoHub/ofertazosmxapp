@@ -1,4 +1,3 @@
-import { runRevalidationTo } from "@/app/_actions";
 import Comment from "@/backend/models/Comment";
 import dbConnect from "@/lib/db";
 import { supabase } from "@/lib/supabase";
@@ -90,22 +89,23 @@ async function storeFeedEvent(feedDetails: FacebookComment) {
       const commentData = {
         pageId: pageID,
         postId: feedDetails.post_id,
-        facebookCommentId: feedDetails.comment_id,
+        facebookCommentId: Math.random().toString(36).substring(7),
         userId: feedDetails.from.id,
         userName: feedDetails.from.name,
         message: feedDetails.message,
+        email: "emprendomex@gmail.com",
         createdAt: new Date(feedDetails.post.updated_time),
       };
       const newFeedEvent = new Comment(commentData);
       //supbase comment
-      const { data: newSupaComment, error } = await supabase
-        .from("comments")
+
+      const { data, error } = await supabase
+        .from("messages")
         .insert(commentData);
-      console.log("newSupaComment", newSupaComment);
-      console.log("error supabase:", error);
+      if (data) console.log("newSupaComment", data);
+      if (error) console.log("error supabase:", error);
 
       const res = await newFeedEvent.save();
-      runRevalidationTo(`/admin/live/${feedDetails.post_id}`);
       return res;
     } catch (error: any) {
       console.error("Feed event processing error:", error);
