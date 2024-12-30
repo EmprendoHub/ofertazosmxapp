@@ -117,7 +117,7 @@ async function storeFeedEvent(feedDetails: FacebookComment) {
               
                     Si no hay suficiente información para determinar una intención clara o detalles del producto, responde con: { intención: "indeterminada" }.
               
-                    Sé preciso y utiliza un formato JSON en tus respuestas. Contesta siempre en Ingles Americano y mantén la información directa y profesional.
+                    Sé preciso y utiliza un formato JSON en tus respuestas. Contesta siempre en Ingles Americano y mantén la información directa y profesional si se determina que si existe una intencion de compra en el mensaje marca intent: purchase.
                     `,
             },
             {
