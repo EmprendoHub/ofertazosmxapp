@@ -167,11 +167,19 @@ async function storeFeedEvent(feedDetails: FacebookComment) {
         email: "emprendomex@gmail.com",
         createdAt: new Date(feedDetails.post.updated_time),
       };
+
+      const clientData = {
+        fb_id: feedDetails.from.id,
+        name: feedDetails.from.name,
+        postId: feedDetails.post_id,
+      };
       // const newFeedEvent = new Comment(commentData);
       //supbase comment
 
       const data = await supabase.from("messages").insert(commentData);
-
+      if (type === "fake_share") {
+        const fb_client = await supabase.from("fb_clients").insert(clientData);
+      }
       //const res = await newFeedEvent.save();
 
       return data;
