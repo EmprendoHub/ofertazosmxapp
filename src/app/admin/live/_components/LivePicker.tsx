@@ -41,11 +41,18 @@ const LivePicker: React.FC<LivePickerProps> = ({ postId }) => {
     );
   };
 
+  const handleCancelSold = async (commentId: string, id: string) => {
+    await setMessageType(id, "purchase");
+
+    await respondToFBComment(
+      commentId,
+      "Una disculpa hubo un error y este articulo se lo gano alguien mas!"
+    );
+  };
+
   const handleSetAsLiked = async (commentId: string) => {
     await likeToFBComment(commentId);
   };
-
-  console.log("messages", messages);
 
   return (
     <div className="live-picker max-h-[80vh] overflow-y-auto">
@@ -98,7 +105,15 @@ const LivePicker: React.FC<LivePickerProps> = ({ postId }) => {
                           Dar Like <FaThumbsUp />
                         </div>
                       ) : comment.type === "sold" ? (
-                        <div className="flex gap-2 items-center bg-slate-200 cursor-pointer text-gray-600 hover:text-red-600 rounded-md p-1">
+                        <div
+                          onClick={(e: any) =>
+                            handleCancelSold(
+                              comment.facebookCommentId,
+                              comment.id
+                            )
+                          }
+                          className="flex gap-2 items-center bg-slate-200 cursor-pointer text-gray-600 hover:text-red-600 rounded-md p-1"
+                        >
                           Cancelar <X />
                         </div>
                       ) : comment.intent === "purchase" ? (

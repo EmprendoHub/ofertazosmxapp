@@ -103,6 +103,15 @@ async function storeFeedEvent(feedDetails: FacebookComment) {
           { status: 201 }
         );
 
+      if (
+        feedDetails.message ===
+        "Una disculpa hubo un error y este articulo se lo gano alguien mas!"
+      )
+        return NextResponse.json(
+          { message: "PURCHASE CANCELLED" },
+          { status: 201 }
+        );
+
       if (feedDetails.message) {
         const openai = new OpenAI({
           apiKey: process.env.OPEN_AI_KEY,

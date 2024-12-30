@@ -27,7 +27,18 @@ export const useMessages = () => {
         "postgres_changes",
         { event: "*", schema: "public", table: "messages" },
         (payload: any) => {
-          setMessages([...messages, payload.new]);
+          setMessages((prevMessages) => {
+            const exists = prevMessages.some(
+              (message) => message.id === payload.new.id
+            );
+
+            // Only add the new message if it doesn't already exist
+            if (!exists) {
+              return [...prevMessages, payload.new];
+            }
+
+            return prevMessages;
+          });
         }
       )
       .subscribe();
@@ -40,7 +51,6 @@ export const useMessages = () => {
         .from("messages")
         .update({ type })
         .eq("id", id);
-      console.log("data", data);
 
       if (error) {
         console.error("Error updating message type:", error);
@@ -69,6 +79,7 @@ export const useMessages = () => {
         .eq("postId", video)
         .order("createdAt", { ascending: false });
 
+      setMessages([...messages, commentsData]);
       if (error) {
         console.error("Error fetching comments from Supabase:", error);
         return { status: 500, error };
