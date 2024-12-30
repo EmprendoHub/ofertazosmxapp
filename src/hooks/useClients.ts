@@ -6,11 +6,14 @@ export const useClients = () => {
 
   const getClients = async (postId: string) => {
     try {
+      console.log(postId);
       const { data, error } = await supabase
         .from("fb_clients")
         .select("*")
         .eq("postId", postId)
         .order("created_at", { ascending: true });
+
+      console.log("data", data);
 
       console.log(data);
       if (data) {

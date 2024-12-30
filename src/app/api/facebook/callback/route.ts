@@ -179,6 +179,8 @@ async function storeFeedEvent(feedDetails: FacebookComment) {
       const data = await supabase.from("messages").insert(commentData);
       if (type === "fake_share") {
         const fb_client = await supabase.from("fb_clients").insert(clientData);
+
+        console.log(fb_client);
       }
       //const res = await newFeedEvent.save();
 

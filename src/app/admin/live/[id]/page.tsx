@@ -7,6 +7,8 @@ const winnerPickerPage = async ({ params }: { params: any }) => {
   return (
     <div className="flex items-center">
       <LivePicker postId={params.id} />
+      {/* <HostComment /> */}
+
       <WinnerPicker postId={params.id} />
     </div>
   );
