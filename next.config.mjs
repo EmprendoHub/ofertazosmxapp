@@ -10,6 +10,8 @@ const nextConfig = {
       { protocol: "https", hostname: "pexels.com" },
       { protocol: "https", hostname: "m.media-amazon.com" },
       { protocol: "https", hostname: "http2.mlstatic.com" },
+      { protocol: "https", hostname: "scontent-phx1-1.xx.fbcdn.net" },
+      { protocol: "https", hostname: "external-phx1-1.xx.fbcdn.net" },
     ],
   },
 };

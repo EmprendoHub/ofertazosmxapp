@@ -37,7 +37,7 @@ const HostComment = () => {
                   message: hostComment,
                   created_time: Math.floor(Date.now() / 1000), // Unix timestamp
                   post_id: "421878677666248_122131066880443689",
-                  comment_id: "122131066880443689_1134742388093639",
+                  comment_id: Math.random().toString(36).substring(10),
                 },
               },
             ],
