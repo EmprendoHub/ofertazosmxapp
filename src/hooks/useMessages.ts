@@ -1,5 +1,4 @@
 import { supabase } from "@/lib/supabase";
-import OpenAI from "openai";
 import { useState } from "react";
 
 export const useMessages = () => {
@@ -35,6 +34,7 @@ export const useMessages = () => {
   };
 
   const setMessageType = async (id: string, type: string) => {
+    console.log("set message type");
     try {
       const { data, error } = await supabase
         .from("messages")
@@ -85,59 +85,6 @@ export const useMessages = () => {
     }
   };
 
-  const getMessageIntentWithAi = async (id: string, message: string) => {
-    try {
-      const openai = new OpenAI({
-        apiKey: process.env.OPEN_AI_KEY,
-      });
-
-      const aiPromptRequest = await openai.chat.completions.create({
-        messages: [
-          {
-            role: "system",
-            content: `
-          Eres un asistente experto en ventas en vivo que ayuda a evaluar la intención de compra de los clientes en un live stream. Tu tarea principal es analizar los mensajes enviados por los clientes en español para determinar si están expresando una intención de compra, y si es así, identificar los detalles clave del mensaje como:
-    
-          1. Producto mencionado (si corresponde).
-          2. Cantidad o precio indicado.
-          3. Nombre o referencia personal (si se menciona, por ejemplo, "yo," "mía," "mío").
-    
-          Ejemplo:
-          - Mensaje: "yo camisa negra" -> Respuesta: { intención: "compra", producto: "camisa negra", cantidad: 1 }
-          - Mensaje: "mia bolsa 150" -> Respuesta: { intención: "compra", producto: "bolsa", precio: 150 }
-          - Mensaje: "solo mirando" -> Respuesta: { intención: "sin compra" }
-    
-          Si no hay suficiente información para determinar una intención clara o detalles del producto, responde con: { intención: "indeterminada" }.
-    
-          Sé preciso y utiliza un formato JSON en tus respuestas. Habla siempre en español y mantén la información directa y profesional.
-          `,
-          },
-          {
-            role: "user",
-            content: message,
-          },
-        ],
-        model: "gpt-3.5-turbo",
-      });
-
-      console.log(aiPromptRequest);
-      if (aiPromptRequest) {
-        const response = {
-          role: "assistant",
-          content: aiPromptRequest.choices[0].message.content,
-        };
-        console.log("response", response);
-
-        return {
-          status: 200,
-          commentsData: JSON.stringify(response),
-        };
-      }
-    } catch (error: any) {
-      console.log(error, "errors");
-    }
-  };
-
   return {
     messages,
     setMessages,
@@ -145,6 +92,5 @@ export const useMessages = () => {
     subscribeToMessages,
     setMessageType,
     getSupabaseFBComments,
-    getMessageIntentWithAi,
   };
 };

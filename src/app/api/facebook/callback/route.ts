@@ -94,6 +94,15 @@ async function storeFeedEvent(feedDetails: FacebookComment) {
       )
         type = "fake_share";
 
+      if (
+        feedDetails.message ===
+        "Gracias por tu compra este articulo te lo ganaste tu!"
+      )
+        return NextResponse.json(
+          { message: "PURCHASE CONFIRMED" },
+          { status: 201 }
+        );
+
       if (feedDetails.message) {
         const openai = new OpenAI({
           apiKey: process.env.OPEN_AI_KEY,
